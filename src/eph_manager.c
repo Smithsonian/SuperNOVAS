@@ -397,6 +397,9 @@ short planet_ephemeris(const double tjd[2], enum de_planet target, enum de_plane
 /// \cond PROTECTED
 
 /**
+ * @deprecated (<i>for internal use</i>) This function should never have been exposed to users.
+ *             But since NOVAS C did, we follow.
+ *
  * Reads and interpolates the JPL planetary ephemeris file.
  *
  * For ease in programming, the user may put the entire epoch in jed[0] and set jed[1] = 0.
@@ -484,6 +487,9 @@ short state(const double *jed, enum de_planet target, double *target_pos, double
 }
 
 /**
+ * @deprecated (<i>for internal use</i>) This function should never have been exposed to users.
+ *             But since NOVAS C did, we follow.
+ *
  * Differentiates and interpolates a set of Chebyshev coefficients to give position and velocity.
  *
  * REFERENCES:
@@ -574,6 +580,9 @@ int interpolate(const double *buf, const double *t, long ncf, long na, double *p
 }
 
 /**
+ * @deprecated (<i>for internal use</i>) This function should never have been exposed to users.
+ *             But since NOVAS C did, we follow.
+ *
  * Breaks up a double number into a double integer part and a fractional part.
  *
  * @param tt        Input number.

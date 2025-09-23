@@ -64,18 +64,70 @@ enum de_planet {
 
 /// \cond PRIVATE
 
+#ifndef _EXCLUDE_DEPRECATED
 // External variables ------------------------------>
+
+/// @deprecated (<i>for internal use</i>) This variable should never have been exposed to users.
+///             But since NOVAS C did, we follow.
 extern short KM;
 
-extern int IPT[3][12], LPT[3];
+/// @deprecated (<i>for internal use</i>) This variable should never have been exposed to users.
+///             But since NOVAS C did, we follow.
+extern int IPT[3][12];
 
-extern long NRL, NP, NV;
+/// @deprecated (<i>for internal use</i>) This variable should never have been exposed to users.
+///             But since NOVAS C did, we follow.
+extern int LPT[3];
+
+/// @deprecated (<i>for internal use</i>) This variable should never have been exposed to users.
+///             But since NOVAS C did, we follow.
+extern long NRL;
+
+/// @deprecated (<i>for internal use</i>) This variable should never have been exposed to users.
+///             But since NOVAS C did, we follow.
+extern long NP;
+
+/// @deprecated (<i>for internal use</i>) This variable should never have been exposed to users.
+///             But since NOVAS C did, we follow.
+extern long NV;
+
+/// @deprecated (<i>for internal use</i>) This variable should never have been exposed to users.
+///             But since NOVAS C did, we follow.
 extern long RECORD_LENGTH;
 
-extern double SS[3], JPLAU, PC[18], VC[18], TWOT, EM_RATIO;
+/// @deprecated (<i>for internal use</i>) This variable should never have been exposed to users.
+///             But since NOVAS C did, we follow.
+extern double SS[3];
+
+/// @deprecated (<i>for internal use</i>) This variable should never have been exposed to users.
+///             But since NOVAS C did, we follow.
+extern double JPLAU;
+
+/// @deprecated (<i>for internal use</i>) This variable should never have been exposed to users.
+///             But since NOVAS C did, we follow.
+extern double PC[18];
+
+/// @deprecated (<i>for internal use</i>) This variable should never have been exposed to users.
+///             But since NOVAS C did, we follow.
+extern double VC[18];
+
+/// @deprecated (<i>for internal use</i>) This variable should never have been exposed to users.
+///             But since NOVAS C did, we follow.
+extern double TWOT;
+
+/// @deprecated (<i>for internal use</i>) This variable should never have been exposed to users.
+///             But since NOVAS C did, we follow.
+extern double EM_RATIO;
+
+/// @deprecated (<i>for internal use</i>) This variable should never have been exposed to users.
+///             But since NOVAS C did, we follow.
 extern double *BUFFER;
 
+/// @deprecated (<i>for internal use</i>) This variable should never have been exposed to users.
+///             But since NOVAS C did, we follow.
 extern FILE *EPHFILE;
+
+#endif /* _EXCLUDE_DEPRECATED */
 
 /// \endcond
 
@@ -87,11 +139,15 @@ short planet_ephemeris(const double tjd[2], enum de_planet target, enum de_plane
 
 /// \cond PRIVATE
 
+#ifndef _EXCLUDE_DEPRECATED
+
 short state(const double *jed, enum de_planet target, double *target_pos, double *target_vel);
 
 int interpolate(const double *buf, const double *t, long ncf, long na, double *position, double *velocity);
 
 int split(double tt, double *fr);
+
+#endif /* _EXCLUDE_DEPRECATED */
 
 /// \endcond
 

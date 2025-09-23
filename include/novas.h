@@ -100,8 +100,10 @@
 /// The version string of the upstream NOVAS library on which this library is based.
 #define NOVAS_VERSION_STRING      #NOVAS_MAJOR_VERSION "." NOVAS_MINOR_VERSION
 
+#ifndef _EXCLUDE_DEPRECATED
 /// [pts] cache size for GCRS CIO locator data (16 bytes per point).
-#define NOVAS_CIO_CACHE_SIZE      1024
+#  define NOVAS_CIO_CACHE_SIZE      1024
+#endif
 
 /// [day] Julian date at J2000
 #define NOVAS_JD_J2000            2451545.0
@@ -110,12 +112,15 @@
 #define NOVAS_JD_MJD0             2400000.5
 
 /// [day] Julian date at B1950
+/// precession(), transform_cat()
 #define NOVAS_JD_B1950            2433282.42345905
 
 /// [day] Julian date at B1900
+/// precession(), transform_cat()
 #define NOVAS_JD_B1900            15019.81352
 
 /// [day] Julian date for J1991.25, which the Hipparcos catalog is referred to.
+/// @sa precession(), transform_cat()
 #define NOVAS_JD_HIP              2448349.0625
 
 /// [m/s] Speed of light in meters/second is a defining physical constant.
@@ -163,10 +168,12 @@
 /// [km] Astronomical Unit (AU) in kilometers.
 #define NOVAS_AU_KM               ( 1e-3 * NOVAS_AU )
 
-/// [m] A light-year in meters. @since 1.5
+/// [m] A light-year in meters.
+/// @since 1.5
 #define NOVAS_LIGHT_YEAR          ( NOVAS_C * NOVAS_TROPICAL_YEAR )
 
-/// [m] A parsec in meters. @since 1.5
+/// [m] A parsec in meters.
+/// @since 1.5
 #define NOVAS_PARSEC              ( NOVAS_AU / ARCSEC )
 
 /// [m<sup>3</sup>/s<sup>2</sup>] Heliocentric gravitational constant (GM<sub>sun</sub>) from DE440,
@@ -182,21 +189,31 @@
 #define NOVAS_SOLAR_RADIUS        696340000.0
 
 /// [m] Equatorial radius of Earth in meters from IERS Conventions (2003).
+/// @sa novas_geodetic_to_cartesian(), novas_cartesian_to_geodetic()
 #define NOVAS_EARTH_RADIUS        6378136.6
 
 /// [m] Earth ellipsoid flattening from IERS Conventions (2003). Value is 1 / 298.25642.
+/// @sa novas_geodetic_to_cartesian(), novas_cartesian_to_geodetic()
 #define NOVAS_EARTH_FLATTENING    (1.0 / 298.25642)
 
 /// [m] Equatorial radius of the WGS84 reference ellipsoid.
+/// @since 1.5
+/// @sa novas_geodetic_to_cartesian(), novas_cartesian_to_geodetic()
 #define NOVAS_WGS84_RADIUS        6378137.0
 
 /// [m] WGS84 Earth flattening
+/// @since 1.5
+/// @sa novas_geodetic_to_cartesian(), novas_cartesian_to_geodetic()
 #define NOVAS_WGS84_FLATTENING    (1.0 / 298.257223563)
 
 /// [m] Equatorial radius of the WGS84 reference ellipsoid.
+/// @since 1.5
+/// @sa novas_geodetic_to_cartesian(), novas_cartesian_to_geodetic()
 #define NOVAS_GRS80_RADIUS        6378137.0
 
 /// [m] WGS84 Earth flattening
+/// @since 1.5
+/// @sa novas_geodetic_to_cartesian(), novas_cartesian_to_geodetic()
 #define NOVAS_GRS80_FLATTENING    (1.0 / 298.257222101)
 
 /// [rad/s] Rotational angular velocity of Earth from IERS Conventions (2003).
@@ -212,6 +229,7 @@
 /// The value of 1367 Wm<sup>−2</sup> was adopted by the World Radiation Center
 /// (Gueymard, 2004).
 /// @since 1.3
+/// @sa novas_solar_power()
 #define NOVAS_SOLAR_CONSTANT      1367.0
 
 /// [day] The Julian day the Gregorian calendar was introduced in 15 October 1582.
@@ -220,31 +238,38 @@
 
 /// The ICRS system as a string
 /// @since 1.3
+/// @sa novas_set_catalog(), make_cat_object_sys(), make_redshifted_object_sys()
 #define NOVAS_SYSTEM_ICRS          "ICRS"
 
 /// The B1950 coordiante system as a string
 /// @since 1.3
+/// @sa novas_set_catalog(), make_cat_object_sys(), make_redshifted_object_sys()
 #define NOVAS_SYSTEM_B1950         "B1950"
 
 /// The J2000 coordinate syste, as a string
 /// @since 1.3
+/// @sa novas_set_catalog(), make_cat_object_sys(), make_redshifted_object_sys()
 #define NOVAS_SYSTEM_J2000         "J2000"
 
 /// The 4th catalog (FK4) coordinate system as a string
 /// @since 1.3
+/// @sa novas_set_catalog(), make_cat_object_sys()
 #define NOVAS_SYSTEM_FK4           "FK4"
 
 /// The 5th catalog (FK5) coordinate system as a string
 /// @since 1.3
+/// @sa novas_set_catalog(), make_cat_object_sys()
 #define NOVAS_SYSTEM_FK5           "FK5"
 
 /// The Hipparcos dataset coordinate system as a string
 /// @since 1.3
+/// @sa novas_set_catalog(), make_cat_object_sys()
 #define NOVAS_SYSTEM_HIP           "HIP"
 
 /// [&mu;m] Default wavelength, e.g. for wavelength-dependent refraction models. It is set to the
 /// median wavelength of visible light.
 /// @since 1.4
+/// @sa novas_refract_wavelength()
 #define NOVAS_DEFAULT_WAVELENGTH      0.55
 
 #if !COMPAT

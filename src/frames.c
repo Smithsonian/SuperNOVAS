@@ -1717,6 +1717,8 @@ double novas_sets_below(double el, const object *restrict source, const novas_fr
  *
  * @since 1.3
  * @author Attila Kovacs
+ *
+ * @sa novas_solar_power()
  */
 double novas_solar_illum(const object *restrict source, const novas_frame *restrict frame) {
   static const char *fn = "novas_solar_illum";
