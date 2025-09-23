@@ -123,7 +123,7 @@ Upcoming feature release, expected around 1 November 2025.
  - Both CMake and GNU make now install only the headers for the components that were included in the build. E.g. 
    `novas-calceph.h` is installed only if the library is built with the CALCEPH support option enabled.
  
- - Various API documentation edits.
+ - Fully revised API and user documentation.
 
 ### Deprecated
 
@@ -143,6 +143,10 @@ Upcoming feature release, expected around 1 November 2025.
    not set humidity. There are a new set of functions (see further above) which provide more flexibility. And, 
    `make_observer()` no longer supports all SuperNOVAS observer types, hence it's less relevant now than the targeted 
    set of SuperNOVAS functions available for every type of observer.
+   
+ - Deprecated the functions in `solsys2.c`. This NOVAS C module is half-baked at best, requiring a custom Fortran 
+   interface to the PLEPH library. You probably should stay away from it for your own good, and use instead the
+   provided CALCEPH or CSPICE plugins for a more up-to-date and modern JPL ephemeris support.
    
    
 ## [1.4.2] - 2025-08-25

@@ -152,7 +152,7 @@ Changed</h2>
 <li>#241: Overhauled document generation. Non-GitHub markdown files are now in <code>doc/</code>, which has its own <code>Makefile</code> and CMake sub-configuration.</li>
 <li>#242: README edits and collapsible sections, as well as Github style highlighting of notes, warnings etc.</li>
 <li>Both CMake and GNU make now install only the headers for the components that were included in the build. E.g. <code><a class="el" href="novas-calceph_8h.html">novas-calceph.h</a></code> is installed only if the library is built with the CALCEPH support option enabled.</li>
-<li>Various API documentation edits.</li>
+<li>Fully revised API and user documentation.</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md5"></a>
 Deprecated</h2>
@@ -161,6 +161,7 @@ Deprecated</h2>
 <li>#209: Deprecated <code><a class="el" href="earth_8c.html#a6eacba14d3c382d67307856a2ea290e3">sidereal_time()</a></code>. It is messy and one of its arguments (<code>erot</code>) is now unused. Instead, you should use <code><a class="el" href="earth_8c.html#a231f535f73e846d3867dbd914054d47b">novas_gmst()</a></code> or <code><a class="el" href="earth_8c.html#a348c4fd2a4a046e9768038075717b693">novas_gast()</a></code> to get the same results simpler.</li>
 <li>#214: Deprecated <code><a class="el" href="cio_8c.html#a51bfbe9b491f50851326b2522dc2a29f">cio_basis()</a></code>. It is no longer used internally by the library, and users are recommended against using it themselves, since SuperNOVAS provides cleaner ways to convert between GCRS and CIRS using frames and transforms, or else via the <code><a class="el" href="transform_8c.html#a51ea4a016336dd3cf7783061c14d165c">gcrs_to_cirs()</a></code> / <code><a class="el" href="transform_8c.html#ac0ba048cd1732d0d0398397396d158bc">cirs_to_gcrs()</a></code> functions.</li>
 <li>#245: Deprecated <code><a class="el" href="observer_8c.html#a42c084465aedee75965f74e23e6571fe">make_on_surface()</a></code>, <code><a class="el" href="observer_8c.html#a5eb76fc6e7be571e228d23aee3823cb9">make_observer_on_surface()</a></code>, and <code><a class="el" href="observer_8c.html#a0f2096c7954b583fe749553b956ff9d2">make_observer()</a></code> functions. The first two did not disambiguate between GPS and ITRF locations, and also required to set some weather parameters, while did not set humidity. There are a new set of functions (see further above) which provide more flexibility. And, <code><a class="el" href="observer_8c.html#a0f2096c7954b583fe749553b956ff9d2">make_observer()</a></code> no longer supports all SuperNOVAS observer types, hence it's less relevant now than the targeted set of SuperNOVAS functions available for every type of observer.</li>
+<li>Deprecated the functions in <code><a class="el" href="solsys2_8c.html">solsys2.c</a></code>. This NOVAS C module is half-baked at best, requiring a custom Fortran interface to the PLEPH library. You probably should stay away from it for your own good, and use instead the provided CALCEPH or CSPICE plugins for a more up-to-date and modern JPL ephemeris support.</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md6"></a>
 [1.4.2] - 2025-08-25</h1>
