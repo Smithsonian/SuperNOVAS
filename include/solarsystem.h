@@ -245,7 +245,9 @@ novas_ephem_provider get_ephem_provider();
  *             function should be used to calculate ephemeris positions for major planets. This
  *             function is provided to extend support for legacy NOVAS C applications only. In
  *             NOVAS, the function had to be user defined, either by linking against a
- *             `solsys*.c` module, or by providing a custom user implementation.
+ *             `solsys*.c` module, or by providing a custom user implementation. Use
+ *             `set_planet_provider()` instead, or else `novas_use_calceph()` or
+ *             `novas_use_cspice()`.
  *
  * A default implementation for regular (reduced) precision handling of major planets, Sun,
  * Moon and the Solar-system barycenter. See DEFAULT_SOLSYS in Makefile to choose the
@@ -288,6 +290,8 @@ short solarsystem(double jd_tdb, short body, short origin, double *restrict posi
  *             planets. This function is provided to extend support for legacy NOVAS C
  *             applications only. In NOVAS, the function had to be user defined, either by linking
  *             against a `solsys*.c` module, or by providing a custom user implementation.
+ *             Use `set_planet_provider_hp()` instead, or else `novas_use_calceph()` or
+ *             `novas_use_cspice()`.
  *
  * A default implementation for high precision handling of major planets, Sun, Moon and the
  * Solar-system barycenter (and other barycenters). See DEFAULT_SOLSYS in Makefile to choose
@@ -345,12 +349,13 @@ short planet_eph_manager(double jd_tdb, enum novas_planet body, enum novas_origi
 short planet_eph_manager_hp(const double jd_tdb[restrict 2], enum novas_planet body, enum novas_origin origin,
         double *restrict position, double *restrict velocity);
 
+#ifndef _EXCLUDE_DEPRECATED
 short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *restrict position,
         double *restrict velocity);
 
 short planet_jplint_hp(const double jd_tdb[restrict 2], enum novas_planet body, enum novas_origin origin,
         double *restrict position, double *restrict velocity);
-
+#endif
 
 // Added in v1.2 --------------------------------->
 

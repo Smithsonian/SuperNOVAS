@@ -20,7 +20,7 @@
  *  (w.r.t. the ecliptic or equator of date) with `novas_set_orbsys_pole()`. E.g.:
  *
  *  ```c
- *    novas_orbit orb = NOVAS_ORBIT_INIT;
+ *    novas_orbital orb = NOVAS_ORBIT_INIT;
  *
  *    orb.a = ...    // [AU] semi-major axis
  *    ...            // populate the rest of the orbital parameters.
@@ -48,7 +48,7 @@
  *  `novas_orbit_posvel()`, while `novas_orbit_native_posvel()` will do the same, but in
  *  the native coordinate system in which the orbital is defined.
  *
- *  @sa make_orbital_object()
+ *  @sa novas_orbital, make_orbital_object()
  */
 
 #include <errno.h>
@@ -417,5 +417,3 @@ int novas_set_orbsys_pole(enum novas_reference_system type, double ra, double de
 
   return 0;
 }
-
-

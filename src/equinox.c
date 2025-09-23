@@ -50,9 +50,10 @@ double EPS_COR = 0.0;
 
 /**
  * @deprecated This old way of incorporating Earth orientation parameters into the true equator
- *             and equinox is now disfavored. Instead, `wobble()` should be used to convert between
- *             the Terrestrial Intermediate Reference System (TIRS) / Pseudo Earth Fixed (PEF) and
- *             the International Terrestrial Reference System (ITRS) going forward.
+ *             and equinox is now disfavored. Instead, the pole offsets should be used only to
+ *             convert between the Terrestrial Intermediate Reference System (TIRS) / Pseudo Earth
+ *             Fixed (PEF) and the International Terrestrial Reference System (ITRS) going
+ *             forward, e.g. via `novas_app_to_hor()` / `novas_hor_to_app()` or else `wobble()`.
  *
  * Specifies the unmodeled celestial pole offsets for high-precision applications to be applied to
  * the True of Date (TOD) equator, in the old, pre IAU 2006 methodology. Nonetheless, these offsets

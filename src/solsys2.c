@@ -3,15 +3,22 @@
  *
  * @author G. Kaplan and A. Kovacs
  *
+ * @deprecated This old NOVAS-C interface to the Fortran PLEPH library is incomplete at best.
+ *             Unless you have already written functional adapters for this interface, you are
+ *             better off choosing one of the more fully-baked ways of providing ephemeris
+ *             support, such as via the CALCEPH or CSPICE plugin interfaces. See
+ *             @ref solsys-calceph.c, @ref solsys-cspice.c
+ *
  *  SuperNOVAS major planet ephemeris lookup wrapper for JPL ephemerides accessed over `pleph()`.
- *  It is a top-level wrapper, with an  intermediate Fortran routine, jplint_() providing the
- *  interface between the NOVAS planet calculator functions here and the pleph() call of the JPL
- *  library. (The sample source code of jplint.f is included in the distribution).
+ *  It is a top-level wrapper, with an  intermediate Fortran routine, `jplint_()` providing the
+ *  interface between the NOVAS planet calculator functions here and the `pleph()` call of the JPL
+ *  library. (The sample source code of `jplint.f` is included in the distribution).
  *
  *  For supporting JPL ephemerides more generally, including for satellites, asteroids, and
- *  comets, you are probably better off using planet_ephem_provider(), and provide an interface,
- *  e.g. to the SPICE library, via novas_ephem_provider instead, which you can then activate
- *  at runtime with set_planet_provider().
+ *  comets, you are probably better off implementing a `novas_ephem_provider` and set it as the
+ *  default ephemeris handler via `set_ephem_provider()`, and then use `solsys-ephem.c` instead to
+ *  use  the same implementation for major planets. Or, simply use the provided plugin support for
+ *  the CALCEPH or CSPICE libtaries.
  *
  *  Based on the NOVAS C Edition, Version 3.1:
  *
@@ -21,7 +28,7 @@
  *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">
  *  http://www.usno.navy.mil/USNO/astronomical-applications</a>
  *
- * @sa solarsystem.h, solsys-calceph.c, solsys-cspice.c
+ * @sa solsys-calceph.c, solsys-cspice.c, solarsystem.h
  */
 
 #include <errno.h>
@@ -40,6 +47,11 @@ extern void jplint_(const double *jd_tdb, long *targ, long *cent, double *posvel
 extern void jplihp_(const double *jd_tdb, long *targ, long *cent, double *posvel, long *err_flg);
 
 /**
+ * @deprecated This NOVAS C function is not usable without a user-provided custom Fortran adapter
+ *             to the PLEPH library. SuperNOVAS offers many better ways of providing ephemeris
+ *             support. See e.g., `set_planet_provider()`, or `novas_use_calceph()` /
+ *             `novas_use_cspice()`.
+ *
  * Obtains planet positions via the JPL direct-access solar system ephemerides, wtih normal
  * (reduced) precision -- typically good to the milliarcsecond level.
  *
@@ -131,6 +143,11 @@ short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin ori
 }
 
 /**
+ * @deprecated This NOVAS C function is not usable without a user-provided custom Fortran adapter
+ *             to the PLEPH library. SuperNOVAS offers many better ways of providing ephemeris
+ *             support. sSee e.g., `set_planet_provider()`, or `novas_use_calceph()` /
+ *             `novas_use_cspice()`.
+ *
  * Obtains planet positions via the JPL direct-access solar system ephemerides, wtih high
  * precision -- typically good to below the microarcsecond level.
  *

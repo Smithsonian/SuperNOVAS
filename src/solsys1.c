@@ -4,13 +4,13 @@
  * @author G. Kaplan and A. Kovacs
  *
  *  SuperNOVAS major planet ephemeris lookup implementation using JPL 1997 ephemeris data, to be
- *  used together with eph_manager.c. This is a legacy API, maiunly for supporting older code
+ *  used together with `eph_manager.c`. This is a legacy API, mainly for supporting older code
  *  written for NOVAS C.
  *
- *  A more generic solution is to implement a novas_ephem_provider (e.g. relying on the current
- *  version of the CSPICE library) and set it as the default ephemeris handler via
- *  set_ephem_provider(), and then use solsys-ephem.c instead to use the same implementation for
- *  major planets.
+ *  A more generic solution is to implement a `novas_ephem_provider` and set it as the default
+ *  ephemeris handler via `set_ephem_provider()`, and then use `solsys-ephem.c` instead to use
+ *  the same implementation for major planets. Or, simply use the provided plugin support for
+ *  the CALCEPH or CSPICE libtaries.
  *
  *  Based on the NOVAS C Edition, Version 3.1:
  *
@@ -20,7 +20,7 @@
  *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">
  *  http://www.usno.navy.mil/USNO/astronomical-applications</a>
  *
- * @sa solarsystem.h, solsys-calceph.c, solsys-cspice.c
+ * @sa solsys-calceph.c, solsys-cspice.c, solarsystem.h
  */
 
 #include <errno.h>

@@ -14,10 +14,7 @@
  *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">
  *  http://www.usno.navy.mil/USNO/astronomical-applications</a>
  *
- *  @sa solarsystem.h
- *  @sa solsys-calceph.c
- *  @sa solsys-cspice.c
- *  @sa solsys-ephem.c
+ *  @sa solarsystem.h, solsys-calceph.c, solsys-cspice.c, solsys-ephem.c
  */
 
 #include <math.h>

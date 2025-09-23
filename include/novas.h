@@ -718,10 +718,10 @@ enum novas_origin {
 
 #ifndef _EXCLUDE_DEPRECATED
 
-/** @deprecated Old definition of the Barycenter origin. NOVAS_BARYCENTER is preferred. */
+/** @deprecated Old definition of the Barycenter origin. @ref NOVAS_BARYCENTER is preferred. */
 #  define BARYC                     NOVAS_BARYCENTER
 
-/** @deprecated Old definition of the Center of Sun as the origin. NOVAS_HELIOCENTER is preferred. */
+/** @deprecated Old definition of the Center of Sun as the origin. @ref NOVAS_HELIOCENTER is preferred. */
 #  define HELIOC                    NOVAS_HELIOCENTER
 
 #endif // _EXCLUDE_DEPRECATED
