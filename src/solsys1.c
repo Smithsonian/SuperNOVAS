@@ -3,6 +3,11 @@
  *
  * @author G. Kaplan and A. Kovacs
  *
+ *  @deprecated This built-in NOVAS C ephemeris reader supports older JPL planetary ephemerides DE200
+ *             -- DE405 only. We recommend using the SuperNOVAS plugin interfaces to the CALCEPH
+ *             or CSPICE libraries, for more complete, more-up-to-date, and more generalized
+ *             ephemeris support. See @ref solsys-calceph.c, @ref solsys-cspice.c
+ *
  *  SuperNOVAS major planet ephemeris lookup implementation using JPL 1997 ephemeris data, to be
  *  used together with `eph_manager.c`. This is a legacy API, mainly for supporting older code
  *  written for NOVAS C.
@@ -35,6 +40,11 @@
 /// \endcond
 
 /**
+ * @deprecated This built-in NOVAS C ephemeris reader supports older JPL planetary ephemerides DE200
+ *             -- DE405 only. We recommend using the SuperNOVAS plugin interfaces to the CALCEPH
+ *             or CSPICE libraries, for more complete, more-up-to-date, and more generalized
+ *             ephemeris support. See @ref solsys-calceph.c, @ref solsys-cspice.c
+ *
  * Provides an interface between the JPL direct-access solar system ephemerides and NOVAS-C
  * for highest precision applications.
  *
@@ -125,6 +135,11 @@ short planet_eph_manager_hp(const double jd_tdb[restrict 2], enum novas_planet b
 }
 
 /**
+ * @deprecated This built-in NOVAS C ephemeris reader supports older JPL planetary ephemerides DE200
+ *             -- DE405 only. We recommend using the SuperNOVAS plugin interfaces to the CALCEPH
+ *             or CSPICE libraries, for more complete, more-up-to-date, and more generalized
+ *             ephemeris support. See @ref solsys-calceph.c, @ref solsys-cspice.c
+ *
  * Provides an interface between the JPL direct-access solar system ephemerides and NOVAS-C
  * for regular (reduced) precision applications.
  *

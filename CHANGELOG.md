@@ -153,6 +153,11 @@ Upcoming feature release, expected around 1 November 2025.
    compiler flag, or adding `#define _EXCLUDE_DEPRECATED` in your application source code _before_ including
    `eph_manager.h`.
    
+ - Deprecated the functions of `solsys1.c` and `eph_manager.c`. These provide built-in support for older JPL planetary
+   ephemerides DE200 -- DE405 only. Given its lack of support for more recent ephemeris data, users should probably
+   stay away from this NOVAS C legacy module, and instead opt for one the built-in CALCEPH and/or CSPICE plugins
+   to allow accessing a wider variety, and more up-to-date, ephemeris data -- with a lot more flexibility also.
+   
  
 ## [1.4.2] - 2025-08-25
 

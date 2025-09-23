@@ -34,6 +34,8 @@
  *
  * @author Attila Kovacs
  * @since 1.0
+ *
+ * @sa planet_ephemeris()
  */
 enum de_planet {
   DE_MERCURY = 0, ///< Number for Mercury in the JPL DE ephemeris files
@@ -62,9 +64,10 @@ enum de_planet {
  */
 #define DE_PLANETS (DE_NUTATIONS + 1)
 
-/// \cond PRIVATE
 
 #ifndef _EXCLUDE_DEPRECATED
+
+/// \cond PRIVATE
 // External variables ------------------------------>
 
 /// @deprecated (<i>for internal use</i>) This variable should never have been exposed to users.
@@ -127,19 +130,6 @@ extern double *BUFFER;
 ///             But since NOVAS C did, we follow.
 extern FILE *EPHFILE;
 
-#endif /* _EXCLUDE_DEPRECATED */
-
-/// \endcond
-
-short ephem_open(const char *ephem_name, double *jd_begin, double *jd_end, short *de_number);
-
-short ephem_close(void);
-
-short planet_ephemeris(const double tjd[2], enum de_planet target, enum de_planet origin, double *position, double *velocity);
-
-/// \cond PRIVATE
-
-#ifndef _EXCLUDE_DEPRECATED
 
 short state(const double *jed, enum de_planet target, double *target_pos, double *target_vel);
 
@@ -147,8 +137,16 @@ int interpolate(const double *buf, const double *t, long ncf, long na, double *p
 
 int split(double tt, double *fr);
 
-#endif /* _EXCLUDE_DEPRECATED */
-
 /// \endcond
+
+
+short ephem_open(const char *ephem_name, double *jd_begin, double *jd_end, short *de_number);
+
+short ephem_close(void);
+
+short planet_ephemeris(const double tjd[2], enum de_planet target, enum de_planet origin, double *position, double *velocity);
+
+
+#endif /* _EXCLUDE_DEPRECATED */
 
 #endif /* _EPHMAN_ */
