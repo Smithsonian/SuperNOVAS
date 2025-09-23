@@ -48,9 +48,9 @@ typedef struct {
  * <li>Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.</li>
  * </ol>
  *
- * @param location    Location of observer in Earth's rotating frame
- * @param lst         [h] Local apparent sidereal time at reference meridian in hours.
- * @param[out] pos    [AU]  Position vector of observer with respect to center of Earth,
+ * @param location    ITRF / GRS80 geodetic location of observer in Earth's rotating frame.
+ * @param gast        [h] Greenwich apparent sidereal time (GAST).
+ * @param[out] pos    [AU] Position vector of observer with respect to center of Earth,
  *                    equatorial rectangular coordinates, referred to true equator
  *                    and equinox of date, components in AU. If reference meridian is
  *                    Greenwich and 'lst' = 0, 'pos' is
@@ -65,9 +65,9 @@ typedef struct {
  *                    arguments are identical pointers.
  *
  * @sa geo_posvel()
- * @sa make_gps_site(), make_itrf_site(), make_xyz_site()
+ * @sa make_gps_site(), make_itrf_site(), make_xyz_site(), novas_gast(), novas_time_gst()
  */
-int terra(const on_surface *restrict location, double lst, double *restrict pos, double *restrict vel) {
+int terra(const on_surface *restrict location, double gast, double *restrict pos, double *restrict vel) {
   static const char *fn = "terra";
   double df, df2, phi, sinphi, cosphi, c, s, ach, ash, stlocl, sinst, cosst;
   double ht_km;
@@ -93,7 +93,7 @@ int terra(const on_surface *restrict location, double lst, double *restrict pos,
   ash = ERAD / NOVAS_KM * s + ht_km;
 
   // Compute local sidereal time factors at the observer's longitude.
-  stlocl = lst * HOURANGLE + location->longitude * DEGREE;
+  stlocl = gast * HOURANGLE + location->longitude * DEGREE;
   sinst = sin(stlocl);
   cosst = cos(stlocl);
 
@@ -239,7 +239,6 @@ short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enu
 
   return 0;
 }
-
 
 /**
  * Returns the value of the Earth Rotation Angle (&theta;) for a given UT1 Julian date.  The
@@ -648,7 +647,7 @@ int wobble(double jd_tt, enum novas_wobble_direction direction, double xp, doubl
  * @param jd_tt       [day] Terrestrial Time (TT) based Julian date.
  * @param ut1_to_tt   [s] TT - UT1 time difference in seconds
  * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
- * @param obs         Observer location
+ * @param obs         ITRF / GRS80 geodetic observer location.
  * @param[out] pos    [AU] Position 3-vector of observer, with respect to origin at geocenter,
  *                    referred to GCRS axes, components in AU. (It may be NULL if not required.)
  * @param[out] vel    [AU/day] Velocity 3-vector of observer, with respect to origin at geocenter,

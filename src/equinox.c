@@ -50,15 +50,15 @@ double EPS_COR = 0.0;
 
 /**
  * @deprecated This old way of incorporating Earth orientation parameters into the true equator
- *             and equinox is now disfavored. Instead, wobble() should be used to convert between
+ *             and equinox is now disfavored. Instead, `wobble()` should be used to convert between
  *             the Terrestrial Intermediate Reference System (TIRS) / Pseudo Earth Fixed (PEF) and
  *             the International Terrestrial Reference System (ITRS) going forward.
  *
  * Specifies the unmodeled celestial pole offsets for high-precision applications to be applied to
- * the True of Date (TOD) equator, in the old, pre IAU 2006 methodology. These offsets must not
- * include tidal terms, and should be specified relative to the IAU2006 precession/nutation model
- * to provide a correction to the modeled (precessed and nutated) position of Earth's pole, such
- * those derived from observations and published by IERS.
+ * the True of Date (TOD) equator, in the old, pre IAU 2006 methodology. Nonetheless, these offsets
+ * should be specified relative to the IAU2006 precession / nutation model to provide a correction
+ * to the modeled (precessed and nutated) position of Earth's pole, such those derived from
+ * observations and published by IERS.
  *
  * The call sets the global variables `PSI_COR` and `EPS_COR`, for subsequent calls to `e_tilt()`.
  * As such, it should be called to specify pole offsets prior to legacy NOVAS C equinox-specific
@@ -80,12 +80,13 @@ double EPS_COR = 0.0;
  * <li>
  *  If &Delta;&delta;&psi;, &Delta;&delta;d&epsilon; offsets are specified, these must be the
  *  residual corrections relative to the IAU 2006 precession/nutation model (not the Lieske et al.
- *  1977 model!). As such, they are just a rotated version of the newer dx, dy offsets published
- *  by IERS.
+ *  1977 model!). As such, they are just a rotated version of the newer _x_<sub>p</sub>,
+ *  _y_<sub>p</sub> offsets published by IERS.
  * </li>
  * <li>
- *  The equivalent IAU 2006 standard is to apply dx, dy pole offsets only for converting
- *  between TIRS and ITRS, e.g. via `wobble()`).
+ *  The equivalent IAU 2006 standard method, which is preferred, is to apply _x_<sub>p</sub>,
+ *  _y_<sub>p</sub> pole offsets only for converting between TIRS and ITRS, e.g. via
+ *  `novas_app_to_hor(), `novas_hor_to_app(), or `wobble()`).
  * </li>
  * <li>
  *  There is no need to define pole offsets this way when using the newer frame-based approach
@@ -316,8 +317,9 @@ double mean_obliq(double jd_tdb) {
 /// \cond PROTECTED
 
 /**
- * (<i>for internal use</i>) Returns the polynomial precession term of GMST, which together with the equation of equinoxes
- * translates Earth Rotation Angle (ERA) to Greenwhich Mean Sidereal Time (GMST).
+ * (<i>for internal use</i>) Returns the polynomial precession term of GMST, which together with
+ * the equation of equinoxes translates Earth Rotation Angle (ERA) to Greenwhich Mean Sidereal
+ * Time (GMST).
  *
  * REFERENCES:
  * <ol>
@@ -536,7 +538,7 @@ double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy) 
  *
  * REFERENCES:
  * <ol>
- * <li>IERS Conventions Chapter 5, Eq. 5.43.</li>
+ * <li>IERS Conventions 2010, Chapter 5, Eq. 5.43.</li>
  * <li>Simon et al. (1994) Astronomy and Astrophysics 282, 663-683, esp. Sections 3.4-3.5.</li>
  * </ol>
  *
@@ -809,5 +811,3 @@ int nutation(double jd_tdb, enum novas_nutation_direction direction, enum novas_
 
   return 0;
 }
-
-

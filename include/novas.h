@@ -1784,7 +1784,7 @@ double era(double jd_ut1_high, double jd_ut1_low);
 
 int wobble(double jd_tt, enum novas_wobble_direction direction, double xp, double yp, const double *in, double *out);
 
-int terra(const on_surface *restrict location, double lst, double *restrict pos, double *restrict vel);
+int terra(const on_surface *restrict location, double gast, double *restrict pos, double *restrict vel);
 
 int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *restrict mobl, double *restrict tobl,
         double *restrict ee, double *restrict dpsi, double *restrict deps);
