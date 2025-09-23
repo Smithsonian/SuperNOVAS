@@ -175,7 +175,7 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "novas_8h.html",
-"novas_8h.html#a9178358732325399f3a5e3582080ced3",
+"novas_8h.html#a918c8244e44c69f1589d9f4bf5355d16",
 "observer_8c.html#a1d58fd371e7604f75df315365672941e",
 "structnovas__timespec.html"
 ];

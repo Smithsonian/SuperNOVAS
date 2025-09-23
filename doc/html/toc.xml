@@ -903,7 +903,7 @@
           <topic label="starvectors" href="novas_8h.html#a27bae6c9efdab763dba9f1ae36a04669"/>
           <topic label="tdb2tt" href="novas_8h.html#a90d5fae30728b51151c3daf355ca585b"/>
           <topic label="ter2cel" href="novas_8h.html#ac8c5ff3cc13126aba2ec5a6cbe187a31"/>
-          <topic label="terra" href="novas_8h.html#a8471f990ad6e3051a0aa584d9cb2d355"/>
+          <topic label="terra" href="novas_8h.html#adc81730affa75f5facc8c6bd280c83c9"/>
           <topic label="tod_to_cirs" href="novas_8h.html#adb48b2acaf76cc3a1e3a1412cc42c232"/>
           <topic label="tod_to_gcrs" href="novas_8h.html#a6871e7fecde44084c7b4e1b8dda5ac70"/>
           <topic label="tod_to_itrs" href="novas_8h.html#a4551e2ac083e34c1b2b61b3805efb9a3"/>
@@ -1004,7 +1004,7 @@
           <topic label="novas_gast" href="earth_8c.html#a348c4fd2a4a046e9768038075717b693"/>
           <topic label="novas_gmst" href="earth_8c.html#a231f535f73e846d3867dbd914054d47b"/>
           <topic label="sidereal_time" href="earth_8c.html#a6eacba14d3c382d67307856a2ea290e3"/>
-          <topic label="terra" href="earth_8c.html#a8471f990ad6e3051a0aa584d9cb2d355"/>
+          <topic label="terra" href="earth_8c.html#adc81730affa75f5facc8c6bd280c83c9"/>
           <topic label="wobble" href="earth_8c.html#aead87744eeb3029ce7d5ffb1801ee652"/>
         </topic>
         <topic label="eph_manager.c" href="eph__manager_8c.html">

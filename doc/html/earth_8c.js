@@ -10,6 +10,6 @@ var earth_8c =
     [ "novas_gast", "earth_8c.html#a348c4fd2a4a046e9768038075717b693", null ],
     [ "novas_gmst", "earth_8c.html#a231f535f73e846d3867dbd914054d47b", null ],
     [ "sidereal_time", "earth_8c.html#a6eacba14d3c382d67307856a2ea290e3", null ],
-    [ "terra", "earth_8c.html#a8471f990ad6e3051a0aa584d9cb2d355", null ],
+    [ "terra", "earth_8c.html#adc81730affa75f5facc8c6bd280c83c9", null ],
     [ "wobble", "earth_8c.html#aead87744eeb3029ce7d5ffb1801ee652", null ]
 ];

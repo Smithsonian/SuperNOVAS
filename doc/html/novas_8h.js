@@ -503,7 +503,7 @@ var novas_8h =
     [ "starvectors", "novas_8h.html#a27bae6c9efdab763dba9f1ae36a04669", null ],
     [ "tdb2tt", "novas_8h.html#a90d5fae30728b51151c3daf355ca585b", null ],
     [ "ter2cel", "novas_8h.html#ac8c5ff3cc13126aba2ec5a6cbe187a31", null ],
-    [ "terra", "novas_8h.html#a8471f990ad6e3051a0aa584d9cb2d355", null ],
+    [ "terra", "novas_8h.html#adc81730affa75f5facc8c6bd280c83c9", null ],
     [ "tod_to_cirs", "novas_8h.html#adb48b2acaf76cc3a1e3a1412cc42c232", null ],
     [ "tod_to_gcrs", "novas_8h.html#a6871e7fecde44084c7b4e1b8dda5ac70", null ],
     [ "tod_to_itrs", "novas_8h.html#a4551e2ac083e34c1b2b61b3805efb9a3", null ],
