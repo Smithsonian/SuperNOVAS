@@ -95,4 +95,4 @@ int split(double tt, double *fr);
 
 /// \endcond
 
-#endif
+#endif /* _EPHMAN_ */

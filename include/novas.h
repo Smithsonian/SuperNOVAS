@@ -5,7 +5,8 @@
  * @version 1.4.2
  *
  *  SuperNOVAS astrometry software based on the Naval Observatory Vector Astrometry Software (NOVAS).
- *  It has been modified to fix outstanding issues and to make it easier to use.
+ *  It has been modified to fix outstanding issues, make it easier to use, and provide a ton of new
+ *  features.
  *
  *  Based on the NOVAS C Edition, Version 3.1:
  *

@@ -42,7 +42,7 @@
 #define TC_T0      2443144.5003725       ///< 1977 January 1, 0h 0m 0s TAI
 
 /**
- * Relative rate at which Barycentric coordinate time progresses fastern than time on Earth i.e.,
+ * Relative rate at which Barycentric coordinate time progresses faster than time on Earth i.e.,
  * Terrestrial Time (TT).
  *
  * REFERENCES:
@@ -53,7 +53,7 @@
 #define TC_LB      1.550519768e-8
 
 /**
- * Relative rate at which Geocentric coordinate time progresses fastern than time on Earth i.e.,
+ * Relative rate at which Geocentric coordinate time progresses faster than time on Earth i.e.,
  * Terrestrial Time (TT).
  *
  * NOTES:
@@ -187,7 +187,7 @@ double tt2tdb(double jd_tt) {
 
 /**
  * Returns the TDB-TT time difference with flexible precision. This implementation uses the series
- * expansion by Fairhead &amp; Bretagnon 1990, terminating theterm at or below the specified
+ * expansion by Fairhead &amp; Bretagnon 1990, terminating the terms at or below the specified
  * limiting amplitude.
  *
  * REFERENCES:
@@ -374,7 +374,7 @@ double tt2tdb_fp(double jd_tt, double limit) {
 }
 
 /**
- * Returns the TDB-TT time difference with flexible precision. This implementation uses the full
+ * Returns the TDB-TT time difference with high precision. This implementation uses the full
  * series expansion by Fairhead &amp; Bretagnon 1990, resulting in an accuracy below 100 ns.
  *
  * REFERENCES:
@@ -555,7 +555,7 @@ int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, i
 
   time->tt2tdb = NAN;
   time->dut1 = dut1;
-  time->ut1_to_tt = leap - dut1 + DTA * DAY;    // TODO check!
+  time->ut1_to_tt = leap - dut1 + DTA * DAY;
 
   switch(timescale) {
     case NOVAS_TT:
@@ -1793,7 +1793,7 @@ static double kinetic_potential(double b) {
  * Returns the incremental rate at which the observer's clock (i.e. proper time &tau;) ticks
  * faster than a TCG clock. I.e., it returns _D_, which is defined by:
  *
- * d&tau<sub>obs</sub>; / dTCG = (1 + _D_)
+ * d&tau;<sub>obs</sub> / dTCG = (1 + _D_)
  *
  * @param frame         The observing frame, defining the observer position as well as the
  *                      positions of the major solar-system bodies at the time of observation.
@@ -1825,7 +1825,7 @@ static double clock_skew_near_earth(const novas_frame *frame) {
  * ticks faster due to the local tidal potential around Earth (mainly due to the Sun and Moon).
  * I.e., it returns _D_, which is defined by:
  *
- * d&tau<sub>tidal</sub>; / d&tau<sub>obs</sub>; = (1 + _D_)
+ * d&tau;<sub>tidal</sub> / d&tau;<sub>obs</sub> = (1 + _D_)
  *
  * @param frame         The observing frame, defining the observer position as well as the
  *                      positions of the major solar-system bodies at the time of observation.
@@ -1860,7 +1860,7 @@ static double tidal_clock_skew(const novas_frame *frame) {
  * &tau;) ticks faster than a clock in the specified timescale. I.e., it returns _D_, which is
  * defined by:
  *
- * d&tau<sub>obs</sub>; / dt<sub>timescale</sub> = (1 + _D_)
+ * d&tau;<sub>obs</sub> / dt<sub>timescale</sub> = (1 + _D_)
  *
  * The instantaneous difference in clock rate includes tiny diurnal or orbital variationd for
  * Earth-bound observers as the they cycle through the tidal potential around the geocenter
@@ -1964,7 +1964,7 @@ double novas_clock_skew(const novas_frame *frame, enum novas_timescale timescale
  * ticks faster than a clock in the specified timescale. I.e., it returns _D_, which is defined
  * by:
  *
- * d&tau<sub>obs</sub>; / dt<sub>timescale</sub> = (1 + _D_)
+ * d&tau;<sub>obs</sub> / dt<sub>timescale</sub> = (1 + _D_)
  *
  * For a non-Earth-bound observer, this is the same as the instantaneous rate returned by
  * `novas_clock_skew()`. For an Earth-bound observer however, this function returns the averaged

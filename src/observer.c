@@ -55,7 +55,6 @@
 
 #define PRESSURE_SCALE_HEIGHT             9.1e3     ///< [m] Scale height of atmospheric pressure
 
-
 /// \endcond
 
 /**

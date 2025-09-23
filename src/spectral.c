@@ -43,14 +43,14 @@ double novas_add_vel(double v1, double v2) {
 /// \endcond
 
 /**
- * Converts a redshift value (z = &delta;f / f<sub>rest</sub>) to a radial velocity (i.e. rate) of
+ * Converts a redshift value (z = &delta;&lambda / &lambda<sub>rest</sub>) to a radial velocity (i.e. rate) of
  * recession. It is based on the relativistic formula:
  * <pre>
  *  1 + z = &radic;((1 + &beta;) / (1 - &beta;))
  * </pre>
  * where &beta; = _v_ / _c_.
  *
- * @param z   the redshift value (&delta;&lambda; / &lambda;<sub>rest</sub>).
+ * @param z   the redshift value (z = &delta;&lambda; / &lambda;<sub>rest</sub>).
  * @return    [km/s] Corresponding velocity of recession, or NAN if the input redshift is invalid,
  *            i.e. z &lt;= -1).
  *
@@ -70,7 +70,7 @@ double novas_z2v(double z) {
 }
 
 /**
- * Converts a radial recession velocity to a redshift value (z = &delta;f / f<sub>rest</sub>).
+ * Converts a radial recession velocity to a redshift value (z = &delta;&lambda; / &lambda;<sub>rest</sub>).
  * It is based on the relativistic formula:
  * <pre>
  *  1 + z = &radic;((1 + &beta;) / (1 - &beta;))
@@ -152,7 +152,7 @@ double unredshift_vrad(double vrad, double z) {
 /**
  * Compounds two redshift corrections, e.g. to apply (or undo) a series gravitational redshift
  * corrections and/or corrections for a moving observer. It's effectively using
- * (1 + z) = (1 + `z1`) * (1 + `z2`).
+ * (1 + _z_) = (1 + `z1`) * (1 + `z2`).
  *
  * @param z1    One of the redshift values
  * @param z2    The other redshift value

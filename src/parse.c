@@ -15,9 +15,9 @@
 
 /// \cond PRIVATE
 #define __NOVAS_INTERNAL_API__    ///< Use definitions meant for internal use by SuperNOVAS only
-#include "novas.h"
-
 /// \endcond
+
+#include "novas.h"
 
 #define MAX_DECIMALS      9       ///< Maximum decimal places for seconds in HMS/DMS formats
 

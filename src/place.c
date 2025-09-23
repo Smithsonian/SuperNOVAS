@@ -9,8 +9,9 @@
  *  via `novas_sky_pos()` (for apparent positions, including aberration and gravitational
  *  deflection) or `novas_geom_posvel() (for geometric positions).
  *
- *  Some of the functions here are now deprecated, since the new frame-based approach, introduced
- *  in v1.2 offers more versatile and transparent ways of calculating the same quantities.
+ *  Some of the functions here have been deprecated also, since the new frame-based approach,
+ *  introduced in v1.2, offers more versatile and transparent ways of calculating the same
+ *  quantities.
  *
  *  Nevertheless, if you insist on using these older methods, here's a primer on the ways the
  *  `place()` variants differ from one-another:
@@ -30,8 +31,8 @@
  *  it calculates a geometric place, while for all other reference systems it returns an
  *  apparent place.
  *
- *  For example, the following place() variants may be used for a geocentric observer place and
- *  a sidereal (non-Solar-system) source, depending on the reference system and the type of position
+ *  For example, the following place() variants may be used for an Earth-related observer place
+ *  and a sidereal (non-Solar-system) source, depending on the reference system and the type of
  *  to be calculated:
  *
  *  | system \ type     | geocentric / geometric | geocentric / apparent | topocentric / apparent |
@@ -80,8 +81,9 @@
 
 /// \cond PRIVATE
 #define __NOVAS_INTERNAL_API__    ///< Use definitions meant for internal use by SuperNOVAS only
-#include "novas.h"
 /// \endcond
+
+#include "novas.h"
 
 /**
  * Retrieves the position and velocity of a solar system body from a fundamental ephemeris.

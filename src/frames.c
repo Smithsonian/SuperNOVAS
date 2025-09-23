@@ -97,16 +97,16 @@
  * @sa timescale.c, observer.c, target.c
  */
 
-/// \cond PRIVATE
-#define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
-/// \endcond
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
 #include <errno.h>
 #include <math.h>
+
+/// \cond PRIVATE
+#define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
+/// \endcond
 
 #include "novas.h"
 

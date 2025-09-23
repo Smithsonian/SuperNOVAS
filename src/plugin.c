@@ -12,9 +12,7 @@
 /// \cond PRIVATE
 #define __NOVAS_INTERNAL_API__    ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
-/// \endcond
 
-/// \cond PRIVATE
 #ifndef DEFAULT_SOLSYS
 /// Will use solarsystem() and solarsystem_hp() that is linked with application
 #  define DEFAULT_SOLSYS    0

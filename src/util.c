@@ -14,8 +14,10 @@
 
 /// \cond PRIVATE
 #define __NOVAS_INTERNAL_API__    ///< Use definitions meant for internal use by SuperNOVAS only
-#include "novas.h"
 /// \endcond
+
+#include "novas.h"
+
 
 /// Current debugging state for reporting errors and traces to stderr.
 static enum novas_debug_mode novas_debug_state = NOVAS_DEBUG_OFF;
@@ -257,7 +259,7 @@ void novas_tiny_rotate(const double *in, double ax, double ay, double az, double
 
 /// \endcond PROTECTED
 
-/// ==========================================================================
+// ===========================================================================
 
 /**
  * Enables or disables reporting errors and traces to the standard error stream.
