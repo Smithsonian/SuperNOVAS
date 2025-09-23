@@ -27,9 +27,7 @@
 #define  DUT1             0.114     ///< [s] current UT1 - UTC time difference from IERS Bulletin A
 
 
-
-
-int main(int argc, const char *argv[]) {              // observer location
+int main() {              // observer location
   // Other variables we need ----------------------------------------------->
   int i, N = 30000;
   double tjd = 2460683.132905, dx, dy;

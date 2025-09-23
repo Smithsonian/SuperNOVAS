@@ -6,12 +6,12 @@
 # ============================================================================
 
 # Folders in which sources and headers are located, respectively
-SRC ?= src
-INC ?= include
+SRC := src
+INC := include
 
 # Folders for compiled objects, libraries, and binaries, respectively 
-OBJ ?= obj
-LIB ?= lib
+OBJ := obj
+LIB := lib
 BIN ?= bin
 
 # Compiler: use gcc by default
@@ -59,17 +59,6 @@ endif
 #THREAD_LOCAL ?= __thread
 #or
 #THREAD_LOCAL ?= __declspec(thread)
-
-
-# You can set the default CIO locator file to use depending on where you 
-# installed it. By default, the library will assume 
-# '/usr/share/supernovas/CIO_RA.TXT', or else 'cio_ra.bin' if the COMPAT flag 
-# is set to a nonzero value (above). Some other good locations for this file 
-# may be in '/usr/local/share/supernovas', or '/opt/share/supernovas' for 
-# system-wide availability, or in '$(HOME)/.local/share/supernovas' for 
-# user-specific installation.
-#
-#CIO_LOCATOR_FILE ?= $(DESTDIR)/share/supernovas/CIO_RA.TXT
 
 
 # Whether to build into the library planet_eph_manager() routines provided in 
@@ -168,11 +157,6 @@ endif
 # If the COMPAT variable is set to one, then force set compatibility mode
 ifeq ($(COMPAT),1)
   CPPFLAGS += -DCOMPAT=1
-endif
-
-# If the CIO_LOCATOR_FILE variable is defined, the use its definition
-ifdef CIO_LOCATOR_FILE
-  CPPFLAGS += -DDEFAULT_CIO_LOCATOR_FILE=\"$(CIO_LOCATOR_FILE)\"
 endif
 
 # If the THREAD_LOCAL variable was defined externally, use that definition to 

@@ -39,6 +39,7 @@ option(BUILD_DOC "Build HTML documetation" OFF)
 option(BUILD_TESTING "Build regression test suite" ON)
 option(BUILD_EXAMPLES "Build example programs" OFF)
 option(BUILD_BENCHMARK "Build benchmark programs" OFF)
+option(BUILD_LEGACY "Build legacy tools (CIO table generator and converter)" OFF)
 option(ENABLE_CALCEPH "Enable CALCEPH support" OFF)
 option(ENABLE_CSPICE "Enable CSPICE support" OFF)
 option(ENABLE_SOLSYS1 "Enable legacy support for DE200 -- DE421 via eph_manager()" OFF)
@@ -50,6 +51,7 @@ add_feature_info(Documentation BUILD_DOC "Developer documentation (HTML)")
 add_feature_info(Examples BUILD_EXAMPLES "Build and test example programs")
 add_feature_info(Testing BUILD_TESTING "Run regression testing")
 add_feature_info(Benchmarks BUILD_BENCHMARK "Build benchmarking programs")
+add_feature_info(CIO-Tools BUILD_LEGACY "Legacy tools for CIO table generation and conversion")
 
 add_feature_info(Calceph-Plugin ENABLE_CALCEPH "Optional ephemeris support via CALCEPH")
 add_feature_info(CSPICE-Plugin ENABLE_CSPICE "Optional ephemeris support via CSPICE")
@@ -248,6 +250,11 @@ endif()
 # Benchmarking
 if(BUILD_BENCHMARK)
     add_subdirectory(benchmark)
+endif()
+
+# Legacy tools
+if(BUILD_LEGACY)
+    add_subdirectory(legacy)
 endif()
 
 # Documentation

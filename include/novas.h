@@ -101,6 +101,7 @@
 #define NOVAS_VERSION_STRING      #NOVAS_MAJOR_VERSION "." NOVAS_MINOR_VERSION
 
 #ifndef _EXCLUDE_DEPRECATED
+/// @deprecated This definition is no longer needed internally.
 /// [pts] cache size for GCRS CIO locator data (16 bytes per point).
 #  define NOVAS_CIO_CACHE_SIZE      1024
 #endif
@@ -2508,6 +2509,7 @@ int polar_dxdy_to_dpsideps(double jd_tt, double dx, double dy, double *restrict 
 int novas_frame_is_initialized(const novas_frame *frame);
 
 double novas_gmst_prec(double jd_tdb);
+double novas_cio_gcrs_ra(double jd_tdb);
 
 extern int novas_inv_max_iter;
 

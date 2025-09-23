@@ -10,7 +10,7 @@ include ../config.mk
 EXAMPLES = example-star example-high-z example-orbital example-time example-rise-set
 
 CPPFLAGS += -I../include
-LDFLAGS += -L$(LIB) -lsupernovas
+LDFLAGS += -L../$(LIB) -lsupernovas
 
 ifeq ($(CALCEPH_SUPPORT),1)
   EXAMPLES += example-calceph
@@ -32,3 +32,5 @@ clean:
 distclean:
 	rm -f $(EXAMPLES)
 
+example-%: example-%.c
+	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $< $(LDFLAGS)

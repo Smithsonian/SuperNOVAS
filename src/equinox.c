@@ -395,7 +395,7 @@ double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_ac
 /**
  * @deprecated (<i>for internal use</i>) There is no good reason why this function should
  *             be exposed to users of the library. It is intended only for use by `e_tilt()`
- *             internally.
+ *             as part of the calculation for the equation of origins internally.
  *
  * Computes the "complementary terms" of (i.e. the non-polynomial contribution to) the equation of
  * the equinoxes. The input Julian date can be split into high and low order parts for improved

@@ -30,20 +30,8 @@ link_directories(${CMAKE_BINARY_DIR}/lib)
 # Directory where ephemeris data for the tests are found
 set(EPHEM_DIR ${PROJECT_SOURCE_DIR}/test/ephem)
 
-# Directory where the CIO locator data (ASCII and binary) are found
-set(CIO_DIR ${PROJECT_SOURCE_DIR}/data)
-
 # Create a data/ directory for the compat test output
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/data)
-
-# We'll build and use the cio_file program just to use here..
-add_executable(cio_file EXCLUDE_FROM_ALL ${PROJECT_SOURCE_DIR}/src/cio_file.c)
-
-# Generate the binary CIO locator data for the tests
-add_custom_target(cio_bin_data
-    DEPENDS cio_file
-    COMMAND cio_file ${PROJECT_SOURCE_DIR}/data/CIO_RA.TXT ${CIO_DIR}/cio_ra.bin
-)
 
 # Build each example
 foreach(TEST ${TEST_PROGRAMS})
@@ -51,7 +39,6 @@ foreach(TEST ${TEST_PROGRAMS})
 
     if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${TEST_SOURCE})
         add_executable(${TEST} ${TEST_SOURCE})
-        add_dependencies(${TEST} cio_bin_data)
               
         target_include_directories(${TEST} PRIVATE
             ${PROJECT_SOURCE_DIR}/include
@@ -81,7 +68,7 @@ foreach(TEST ${TEST_PROGRAMS})
         
         # All other examples
      	else()
-     	    add_test(NAME ${TEST} COMMAND ${TEST} ${CIO_DIR})
+     	    add_test(NAME ${TEST} COMMAND ${TEST})
         endif()
         
     else()
