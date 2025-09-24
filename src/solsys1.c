@@ -4,7 +4,7 @@
  * @author G. Kaplan and A. Kovacs
  *
  *  @deprecated This NOVAS C planetary ephemeris module supports older JPL planetary ephemerides
- *             DE200 -- DE406 only. We recommend using the SuperNOVAS plugin interfaces to the
+ *             DE200 -- DE421 only. We recommend using the SuperNOVAS plugin interfaces to the
  *             CALCEPH or CSPICE libraries instead, for more complete, more-up-to-date, and more
  *             generalized ephemeris support. See @ref solsys-calceph.c, @ref solsys-cspice.c
  *
@@ -41,7 +41,7 @@
 
 /**
  * @deprecated This NOVAS C planetary ephemeris reader supports older JPL planetary ephemerides
- *             DE200 -- DE406 only. We recommend using the SuperNOVAS plugin interfaces to the
+ *             DE200 -- DE421 only. We recommend using the SuperNOVAS plugin interfaces to the
  *             CALCEPH or CSPICE libraries instead, for more complete, more-up-to-date, and more
  *             generalized ephemeris support. See @ref solsys-calceph.c, @ref solsys-cspice.c
  *
@@ -136,7 +136,7 @@ short planet_eph_manager_hp(const double jd_tdb[restrict 2], enum novas_planet b
 
 /**
  * @deprecated This NOVAS C planetary ephemeris reader supports older JPL planetary ephemerides
- *             DE200 -- DE406 only. We recommend using the SuperNOVAS plugin interfaces to the
+ *             DE200 -- DE421 only. We recommend using the SuperNOVAS plugin interfaces to the
  *             CALCEPH or CSPICE libraries instead, for more complete, more-up-to-date, and more
  *             generalized ephemeris support. See @ref solsys-calceph.c, @ref solsys-cspice.c
  *

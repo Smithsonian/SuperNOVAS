@@ -106,11 +106,8 @@ Upcoming feature release, expected around 1 November 2025.
  - #231: Changed documentation build to wean off the likes of `sed` or `tail`, thus allowing to build documentation in 
    a more platform-independent way.
  
- - #236: No longer installing `CIO_RA.TXT` (e.g. to `/usr/share/supernovas`). Not only it is no longer needed by the 
-   library, it is also not precise at the tens of microarcsecond (&mu;as) level as the data was generated with the 
-   original, now obsoleted, IAU2000 nutation model. Those who really want it, nevertheless, can install it themselves, 
-   to the location of choice, from the SuperNOVAS GitHub repo (in any location), and call `set_cio_locator_file()` 
-   before using it with `cio_array()` or `cio_location()`.
+ - #236: No longer installing `CIO_RA.TXT` (e.g. to `/usr/share/supernovas`). It is no longer used in any way by the 
+   library.
    
  - #237: Both CMake and GNU make now install more developer docs into `$(docdir)/supernovas`, such as `examples/`,
    `legacy/`, source code, and markdown files.
@@ -123,6 +120,9 @@ Upcoming feature release, expected around 1 November 2025.
  - #250: `cio_array()` is changed to calculate CIO locations vs GCRS on the fly. With the change SuperNOVAS does not 
    in any way use a CIO locator data file any more for any purpose. The change also ensures consistency with the 
    implemented standards, such as the precession-nutation model.
+   
+ - #250: No longer including `CIO_RA.TXT` (now unused) or the associated conversion tool `cio_file` in the 
+   distribution.
 
  - Both CMake and GNU make now install only the headers for the components that were included in the build. E.g. 
    `novas-calceph.h` is installed only if the library is built with the CALCEPH support option enabled.

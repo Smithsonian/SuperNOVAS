@@ -73,7 +73,7 @@ distro: $(SHARED_TARGETS) $(DOC_TARGETS)
 .PHONY: shared
 shared: summary $(SHARED_TARGETS)
 
-# Legacy static libraries (locally built)
+# Static libraries
 .PHONY: static
 static: summary $(LIB)/libnovas.a solsys
 
@@ -98,10 +98,6 @@ benchmark: shared
 examples: shared
 	$(MAKE) -C examples
 
-.PHONY: legacy
-legacy: shared
-	$(MAKE) -C legacy
-
 # Perform checks (test + analyze)
 .PHONY: check
 check: test analyze
@@ -118,7 +114,6 @@ clean:
 	@$(MAKE) -s -C test clean
 	@$(MAKE) -s -C benchmark clean
 	@$(MAKE) -s -C examples clean
-	@$(MAKE) -s -C legacy clean
 	@$(MAKE) -s -C doc clean
 
 # Remove all generated files
@@ -131,7 +126,6 @@ distclean: clean
 	@$(MAKE) -s -C test distclean
 	@$(MAKE) -s -C benchmark distclean
 	@$(MAKE) -s -C examples distclean
-	@$(MAKE) -s -C legacy distclean
 	@$(MAKE) -s -C doc distclean
 
 .PHONY: dox
@@ -274,6 +268,7 @@ install-legacy:
 	install -d $(DESTDIR)$(docdir)/legacy
 	$(INSTALL_DATA) legacy/* $(DESTDIR)$(docdir)/legacy/
 
+
 # Some standard GNU targets, that should always exist...
 .PHONY: html
 html: local-dox
@@ -325,7 +320,6 @@ help:
 	@echo "                call implentations (e.g. 'solsys1.o', 'eph_manager.o'...)."
 	@echo "  test          Runs regression tests."
 	@echo "  benchmark     Runs benchmarks."
-	@echo "  legacy        Legacy tools and CIO locator data."
 	@echo "  analyze       Performs static code analysis with 'cppcheck'."
 	@echo "  check         Same as 'test' and then 'analyze'."
 	@echo "  coverage      Runs 'gcov' to analyze regression test coverage."
