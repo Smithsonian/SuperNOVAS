@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [1.5.0-rc5] - 2025-09-24
+## [Unreleased]
 
 Upcoming feature release, expected around 1 November 2025.
 
@@ -150,7 +150,7 @@ Upcoming feature release, expected around 1 November 2025.
    `make_observer()` no longer supports all SuperNOVAS observer types, hence it's less relevant now than the targeted 
    set of SuperNOVAS functions available for every type of observer.
 
- - #250: Deprecated `set_cio_locator_file()`. It has no function any more, and does exacly nothing beyond providing
+ - #250: Deprecated `set_cio_locator_file()`. It has no function any more, and does exactly nothing beyond providing
    API compatibility.
    
  - Deprecated the functions in `solsys2.c`. This NOVAS C module is half-baked at best, requiring a custom Fortran 
