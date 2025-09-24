@@ -2449,6 +2449,8 @@ int novas_set_default_weather(on_surface *site);
 #      define THREAD_LOCAL _Thread_local          ///< C11 standard for thread-local variables
 #    elif __GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 3)
 #      define THREAD_LOCAL __thread               ///< pre C11 gcc >= 3.3 standard for thread-local variables
+#    elif defined _MSVC_VER
+#      define THREAD_LOCAL __declspec( thread )   ///< Microsoft Visual C thread local declaration
 #    else
 #      define THREAD_LOCAL                        ///< no thread-local variables
 #    endif

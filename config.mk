@@ -58,7 +58,7 @@ endif
 # E.g. 
 #THREAD_LOCAL ?= __thread
 #or
-#THREAD_LOCAL ?= __declspec(thread)
+#THREAD_LOCAL ?= __declspec( thread )
 
 
 # Whether to build into the library planet_eph_manager() routines provided in 
