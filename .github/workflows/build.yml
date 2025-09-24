@@ -3,7 +3,7 @@ permissions:
   contents: read
   pull-requests: write
 
-on: 
+on:
   push:
     branches:
       - main
@@ -74,6 +74,22 @@ jobs:
 #    - name: Reverse order build
 #      run: make --shuffle=reverse
 
+#  test-calceph:
+#    name: Build with CALCEPH support
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v5
+#
+#      - name: Install dependencies
+#        run: |
+#           sudo apt-get update -q -y
+#           sudo apt-get install -y libcalceph-dev
+#
+#      - name: Build
+#        env: 
+#          CALCEPH_SUPPORT: 1
+#        run: make solsys
+
   build-freebsd:
     runs-on: ubuntu-latest
     name: FreeBSD
@@ -87,6 +103,6 @@ jobs:
           prepare: |
             pkg install -y gmake
           run: |
-            echo Building on FreeBSD $(uname -m) 
+            echo Building on FreeBSD $(uname -m)
             gmake static
             gmake shared

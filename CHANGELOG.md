@@ -124,6 +124,8 @@ Upcoming feature release, expected around 1 November 2025.
  - #250: No longer including `CIO_RA.TXT` (now unused) or the associated conversion tool `cio_file` in the 
    distribution.
 
+ - #251: Added further CI checks via Github Actions.
+
  - Both CMake and GNU make now install only the headers for the components that were included in the build. E.g. 
    `novas-calceph.h` is installed only if the library is built with the CALCEPH support option enabled.
  
