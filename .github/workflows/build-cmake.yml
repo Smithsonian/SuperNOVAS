@@ -1,4 +1,4 @@
-name: Build with CMake
+name: CMake
 permissions:
   contents: read
 
@@ -23,7 +23,7 @@ on:
 
 jobs:
   build:
-    name: Build Release on ${{ matrix.os }}
+    name: Build on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -47,7 +47,7 @@ jobs:
       - uses: actions/checkout@v5
 
       - name: Configure CMake (Unix)
-        run: cmake -B build ${{ matrix.cmopt }} -DBUILD_SHARED_LIBS=ON -DBUILD_EXAMPLES=ON -DBUILD_BENCHMARK=ON -DBUILD_LEGACY=ON -DCMAKE_C_COMPILER=${{ matrix.cc }} -DCMAKE_CXX_COMPILER=${{ matrix.cxx }}
+        run: cmake -B build ${{ matrix.cmopt }} -DBUILD_SHARED_LIBS=ON -DBUILD_EXAMPLES=ON -DBUILD_BENCHMARK=ON -DENABLE_SOLSYS1=ON  -DCMAKE_C_COMPILER=${{ matrix.cc }} -DCMAKE_CXX_COMPILER=${{ matrix.cxx }}
 
       - name: Build
         run: cmake --build build
@@ -69,7 +69,7 @@ jobs:
 
   build-freebsd:
     runs-on: ubuntu-latest
-    name: Build Release on FreeBSD
+    name: Build on FreeBSD
     steps:
       - uses: actions/checkout@v5
 
@@ -86,3 +86,38 @@ jobs:
             cmake --build build
             cmake --install build --prefix install
             ls -la install/
+
+  build-doc:
+    runs-on: ubuntu-latest
+    name: Build Documentation (Ubuntu)
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install doxygen
+        run: sudo apt-get install doxygen
+
+      - name: Build HTML documentation
+        run: |
+          cmake -B build -DBUILD_DOC=ON
+          cmake --build build
+
+      - name: Install docs
+        run: |
+          cmake --install build --prefix install
+          ls -la install/
+
+#  build-calceph:
+#    runs-on: ubuntu-latest
+#    name: Build with CALCEPH support (Ubuntu)
+#    steps:
+#      - uses: actions/checkout@v5
+#
+#      - name: Install libcalceph-dev
+#        run: |
+#          sudo apt-get update -q -y
+#          sudo apt-get install -y libcalceph-dev
+#
+#      - name: Build with CALCEPH support enabled
+#        run: |
+#          cmake -B build -DENABLE_CALCEPH=ON
+#          cmake --build build

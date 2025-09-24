@@ -177,8 +177,8 @@ add_library(novas ALIAS supernovas)
 # Plugins
 
 # configure plugin build (w/o linking)
-function(config_plugin PLUGIN)
-    add_library(${PLUGIN} src/${PLUGIN}.c)
+function(config_plugin PLUGIN EXTRA_SOURCES)
+    add_library(${PLUGIN} src/${PLUGIN}.c ${EXTRA_SOURCES})
     add_library(supernovas::${PLUGIN} ALIAS ${PLUGIN})
 
     set_target_properties(${PLUGIN} PROPERTIES
@@ -193,7 +193,7 @@ endfunction()
 
 # plugins via external libraries (e.g. calceph or cspice). 
 function(solsys_plugin PLUGIN_LIB)
-    config_plugin(solsys-${PLUGIN_LIB})
+    config_plugin(solsys-${PLUGIN_LIB} "")
     
     target_link_libraries(solsys-${PLUGIN_LIB} PRIVATE
         supernovas
@@ -203,8 +203,8 @@ function(solsys_plugin PLUGIN_LIB)
 endfunction()
 
 # legacy solsys[1-2] plugins
-function(legacy_solsys_plugin IDX)
-    config_plugin(solsys${IDX})
+function(legacy_solsys_plugin IDX EXTRA_SOURCES)
+    config_plugin(solsys${IDX} "${EXTRA_SOURCES}")
 
     target_link_libraries(solsys${IDX} PRIVATE
         supernovas
@@ -222,11 +222,11 @@ if(ENABLE_CSPICE)
 endif()
 
 if(ENABLE_SOLSYS1)
-    legacy_solsys_plugin(1)
+    legacy_solsys_plugin(1 src/eph_manager.c) 
 endif()
 
 if(ENABLE_SOLSYS2)
-    legacy_solsys_plugin(2)
+    legacy_solsys_plugin(2 "")
 endif()
 
 # ----------------------------------------------------------------------------
