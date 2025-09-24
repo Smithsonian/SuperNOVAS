@@ -27,12 +27,6 @@ else
   endif
 endif
 
-# Default CIO file location to expect post install...
-ifndef CIO_LOCATOR_FILE
-  # If datadir was defined, then use that...
-  CPPFLAGS += -DDEFAULT_CIO_LOCATOR_FILE=\"$(datadir)/CIO_RA.TXT\"
-endif
-
 SOLSYS_TARGETS :=
 SHARED_TARGETS := $(LIB)/libsupernovas.$(SOEXT) $(LIB)/libnovas.$(SOEXT)
 
@@ -77,11 +71,11 @@ distro: $(SHARED_TARGETS) $(DOC_TARGETS)
 
 # Shared libraries (versioned and unversioned)
 .PHONY: shared
-shared: summary check-cio-locator $(SHARED_TARGETS)
+shared: summary $(SHARED_TARGETS)
 
-# Legacy static libraries (locally built)
+# Static libraries
 .PHONY: static
-static: summary check-cio-locator $(LIB)/libnovas.a solsys
+static: summary $(LIB)/libnovas.a solsys
 
 # solarsystem() call handler objects
 .PHONY: solsys
@@ -93,13 +87,12 @@ all: distro static test coverage analyze
 
 # Run regression tests
 .PHONY: test
-test: data/cio_ra.bin
+test:
 	$(MAKE) -C test run
 
 .PHONY: benchmark
 benchmark: shared
 	$(MAKE) -C benchmark
-
 
 .PHONY: examples
 examples: shared
@@ -117,7 +110,7 @@ coverage:
 # Remove intermediates
 .PHONY: clean
 clean:
-	@rm -f $(OBJECTS) Doxyfile.local $(BIN)/cio_file gmon.out
+	@rm -f $(OBJECTS) Doxyfile.local gmon.out
 	@$(MAKE) -s -C test clean
 	@$(MAKE) -s -C benchmark clean
 	@$(MAKE) -s -C examples clean
@@ -127,20 +120,13 @@ clean:
 .PHONY: distclean
 distclean: clean
 	@rm -f $(LIB)/libsupernovas.$(SOEXT)* $(LIB)/libsupernovas.a $(LIB)/libnovas.a \
-      $(LIB)/libnovas.$(SOEXT)* $(LIB)/libsolsys*.$(SOEXT)* data/cio_ra.bin
+      $(LIB)/libnovas.$(SOEXT)* $(LIB)/libsolsys*.$(SOEXT)*
 	@rm -f doc/Doxyfile.local doc/README.md
 	@rm -rf build */build 
 	@$(MAKE) -s -C test distclean
 	@$(MAKE) -s -C benchmark distclean
 	@$(MAKE) -s -C examples distclean
 	@$(MAKE) -s -C doc distclean
-
-
-.PHONY:
-check-cio-locator:
-ifndef CIO_LOCATOR_FILE
-	  $(info WARNING! No default CIO_LOCATOR_FILE defined. Will use local 'data/cio_ra.bin' if present.)
-endif
 
 .PHONY: dox
 dox:
@@ -207,18 +193,6 @@ $(LIB)/libsupernovas.a: $(OBJECTS) | $(LIB) Makefile
 $(LIB)/libnovas.a: $(LIB)/libsupernovas.a
 	@rm -f $@
 	( cd $(LIB); ln -s libsupernovas.a libnovas.a )
-
-# CIO locator data
-.PHONY: cio_ra.bin
-cio_ra.bin: data/cio_ra.bin
-
-data/cio_ra.bin: data/CIO_RA.TXT bin/cio_file
-	bin/cio_file $< $@
-
-.INTERMEDIATE: bin/cio_file
-bin/cio_file: $(OBJ)/cio_file.o | bin
-	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $^ $(LDFLAGS)
-
 
 # Standard install commands
 INSTALL_PROGRAM ?= install
@@ -294,6 +268,7 @@ install-legacy:
 	install -d $(DESTDIR)$(docdir)/legacy
 	$(INSTALL_DATA) legacy/* $(DESTDIR)$(docdir)/legacy/
 
+
 # Some standard GNU targets, that should always exist...
 .PHONY: html
 html: local-dox
@@ -321,7 +296,6 @@ summary:
 	@echo "    BUILTIN_SOLSYS_EPHEM = $(BUILTIN_SOLSYS_EPHEM)"
 	@echo "    DEFAULT_SOLSYS       = $(DEFAULT_SOLSYS)"
 	@echo "    DEFAULT_READEPH      = $(DEFAULT_READEPH)"
-	@echo "    CIO_LOCATOR_FILE     = $(CIO_LOCATOR_FILE)"
 	@echo 
 	@echo "    CFLAGS = $(CFLAGS)"
 	@echo "    LDFLAGS = $(LDFLAGS)"
@@ -337,15 +311,13 @@ help:
 	@echo
 	@echo "  distro        (default) 'shared' targets and also 'local-dox' provided 'doxygen'" 
 	@echo "                is available, or was specified via the DOXYGEN variable (e.g. in"
-	@echo "                'config.mk')."
+	@echo "                'config.mk')"
 	@echo "  static        Builds the static 'lib/libsupernovas.a' library."
 	@echo "  shared        Builds the shared 'libsupernovas.so', 'libsolsys1.so', and" 
 	@echo "                'libsolsys2.so' libraries (linked to versioned ones)."
 	@echo "  local-dox     Compiles local HTML API documentation using 'doxygen'."
 	@echo "  solsys        Builds only the objects that may provide external 'solarsystem()'"
 	@echo "                call implentations (e.g. 'solsys1.o', 'eph_manager.o'...)."
-	@echo "  cio_ra.bin    Generates a platform-specific binary CIO locator lookup data file"
-	@echo "                'data/cio_ra.bin' from the ASCII 'data/CIO_RA.TXT'."
 	@echo "  test          Runs regression tests."
 	@echo "  benchmark     Runs benchmarks."
 	@echo "  analyze       Performs static code analysis with 'cppcheck'."

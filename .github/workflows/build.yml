@@ -56,8 +56,14 @@ jobs:
       - name: Compile solsys variants
         run: make solsys
 
-      - name: Generate CIO locator data
-        run: make cio_file
+      - name: Generate legacy CIO locator data
+        run: make legacy
+
+      - name: Build examples
+        run: make examples
+
+      - name: Build benchmarks
+        run: make -C benchmark build
 
 # Reverse build not yet supported in ubuntu-latest
 #

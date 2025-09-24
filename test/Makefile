@@ -1,7 +1,6 @@
 # Adjusted configuration for test builds
 BUILTIN_SOLSYS3 := 0 
 BUILTIN_DEFAULT_SOLSYS := 0 
-CIO_LOCATOR_FILE := cio_ra.bin
 
 # Use above config in sub-makes also
 export BUILTIN_SOLSYS3 BUILTIN_DEFAULT_SOLSYS CIO_LOCATOR_FILE
@@ -19,7 +18,7 @@ CHECKOPTS = --enable=performance,warning,portability --language=c \
 OBJECTS := $(subst $(OBJ)/,,$(OBJECTS))
 COVFILES := $(subst .o,.c.gcov,$(OBJECTS))
 
-TESTS := test-compat test-cio_file test-cio-data test-super test-errors
+TESTS := test-compat test-super test-errors
 
 ifeq ($(CALCEPH_SUPPORT), 1)
   LDFLAGS += -lcalceph
@@ -40,19 +39,11 @@ check-compat:
 	@sed -i.tmp "s:-nan: nan:g" data/* && rm -f data/*.tmp
 	diff data reference
 
-.PHONY: check-cio_file
-check-cio_file: 
-	@ln -s ../data/cio_ra.bin
-	./test-cio_file
-	@rm -f cio_ra.bin
-
 .PHONY: run
-run: clean-cov clean-data $(TESTS) data bad-data
+run: clean-cov $(TESTS) data
 	./test-compat
-	$(MAKE) check-cio_file
 	$(MAKE) check-compat
-	./test-cio-data
-	./test-super ../data
+	./test-super
 	./test-errors
 ifeq ($(CALCEPH_SUPPORT), 1)
 	./test-calceph ephem
@@ -75,22 +66,6 @@ coverage: $(COVFILES)
 
 data:
 	mkdir data
-
-.PHONY: bad-data
-bad-data: ../data/cio_ra.bin bad-cio-data
-	@touch bad-cio-data/empty
-	@dd status=none if=../data/cio_ra.bin of=bad-cio-data/bad-1.bin bs=27 count=1
-	@dd status=none if=../data/cio_ra.bin of=bad-cio-data/bad-2.bin bs=63 count=1
-	@dd status=none if=../data/CIO_RA.TXT of=bad-cio-data/bad-1.txt bs=14 count=1
-	@dd status=none if=../data/CIO_RA.TXT of=bad-cio-data/bad-2.txt bs=79 count=1
-	@dd status=none if=../data/CIO_RA.TXT of=bad-cio-data/bad-3.txt bs=21 count=1
-	@dd status=none if=../data/CIO_RA.TXT of=bad-cio-data/bad-4.txt bs=21 count=1
-	@echo "blah" >> bad-cio-data/bad-4.txt
-	@dd status=none if=../data/CIO_RA.TXT of=bad-cio-data/bad-5.txt bs=79 count=1
-	@echo "blah blah blah blah blah blah" >> bad-cio-data/bad-5.txt
-
-bad-cio-data:
-	mkdir $@
 
 .PRECIOUS: %.c.gcov
 %.c.gcov: %.gcno %.gcda
@@ -129,12 +104,8 @@ clean-test:
 clean-cov:
 	rm -rf gmon.out *.gcov *.gcda *.gcno cov cov.info
 
-.PHONY: clean-data
-clean-data:
-	rm -rf data cio_ra.bin bad-cio-data
-
 .PHONY: clean
-clean: clean-test clean-cov clean-data
+clean: clean-test clean-cov
 	rm -f *.o
 
 .PHONY: distclean

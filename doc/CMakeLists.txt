@@ -13,11 +13,9 @@
 # Generate headless README
 add_executable(docedit EXCLUDE_FROM_ALL src/docedit.c)
 
-add_custom_target(headless_readme 
+add_custom_target(headless_readme ALL
     COMMAND docedit ${CMAKE_CURRENT_SOURCE_DIR}
 )
-
-add_dependencies(supernovas headless_readme)
 
 # Install Markdown documentation (Development)
 file(GLOB MD_FILES doc/*.md)
@@ -37,9 +35,8 @@ set_package_properties(Doxygen PROPERTIES
 
 if(Doxygen_FOUND)
     # Generate headless docs and run Doxygen on them.
-    doxygen_add_docs(project_docs CONFIG_FILE ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile)
+    doxygen_add_docs(project_docs ALL CONFIG_FILE ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile)
     add_dependencies(project_docs headless_readme)
-    add_dependencies(supernovas project_docs)
     
      # For html/ dir, list just the directory, not the individual files installed.
     install(CODE "message(STATUS \"Installing: <prefix>/${CMAKE_INSTALL_DOCDIR}/html/*\")")

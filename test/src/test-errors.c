@@ -893,26 +893,9 @@ static int test_d_light() {
 static int test_cio_array() {
   ra_of_cio x[5];
   int n = 0;
-  char path[1024] = {'\0'};
 
   if(check("cio_array:out", -1, cio_array(0.0, 5, NULL))) n++;
   if(check("cio_array:n_pts:lo", 3, cio_array(0.0, 1, x))) n++;
-  if(check("cio_array:n_pts:hi", 3, cio_array(0.0, NOVAS_CIO_CACHE_SIZE + 1, x))) n++;
-
-  if(check("cio_array:blah", -1, set_cio_locator_file("blah"))) n++;
-  if(check("cio_array:file", 1, cio_array(0.0, 5, x))) n++;
-
-  sprintf(path, "%s" PATH_SEP "CIO_RA.TXT", dataPath);
-  if(check("cio_array:bin", 0, set_cio_locator_file(path))) n++;
-  if(check("cio_array:bin:reopen", 0, set_cio_locator_file(path))) n++; // Test reopen also...
-
-  if(check("cio_array:beg", 2, cio_array(0.0, 5, x))) n++;
-  if(check("cio_array:end", 2, cio_array(1e20, 5, x))) n++;
-
-  if(check("cio_array:corner:lo", 6, cio_array(2341952.6, 5, x))) n++;
-  if(check("cio_array:corner:hi", 6, cio_array(2561137.4, 5, x))) n++;
-
-  if(check("cio_array:corner:near", 0, cio_array(2341962.6, 5, x))) n++;
 
   return n;
 }

@@ -1467,12 +1467,11 @@ static int test_geom_posvel() {
 
 static int test_cio_basis() {
   double h = 0.0;
-  short sys;
+  short sys = CIO_VS_GCRS;
   double x0[3] = {0.0}, y0[3] = {0.0}, z0[3] = {0.0};
   double x1[3] = {0.0}, y1[3] = {0.0}, z1[3] = {0.0};
 
-  if(!is_ok("cio_basis:cio_location", cio_location(tdb, NOVAS_FULL_ACCURACY, &h, &sys))) return 1;
-  if(!is_equal("cio_basis:cio_location:sys", sys, CIO_VS_GCRS, 1e-12)) return 1;
+  h = novas_cio_gcrs_ra(tdb);
 
   if(!is_ok("cio_basis:gcrs", cio_basis(tdb, h, sys, NOVAS_FULL_ACCURACY, x0, y0, z0))) return 1;
 
@@ -2011,29 +2010,18 @@ static int test_dxdy_to_dpsideps() {
 }
 
 static int test_cio_location() {
-  double loc, loc1;
-  short type;
-  char path[1024] = {'\0'};
+  int n = 0;
 
-  if(!is_ok("cio_location:set_path:NULL", set_cio_locator_file(NULL))) return 1;
+  double loc = 0.0, loc1 = 0.0;
 
-  sprintf(path, "%s" PATH_SEP "CIO_RA.TXT", dataPath);
-  if(!is_ok("cio_location:set_path", set_cio_locator_file(path))) return 1;
+  if(!is_ok("cio_location:set_path:NULL", set_cio_locator_file(NULL))) n++;
 
-  if(!is_ok("cio_location", cio_location(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, &loc, &type))) return 1;
-  if(!is_ok("cio_location:repeat", cio_location(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, &loc1, &type))) return 1;
-  if(!is_equal("cio_location:repeat:check", loc, loc1, 1e-12)) return 1;
+  loc = novas_cio_gcrs_ra(NOVAS_JD_J2000);
+  loc1 = novas_cio_gcrs_ra(NOVAS_JD_J2000 + 0.1);
 
-  if(!is_ok("cio_location:acc", cio_location(NOVAS_JD_J2000, NOVAS_REDUCED_ACCURACY, &loc1, &type))) return 1;
-  if(!is_equal("cio_location:acc:check", loc, loc1, 1e-8)) return 1;
+  if(!is_equal("cio_location:tdb:check", loc, loc1, 1e-8)) n++;
 
-  if(!is_ok("cio_location:tdb", cio_location(NOVAS_JD_J2000 + 0.1, NOVAS_REDUCED_ACCURACY, &loc1, &type))) return 1;
-  if(!is_equal("cio_location:tdb:check", loc, loc1, 1e-8)) return 1;
-
-  if(!is_ok("cio_location:diff", cio_location(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, &loc1, &type))) return 1;
-  if(!is_equal("cio_location:diff:check", loc, loc1, 1e-8)) return 1;
-
-  return 0;
+  return n;
 }
 
 static int test_cio_array() {

@@ -106,11 +106,8 @@ Upcoming feature release, expected around 1 November 2025.
  - #231: Changed documentation build to wean off the likes of `sed` or `tail`, thus allowing to build documentation in 
    a more platform-independent way.
  
- - #236: No longer installing `CIO_RA.TXT` (e.g. to `/usr/share/supernovas`). Not only it is no longer needed by the 
-   library, it is also not precise at the tens of microarcsecond (&mu;as) level as the data was generated with the 
-   original, now obsoleted, IAU2000 nutation model. Those who really want it, nevertheless, can install it themselves, 
-   to the location of choice, from the SuperNOVAS GitHub repo (in any location), and call `set_cio_locator_file()` 
-   before using it with `cio_array()` or `cio_location()`.
+ - #236: No longer installing `CIO_RA.TXT` (e.g. to `/usr/share/supernovas`). It is no longer used in any way by the 
+   library.
    
  - #237: Both CMake and GNU make now install more developer docs into `$(docdir)/supernovas`, such as `examples/`,
    `legacy/`, source code, and markdown files.
@@ -119,6 +116,13 @@ Upcoming feature release, expected around 1 November 2025.
    and CMake sub-configuration.
 
  - #242: README edits and collapsible sections, as well as Github style highlighting of notes, warnings etc.
+
+ - #250: `cio_array()` is changed to calculate CIO locations vs GCRS on the fly. With the change SuperNOVAS does not 
+   in any way use a CIO locator data file any more for any purpose. The change also ensures consistency with the 
+   implemented standards, such as the precession-nutation model.
+   
+ - #250: No longer including `CIO_RA.TXT` (now unused) or the associated conversion tool `cio_file` in the 
+   distribution.
 
  - Both CMake and GNU make now install only the headers for the components that were included in the build. E.g. 
    `novas-calceph.h` is installed only if the library is built with the CALCEPH support option enabled.
@@ -143,6 +147,9 @@ Upcoming feature release, expected around 1 November 2025.
    not set humidity. There are a new set of functions (see further above) which provide more flexibility. And, 
    `make_observer()` no longer supports all SuperNOVAS observer types, hence it's less relevant now than the targeted 
    set of SuperNOVAS functions available for every type of observer.
+
+ - #250: Deprecated `set_cio_locator_file()`. It has no function any more, and does exacly nothing beyond providing
+   API compatibility.
    
  - Deprecated the functions in `solsys2.c`. This NOVAS C module is half-baked at best, requiring a custom Fortran 
    interface to the PLEPH library. You probably should stay away from it for your own good, and use instead the
@@ -157,7 +164,7 @@ Upcoming feature release, expected around 1 November 2025.
    ephemerides DE200 -- DE405 only. Given its lack of support for more recent ephemeris data, users should probably
    stay away from this NOVAS C legacy module, and instead opt for one the built-in CALCEPH and/or CSPICE plugins
    to allow accessing a wider variety, and more up-to-date, ephemeris data -- with a lot more flexibility also.
-   
+
  
 ## [1.4.2] - 2025-08-25
 

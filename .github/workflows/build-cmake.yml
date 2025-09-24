@@ -47,13 +47,13 @@ jobs:
       - uses: actions/checkout@v5
 
       - name: Configure CMake (Unix)
-        run: cmake -B build ${{ matrix.cmopt }} -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DBUILD_STATIC_LIBS=ON -DCMAKE_C_COMPILER=${{ matrix.cc }} -DCMAKE_CXX_COMPILER=${{ matrix.cxx }}
+        run: cmake -B build ${{ matrix.cmopt }} -DBUILD_SHARED_LIBS=ON -DBUILD_EXAMPLES=ON -DBUILD_BENCHMARK=ON -DBUILD_LEGACY=ON -DCMAKE_C_COMPILER=${{ matrix.cc }} -DCMAKE_CXX_COMPILER=${{ matrix.cxx }}
 
       - name: Build
-        run: cmake --build build --config Release
+        run: cmake --build build
 
       - name: Install
-        run: cmake --install build --config Release --prefix install
+        run: cmake --install build --prefix install
 
       - name: Check Installation (Unix)
         if: runner.os != 'Windows'
@@ -66,18 +66,6 @@ jobs:
         run: |
           echo Installation contents:
           dir install
-
-  build-debug:
-    runs-on: ubuntu-latest
-    name: Build Debug on ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-    
-      - name: Configure CMake
-        run: cmake -B build -DCMAKE_BUILD_TYPE=Debug
-
-      - name: Build
-        run: cmake --build build --config Debug
 
   build-freebsd:
     runs-on: ubuntu-latest
@@ -94,7 +82,7 @@ jobs:
             pkg install -y cmake
           run: |
             echo Building on FreeBSD $(uname -m)
-            cmake -B build -DCMAKE_BUILD_TYPE=Release
+            cmake -B build
             cmake --build build
             cmake --install build --prefix install
             ls -la install/
