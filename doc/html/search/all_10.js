@@ -1,23 +1,4 @@
 var searchData=
 [
-  ['l_0',['l',['../structnovas__delaunay__args.html#a59e80b8ba32c12c6d0a868f17a19ae48',1,'novas_delaunay_args']]],
-  ['l1_1',['l1',['../structnovas__delaunay__args.html#ad7a541093aca44890413459c6248db6c',1,'novas_delaunay_args']]],
-  ['lat_2',['lat',['../structnovas__observable.html#a7972334534f68166121a6e51b0aac2d6',1,'novas_observable']]],
-  ['latitude_3',['latitude',['../structon__surface.html#a76714bdbc5c536fa77dfb14533ff82a9',1,'on_surface']]],
-  ['legacy_20linking_20of_20custom_20ephemeris_20functions_4',['Legacy linking of custom ephemeris functions',['../index.html#autotoc_md90',1,'']]],
-  ['legacy_20linking_20tt_20solarsystem_20tt_20and_20tt_20readeph_20tt_20modules_5',['Legacy linking &lt;tt&gt;solarsystem()&lt;/tt&gt; and &lt;tt&gt;readeph()&lt;/tt&gt; modules',['../index.html#autotoc_md64',1,'']]],
-  ['legacy_20modules_3a_20a_20better_20way_6',['Legacy modules: a better way',['../index.html#autotoc_md65',1,'']]],
-  ['legacy_20support_20for_20older_20jpl_20major_20planet_20ephemerides_7',['Legacy support for (older) JPL major planet ephemerides',['../index.html#autotoc_md89',1,'']]],
-  ['light_5ftime_8',['light_time',['../observer_8c.html#afb2cc37c7bdcd34c5c167afe092aed68',1,'light_time(double jd_tdb, const object *restrict body, const double *pos_obs, double tlight0, enum novas_accuracy accuracy, double *pos_src_obs, double *restrict tlight):&#160;observer.c'],['../novas_8h.html#afb2cc37c7bdcd34c5c167afe092aed68',1,'light_time(double jd_tdb, const object *restrict body, const double *pos_obs, double tlight0, enum novas_accuracy accuracy, double *pos_src_obs, double *restrict tlight):&#160;observer.c']]],
-  ['light_5ftime2_9',['light_time2',['../observer_8c.html#a5c940b62732d74e6c6b1c844931aaa76',1,'light_time2(double jd_tdb, const object *restrict body, const double *restrict pos_obs, double tlight0, enum novas_accuracy accuracy, double *p_src_obs, double *restrict v_ssb, double *restrict tlight):&#160;observer.c'],['../novas_8h.html#a5c940b62732d74e6c6b1c844931aaa76',1,'light_time2(double jd_tdb, const object *restrict body, const double *restrict pos_obs, double tlight0, enum novas_accuracy accuracy, double *p_src_obs, double *restrict v_ssb, double *restrict tlight):&#160;observer.c']]],
-  ['limb_5fangle_10',['limb_angle',['../earth_8c.html#a022957936bc7c5a3e9651776689c9380',1,'limb_angle(const double *pos_src, const double *pos_obs, double *restrict limb_ang, double *restrict nadir_ang):&#160;earth.c'],['../novas_8h.html#a022957936bc7c5a3e9651776689c9380',1,'limb_angle(const double *pos_src, const double *pos_obs, double *restrict limb_ang, double *restrict nadir_ang):&#160;earth.c']]],
-  ['linking_20of_20custom_20ephemeris_20functions_11',['Legacy linking of custom ephemeris functions',['../index.html#autotoc_md90',1,'']]],
-  ['linking_20tt_20solarsystem_20tt_20and_20tt_20readeph_20tt_20modules_12',['Legacy linking &lt;tt&gt;solarsystem()&lt;/tt&gt; and &lt;tt&gt;readeph()&lt;/tt&gt; modules',['../index.html#autotoc_md64',1,'']]],
-  ['links_13',['Related links',['../index.html#autotoc_md50',1,'']]],
-  ['list_14',['Deprecated List',['../deprecated.html',1,'']]],
-  ['local_5fplanet_15',['local_planet',['../place_8c.html#adcb9b273dfda5d97a1c01379a16997f9',1,'local_planet(double jd_tt, const object *restrict ss_body, double ut1_to_tt, const on_surface *restrict position, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec, double *restrict dis):&#160;place.c'],['../novas_8h.html#adcb9b273dfda5d97a1c01379a16997f9',1,'local_planet(double jd_tt, const object *restrict ss_body, double ut1_to_tt, const on_surface *restrict position, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec, double *restrict dis):&#160;place.c']]],
-  ['local_5fstar_16',['local_star',['../place_8c.html#acd56c41e811a002d6280b3b315730fbd',1,'local_star(double jd_tt, double ut1_to_tt, const cat_entry *restrict star, const on_surface *restrict position, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec):&#160;place.c'],['../novas_8h.html#acd56c41e811a002d6280b3b315730fbd',1,'local_star(double jd_tt, double ut1_to_tt, const cat_entry *restrict star, const on_surface *restrict position, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec):&#160;place.c']]],
-  ['location_17',['location',['../index.html#autotoc_md76',1,'Calculate azimuth and elevation angles at the observing location'],['../index.html#autotoc_md72',1,'Specify the observer location']]],
-  ['lon_18',['lon',['../structnovas__observable.html#aa96391e04b5977c50b96d77bea86a01d',1,'novas_observable']]],
-  ['longitude_19',['longitude',['../structon__surface.html#ac155e35fdeebafc89723a51520fb9fe6',1,'on_surface']]]
+  ['keplerian_20orbital_20parameters_0',['Solar-system objects with Keplerian orbital parameters',['../index.html#autotoc_md81',1,'']]]
 ];

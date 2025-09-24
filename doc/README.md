@@ -1898,6 +1898,9 @@ Below is a non-exhaustive overview new features added by __SuperNOVAS__ on top o
    
  - New functions to simplify the handling ground-based observing locations (GPS vs ITRF vs Cartesian locations), 
    including setting default weather values, at least until actual values are specified if needed.
+ 
+ - No longer using a CIO vs GCRS locator data file in any way, thus eliminating an annoying external soft 
+   dependency. The elimination has absolutely zero effect on backward compatibility and functionality.
    
  - GNU `make` build support for Mac OS X and FreeBSD (co-authored with Kiran Shila).
  

@@ -149,12 +149,15 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000004">Deprecated</a></b></dt><dd>This function is no longer used within SuperNOVAS. It is still provided, however, in order to retain 100% API compatibility with NOVAS C.</dd></dl>
 <p>Given an input TDB Julian date and the number of data points desired, this function returns a set of Julian dates and corresponding values of the GCRS right ascension of the celestial intermediate origin (CIO). The range of dates is centered (at least approximately) on the requested date. The function obtains the data from an external data file.</p>
-<p>This function assumes that a CIO locator file (<code>CIO_RA.TXT</code> or <code>cio_ra.bin</code>) exists in the default location (configured at build time), or else was specified via <code><a class="el" href="#ade20b8035266dfe5b082b12248f5affa">set_cio_locator_file()</a></code> prior to calling this function.</p>
 <p>NOTES: </p><ol>
 <li>
 This function has been completely re-written by A. Kovacs to provide much more efficient caching and I/O.  </li>
 <li>
-The CIO locator file that is bundled was prepared with the original IAU2000A nutation model, not with the newer R06 (a.k.a. IAU2006) nutation model, resulting in an error up to the few tens of micro-arcseconds level for dates between 1900 and 2100, and larger errors further away from the current epoch.  </li>
+<p class="startli">The CIO locator file that is bundled was prepared with the original IAU2000A nutation model, not with the newer R06 (a.k.a. IAU2006) nutation model, resulting in an error up to the few tens of micro-arcseconds level for dates between 1900 and 2100, and larger errors further away from the current epoch. </p>
+<p class="endli"></p>
+</li>
+<li>
+Prior to version 1.5, this function relied on a CIO locator file (<code>CIO_RA.TXT</code> or <code>cio_ra.bin</code>). The current version no longer does, and instead generates the requested data on the fly. </li>
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -167,7 +170,7 @@ The CIO locator file that is bundled was prepared with the original IAU2000A nut
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if the output array is NULL or there was an I/O error accessing the CIO location data file. Or else 1 if no locator data file is available, 2 if 'jd_tdb' not in the range of the CIO file, 3 if 'n_pts' out of range, or 6 if 'jd_tdb' is too close to either end of the CIO file do we are unable to put 'n_pts' data points into the output</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#ade20b8035266dfe5b082b12248f5affa">set_cio_locator_file()</a>, <a class="el" href="#a65ffaaa2b527ed03149eadc7568f3714">cio_location()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8h.html#a4caf1f6e33a208827eb99df7e387d6d1">DEFAULT_CIO_LOCATOR_FILE</a>, <a class="el" href="novas_8h.html#ab7f2aaab5b9fe0be5d77d4cccc3745a9">NOVAS_CIO_CACHE_SIZE</a>, and <a class="el" href="#ade20b8035266dfe5b082b12248f5affa">set_cio_locator_file()</a>.</p>
+<p class="reference">References <a class="el" href="structra__of__cio.html#a0aefc536698706b7f8a15f23168c3486">ra_of_cio::jd_tdb</a>, <a class="el" href="novas_8h.html#a0fb993148083be267e8321f4f5227527">NOVAS_ARCSEC</a>, <a class="el" href="novas_8h.html#aee2680f03d1dfa4c9fbeea2be806dbf7">NOVAS_HOURANGLE</a>, and <a class="el" href="structra__of__cio.html#aba4253d16ca8c644b29da1e727d787aa">ra_of_cio::ra_cio</a>.</p>
 
 </div>
 </div>
@@ -214,7 +217,7 @@ The CIO locator file that is bundled was prepared with the original IAU2000A nut
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000003">Deprecated</a></b></dt><dd>This function is no longer used internally in the library, and users are recommended against using it themselves, since SuperNOVAS provides better ways to convert between GCRS and CIRS using frames or via <a class="el" href="transform_8c.html#a51ea4a016336dd3cf7783061c14d165c">gcrs_to_cirs()</a> / <a class="el" href="transform_8c.html#ac0ba048cd1732d0d0398397396d158bc">cirs_to_gcrs()</a> functions.</dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000003">Deprecated</a></b></dt><dd>This function is no longer used internally in the library, and users are recommended against using it themselves, since SuperNOVAS provides better ways to convert between GCRS and CIRS using frames or via <a class="el" href="transform_8c.html#a51ea4a016336dd3cf7783061c14d165c">gcrs_to_cirs()</a> / <a class="el" href="transform_8c.html#ac0ba048cd1732d0d0398397396d158bc">cirs_to_gcrs()</a> or <a class="el" href="structnovas__transform.html">novas_transform()</a> functions.</dd></dl>
 <p>Computes the CIRS basis vectors, with respect to the GCRS (geocentric ICRS), of the celestial intermediate system defined by the celestial intermediate pole (CIP) (in the z direction) and the celestial intermediate origin (CIO) (in the x direction).</p>
 <p>This function effectively constructs the CIRS to GCRS transformation matrix C in eq. (3) of the reference.</p>
 <p>NOTES: </p><ol>
@@ -272,16 +275,15 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000002">Deprecated</a></b></dt><dd>This function is no longer used internally in the library. Given that the CIO is defined on the dynamical equator of date, it is not normally meaningful to provide an R.A. coordinate for it in GCRS, in general. Instead, you might use <a class="el" href="#acc331c69187b3077b98280bfb57f6670">cio_ra()</a> to get the same value w.r.t. the equinox of date (on the same CIRS/TOD dynamical equator, or else <code><a class="el" href="equinox_8c.html#aea0e1028baf14d16d9de800e36a17086">ira_equinox()</a></code> to return the negated value.</dd></dl>
-<p>Returns the location of the celestial intermediate origin (CIO) for a given Julian date, as a right ascension with respect to either the GCRS (geocentric ICRS) origin or the true equinox of date. The CIO is always located on the true equator (= intermediate equator) of date.</p>
-<p>The user may specify an interpolation file to use via <a class="el" href="#ade20b8035266dfe5b082b12248f5affa">set_cio_locator_file()</a> prior to calling this function. In that case the call will return CIO location relative to GCRS. In the absence of the table, it will calculate the CIO location relative to the true equinox. In either case, the type of the location is returned alongside the corresponding CIO location value.</p>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000002">Deprecated</a></b></dt><dd>This function is no longer used internally in the library. Given that the CIO is defined on the dynamical equator of date, it is not normally meaningful to provide an R.A. coordinate for it in GCRS. Instead, you might use <code><a class="el" href="#acc331c69187b3077b98280bfb57f6670">cio_ra()</a></code> to get the CIO location w.r.t. the equinox of date (on the same dynamical equator), or equivalently <code><a class="el" href="equinox_8c.html#aea0e1028baf14d16d9de800e36a17086">ira_equinox()</a></code> to return the negated value of the same.</dd></dl>
+<p>Returns the location of the celestial intermediate origin (CIO) for a given Julian date, as a right ascension with respect to the true equinox of date. The CIO is always located on the true equator (= intermediate equator) of date.</p>
 <p>NOTES: </p><ol>
 <li>
-Unlike the NOVAS C version of this function, this version will always return a CIO location as long as the pointer arguments are not NULL. The returned values will be interpolated from the locator file if possible, otherwise it falls back to calculating an equinox-based location per default.  </li>
+Unlike the NOVAS C version of this function, this version will always return a CIO location as long as the pointer arguments are not NULL.  </li>
 <li>
 This function caches the results of the last calculation in case it may be re-used at no extra computational cost for the next call.  </li>
 <li>
-Note, that when a CIO location file is used, the bundled CIO locator data was prepared with the original IAU2000A nutation model, not with the newer R06 (a.k.a. IAU2006) model, resulting in an error up to the few tens of micro-arcseconds level for dates between 1900 and 2100, and larger errors further away from the current epoch.  </li>
+As of version 1.5, this function always returns the CIO location w.r.t. the true equinox of date, on the true equator of date, i.e. the R.A. of the CIO on the true equator of date, meaured from the true equinox of date.  </li>
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -295,7 +297,7 @@ Note, that when a CIO location file is used, the bundled CIO locator data was pr
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if one of the pointer arguments is NULL or the accuracy is invalid.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#acc331c69187b3077b98280bfb57f6670">cio_ra()</a>, <a class="el" href="equinox_8c.html#aea0e1028baf14d16d9de800e36a17086">ira_equinox()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="#afc894b55420495a727a90d3d85188ef4">cio_array()</a>, <a class="el" href="novas_8h.html#aee3f2f5b3807612025e2ce25d368ff2fae8c1b78646fefbd0ffdcae083b597241">CIO_VS_EQUINOX</a>, <a class="el" href="novas_8h.html#aee3f2f5b3807612025e2ce25d368ff2fa9928da41a130a60eb1762cbe52e691ce">CIO_VS_GCRS</a>, <a class="el" href="equinox_8c.html#aea0e1028baf14d16d9de800e36a17086">ira_equinox()</a>, <a class="el" href="util_8c.html#aab45a580efb78b53bcb4a09d40868e4d">novas_debug()</a>, <a class="el" href="novas_8h.html#a9d8d2a1f5c06b488e4c817bc9877e3baa0b25a908023b92a2f4f42114736de9cf">NOVAS_DEBUG_OFF</a>, <a class="el" href="novas_8h.html#a9d8d2a1f5c06b488e4c817bc9877e3baadc10e15517b94fdd3d9eba3359909c65">NOVAS_DEBUG_ON</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="util_8c.html#a29cad12337acfce5f1e370320dcefb79">novas_get_debug_mode()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, and <a class="el" href="novas_8h.html#ab970f5de5d5e04874cb31865459b0b4fa1096785746d1a9bc678ea2c51fc21055">NOVAS_TRUE_EQUINOX</a>.</p>
+<p class="reference">References <a class="el" href="novas_8h.html#aee3f2f5b3807612025e2ce25d368ff2fae8c1b78646fefbd0ffdcae083b597241">CIO_VS_EQUINOX</a>, <a class="el" href="equinox_8c.html#aea0e1028baf14d16d9de800e36a17086">ira_equinox()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, and <a class="el" href="novas_8h.html#ab970f5de5d5e04874cb31865459b0b4fa1096785746d1a9bc678ea2c51fc21055">NOVAS_TRUE_EQUINOX</a>.</p>
 
 </div>
 </div>
@@ -356,15 +358,15 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000001">Deprecated</a></b></dt><dd>SuperNOVAS no longer uses a NOVAS-type CIO locator file. However, if users want to access such files directly, this function remains accessible to provide API compatibility with previous versions.</dd></dl>
-<p>Sets the CIO interpolaton data file to use to interpolate CIO locations vs the GCRS. You can specify either the original <code>CIO_RA.TXT</code> file included in the distribution (preferred since v1.1), or else a platform-specific binary data file compiled from it via the <code>cio_file</code> utility (the old way).</p>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000001">Deprecated</a></b></dt><dd>SuperNOVAS no longer uses a NOVAS-type CIO locator file, or accesses one in any way. This function is now a dummy.</dd></dl>
+<p>It used to set the CIO interpolaton data file to use to interpolate CIO locations vs the GCRS. As of version 1.5, this call does exactly nothing. It simply returns 0.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">filename</td><td>Path (preferably absolute path) <code>CIO_RA.TXT</code> or else to the binary <code>cio_ra.bin</code> data, or NULL to disable using a CIO locator file altogether. </td></tr>
+    <tr><td class="paramname">filename</td><td>(<em>unused</em>) Used to be the path (preferably absolute path) <code>CIO_RA.TXT</code> or else to the binary <code>cio_ra.bin</code> data, or NULL to disable using a CIO locator file altogether. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if the specified file does not exists or we have no permission to read it.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#a65ffaaa2b527ed03149eadc7568f3714">cio_location()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
