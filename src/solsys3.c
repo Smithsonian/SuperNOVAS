@@ -28,6 +28,9 @@
 #define T0        NOVAS_JD_J2000
 /// \endcond
 
+
+
+
 // Additional local function prototypes
 int sun_eph(double jd, double *restrict ra, double *restrict dec, double *restrict dis);
 
@@ -90,8 +93,7 @@ void enable_earth_sun_hp(int value) {
  *                      1 if the input Julian date ('tjd') is out of range, 2 if 'body' is
  *                      invalid.
  *
- * @sa earth_sun_calc_hp(), set_planet_provider()
- * @sa solarsystem()
+ * @sa earth_sun_calc_hp(), set_planet_provider(), novas_planet_provider
  */
 short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin origin,
         double *restrict position, double *restrict velocity) {
@@ -437,20 +439,6 @@ int sun_eph(double jd, double *restrict ra, double *restrict dec, double *restri
   return 0;
 }
 
-#if DEFAULT_SOLSYS == 3
-/// \cond PRIVATE
-novas_planet_provider planet_call = earth_sun_calc;
-novas_planet_provider_hp planet_call_hp = earth_sun_calc_hp;
-/// \endcond
-#elif !BUILTIN_SOLSYS3
-short solarsystem(double jd_tdb, short body, short origin, double *restrict position, double *restrict velocity) {
-  prop_error("solarsystem", earth_sun_calc(jd_tdb, body, origin, position, velocity), 0);
-  return 0;
-}
 
-short solarsystem_hp(const double jd_tdb[restrict 2], short body, short origin, double *restrict position, double *restrict velocity) {
-  prop_error("solarsystem_hp", earth_sun_calc_hp(jd_tdb, body, origin, position, velocity), 0);
-  return 0;
-}
-#endif
+
 

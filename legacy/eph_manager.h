@@ -20,11 +20,8 @@
 #define _EPHMAN_
 
 #include <stdio.h>
-
-#if COMPAT
-#  include <math.h>
-#  include <stdlib.h>
-#endif
+#include <math.h>
+#include <stdlib.h>
 
 
 /**

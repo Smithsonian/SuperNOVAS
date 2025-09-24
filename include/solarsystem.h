@@ -3,11 +3,11 @@
  *
  * @author G. Kaplan and A. Kovacs
  *
- *  SuperNOVAS header for custom solar-system ephemeris calculations for major planets plus
- *  the Sun, Moon, and the Solar-system barycenter (and as of v1.2 also the Earth-Moon
- *  Barycenter and the barycenter of the Pluto system).
+ *  SuperNOVAS header for custom solar-system ephemeris position / velocity provider for major
+ *  planets plus the Sun, Moon, and the Solar-system barycenter (and as of v1.2 also the
+ *  Earth-Moon Barycenter and the barycenter of the Pluto system).
  *
- *  The source files solsys-calceph.c and solsys-cspice.c provide implementations that
+ *  The source files `solsys-calceph.c` and `solsys-cspice.c` provide implementations that
  *  interface with the CALCEPH C library and the NAIF CSPICE Toolkit, respectively. CSPICE is
  *  the canocical library for handling JPL (SPK) ephemeris data, while CALCEPH is a more
  *  modern tool, which allows handling most types of JPL ephemerides, as well INPOP 2.0/3.0
@@ -17,15 +17,16 @@
  *  implementations that users may use (some require additional sources, or user-specific
  *  implementations).
  *
- *  If the standard implementations are compiled with the DEFAULT_SOLSYS option set (see
- *  `config.mk`), then the library is compiled with that version providing a built-in default
- *  implementation (the default is to use `solsys3.c`, which is a self-contained orbital
- *  calculation for the Sun and Earth only).
+ *  If the standard implementations are compiled with the SOLSYS_SOURCE option set (see
+ *  `config.mk`), then the library is compiled with the specified `solarsystem()` /
+ *  `solarsystem_hp()` implementations as the default planer provider. Similarly, the
+ *  `READEPH_SOURCE` option may define a legacy `readeph()` implementation for other
+ *  (non-planetary) ephemeris data at build time.
  *
- *  Additionally, users may set their custom choice of major planet ephemeris handler at
- *  runtime via the set_planet_provider() and/or set_planet_provider_hp() functions. They may
- *  also define custom handlers for all other types of Solar-system objects (i.e.
- *  `NOVAS_EPHEM_OBJECT` types) via set_ephem_provider().
+ *  Regardless if what the default ephemeris providers are, users may set their custom choice
+ *  of major planet ephemeris handler at runtime via the `set_planet_provider()` and/or
+ *  `set_planet_provider_hp(`) functions, or define custom handlers for all other types of
+ *  Solar-system objects (i.e. `NOVAS_EPHEM_OBJECT` types) via `set_ephem_provider()`.
  *
  *  Based on the NOVAS C Edition, Version 3.1:
  *
@@ -197,14 +198,12 @@ typedef int (*novas_ephem_provider)(const char *name, long id, double jd_tdb_hig
  *             support for legacy NOVAS applications only, where an inplementation had to be
  *             linked always.
  *
- * Provides a default ephemeris implementation to handle position and velocity calculations
- * for minor planets, which are not handled by the solarsystem() type calls. The library does
- * not provide a default implementation, but users can provide their own, either as a default
- * statically compiled readeph() implementation, or else a dynamically defined one via
- * ephemeris_set_reader().
- *
- * You can set the built-in implementation for the library at build time by setting the
- * DEFAULT_READEPH variable in the `config.mk`.
+ * Legacy NOVAS C function to handle position and velocity calculations for Solar-system sources,
+ * beyond the major planets. This function can be defined by an external module, as per the NOVAS
+ * C way, provided you compile SuperNOVAS with the `READPH_SOURCE` option set to specify the
+ * source(s) that implement it (in `config.mk` or the environment). If `READEPH_SOURCE` in not
+ * defined during the build of SuperNOVAS, then this function will not be used by __SuperNOVAS__,
+ * nor will be implemented by it.
  *
  * @param mp            The ID number of the solar-system body for which the position are
  *                      desired. An actual implementation might use this and/or the name to
@@ -223,8 +222,6 @@ typedef int (*novas_ephem_provider)(const char *name, long id, double jd_tdb_hig
  *                      is responsible for calling free() on the returned value when it is no
  *                      longer needed.
  *
- *
- *
  * @sa novas_ephem_provider
  *
  */
@@ -242,21 +239,14 @@ novas_ephem_provider get_ephem_provider();
 #ifndef _EXCLUDE_DEPRECATED
 /**
  * @deprecated (<i>legacy function</i>) Use `set_planet_provider()` instead to specify what
- *             function should be used to calculate ephemeris positions for major planets. This
- *             function is provided to extend support for legacy NOVAS C applications only. In
- *             NOVAS, the function had to be user defined, either by linking against a
- *             `solsys*.c` module, or by providing a custom user implementation. Use
- *             `set_planet_provider()` instead, or else `novas_use_calceph()` or
- *             `novas_use_cspice()`.
+ *             function should be used to calculate ephemeris positions for major planets.
  *
- * A default implementation for regular (reduced) precision handling of major planets, Sun,
- * Moon and the Solar-system barycenter. See DEFAULT_SOLSYS in Makefile to choose the
- * implementation that is built into with the library as a default. Applications can define
- * their own preferred implementations at runtime via set_planet_provider().
- *
- * Since this is a function that may be provided by existing custom user implementations, we
- * keep the original argument types for compatibility, hence 'short' instead of the more
- * informative enums).
+ * Legacy NOVAS C function for obtaining planet position / velocity data.  This function can be
+ * defined by external modules, as per the NOVAS C way, provided you compile SuperNOVAS with the
+ * `SOLSYS_SOURCE` option set to specify the source(s) that implement it (in `config.mk` or the
+ * environment). If `SOLSYS_SOURCE` in not defined during the build of SuperNOVAS, then this
+ * function will be provided by the currently configured `novas_planet_provider` function, such as
+ * `earth_sun_calc()` if not configured otherwise.
  *
  * @param jd_tdb        [day] Barycentric Dynamical Time (TDB) based Julian date
  * @param body          Major planet number (or that for the Sun, Moon, or an appropriate
@@ -287,21 +277,14 @@ short solarsystem(double jd_tdb, short body, short origin, double *restrict posi
 /**
  * @deprecated (<i>legacy function</i>) Use `set_planet_provider_hp()` instead to specify what
  *             function should be used to calculate high-precision ephemeris positions for major
- *             planets. This function is provided to extend support for legacy NOVAS C
- *             applications only. In NOVAS, the function had to be user defined, either by linking
- *             against a `solsys*.c` module, or by providing a custom user implementation.
- *             Use `set_planet_provider_hp()` instead, or else `novas_use_calceph()` or
- *             `novas_use_cspice()`.
+ *             planets.
  *
- * A default implementation for high precision handling of major planets, Sun, Moon and the
- * Solar-system barycenter (and other barycenters). See DEFAULT_SOLSYS in Makefile to choose
- * the implementation that is built into the library as a default. Applications can define their
- * own preferred implementations at runtime via set_planet_provider_hp().
- *
- * Since this is a function that may be provided by existing custom user implementations, we
- * keep the original argument types for compatibility, hence 'short' instead of the more
- * informative enums).
- *
+ * Legacy NOVAS C function for obtaining high-precision planet position / velocity data. This
+ * function can be defined by external modules, as per the NOVAS C way, provided you compile
+ * SuperNOVAS with the `SOLSYS_SOURCE` option set to specify the source(s) that implement it (in
+ * `config.mk` or the environment). If `SOLSYS_SOURCE` in not defined during the build of
+ * SuperNOVAS, then this function will be provided by the currently configured
+ * `novas_planet_provider_hp` function, such as `earth_sun_calc()_hp` if not configured otherwise.
  *
  * @param jd_tdb        [day] Barycentric Dynamical Time (TDB) based Julian date, broken into
  *                      high and low order components, respectively. Typically, as the integer
@@ -329,6 +312,7 @@ short solarsystem(double jd_tdb, short body, short origin, double *restrict posi
 short solarsystem_hp(const double jd_tdb[restrict 2], short body, short origin, double *restrict position, double *restrict velocity);
 #endif
 
+
 short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *restrict position,
         double *restrict velocity);
 
@@ -343,19 +327,6 @@ short planet_ephem_provider(double jd_tdb, enum novas_planet body, enum novas_or
 short planet_ephem_provider_hp(const double jd_tdb[restrict 2], enum novas_planet body, enum novas_origin origin,
         double *restrict position, double *restrict velocity);
 
-short planet_eph_manager(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *restrict position,
-        double *restrict velocity);
-
-short planet_eph_manager_hp(const double jd_tdb[restrict 2], enum novas_planet body, enum novas_origin origin,
-        double *restrict position, double *restrict velocity);
-
-#ifndef _EXCLUDE_DEPRECATED
-short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *restrict position,
-        double *restrict velocity);
-
-short planet_jplint_hp(const double jd_tdb[restrict 2], enum novas_planet body, enum novas_origin origin,
-        double *restrict position, double *restrict velocity);
-#endif
 
 // Added in v1.2 --------------------------------->
 
@@ -438,27 +409,6 @@ double novas_next_moon_phase(double phase, double jd_tdb);
 /// NAIF ID for the barycenter of the Pluto system
 #define NAIF_PLUTO_BARYCENTER   9
 
-/**
- * The function to use to provide planet ephemeris data.
- *
- * @sa set_planet_provider()
- * @sa planet_call_hp
- *
- * @since 1.0
- * @author Attila Kovacs
- */
-extern novas_planet_provider planet_call;
-
-/**
- * The default 'fallback' function to use to provide high-precision planet ephemeris data.
- *
- * @sa set_planet_provider_hp()
- * @sa planet_call
- *
- * @since 1.0
- * @author Attila Kovacs
- */
-extern novas_planet_provider_hp planet_call_hp;
 
 #  endif /* __NOVAS_INTERNAL_API__ */
 

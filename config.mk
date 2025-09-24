@@ -45,9 +45,6 @@ endif
 # Specific Doxygen to use if not the default one
 #DOXYGEN ?= /opt/bin/doxygen
 
-# For maximum compatibility with NOVAS C 3.1, uncomment the line below
-#COMPAT ?= 1
-
 
 # To make SuperNOVAS thread-safe, we use thread-local storage modifier
 # keywords. These were not standardized prior to C11. So while we automatically
@@ -61,40 +58,20 @@ endif
 #THREAD_LOCAL ?= __declspec( thread )
 
 
-# Whether to build into the library planet_eph_manager() routines provided in 
-# solsys1.c. We do not include solsys1.c in the build by default.
-#BUILTIN_SOLSYS1 ?= 1
+# To compile library with an external or legacy `solarsystem()` / 
+# `solarsystem_hp()` implementation as the default planet provider, specify 
+# the source(s), which provide the implementation. (E.g. `legacy/solsys1.c 
+# legacy/eph_manager.c` or 'src/solsys-calceph.c`). If not set, then
+# `solarsystem()` / `solatsystem_hp()` will be provided by the currently
+# defined `novas_planet_provider` call, such as `src/solsys3.c`.
+#SOLSYS_SOURCE = legacy/solsys1.c legacy/eph_manager.c
 
 
-# Compile library with a default readeph() implementation for solsys1.c, which 
-# will be used only if the application does not define another implementation 
-# via calls to the to set_ephem_reader() function.
-#DEFAULT_READEPH ?= legacy/readeph0.c
-
-
-# Whether to build into the library planet_jplint() routines provided in 
-# solsys2.c. Note, that if you choose to build in the functionality of 
-# solsys2.c you will need to provide a jplint_() implementation and its
-# dependencies such as pleph_() as well when linking your application.
-# Therefore, we do not include solsys2.c by default...
-#BUILTIN_SOLSYS2 ?= 1
-
-
-# Whether to build into the library earth_sun_calc() routines provided in 
-# solsys3.c
-BUILTIN_SOLSYS3 ?= 1
-
-
-# Whether to build into the library planet_ephem_reader() routines provided in 
-# solsys3.c
-BUILTIN_SOLSYS_EPHEM ?= 1
-
-
-# Compile library with a default solarsystem() implementation. If you want to
-# use your library with your own solarsystem() implementation, you should
-# not set this option. In that case you must always provide a solarsystem()
-# implementation when linking your application against this library.
-DEFAULT_SOLSYS ?= 3
+# To compile to use some user-supplied legacy `readeph()` implementation as
+# the default ephemeris data provider, specify the source that will provide
+# the implementation. If not set, SuperNOVAS will not provide a legacy 
+# `readeph()` implementation. 
+#READEPH_SOURCE = legacy/readeph0.c
 
 
 # Whether or not to build solsys-calceph libraries. You need the calceph 
@@ -118,11 +95,14 @@ DEFAULT_SOLSYS ?= 3
 CHECKOPTS ?= --enable=performance,warning,portability,style --language=c \
             --error-exitcode=1 --std=c99
 
+
 # Add-on ccpcheck options
 CHECKOPTS += --inline-suppr $(CHECKEXTRA)
 
+
 # Exhaustive checking for newer cppcheck...
 #CHECKOPTS += --check-level=exhaustive
+
 
 # ============================================================================
 # END of user config section. 
@@ -154,61 +134,24 @@ else
   MISSING_SYMBOLS_OK := 0
 endif 
 
-# If the COMPAT variable is set to one, then force set compatibility mode
-ifeq ($(COMPAT),1)
-  CPPFLAGS += -DCOMPAT=1
-endif
-
 # If the THREAD_LOCAL variable was defined externally, use that definition to 
 # specify the thread local keyword to use. 
 ifdef THREAD_LOCAL
   CPPFLAGS += -DTHREAD_LOCAL=\"$(THREAD_LOCAL)\"
 endif
 
-ifeq ($(DEFAULT_SOLSYS), 1) 
-  BUILTIN_SOLSYS1 = 1
-  CPPFLAGS += -DDEFAULT_SOLSYS=1
+# Whether to use user-provided legacy `solarsystem()` / `solarsystem_hp()` 
+# functions as the  default planetary ephemeris provider.
+ifdef SOLSYS_SOURCE
+  SOURCES += $(SOLSYS_SOURCE)
+  CPPFLAGS += -DUSER_SOLSYS=1
 endif
 
-ifeq ($(DEFAULT_SOLSYS), 2)
-  BUILTIN_SOLSYS2 = 1
-  CPPFLAGS += -DDEFAULT_SOLSYS=2
-endif
-
-ifeq ($(DEFAULT_SOLSYS), 3)
-  BUILTIN_SOLSYS3 = 1
-  CPPFLAGS += -DDEFAULT_SOLSYS=3
-endif
-
-SOURCES = $(SRC)/target.c $(SRC)/observer.c $(SRC)/earth.c $(SRC)/equinox.c $(SRC)/system.c \
-          $(SRC)/transform.c $(SRC)/cio.c $(SRC)/orbital.c $(SRC)/spectral.c $(SRC)/grav.c \
-          $(SRC)/nutation.c $(SRC)/timescale.c $(SRC)/frames.c $(SRC)/place.c $(SRC)/calendar.c  \
-          $(SRC)/refract.c $(SRC)/naif.c $(SRC)/parse.c $(SRC)/plugin.c $(SRC)/util.c \
-          $(SRC)/planets.c $(SRC)/itrf.c
-
-ifeq ($(BUILTIN_SOLSYS1), 1) 
-  SOURCES += $(SRC)/solsys1.c $(SRC)/eph_manager.c 
-  CPPFLAGS += -DBUILTIN_SOLSYS1=1
-endif
-
-ifeq ($(BUILTIN_SOLSYS2), 1) 
-  SOURCES += $(SRC)/solsys2.c
-  CPPFLAGS += -DBUILTIN_SOLSYS2=1
-endif
-
-ifeq ($(BUILTIN_SOLSYS3), 1) 
-  SOURCES += $(SRC)/solsys3.c
-  CPPFLAGS += -DBUILTIN_SOLSYS3=1
-endif
-
-ifeq ($(BUILTIN_SOLSYS_EPHEM), 1) 
-  SOURCES += $(SRC)/solsys-ephem.c
-  CPPFLAGS += -DBUILTIN_SOLSYS_EPHEM_READER=1
-endif
-
-ifdef DEFAULT_READEPH
-  SOURCES += $(DEFAULT_READEPH)
-  CPPFLAGS += -DDEFAULT_READEPH=1
+# Whether to use a legacy `readeph()` function as the default non-planetary
+# ephemeris provider.
+ifdef READEPH_SOURCE
+  SOURCES += $(READEPH_SOURCE)
+  CPPFLAGS += -DUSER_READEPH=1
 endif
 
 # Use ldconfig (if available) to detect CALCEPH / CSPICE shared libs automatically
@@ -232,6 +175,12 @@ ifeq ($(AUTO_DETECT_LIBS),1)
     endif
   endif
 endif
+
+SOURCES = $(SRC)/target.c $(SRC)/observer.c $(SRC)/earth.c $(SRC)/equinox.c $(SRC)/system.c \
+          $(SRC)/transform.c $(SRC)/cio.c $(SRC)/orbital.c $(SRC)/spectral.c $(SRC)/grav.c \
+          $(SRC)/nutation.c $(SRC)/timescale.c $(SRC)/frames.c $(SRC)/place.c $(SRC)/calendar.c  \
+          $(SRC)/refract.c $(SRC)/naif.c $(SRC)/parse.c $(SRC)/plugin.c $(SRC)/util.c \
+          $(SRC)/planets.c $(SRC)/itrf.c $(SRC)/solsys3.c $(SRC)/solsys-ephem.c
 
 # Generate a list of object (obj/*.o) files from the input sources
 OBJECTS := $(subst $(SRC),$(OBJ),$(SOURCES))

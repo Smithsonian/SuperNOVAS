@@ -41,8 +41,6 @@ option(BUILD_EXAMPLES "Build example programs" OFF)
 option(BUILD_BENCHMARK "Build benchmark programs" OFF)
 option(ENABLE_CALCEPH "Enable CALCEPH support" OFF)
 option(ENABLE_CSPICE "Enable CSPICE support" OFF)
-option(ENABLE_SOLSYS1 "Enable legacy support for DE200 -- DE421 via eph_manager()" OFF)
-option(ENABLE_SOLSYS2 "Enable legacy support for custom Fortran PLEPH plugin" OFF)
 
 # Set feature descriptions for summary
 add_feature_info(SharedLibs BUILD_SHARED_LIBS "Build as shared libraries")
@@ -53,9 +51,6 @@ add_feature_info(Benchmarks BUILD_BENCHMARK "Build benchmarking programs")
 
 add_feature_info(Calceph-Plugin ENABLE_CALCEPH "Optional ephemeris support via CALCEPH")
 add_feature_info(CSPICE-Plugin ENABLE_CSPICE "Optional ephemeris support via CSPICE")
-add_feature_info(Solsys1-Plugin ENABLE_SOLSYS1 "Legacy ephemeris support via eph_manager()")
-add_feature_info(Solsys2-Plugin ENABLE_SOLSYS2 "Legacy ephemeris support via the Fortran PLEPH library")
-
 
 # ----------------------------------------------------------------------------
 # Global build configuration
@@ -78,11 +73,7 @@ if(WIN32)
 endif()
 
 # Preprocessor definitions
-set(SUPERNOVAS_COMPILE_DEFINITIONS
-    BUILTIN_SOLSYS3=1
-    BUILTIN_SOLSYS_EPHEM_READER=1
-    DEFAULT_SOLSYS=3
-)
+set(SUPERNOVAS_COMPILE_DEFINITIONS DEFAULT_SOLSYS=1)
 
 # Check for math library
 check_library_exists(m sin "" HAVE_LIBM)
@@ -176,9 +167,9 @@ add_library(novas ALIAS supernovas)
 # ----------------------------------------------------------------------------
 # Plugins
 
-# configure plugin build (w/o linking)
-function(config_plugin PLUGIN EXTRA_SOURCES)
-    add_library(${PLUGIN} src/${PLUGIN}.c ${EXTRA_SOURCES})
+# plugins via external libraries (e.g. calceph or cspice). 
+function(solsys_plugin PLUGIN)
+    add_library(${PLUGIN} src/${PLUGIN}.c)
     add_library(supernovas::${PLUGIN} ALIAS ${PLUGIN})
 
     set_target_properties(${PLUGIN} PROPERTIES
@@ -186,28 +177,13 @@ function(config_plugin PLUGIN EXTRA_SOURCES)
         SOVERSION ${PROJECT_VERSION_MAJOR}
         POSITION_INDEPENDENT_CODE ON
     )
-
+    
     target_include_directories(${PLUGIN} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
     target_compile_definitions(${PLUGIN} PRIVATE ${SUPERNOVAS_COMPILE_DEFINITIONS})
-endfunction()
-
-# plugins via external libraries (e.g. calceph or cspice). 
-function(solsys_plugin PLUGIN_LIB)
-    config_plugin(solsys-${PLUGIN_LIB} "")
     
-    target_link_libraries(solsys-${PLUGIN_LIB} PRIVATE
+    target_link_libraries(solsys-${EPHEM_LIB} PRIVATE
         supernovas
-        ${PLUGIN_LIB}
-        $<$<BOOL:${HAVE_LIBM}>:m>
-    )
-endfunction()
-
-# legacy solsys[1-2] plugins
-function(legacy_solsys_plugin IDX EXTRA_SOURCES)
-    config_plugin(solsys${IDX} "${EXTRA_SOURCES}")
-
-    target_link_libraries(solsys${IDX} PRIVATE
-        supernovas
+        ${EPHEM_LIB}
         $<$<BOOL:${HAVE_LIBM}>:m>
     )
 endfunction()
@@ -219,14 +195,6 @@ endif()
 
 if(ENABLE_CSPICE)
     solsys_plugin(cspice)
-endif()
-
-if(ENABLE_SOLSYS1)
-    legacy_solsys_plugin(1 src/eph_manager.c) 
-endif()
-
-if(ENABLE_SOLSYS2)
-    legacy_solsys_plugin(2 "")
 endif()
 
 # ----------------------------------------------------------------------------
@@ -269,14 +237,6 @@ if(ENABLE_CSPICE)
     list(APPEND INSTALL_TARGETS solsys-cspice)
 endif()
 
-if(ENABLE_SOLSYS1)
-    list(APPEND INSTALL_TARGETS solsys1)
-endif()
-
-if(ENABLE_SOLSYS2)
-    list(APPEND INSTALL_TARGETS solsys2)
-endif()
-
 install(TARGETS ${INSTALL_TARGETS}
     EXPORT supernovasTargets
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -301,13 +261,6 @@ endif()
 
 if(ENABLE_CSPICE)
    install(FILES include/novas-cspice.h
-       COMPONENT Development
-       DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-   )
-endif()
-
-if(ENABLE_SOLSYS1)
-   install(FILES include/eph_manager.h
        COMPONENT Development
        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
    )

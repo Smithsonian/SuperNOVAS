@@ -1,10 +1,3 @@
-# Adjusted configuration for test builds
-BUILTIN_SOLSYS3 := 0 
-BUILTIN_DEFAULT_SOLSYS := 0 
-
-# Use above config in sub-makes also
-export BUILTIN_SOLSYS3 BUILTIN_DEFAULT_SOLSYS CIO_LOCATOR_FILE
-
 include ../config.mk
 
 CFLAGS += -I../include -pg -Wall -fprofile-arcs -ftest-coverage
@@ -21,16 +14,16 @@ COVFILES := $(subst .o,.c.gcov,$(OBJECTS))
 TESTS := test-compat test-super test-errors
 
 ifeq ($(CALCEPH_SUPPORT), 1)
+  TESTS += test-calceph
   LDFLAGS += -lcalceph
   OBJECTS += solsys-calceph.o
-  TESTS += test-calceph
   COVFILES += solsys-calceph.c.gcov
 endif
 
 ifeq ($(CSPICE_SUPPORT), 1)
+  TESTS += test-cspice
   LDFLAGS += -lcspice
   OBJECTS += solsys-cspice.o
-  TESTS += test-cspice
   COVFILES += solsys-cspice.c.gcov
 endif
 
@@ -40,7 +33,8 @@ check-compat:
 	diff data reference
 
 .PHONY: run
-run: clean-cov $(TESTS) data
+run: clean-cov clean-data $(TESTS)
+	@mkdir data
 	./test-compat
 	$(MAKE) check-compat
 	./test-super
@@ -64,9 +58,6 @@ coverage: $(COVFILES)
 	$(MAKE) clean-test
 	$(MAKE) cov
 
-data:
-	mkdir data
-
 .PRECIOUS: %.c.gcov
 %.c.gcov: %.gcno %.gcda
 	gcov -b $*
@@ -76,7 +67,7 @@ data:
 	$(MAKE) clean
 	$(MAKE) run
 
-test-%: test-%.o $(OBJECTS) | Makefile data
+test-%: test-%.o $(OBJECTS) | Makefile
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 test-%.o: src/test-%.c | Makefile
@@ -103,6 +94,10 @@ clean-test:
 .PHONY: clean-cov
 clean-cov:
 	rm -rf gmon.out *.gcov *.gcda *.gcno cov cov.info
+
+.PHONY: clean-data
+clean-data:
+	rm -rf data
 
 .PHONY: clean
 clean: clean-test clean-cov

@@ -1157,6 +1157,9 @@ static int test_earth_sun_calc() {
   if(check("earth_sun_calc:tdb:hi", 1, earth_sun_calc(2560001.0, NOVAS_SUN, NOVAS_BARYCENTER, p, v))) n++;
   if(check("earth_sun_calc:number", 2, earth_sun_calc(NOVAS_JD_J2000, NOVAS_JUPITER, NOVAS_BARYCENTER, p, v))) n++;
 
+  if(check("earth_sun_calc:solarsystem:pos", -1, solarsystem(NOVAS_JD_J2000, NOVAS_SUN, NOVAS_BARYCENTER, NULL, v))) n++;
+  if(check("earth_sun_calc:solarsystem:OK", 0, solarsystem(NOVAS_JD_J2000, NOVAS_SUN, NOVAS_BARYCENTER, p, v))) n++;
+
   return n;
 }
 
@@ -1170,6 +1173,9 @@ static int test_earth_sun_calc_hp() {
   if(check("earth_sun_calc_hp:pos", -1, earth_sun_calc_hp(tdb2, NOVAS_SUN, NOVAS_BARYCENTER, NULL, v))) n++;
   if(check("earth_sun_calc_hp:vel", -1, earth_sun_calc_hp(tdb2, NOVAS_SUN, NOVAS_BARYCENTER, p, NULL))) n++;
   if(check("earth_sun_calc_hp:number", 2, earth_sun_calc_hp(tdb2, NOVAS_JUPITER, NOVAS_BARYCENTER, p, v))) n++;
+
+  if(check("earth_sun_calc_hp:solarsystem_hp:tdb", -1, solarsystem_hp(NULL, NOVAS_SUN, NOVAS_BARYCENTER, p, v))) n++;
+  if(check("earth_sun_calc_hp:solarsystem_hp:OK", 0, solarsystem_hp(tdb2, NOVAS_SUN, NOVAS_BARYCENTER, p, v))) n++;
 
   enable_earth_sun_hp(0);
 
