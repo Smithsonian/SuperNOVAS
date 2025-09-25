@@ -236,12 +236,6 @@ short planet_jplint_hp(const double jd_tdb[restrict 2], enum novas_planet body, 
   return 0;
 }
 
-#if DEFAULT_SOLSYS == 2
-/// \cond PRIVATE
-novas_planet_provider planet_call = planet_jplint;
-novas_planet_provider_hp planet_call_hp = planet_jplint;
-/// \endcond
-#elif !BUILTIN_SOLSYS2
 short solarsystem(double jd_tdb, short body, short origin, double *restrict position, double *restrict velocity) {
   prop_error("solarsystem", planet_jplint(jd_tdb, body, origin, position, velocity), 0);
   return 0;
@@ -251,4 +245,3 @@ short solarsystem_hp(const double jd_tdb[restrict 2], short body, short origin, 
   prop_error("solarsystem_hp", planet_jplint_hp(jd_tdb, body, origin, position, velocity), 0);
   return 0;
 }
-#endif

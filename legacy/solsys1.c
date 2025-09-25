@@ -1,5 +1,4 @@
 /**
- * @file
  *
  * @author G. Kaplan and A. Kovacs
  *
@@ -183,12 +182,6 @@ short planet_eph_manager(double jd_tdb, enum novas_planet body, enum novas_origi
   return 0;
 }
 
-#if DEFAULT_SOLSYS == 1
-/// \cond PRIVATE
-novas_planet_provider planet_call = planet_eph_manager;
-novas_planet_provider_hp planet_call_hp = planet_eph_manager_hp;
-/// \endcond
-#elif !BUILTIN_SOLSYS1
 short solarsystem(double jd_tdb, short body, short origin, double *restrict position, double *restrict velocity) {
   prop_error("solarsystem", planet_eph_manager(jd_tdb, body, origin, position, velocity), 0);
   return 0;
@@ -201,4 +194,3 @@ short solarsystem_hp(const double jd_tdb[restrict 2], short body, short origin, 
   prop_error("solarsystem_hp", planet_eph_manager_hp(jd_tdb, body, origin, position, velocity), 0);
   return 0;
 }
-#endif

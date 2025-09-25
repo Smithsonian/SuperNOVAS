@@ -362,12 +362,12 @@ static short planet_cspice_hp(const double jd_tdb[restrict 2], enum novas_planet
  *                       coordinates in AU referred to the ICRS.
  * @param[out] velocity  [AU/day] Velocity vector of 'body' at jd_tdb; equatorial rectangular
  *                       system referred to the ICRS, in AU/day.
- * @return               0 if successful, or else an error code of solarsystem().
+ * @return               0 if successful, or else an error code defined by nvas_planet_provider.
  *
  * @author Attila Kovacs
  * @since 1.2
  *
- * @sa set_planet_provider(), solarsystem()
+ * @sa set_planet_provider(), planet_cspice_hp()
  */
 static short planet_cspice(double jd_tdb, enum novas_planet body, enum novas_origin origin,
         double *restrict position, double *restrict velocity) {

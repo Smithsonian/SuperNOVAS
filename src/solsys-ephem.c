@@ -92,13 +92,12 @@ short planet_ephem_provider_hp(const double jd_tdb[restrict 2], enum novas_plane
  *                       coordinates in AU referred to the ICRS.
  * @param[out] velocity  [AU/day] Velocity vector of 'body' at jd_tdb; equatorial rectangular
  *                       system referred to the ICRS, in AU/day.
- * @return               0 if successful, or else an error code of solarsystem().
+ * @return               0 if successful, or else an error code defined by novas_planet_provider.
  *
  * @since 1.0
  * @author Attila Kovacs
  *
  * @sa planet_ephem_provider_hp(), set_ephem_provider()
- * @sa solarsystem()
  */
 short planet_ephem_provider(double jd_tdb, enum novas_planet body, enum novas_origin origin,
         double *restrict position, double *restrict velocity) {
@@ -107,15 +106,4 @@ short planet_ephem_provider(double jd_tdb, enum novas_planet body, enum novas_or
   return 0;
 }
 
-#if !BUILTIN_SOLSYS_EPHEM_READER
-short solarsystem(double jd_tdb, short body, short origin, double *restrict position, double *restrict velocity) {
-  prop_error("solarsystem", planet_ephem_provider(jd_tdb, body, origin, position, velocity), 0);
-  return 0;
-}
-
-short solarsystem_hp(const double jd_tdb[restrict 2], short body, short origin, double *restrict position, double *restrict velocity) {
-  prop_error("solarsystem_hp", planet_ephem_provider_hp(jd_tdb, body, origin, position, velocity), 0);
-  return 0;
-}
-#endif
 

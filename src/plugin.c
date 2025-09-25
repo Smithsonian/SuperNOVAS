@@ -7,33 +7,45 @@
  *  Functions that allow to define or access user-defined plugin routines.
  */
 
+#include <string.h>
 #include <errno.h>
 
 /// \cond PRIVATE
 #define __NOVAS_INTERNAL_API__    ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
 
-#ifndef DEFAULT_SOLSYS
-/// Will use solarsystem() and solarsystem_hp() that is linked with application
-#  define DEFAULT_SOLSYS    0
-#endif
-
 // <---------- GLOBAL VARIABLES -------------->
 
-#if DEFAULT_SOLSYS <= 0
+#ifdef USER_SOLSYS
 static short solarsystem_adapter(double jd_tdb, enum novas_planet body, enum novas_origin origin,
         double *restrict position, double *restrict velocity) {
-  solarsystem(jd_tdb, (short) body, (short) origin, position, velocity);
+  return solarsystem(jd_tdb, (short) body, (short) origin, position, velocity);
 }
 
 static short solarsystem_hp_adapter(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin,
         double *restrict position, double *restrict velocity) {
-  solarsystem_hp(jd_tdb, (short) body, (short) origin, position, velocity);
+  return solarsystem_hp(jd_tdb, (short) body, (short) origin, position, velocity);
 }
 
 novas_planet_provider planet_call = solarsystem_adapter;
 novas_planet_provider_hp planet_call_hp = solarsystem_hp_adapter;
-#endif
+#else
+// Unfortunately, these were exposed before, so we should keep them so.
+// TODO make static for 2.0
+novas_planet_provider planet_call = earth_sun_calc;
+novas_planet_provider_hp planet_call_hp = earth_sun_calc_hp;
+
+short solarsystem(double jd_tdb, short body, short origin, double *restrict position, double *restrict velocity) {
+  prop_error("solarsystem", planet_call(jd_tdb, body, origin, position, velocity), 0);
+  return 0;
+}
+
+short solarsystem_hp(const double jd_tdb[restrict 2], short body, short origin, double *restrict position, double *restrict velocity) {
+  prop_error("solarsystem_hp", planet_call_hp(jd_tdb, body, origin, position, velocity), 0);
+  return 0;
+}
+#endif /* USER_SOLSYS */
+
 /// \endcond
 
 
@@ -124,7 +136,7 @@ novas_nutation_provider get_nutation_lp_provider() {
  * @author Attila Kovacs
  * @since 1.0
  *
- * @sa get_planet_provider(), set_planet_provider_hp(), solarsystem(), NOVAS_REDUCED_ACCURACY
+ * @sa get_planet_provider(), set_planet_provider_hp(), NOVAS_REDUCED_ACCURACY
  * @sa novas_use_calceph(), novas_use_cspice()
  */
 int set_planet_provider(novas_planet_provider func) {
@@ -187,3 +199,129 @@ novas_planet_provider_hp get_planet_provider_hp() {
   return planet_call_hp;
 }
 
+/**
+ * Retrieves the position and velocity of a solar system body using the currently configured
+ * plugins that provide them.
+ *
+ * It is recommended that the input structure 'cel_obj' be created using make_object()
+ *
+ * @param jd_tdb    [day] Barycentric Dynamic Time (TDB) based Julian date
+ * @param body      Pointer to structure containing the designation of the body of interest
+ * @param origin    NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1)
+ * @param accuracy  NOCAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @param[out] pos  [AU] Pointer to structure containing the designation of the body of interest
+ * @param[out] vel  [AU/day] Velocity vector of the body at 'jd_tdb'; equatorial rectangular
+ *                  coordinates in AU/day referred to the ICRS.
+ * @return          0 if successful, -1 if the 'jd_tdb' or input object argument is NULL, or
+ *                  else 1 if 'origin' is invalid, 2 if `cel_obj->type` is invalid,
+ *                  10 + the error code from the currently configured `novas_planet_provider_hp`
+ *                  call, or 20 + the error code from `readeph()`.
+ *
+ * @sa set_planet_provider(), set_planet_provider_hp(), set_ephem_provider()
+ * @sa make_planet(), make_ephem_object()
+ */
+short ephemeris(const double *restrict jd_tdb, const object *restrict body, enum novas_origin origin,
+        enum novas_accuracy accuracy, double *restrict pos, double *restrict vel) {
+  static const char *fn = "ephemeris";
+
+  double posvel[6] = {0};
+  int error = 0;
+
+  if(!jd_tdb || !body)
+    return novas_error(-1, EINVAL, fn, "NULL input pointer: jd_tdb=%p, body=%p", jd_tdb, body);
+
+  if(!pos || !vel)
+    return novas_error(-1, EINVAL, fn, "NULL output pointer: pos=%p, vel=%p", pos, vel);
+
+  // Check the value of 'origin'.
+  if(origin < 0 || origin >= NOVAS_ORIGIN_TYPES)
+    return novas_error(1, EINVAL, fn, "invalid origin type: %d", origin);
+
+  // Invoke the appropriate ephemeris access software depending upon the
+  // type of object
+  switch(body->type) {
+
+    case NOVAS_PLANET:
+      // Get the position and velocity of a major planet, Pluto, Sun, or Moon.
+      // When high accuracy is specified, use function 'solarsystem_hp' rather
+      // than 'solarsystem'.
+
+      if(accuracy == NOVAS_FULL_ACCURACY)
+        error = planet_call_hp(jd_tdb, body->number, origin, pos, vel);
+      else
+        error = planet_call(jd_tdb[0] + jd_tdb[1], body->number, origin, pos, vel);
+
+      prop_error("ephemeris:planet", error, 10);
+      break;
+
+    case NOVAS_EPHEM_OBJECT: {
+      enum novas_origin eph_origin = NOVAS_HELIOCENTER;
+      novas_ephem_provider ephem_call = get_ephem_provider();
+
+      if(ephem_call) {
+        // If there is a newstyle epehemeris access routine set, we will prefer it.
+        error = ephem_call(body->name, body->number, jd_tdb[0], jd_tdb[1], &eph_origin, posvel, &posvel[3]);
+      }
+      else {
+#  ifdef USER_READEPH
+        // Use whatever readeph() was compiled or the equivalent user-defined call
+        double *res = readeph(body->number, body->name, jd_tdb[0] + jd_tdb[1], &error);
+        if(res == NULL) {
+          error = 3;
+          errno = ENOSYS;
+        }
+        else {
+          memcpy(posvel, res, sizeof(posvel));
+          free(res);
+        }
+#  else
+        return novas_error(-1, errno, "ephemeris:ephem_object", "No ephemeris provider was defined. Call set_ephem_provider() prior.");
+#  endif
+      }
+
+      prop_error("ephemeris:ephem_object", error, 20);
+
+      // Check and adjust the origins as necessary.
+      if(origin != eph_origin) {
+        double pos0[3] = {0}, vel0[3] = {0};
+        enum novas_planet refnum = (origin == NOVAS_BARYCENTER) ? NOVAS_SSB : NOVAS_SUN;
+        int i;
+
+        prop_error("ephemeris:origin", planet_call(jd_tdb[0] + jd_tdb[1], refnum, eph_origin, pos0, vel0), 10);
+
+        for(i = 3; --i >= 0;) {
+          posvel[i] -= pos[i];
+          posvel[i + 3] = novas_add_vel(posvel[i + 3], vel[i]);
+        }
+      }
+
+      // Break up 'posvel' into separate position and velocity vectors.
+      memcpy(pos, posvel, XYZ_VECTOR_SIZE);
+      memcpy(vel, &posvel[3], XYZ_VECTOR_SIZE);
+
+      break;
+    }
+
+    case NOVAS_ORBITAL_OBJECT: {
+      object center;
+      double pos0[3] = {0}, vel0[3] = {0};
+      int i;
+
+      prop_error(fn, make_planet(body->orbit.system.center, &center), 0);
+      prop_error(fn, ephemeris(jd_tdb, &center, origin, accuracy, pos0, vel0), 0);
+      prop_error(fn, novas_orbit_posvel(jd_tdb[0] + jd_tdb[1], &body->orbit, accuracy, pos, vel), 0);
+
+      for(i = 3; --i >= 0; ) {
+        pos[i] += pos0[i];
+        vel[i] += vel0[i];
+      }
+
+      break;
+    }
+
+    default:
+      return novas_error(2, EINVAL, fn, "invalid Solar-system body type: %d", body->type);
+  }
+
+  return 0;
+}

@@ -30,36 +30,13 @@ endif
 SOLSYS_TARGETS :=
 SHARED_TARGETS := $(LIB)/libsupernovas.$(SOEXT) $(LIB)/libnovas.$(SOEXT)
 
-ifneq ($(BUILTIN_SOLSYS1),1)
-  SOLSYS_TARGETS += $(OBJ)/solsys1.o $(OBJ)/eph_manager.o
-  SHARED_TARGETS += $(LIB)/libsolsys1.$(SOEXT)
-endif
-
-ifneq ($(BUILTIN_SOLSYS2),1)
-  SOLSYS_TARGETS += $(OBJ)/solsys2.o
-  # Don't build solsys2 shared lib on Mac OS -- it does not like mystery symbols.
-  ifeq ($(MISSING_SYMBOLS_OK),1)
-    SHARED_TARGETS += $(LIB)/libsolsys2.$(SOEXT)
-  endif
-endif
-
-ifneq ($(BUILTIN_SOLSYS3),1)
-  SOLSYS_TARGETS += $(OBJ)/solsys3.o
-  SHARED_TARGETS += $(LIB)/libsolsys3.$(SOEXT)
-endif
-
-ifneq ($(BUILTIN_SOLSYS_EPHEM),1)
-  SOLSYS_TARGETS += $(OBJ)/solsys-ephem.o
-  SHARED_TARGETS += $(LIB)/libsolsys-ephem.$(SOEXT)
-endif
-
-ifeq ($(CALCEPH_SUPPORT),1)
+ifeq ($(CALCEPH_SUPPORT), 1)
   CPPFLAGS += -DUSE_CALCEPH=1
   SOLSYS_TARGETS += $(OBJ)/solsys-calceph.o
   SHARED_TARGETS += $(LIB)/libsolsys-calceph.$(SOEXT)
 endif
 
-ifeq ($(CSPICE_SUPPORT),1)
+ifeq ($(CSPICE_SUPPORT), 1)
   CPPFLAGS += -DUSE_CSPICE=1
   SOLSYS_TARGETS += $(OBJ)/solsys-cspice.o
   SHARED_TARGETS += $(LIB)/libsolsys-cspice.$(SOEXT)
@@ -142,14 +119,6 @@ local-dox:
 
 $(LIB)/libsupernovas.$(SOEXT): $(LIB)/libsupernovas.$(SOEXT).$(SO_VERSION)
 
-$(LIB)/libsolsys1.$(SOEXT): $(LIB)/libsolsys1.$(SOEXT).$(SO_VERSION)
-
-$(LIB)/libsolsys2.$(SOEXT): $(LIB)/libsolsys2.$(SOEXT).$(SO_VERSION)
-
-$(LIB)/libsolsys3.$(SOEXT): $(LIB)/libsolsys3.$(SOEXT).$(SO_VERSION)
-
-$(LIB)/libsolsys-ephem.$(SOEXT): $(LIB)/libsolsys-ephem.$(SOEXT).$(SO_VERSION)
-
 $(LIB)/libsolsys-calceph.$(SOEXT): $(LIB)/libsolsys-calceph.$(SOEXT).$(SO_VERSION)
 
 $(LIB)/libsolsys-cspice.$(SOEXT): $(LIB)/libsolsys-cspice.$(SOEXT).$(SO_VERSION)
@@ -158,22 +127,6 @@ $(LIB)/libnovas.$(SOEXT): $(LIB)/libsupernovas.$(SOEXT)
 
 # Shared library: libsupernovas.so.1 -- same as novas.so except the builtin SONAME
 $(LIB)/libsupernovas.$(SOEXT).$(SO_VERSION): $(SOURCES)
-
-# Shared library: libsolsys1.so.1 (standalone solsys1.c functionality)
-$(LIB)/libsolsys1.$(SOEXT).$(SO_VERSION): BUILTIN_SOLSYS1 := 0
-$(LIB)/libsolsys1.$(SOEXT).$(SO_VERSION): $(SRC)/solsys1.c $(SRC)/eph_manager.c
-
-# Shared library: libsolsys2.so.1 (standalone solsys2.c functionality)
-$(LIB)/libsolsys2.$(SOEXT).$(SO_VERSION): BUILTIN_SOLSYS2 := 0
-$(LIB)/libsolsys2.$(SOEXT).$(SO_VERSION): $(SRC)/solsys2.c
-
-# Shared library: libsolsys3.so.1 (standalone solsys1.c functionality)
-$(LIB)/libsolsys3.$(SOEXT).$(SO_VERSION): BUILTIN_SOLSYS3 := 0
-$(LIB)/libsolsys3.$(SOEXT).$(SO_VERSION): $(SRC)/solsys3.c
-
-# Shared library: libsolsys-ephem.so.1 (standalone solsys2.c functionality)
-$(LIB)/libsolsys-ephem.$(SOEXT).$(SO_VERSION): BUILTIN_SOLSYS_EPHEM := 0
-$(LIB)/libsolsys-ephem.$(SOEXT).$(SO_VERSION): $(SRC)/solsys-ephem.c
 
 # Shared library: libsolsys-calceph.so.1 (standalone solsys2.c functionality)
 $(LIB)/libsolsys-calceph.$(SOEXT).$(SO_VERSION): SHLIBS := -lcalceph
@@ -290,12 +243,8 @@ summary:
 	@echo
 	@echo "    CALCEPH_SUPPORT      = $(CALCEPH_SUPPORT)"
 	@echo "    CSPICE_SUPPORT       = $(CSPICE_SUPPORT)"
-	@echo "    BUILTIN_SOLSYS1      = $(BUILTIN_SOLSYS1)"
-	@echo "    BUILTIN_SOLSYS2      = $(BUILTIN_SOLSYS2)"
-	@echo "    BUILTIN_SOLSYS3      = $(BUILTIN_SOLSYS3)"
-	@echo "    BUILTIN_SOLSYS_EPHEM = $(BUILTIN_SOLSYS_EPHEM)"
-	@echo "    DEFAULT_SOLSYS       = $(DEFAULT_SOLSYS)"
-	@echo "    DEFAULT_READEPH      = $(DEFAULT_READEPH)"
+	@echo "    SOLSYS_SOURCES       = $(SOLSYS_SOURCES)"
+	@echo "    READEPH_SOURCES      = $(READEPH_SOURCES)"
 	@echo 
 	@echo "    CFLAGS = $(CFLAGS)"
 	@echo "    LDFLAGS = $(LDFLAGS)"
