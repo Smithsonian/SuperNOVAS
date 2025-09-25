@@ -801,12 +801,12 @@ short astro_planet(double jd_tt, const object *restrict ss_body, enum novas_accu
 }
 
 /**
- * @deprecated Using the frame-based novas_sky_pos() with NOVAS_TOD as the reference system is now
- *             preferred for topocentric calculations.
- *
  * __reference_system__: TOD <br>
  * __observer location__: topocentric (on Earth) <br>
  * __position_type__: apparent <br>
+ *
+ * @deprecated Using the frame-based novas_sky_pos() with NOVAS_TOD as the reference system is now
+ *             preferred for topocentric calculations.
  *
  * Computes the topocentric (True of Date; TOD) apparent place of a star at date 'jd_tt', given
  * its ICRS catalog place, proper motion, parallax, and radial velocity.
@@ -851,12 +851,12 @@ short topo_star(double jd_tt, double ut1_to_tt, const cat_entry *restrict star, 
 }
 
 /**
- * @deprecated Using the frame-based novas_sky_pos() with NOVAS_ICRS or NOVARS_GCRS as the
- *             reference system is now preferred for the equivalent calculations.
- *
  * __reference_system__: ICRS / GCRS <br>
  * __observer location__: topocentric (on Earth) <br>
  * __position_type__: apparent <br>
+ *
+ * @deprecated Using the frame-based novas_sky_pos() with NOVAS_ICRS or NOVARS_GCRS as the
+ *             reference system is now preferred for the equivalent calculations.
  *
  * Computes the local apparent place of a star at date 'jd_tt', in the GCRS, given its catalog
  * mean place, proper motion, parallax, and radial velocity.
@@ -901,12 +901,12 @@ short local_star(double jd_tt, double ut1_to_tt, const cat_entry *restrict star,
 }
 
 /**
- * @deprecated Using the frame-based novas_sky_pos() with NOVAS_TOD as the reference system is now
- *             preferred for topocentric calculations.
- *
  * __reference_system__: TOD <br>
  * __observer location__: topocentric (on Earth) <br>
  * __position_type__: apparent <br>
+ *
+ * @deprecated Using the frame-based novas_sky_pos() with NOVAS_TOD as the reference system is now
+ *             preferred for topocentric calculations.
  *
  * Computes the topocentric apparent place of a solar system body at the specified time. This is
  * the same as calling place() for the body for the same observer location and NOVAS_TOD as the
@@ -951,12 +951,12 @@ short topo_planet(double jd_tt, const object *restrict ss_body, double ut1_to_tt
 }
 
 /**
- * @deprecated Using the frame-based novas_sky_pos() with NOVAS_ICRS or NOVARS_GCRS as the
- *             reference system is now preferred for the equivalent calculations.
- *
  * __reference_system__: ICRS/GCRS <br>
  * __observer location__: topocentric (on Earth) <br>
  * __position_type__: apparent <br>
+ *
+ * @deprecated Using the frame-based novas_sky_pos() with NOVAS_ICRS or NOVARS_GCRS as the
+ *             reference system is now preferred for the equivalent calculations.
  *
  * Computes the local apparent place of a solar system body, in the GCRS. This is the same as
  * calling place() for the body for the same observer location and NOVAS_GCRS as the reference
@@ -1002,7 +1002,7 @@ short local_planet(double jd_tt, const object *restrict ss_body, double ut1_to_t
 }
 
 /**
- * __reference system: TOD &rarr; ICRS<br>
+ * __reference system__: TOD &rarr; ICRS <br>
  * __observer location__: geocenter &rarr; SSB <br>
  * __position_type__: apparent &rarr; geometric <br>
  *
