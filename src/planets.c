@@ -7,6 +7,12 @@
  *  Calculate approximate positions and velocities for the major planets, Sun, Moon, Earth-Moon
  *  Barycenter (EMB), and the Solar-system Barycenter (SSB), mainly by using Keplerian orbital
  *  elements.
+ *
+ *  For more precise planet positions, you should use SuperNOVAS with a planetary ephemeris
+ *  provider, as as the CALCEPH or CSPICE plugin interface modules, or custom ephemeris provider
+ *  functions.
+ *
+ *  @sa solsys-calceph.c, solsys-cspice.c, plugin.c
  */
 
 #include <math.h>
