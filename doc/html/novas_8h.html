@@ -1057,7 +1057,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:a13cd0b80eaa7bc682013f7e8ffbdbd6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts coordinate offsets, from the local equatorial system to local horizontal offsets.  <br /></td></tr>
 <tr class="separator:a13cd0b80eaa7bc682013f7e8ffbdbd6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a095ba0ee644dc00c11dcdc5616bc96b0" id="r_a095ba0ee644dc00c11dcdc5616bc96b0"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a095ba0ee644dc00c11dcdc5616bc96b0">novas_epa</a> (double ha, double dec, double lat)</td></tr>
-<tr class="memdesc:a095ba0ee644dc00c11dcdc5616bc96b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the equatorial Parallactic Angle (PA) calculated for an R.A.  <br /></td></tr>
+<tr class="memdesc:a095ba0ee644dc00c11dcdc5616bc96b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the Parallactic Angle (PA) calculated for an RA/Dec location of the sky at a given sidereal time.  <br /></td></tr>
 <tr class="separator:a095ba0ee644dc00c11dcdc5616bc96b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4e18885b7d173eb3fe5f18b06f0b4d4" id="r_af4e18885b7d173eb3fe5f18b06f0b4d4"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af4e18885b7d173eb3fe5f18b06f0b4d4">novas_epoch</a> (const char *restrict system)</td></tr>
 <tr class="memdesc:af4e18885b7d173eb3fe5f18b06f0b4d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the Julian day corresponding to an astronomical coordinate epoch.  <br /></td></tr>
@@ -1114,7 +1114,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:a1f29810393108d15fd8312a2a95158dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates horizontal tracking position and motion (first and second time derivatives) for the specified source in the given observing frame.  <br /></td></tr>
 <tr class="separator:a1f29810393108d15fd8312a2a95158dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73fcb54e47b2be0aa92810b5f55f7a3c" id="r_a73fcb54e47b2be0aa92810b5f55f7a3c"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a73fcb54e47b2be0aa92810b5f55f7a3c">novas_hpa</a> (double az, double el, double lat)</td></tr>
-<tr class="memdesc:a73fcb54e47b2be0aa92810b5f55f7a3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the horizontal Parallactic Angle (PA) calculated for a gorizontal Az/El location of the sky.  <br /></td></tr>
+<tr class="memdesc:a73fcb54e47b2be0aa92810b5f55f7a3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the Parallactic Angle (PA) calculated for a horizontal Az/El location of the sky.  <br /></td></tr>
 <tr class="separator:a73fcb54e47b2be0aa92810b5f55f7a3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0137aa791dd29278904e53498fb9515" id="r_af0137aa791dd29278904e53498fb9515"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af0137aa791dd29278904e53498fb9515">novas_init_cat_entry</a> (<a class="el" href="structcat__entry.html">cat_entry</a> *restrict source, const char *restrict name, double ra, double dec)</td></tr>
 <tr class="memdesc:af0137aa791dd29278904e53498fb9515"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a catalog entry, such as a star or a distant galaxy, with a name and coordinates.  <br /></td></tr>
@@ -9592,9 +9592,9 @@ Calabretta, M.R., &amp; Greisen, E.W., (2002), Astronomy &amp; Astrophysics, 395
 <dl class="section return"><dt>Returns</dt><dd>0</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="observer_8c.html#a7977de3e3edf8120b50cbd026c155f47" title="Converts coordinate offsets, from the local horizontal system to local equatorial offsets.">novas_h2e_offset()</a>, <a class="el" href="observer_8c.html#a095ba0ee644dc00c11dcdc5616bc96b0" title="Returns the equatorial Parallactic Angle (PA) calculated for an R.A.">novas_epa()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="system_8c.html#a7977de3e3edf8120b50cbd026c155f47" title="Converts coordinate offsets, from the local horizontal system to local equatorial offsets.">novas_h2e_offset()</a>, <a class="el" href="system_8c.html#a095ba0ee644dc00c11dcdc5616bc96b0" title="Returns the Parallactic Angle (PA) calculated for an RA/Dec location of the sky at a given sidereal t...">novas_epa()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="observer_8c.html#a7977de3e3edf8120b50cbd026c155f47">novas_h2e_offset()</a>.</p>
+<p class="reference">References <a class="el" href="system_8c.html#a7977de3e3edf8120b50cbd026c155f47">novas_h2e_offset()</a>.</p>
 
 </div>
 </div>
@@ -9622,8 +9622,8 @@ Calabretta, M.R., &amp; Greisen, E.W., (2002), Astronomy &amp; Astrophysics, 395
       </table>
 </div><div class="memdoc">
 
-<p>Returns the equatorial Parallactic Angle (PA) calculated for an R.A. </p>
-<p>/Dec location of the sky at a given sidereal time. The PA is the angle between the local horizontal coordinate directions and the local true-of-date equatorial coordinate directions, at the given location and time. The polar wobble is not included in the calculation.</p>
+<p>Returns the Parallactic Angle (PA) calculated for an RA/Dec location of the sky at a given sidereal time. </p>
+<p>The PA is the angle between the local horizontal coordinate directions and the local true-of-date equatorial coordinate directions, at the given location and time. The polar wobble is not included in the calculation.</p>
 <p>The Parallactic Angle is sometimes referrred to as the Vertical Position Angle (VPA). Both define the same quantity.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -9636,7 +9636,7 @@ Calabretta, M.R., &amp; Greisen, E.W., (2002), Astronomy &amp; Astrophysics, 395
 <dl class="section return"><dt>Returns</dt><dd>[deg] Parallactic Angle (PA). I.e., the clockwise position angle of the elevation direction w.r.t. the declination axis in the equatorial system. Same as the clockwise position angle of the declination direction w.r.t. the elevation axis, in the horizontal system.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="observer_8c.html#a73fcb54e47b2be0aa92810b5f55f7a3c" title="Returns the horizontal Parallactic Angle (PA) calculated for a gorizontal Az/El location of the sky.">novas_hpa()</a>, <a class="el" href="observer_8c.html#a13cd0b80eaa7bc682013f7e8ffbdbd6f" title="Converts coordinate offsets, from the local equatorial system to local horizontal offsets.">novas_e2h_offset()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="system_8c.html#a73fcb54e47b2be0aa92810b5f55f7a3c" title="Returns the Parallactic Angle (PA) calculated for a horizontal Az/El location of the sky.">novas_hpa()</a>, <a class="el" href="system_8c.html#a13cd0b80eaa7bc682013f7e8ffbdbd6f" title="Converts coordinate offsets, from the local equatorial system to local horizontal offsets.">novas_e2h_offset()</a> </dd></dl>
 
 </div>
 </div>
@@ -10321,7 +10321,7 @@ Calabretta, M.R., &amp; Greisen, E.W., (2002), Astronomy &amp; Astrophysics, 395
 <dl class="section return"><dt>Returns</dt><dd>0</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="observer_8c.html#a13cd0b80eaa7bc682013f7e8ffbdbd6f" title="Converts coordinate offsets, from the local equatorial system to local horizontal offsets.">novas_e2h_offset()</a>, <a class="el" href="observer_8c.html#a73fcb54e47b2be0aa92810b5f55f7a3c" title="Returns the horizontal Parallactic Angle (PA) calculated for a gorizontal Az/El location of the sky.">novas_hpa()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="system_8c.html#a13cd0b80eaa7bc682013f7e8ffbdbd6f" title="Converts coordinate offsets, from the local equatorial system to local horizontal offsets.">novas_e2h_offset()</a>, <a class="el" href="system_8c.html#a73fcb54e47b2be0aa92810b5f55f7a3c" title="Returns the Parallactic Angle (PA) calculated for a horizontal Az/El location of the sky.">novas_hpa()</a> </dd></dl>
 
 </div>
 </div>
@@ -10513,7 +10513,7 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
       </table>
 </div><div class="memdoc">
 
-<p>Returns the horizontal Parallactic Angle (PA) calculated for a gorizontal Az/El location of the sky. </p>
+<p>Returns the Parallactic Angle (PA) calculated for a horizontal Az/El location of the sky. </p>
 <p>The PA is the angle between the local horizontal coordinate directions and the local true-of-date equatorial coordinate directions at the given location. The polar wobble is not included in the calculation.</p>
 <p>The Parallactic Angle is sometimes referrred to as the Vertical Position Angle (VPA). Both define the same quantity.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -10527,7 +10527,7 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
 <dl class="section return"><dt>Returns</dt><dd>[deg] Parallactic Angle (PA). I.e., the clockwise position angle of the declination direction w.r.t. the elevation axis in the horizontal system. Same as the the clockwise position angle of the elevation direction w.r.t. the declination axis in the equatorial system.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="observer_8c.html#a095ba0ee644dc00c11dcdc5616bc96b0" title="Returns the equatorial Parallactic Angle (PA) calculated for an R.A.">novas_epa()</a>, <a class="el" href="observer_8c.html#a7977de3e3edf8120b50cbd026c155f47" title="Converts coordinate offsets, from the local horizontal system to local equatorial offsets.">novas_h2e_offset()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="system_8c.html#a095ba0ee644dc00c11dcdc5616bc96b0" title="Returns the Parallactic Angle (PA) calculated for an RA/Dec location of the sky at a given sidereal t...">novas_epa()</a>, <a class="el" href="system_8c.html#a7977de3e3edf8120b50cbd026c155f47" title="Converts coordinate offsets, from the local horizontal system to local equatorial offsets.">novas_h2e_offset()</a> </dd></dl>
 
 </div>
 </div>
@@ -11140,7 +11140,7 @@ Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 19
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if either vector argument is NULL (errno will be set to EINVAL).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="observer_8c.html#a14deb6fdce80ba213e1f1d5238306e17" title="Converts a 3D rectangular equatorial (δx, δy, δz) vector to a polar (δφ, δθ δr) vector along a line-o...">novas_xyz_to_los()</a>, <a class="el" href="observer_8c.html#a16c920eee105431247e9a1d9bf1c3021" title="Converts equatorial u,v,w projected (absolute or relative) coordinates to rectangular telescope x,...">novas_uvw_to_xyz()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="system_8c.html#a14deb6fdce80ba213e1f1d5238306e17" title="Converts a 3D rectangular equatorial (δx, δy, δz) vector to a polar (δφ, δθ δr) vector along a line-o...">novas_xyz_to_los()</a>, <a class="el" href="system_8c.html#a16c920eee105431247e9a1d9bf1c3021" title="Converts equatorial u,v,w projected (absolute or relative) coordinates to rectangular telescope x,...">novas_uvw_to_xyz()</a> </dd></dl>
 
 </div>
 </div>
@@ -13555,9 +13555,9 @@ The current implementation is not suitable for calculating the nearest successiv
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if either vector argument is NULL (errno will be set to EINVAL)</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="observer_8c.html#a87867e8e7fc7decaa44777a696465353" title="Converts rectangular telescope x,y,z (absolute or relative) coordinates (in ITRS) to equatorial u,...">novas_xyz_to_uvw()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="system_8c.html#a87867e8e7fc7decaa44777a696465353" title="Converts rectangular telescope x,y,z (absolute or relative) coordinates (in ITRS) to equatorial u,...">novas_xyz_to_uvw()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="observer_8c.html#a601d246673742cf72a5dbe1449c97560">novas_los_to_xyz()</a>.</p>
+<p class="reference">References <a class="el" href="system_8c.html#a601d246673742cf72a5dbe1449c97560">novas_los_to_xyz()</a>.</p>
 
 </div>
 </div>
@@ -13731,7 +13731,7 @@ Stone, Ronald C., P.A.S.P. 108, 1051-1058, 1996.  </li>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if either vector argument is NULL (errno will be set to EINVAL).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="observer_8c.html#a601d246673742cf72a5dbe1449c97560" title="Converts a 3D line-of-sight vector (δφ, δθ δr) to a rectangular equatorial (δx, δy,...">novas_los_to_xyz()</a>, <a class="el" href="observer_8c.html#a87867e8e7fc7decaa44777a696465353" title="Converts rectangular telescope x,y,z (absolute or relative) coordinates (in ITRS) to equatorial u,...">novas_xyz_to_uvw()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="system_8c.html#a601d246673742cf72a5dbe1449c97560" title="Converts a 3D line-of-sight vector (δφ, δθ δr) to a rectangular equatorial (δx, δy,...">novas_los_to_xyz()</a>, <a class="el" href="system_8c.html#a87867e8e7fc7decaa44777a696465353" title="Converts rectangular telescope x,y,z (absolute or relative) coordinates (in ITRS) to equatorial u,...">novas_xyz_to_uvw()</a> </dd></dl>
 
 </div>
 </div>
@@ -13779,9 +13779,9 @@ Stone, Ronald C., P.A.S.P. 108, 1051-1058, 1996.  </li>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if either vector argument is NULL (errno will be set to EINVAL)</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="observer_8c.html#a16c920eee105431247e9a1d9bf1c3021" title="Converts equatorial u,v,w projected (absolute or relative) coordinates to rectangular telescope x,...">novas_uvw_to_xyz()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="system_8c.html#a16c920eee105431247e9a1d9bf1c3021" title="Converts equatorial u,v,w projected (absolute or relative) coordinates to rectangular telescope x,...">novas_uvw_to_xyz()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="observer_8c.html#a14deb6fdce80ba213e1f1d5238306e17">novas_xyz_to_los()</a>.</p>
+<p class="reference">References <a class="el" href="system_8c.html#a14deb6fdce80ba213e1f1d5238306e17">novas_xyz_to_los()</a>.</p>
 
 </div>
 </div>
@@ -15565,7 +15565,7 @@ Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
 <dd>
 <a class="el" href="target_8c.html#af0137aa791dd29278904e53498fb9515" title="Initializes a catalog entry, such as a star or a distant galaxy, with a name and coordinates.">novas_init_cat_entry()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="#a7822b81ad3f75b448f446ed4da774e75">NOVAS_KMS</a>, <a class="el" href="observer_8c.html#a601d246673742cf72a5dbe1449c97560">novas_los_to_xyz()</a>, and <a class="el" href="util_8c.html#ae104afd1bc638def9bdbce1801e5054a">radec2vector()</a>.</p>
+<p class="reference">References <a class="el" href="#a7822b81ad3f75b448f446ed4da774e75">NOVAS_KMS</a>, <a class="el" href="system_8c.html#a601d246673742cf72a5dbe1449c97560">novas_los_to_xyz()</a>, and <a class="el" href="util_8c.html#ae104afd1bc638def9bdbce1801e5054a">radec2vector()</a>.</p>
 
 </div>
 </div>
@@ -16228,7 +16228,7 @@ Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3. </li>
 <dd>
 <a class="el" href="#a4100ecc5d9badfa07301024baffe9ded" title="[day] Julian date for J1991.25, which the Hipparcos catalog is referred to.">NOVAS_JD_HIP</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="structcat__entry.html#a128c876f7e50045e1c469dbabb400c58">cat_entry::catalog</a>, <a class="el" href="#ace5e59ce1564bf6c61946c290bb05367a882f5d97444df44485d360ce298843b1">CHANGE_EPOCH</a>, <a class="el" href="#ace5e59ce1564bf6c61946c290bb05367a1b1e38f90bc3bc3c9f1c04aa2c959444">CHANGE_ICRS_TO_J2000</a>, <a class="el" href="#ace5e59ce1564bf6c61946c290bb05367a84da44f7510d8c99353b1b1c6bb4faf8">CHANGE_J2000_TO_ICRS</a>, <a class="el" href="structcat__entry.html#ac4ae7989694321b540abb75c30eec690">cat_entry::dec</a>, <a class="el" href="transform_8c.html#aa11d2253a44261370af8d0c32f0715e9">frame_tie()</a>, <a class="el" href="#ae8b91a9b4fe4af63c7054d1eacdb996ea8557604d6604356e6620b42f78aec999">ICRS_TO_J2000</a>, <a class="el" href="#ae8b91a9b4fe4af63c7054d1eacdb996ea7e5dc966849295dce29fb339b960da4f">J2000_TO_ICRS</a>, <a class="el" href="#a31bf4a08940bfa3e97ae6a1abee80422">NOVAS_JD_J2000</a>, <a class="el" href="#a7822b81ad3f75b448f446ed4da774e75">NOVAS_KMS</a>, <a class="el" href="observer_8c.html#a601d246673742cf72a5dbe1449c97560">novas_los_to_xyz()</a>, <a class="el" href="util_8c.html#a0f41cefb8c872973b07e936b5026d143">novas_vlen()</a>, <a class="el" href="observer_8c.html#a14deb6fdce80ba213e1f1d5238306e17">novas_xyz_to_los()</a>, <a class="el" href="structcat__entry.html#a18f7f3626661dbf57ce9eaec51840eb8">cat_entry::parallax</a>, <a class="el" href="#ace5e59ce1564bf6c61946c290bb05367a6833dbc8bfb3b8ba2cdd7a2da0b82353">PRECESSION</a>, <a class="el" href="equinox_8c.html#a9178358732325399f3a5e3582080ced3">precession()</a>, <a class="el" href="structcat__entry.html#acf4bdbac6c1d059a4db3ed879f32f21c">cat_entry::promodec</a>, <a class="el" href="structcat__entry.html#ab9301cf1c67c13114b22950650b17789">cat_entry::promora</a>, <a class="el" href="#ace5e59ce1564bf6c61946c290bb05367a197e40a273d8132592b60efe3f87a065">PROPER_MOTION</a>, <a class="el" href="structcat__entry.html#a713a0c71a86d92fa6892fdb2cb7c9422">cat_entry::ra</a>, <a class="el" href="util_8c.html#ae104afd1bc638def9bdbce1801e5054a">radec2vector()</a>, <a class="el" href="structcat__entry.html#aa2b5e5ca3a5df1765b49a6c6b110a36a">cat_entry::radialvelocity</a>, <a class="el" href="#af32c72297e36b77bead56044d23082f7">SIZE_OF_CAT_NAME</a>, <a class="el" href="#a977a43db51d544f728ea8a22b4a53783">SIZE_OF_OBJ_NAME</a>, <a class="el" href="structcat__entry.html#ad26c9b08b1028d2a7f35c447841022b1">cat_entry::starname</a>, and <a class="el" href="structcat__entry.html#a2cc0369c1acae73cf6f3e06f1a8ddab8">cat_entry::starnumber</a>.</p>
+<p class="reference">References <a class="el" href="structcat__entry.html#a128c876f7e50045e1c469dbabb400c58">cat_entry::catalog</a>, <a class="el" href="#ace5e59ce1564bf6c61946c290bb05367a882f5d97444df44485d360ce298843b1">CHANGE_EPOCH</a>, <a class="el" href="#ace5e59ce1564bf6c61946c290bb05367a1b1e38f90bc3bc3c9f1c04aa2c959444">CHANGE_ICRS_TO_J2000</a>, <a class="el" href="#ace5e59ce1564bf6c61946c290bb05367a84da44f7510d8c99353b1b1c6bb4faf8">CHANGE_J2000_TO_ICRS</a>, <a class="el" href="structcat__entry.html#ac4ae7989694321b540abb75c30eec690">cat_entry::dec</a>, <a class="el" href="transform_8c.html#aa11d2253a44261370af8d0c32f0715e9">frame_tie()</a>, <a class="el" href="#ae8b91a9b4fe4af63c7054d1eacdb996ea8557604d6604356e6620b42f78aec999">ICRS_TO_J2000</a>, <a class="el" href="#ae8b91a9b4fe4af63c7054d1eacdb996ea7e5dc966849295dce29fb339b960da4f">J2000_TO_ICRS</a>, <a class="el" href="#a31bf4a08940bfa3e97ae6a1abee80422">NOVAS_JD_J2000</a>, <a class="el" href="#a7822b81ad3f75b448f446ed4da774e75">NOVAS_KMS</a>, <a class="el" href="system_8c.html#a601d246673742cf72a5dbe1449c97560">novas_los_to_xyz()</a>, <a class="el" href="util_8c.html#a0f41cefb8c872973b07e936b5026d143">novas_vlen()</a>, <a class="el" href="system_8c.html#a14deb6fdce80ba213e1f1d5238306e17">novas_xyz_to_los()</a>, <a class="el" href="structcat__entry.html#a18f7f3626661dbf57ce9eaec51840eb8">cat_entry::parallax</a>, <a class="el" href="#ace5e59ce1564bf6c61946c290bb05367a6833dbc8bfb3b8ba2cdd7a2da0b82353">PRECESSION</a>, <a class="el" href="equinox_8c.html#a9178358732325399f3a5e3582080ced3">precession()</a>, <a class="el" href="structcat__entry.html#acf4bdbac6c1d059a4db3ed879f32f21c">cat_entry::promodec</a>, <a class="el" href="structcat__entry.html#ab9301cf1c67c13114b22950650b17789">cat_entry::promora</a>, <a class="el" href="#ace5e59ce1564bf6c61946c290bb05367a197e40a273d8132592b60efe3f87a065">PROPER_MOTION</a>, <a class="el" href="structcat__entry.html#a713a0c71a86d92fa6892fdb2cb7c9422">cat_entry::ra</a>, <a class="el" href="util_8c.html#ae104afd1bc638def9bdbce1801e5054a">radec2vector()</a>, <a class="el" href="structcat__entry.html#aa2b5e5ca3a5df1765b49a6c6b110a36a">cat_entry::radialvelocity</a>, <a class="el" href="#af32c72297e36b77bead56044d23082f7">SIZE_OF_CAT_NAME</a>, <a class="el" href="#a977a43db51d544f728ea8a22b4a53783">SIZE_OF_OBJ_NAME</a>, <a class="el" href="structcat__entry.html#ad26c9b08b1028d2a7f35c447841022b1">cat_entry::starname</a>, and <a class="el" href="structcat__entry.html#a2cc0369c1acae73cf6f3e06f1a8ddab8">cat_entry::starnumber</a>.</p>
 
 </div>
 </div>

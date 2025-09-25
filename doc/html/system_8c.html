@@ -134,11 +134,37 @@ Functions</h2></td></tr>
 <tr class="memitem:aef3c1f8e4c443e51e65003018449768a" id="r_aef3c1f8e4c443e51e65003018449768a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aef3c1f8e4c443e51e65003018449768a">itrs_to_hor</a> (const <a class="el" href="structon__surface.html">on_surface</a> *restrict location, const double *restrict itrs, double *restrict az, double *restrict za)</td></tr>
 <tr class="memdesc:aef3c1f8e4c443e51e65003018449768a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a position vector in the Earth-fixed ITRS frame to astrometric (unrefracted) azimuth and zenith angles at the specified observer location.  <br /></td></tr>
 <tr class="separator:aef3c1f8e4c443e51e65003018449768a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13cd0b80eaa7bc682013f7e8ffbdbd6f" id="r_a13cd0b80eaa7bc682013f7e8ffbdbd6f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a13cd0b80eaa7bc682013f7e8ffbdbd6f">novas_e2h_offset</a> (double dra, double ddec, double pa, double *restrict daz, double *restrict del)</td></tr>
+<tr class="memdesc:a13cd0b80eaa7bc682013f7e8ffbdbd6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts coordinate offsets, from the local equatorial system to local horizontal offsets.  <br /></td></tr>
+<tr class="separator:a13cd0b80eaa7bc682013f7e8ffbdbd6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a095ba0ee644dc00c11dcdc5616bc96b0" id="r_a095ba0ee644dc00c11dcdc5616bc96b0"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a095ba0ee644dc00c11dcdc5616bc96b0">novas_epa</a> (double ha, double dec, double lat)</td></tr>
+<tr class="memdesc:a095ba0ee644dc00c11dcdc5616bc96b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the Parallactic Angle (PA) calculated for an RA/Dec location of the sky at a given sidereal time.  <br /></td></tr>
+<tr class="separator:a095ba0ee644dc00c11dcdc5616bc96b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7977de3e3edf8120b50cbd026c155f47" id="r_a7977de3e3edf8120b50cbd026c155f47"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7977de3e3edf8120b50cbd026c155f47">novas_h2e_offset</a> (double daz, double del, double pa, double *restrict dra, double *restrict ddec)</td></tr>
+<tr class="memdesc:a7977de3e3edf8120b50cbd026c155f47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts coordinate offsets, from the local horizontal system to local equatorial offsets.  <br /></td></tr>
+<tr class="separator:a7977de3e3edf8120b50cbd026c155f47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73fcb54e47b2be0aa92810b5f55f7a3c" id="r_a73fcb54e47b2be0aa92810b5f55f7a3c"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a73fcb54e47b2be0aa92810b5f55f7a3c">novas_hpa</a> (double az, double el, double lat)</td></tr>
+<tr class="memdesc:a73fcb54e47b2be0aa92810b5f55f7a3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the Parallactic Angle (PA) calculated for a horizontal Az/El location of the sky.  <br /></td></tr>
+<tr class="separator:a73fcb54e47b2be0aa92810b5f55f7a3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a601d246673742cf72a5dbe1449c97560" id="r_a601d246673742cf72a5dbe1449c97560"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a601d246673742cf72a5dbe1449c97560">novas_los_to_xyz</a> (const double *los, double lon, double lat, double *xyz)</td></tr>
+<tr class="memdesc:a601d246673742cf72a5dbe1449c97560"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a 3D line-of-sight vector (&delta;&phi;, &delta;&theta; &delta;r) to a rectangular equatorial (&delta;x, &delta;y, &delta;z) vector.  <br /></td></tr>
+<tr class="separator:a601d246673742cf72a5dbe1449c97560"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16c920eee105431247e9a1d9bf1c3021" id="r_a16c920eee105431247e9a1d9bf1c3021"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a16c920eee105431247e9a1d9bf1c3021">novas_uvw_to_xyz</a> (const double *uvw, double ha, double dec, double *xyz)</td></tr>
+<tr class="memdesc:a16c920eee105431247e9a1d9bf1c3021"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts equatorial u,v,w projected (absolute or relative) coordinates to rectangular telescope x,y,z coordinates (in ITRS) to for a specified line of sight.  <br /></td></tr>
+<tr class="separator:a16c920eee105431247e9a1d9bf1c3021"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14deb6fdce80ba213e1f1d5238306e17" id="r_a14deb6fdce80ba213e1f1d5238306e17"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a14deb6fdce80ba213e1f1d5238306e17">novas_xyz_to_los</a> (const double *xyz, double lon, double lat, double *los)</td></tr>
+<tr class="memdesc:a14deb6fdce80ba213e1f1d5238306e17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a 3D rectangular equatorial (&delta;x, &delta;y, &delta;z) vector to a polar (&delta;&phi;, &delta;&theta; &delta;r) vector along a line-of-sight.  <br /></td></tr>
+<tr class="separator:a14deb6fdce80ba213e1f1d5238306e17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87867e8e7fc7decaa44777a696465353" id="r_a87867e8e7fc7decaa44777a696465353"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a87867e8e7fc7decaa44777a696465353">novas_xyz_to_uvw</a> (const double *xyz, double ha, double dec, double *uvw)</td></tr>
+<tr class="memdesc:a87867e8e7fc7decaa44777a696465353"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts rectangular telescope x,y,z (absolute or relative) coordinates (in ITRS) to equatorial u,v,w projected coordinates for a specified line of sight.  <br /></td></tr>
+<tr class="separator:a87867e8e7fc7decaa44777a696465353"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section date"><dt>Date</dt><dd>Created on Mar 5, 2025 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>G. Kaplan and Attila Kovacs</dd></dl>
-<p>Various transformations between different coordinate systems used in astronomy, such as equatorial, ecliptic, Galactic, or local horizontal coordinate systems. </p>
+<p>Various transformations between different coordinate systems used in astronomy, such as equatorial, ecliptic, Galactic, or local horizontal coordinate systems.</p>
+<p>This module also provides functions otherwise relating to the observer locations.</p>
+<p>For Earth-based geodetic locations, the module provides a set of functions to convert between various (local) coordinate systems. For example, calculating parallactic angles (a.k.a. vertical position angle or VPA), for converting between horizontal and equatorial offsets, and various functions for converting equatorial vectors to a line-of-sight, or <em>u</em>, <em>v</em>, <em>w</em> coordinate bases, and vice-versa. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a41ca0cfd79ad07c9e857ba02fa94928e" name="a41ca0cfd79ad07c9e857ba02fa94928e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a41ca0cfd79ad07c9e857ba02fa94928e">&#9670;&#160;</a></span>ecl2equ()</h2>
@@ -678,6 +704,398 @@ Hipparcos and Tycho Catalogues, Vol. 1, Section 1.5.3. </li>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#a19f4f6c7d942dcba5ad2a4d2a60affad" title="Converts astrometric (unrefracted) azimuth and zenith angles at the specified observer location to a ...">hor_to_itrs()</a>, <a class="el" href="transform_8c.html#aa2768d89d499a7155f90a6fd8c176d8d" title="Rotates a position vector from the dynamical CIRS frame of date to the Earth-fixed ITRS frame (IAU 20...">cirs_to_itrs()</a>, <a class="el" href="transform_8c.html#a4551e2ac083e34c1b2b61b3805efb9a3" title="Rotates a position vector from the dynamical True of Date (TOD) frame of date the Earth-fixed ITRS fr...">tod_to_itrs()</a>, <a class="el" href="refract_8c.html#afe1d4e96dd66676f5567a279e83e88d9" title="Computes atmospheric optical refraction for a source at an astrometric zenith distance (e....">refract_astro()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a13cd0b80eaa7bc682013f7e8ffbdbd6f" name="a13cd0b80eaa7bc682013f7e8ffbdbd6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13cd0b80eaa7bc682013f7e8ffbdbd6f">&#9670;&#160;</a></span>novas_e2h_offset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int novas_e2h_offset </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>dra</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>ddec</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>pa</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *restrict</td>          <td class="paramname"><span class="paramname"><em>daz</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *restrict</td>          <td class="paramname"><span class="paramname"><em>del</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts coordinate offsets, from the local equatorial system to local horizontal offsets. </p>
+<p>Converting between local flat projections and spherical coordinates usually requires a WCS projection.</p>
+<p>REFERENCES: </p><ol>
+<li>
+Calabretta, M.R., &amp; Greisen, E.W., (2002), Astronomy &amp; Astrophysics, 395, 1077-1122. </li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">dra</td><td>[arcsec] Projected ffset position in the apparent true-of-date R.A. direction. E.g. The projected offset between two RA coordinates at a same reference declination, is &delta;RA = (RA2 - RA1) * cos(Dec<sub>0</sub>). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">ddec</td><td>[arcsec] Projected offset position in the apparent true-of-date declination direction. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">pa</td><td>[deg] Parallactic Angle </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">daz</td><td>[arcsec] Output offset position in the local azimuth direction. It can be a pointer to one of the input coordinates, or NULL if not required. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">del</td><td>[arcsec] Output offset position in the local elevation direction. It can be a pointer to one of the input coordinates, or NULL if not required. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a7977de3e3edf8120b50cbd026c155f47" title="Converts coordinate offsets, from the local horizontal system to local equatorial offsets.">novas_h2e_offset()</a>, <a class="el" href="#a095ba0ee644dc00c11dcdc5616bc96b0" title="Returns the Parallactic Angle (PA) calculated for an RA/Dec location of the sky at a given sidereal t...">novas_epa()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="#a7977de3e3edf8120b50cbd026c155f47">novas_h2e_offset()</a>.</p>
+
+</div>
+</div>
+<a id="a095ba0ee644dc00c11dcdc5616bc96b0" name="a095ba0ee644dc00c11dcdc5616bc96b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a095ba0ee644dc00c11dcdc5616bc96b0">&#9670;&#160;</a></span>novas_epa()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double novas_epa </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>ha</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>dec</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>lat</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the Parallactic Angle (PA) calculated for an RA/Dec location of the sky at a given sidereal time. </p>
+<p>The PA is the angle between the local horizontal coordinate directions and the local true-of-date equatorial coordinate directions, at the given location and time. The polar wobble is not included in the calculation.</p>
+<p>The Parallactic Angle is sometimes referrred to as the Vertical Position Angle (VPA). Both define the same quantity.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ha</td><td>[h] Hour angle (LST - RA) i.e., the difference between the Local (apparent) Sidereal Time and the apparent (true-of-date) Right Ascension of observed source. </td></tr>
+    <tr><td class="paramname">dec</td><td>[deg] Apparent (true-of-date) declination of observed source </td></tr>
+    <tr><td class="paramname">lat</td><td>[deg] Geodetic latitude of observer </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>[deg] Parallactic Angle (PA). I.e., the clockwise position angle of the elevation direction w.r.t. the declination axis in the equatorial system. Same as the clockwise position angle of the declination direction w.r.t. the elevation axis, in the horizontal system.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a73fcb54e47b2be0aa92810b5f55f7a3c" title="Returns the Parallactic Angle (PA) calculated for a horizontal Az/El location of the sky.">novas_hpa()</a>, <a class="el" href="#a13cd0b80eaa7bc682013f7e8ffbdbd6f" title="Converts coordinate offsets, from the local equatorial system to local horizontal offsets.">novas_e2h_offset()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a7977de3e3edf8120b50cbd026c155f47" name="a7977de3e3edf8120b50cbd026c155f47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7977de3e3edf8120b50cbd026c155f47">&#9670;&#160;</a></span>novas_h2e_offset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int novas_h2e_offset </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>daz</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>del</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>pa</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *restrict</td>          <td class="paramname"><span class="paramname"><em>dra</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *restrict</td>          <td class="paramname"><span class="paramname"><em>ddec</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts coordinate offsets, from the local horizontal system to local equatorial offsets. </p>
+<p>Converting between local flat projections and spherical coordinates usually requires a WCS projection.</p>
+<p>REFERENCES: </p><ol>
+<li>
+Calabretta, M.R., &amp; Greisen, E.W., (2002), Astronomy &amp; Astrophysics, 395, 1077-1122. </li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">daz</td><td>[arcsec] Projected offset position in the azimuth direction. The projected offset between two azimuth positions at the same reference elevation is &delta;Az = (Az2 - Az1) * cos(El<sub>0</sub>). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">del</td><td>[arcsec] projected offset position in the elevation direction </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">pa</td><td>[deg] Parallactic Angle </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">dra</td><td>[arcsec] Output offset position in the local true-of-date R.A. direction. It can be a pointer to one of the input coordinates, or NULL if not required. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">ddec</td><td>[arcsec] Output offset position in the local true-of-date declination direction. It can be a pointer to one of the input coordinates, or NULL if not required. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a13cd0b80eaa7bc682013f7e8ffbdbd6f" title="Converts coordinate offsets, from the local equatorial system to local horizontal offsets.">novas_e2h_offset()</a>, <a class="el" href="#a73fcb54e47b2be0aa92810b5f55f7a3c" title="Returns the Parallactic Angle (PA) calculated for a horizontal Az/El location of the sky.">novas_hpa()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a73fcb54e47b2be0aa92810b5f55f7a3c" name="a73fcb54e47b2be0aa92810b5f55f7a3c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73fcb54e47b2be0aa92810b5f55f7a3c">&#9670;&#160;</a></span>novas_hpa()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double novas_hpa </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>az</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>el</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>lat</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the Parallactic Angle (PA) calculated for a horizontal Az/El location of the sky. </p>
+<p>The PA is the angle between the local horizontal coordinate directions and the local true-of-date equatorial coordinate directions at the given location. The polar wobble is not included in the calculation.</p>
+<p>The Parallactic Angle is sometimes referrred to as the Vertical Position Angle (VPA). Both define the same quantity.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">az</td><td>[deg] Azimuth angle </td></tr>
+    <tr><td class="paramname">el</td><td>[deg] Elevation angle </td></tr>
+    <tr><td class="paramname">lat</td><td>[deg] Geodetic latitude of observer </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>[deg] Parallactic Angle (PA). I.e., the clockwise position angle of the declination direction w.r.t. the elevation axis in the horizontal system. Same as the the clockwise position angle of the elevation direction w.r.t. the declination axis in the equatorial system.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a095ba0ee644dc00c11dcdc5616bc96b0" title="Returns the Parallactic Angle (PA) calculated for an RA/Dec location of the sky at a given sidereal t...">novas_epa()</a>, <a class="el" href="#a7977de3e3edf8120b50cbd026c155f47" title="Converts coordinate offsets, from the local horizontal system to local equatorial offsets.">novas_h2e_offset()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a601d246673742cf72a5dbe1449c97560" name="a601d246673742cf72a5dbe1449c97560"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a601d246673742cf72a5dbe1449c97560">&#9670;&#160;</a></span>novas_los_to_xyz()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int novas_los_to_xyz </td>
+          <td>(</td>
+          <td class="paramtype">const double *</td>          <td class="paramname"><span class="paramname"><em>los</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>lon</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>lat</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *</td>          <td class="paramname"><span class="paramname"><em>xyz</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts a 3D line-of-sight vector (&delta;&phi;, &delta;&theta; &delta;r) to a rectangular equatorial (&delta;x, &delta;y, &delta;z) vector. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">los</td><td>[arb.u.] Line-of-sight 3-vector (&delta;&phi;, &delta;&theta; &delta;r). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">lon</td><td>[deg] Line-of-sight longitude. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">lat</td><td>[deg] Line-of-sight latitude. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">xyz</td><td>[arb.u.] Output rectangular equatorial 3-vector (&delta;x, &delta;y, &delta;z), in the same units as the input. It may be the same vector as the input. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if either vector argument is NULL (errno will be set to EINVAL).</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a14deb6fdce80ba213e1f1d5238306e17" title="Converts a 3D rectangular equatorial (δx, δy, δz) vector to a polar (δφ, δθ δr) vector along a line-o...">novas_xyz_to_los()</a>, <a class="el" href="#a16c920eee105431247e9a1d9bf1c3021" title="Converts equatorial u,v,w projected (absolute or relative) coordinates to rectangular telescope x,...">novas_uvw_to_xyz()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a16c920eee105431247e9a1d9bf1c3021" name="a16c920eee105431247e9a1d9bf1c3021"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16c920eee105431247e9a1d9bf1c3021">&#9670;&#160;</a></span>novas_uvw_to_xyz()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int novas_uvw_to_xyz </td>
+          <td>(</td>
+          <td class="paramtype">const double *</td>          <td class="paramname"><span class="paramname"><em>uvw</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>ha</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>dec</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *</td>          <td class="paramname"><span class="paramname"><em>xyz</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts equatorial u,v,w projected (absolute or relative) coordinates to rectangular telescope x,y,z coordinates (in ITRS) to for a specified line of sight. </p>
+<p>u,v,w are Cartesian coordinates (u,v) along the local equatorial R.A. and declination directions as seen from a direction on the sky (w). As such, they are effectively ITRS-based line-of-sight (LOS) coordinates.</p>
+<p>x,y,z are Cartesian coordinates w.r.t the Greenwich meridian in the ITRS frame. The directions are x: long=0, lat=0; y: long=90, lat=0; z: lat=90.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">xyz</td><td>[arb.u.] Absolute or relative u,v,w coordinates (double[3]). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">ha</td><td>[h] Hourangle (LST - RA) i.e., the difference between the Local (apparent) Sidereal Time and the apparent (true-of-date) Right Ascension of observed source. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">dec</td><td>[deg] Apparent (true-of-date) declination of source </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">uvw</td><td>[arb.u.] Converted x,y,z coordinates (double[3]) in the same unit as uvw. It may be the same vector as the input.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if either vector argument is NULL (errno will be set to EINVAL)</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a87867e8e7fc7decaa44777a696465353" title="Converts rectangular telescope x,y,z (absolute or relative) coordinates (in ITRS) to equatorial u,...">novas_xyz_to_uvw()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="#a601d246673742cf72a5dbe1449c97560">novas_los_to_xyz()</a>.</p>
+
+</div>
+</div>
+<a id="a14deb6fdce80ba213e1f1d5238306e17" name="a14deb6fdce80ba213e1f1d5238306e17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14deb6fdce80ba213e1f1d5238306e17">&#9670;&#160;</a></span>novas_xyz_to_los()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int novas_xyz_to_los </td>
+          <td>(</td>
+          <td class="paramtype">const double *</td>          <td class="paramname"><span class="paramname"><em>xyz</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>lon</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>lat</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *</td>          <td class="paramname"><span class="paramname"><em>los</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts a 3D rectangular equatorial (&delta;x, &delta;y, &delta;z) vector to a polar (&delta;&phi;, &delta;&theta; &delta;r) vector along a line-of-sight. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">xyz</td><td>[arb.u.] Rectangular equatorial 3-vector (&delta;x, &delta;y, &delta;z). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">lon</td><td>[deg] Line-of-sight longitude. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">lat</td><td>[deg] Line-of-sight latitude. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">los</td><td>[arb.u.] Output line-of-sight 3-vector (&delta;&phi;, &delta;&theta; &delta;r), in the same units as the input. It may be the same vector as the input. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if either vector argument is NULL (errno will be set to EINVAL).</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a601d246673742cf72a5dbe1449c97560" title="Converts a 3D line-of-sight vector (δφ, δθ δr) to a rectangular equatorial (δx, δy,...">novas_los_to_xyz()</a>, <a class="el" href="#a87867e8e7fc7decaa44777a696465353" title="Converts rectangular telescope x,y,z (absolute or relative) coordinates (in ITRS) to equatorial u,...">novas_xyz_to_uvw()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a87867e8e7fc7decaa44777a696465353" name="a87867e8e7fc7decaa44777a696465353"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87867e8e7fc7decaa44777a696465353">&#9670;&#160;</a></span>novas_xyz_to_uvw()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int novas_xyz_to_uvw </td>
+          <td>(</td>
+          <td class="paramtype">const double *</td>          <td class="paramname"><span class="paramname"><em>xyz</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>ha</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>dec</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *</td>          <td class="paramname"><span class="paramname"><em>uvw</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts rectangular telescope x,y,z (absolute or relative) coordinates (in ITRS) to equatorial u,v,w projected coordinates for a specified line of sight. </p>
+<p>x,y,z are Cartesian coordinates w.r.t the Greenwich meridian, in the ITRS frame. The directions are x: long=0, lat=0; y: long=90, lat=0; z: lat=90.</p>
+<p>u,v,w are Cartesian coordinates (u,v) along the local equatorial R.A. and declination directions as seen from a direction on the sky (w). As such, they are effectively ITRS-based line-of-sight (LOS) coordinates.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">xyz</td><td>[arb.u.] Absolute or relative x,y,z coordinates (double[3]). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">ha</td><td>[h] Hourangle (LST - RA) i.e., the difference between the Local (apparent) Sidereal Time and the apparent (true-of-date) Right Ascension of observed source. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">dec</td><td>[deg] Apparent (true-of-date) declination of source </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">uvw</td><td>[arb.u.] Converted u,v,w coordinates (double[3]) in same units as xyz. It may be the same vector as the input.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if either vector argument is NULL (errno will be set to EINVAL)</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a16c920eee105431247e9a1d9bf1c3021" title="Converts equatorial u,v,w projected (absolute or relative) coordinates to rectangular telescope x,...">novas_uvw_to_xyz()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="#a14deb6fdce80ba213e1f1d5238306e17">novas_xyz_to_los()</a>.</p>
 
 </div>
 </div>

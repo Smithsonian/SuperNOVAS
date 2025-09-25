@@ -8,5 +8,13 @@ var system_8c =
     [ "equ2hor", "system_8c.html#ad932a8617973ef06e4a5c955b7897bb0", null ],
     [ "gal2equ", "system_8c.html#adcce501bd3f8f70974e7f55527162f83", null ],
     [ "hor_to_itrs", "system_8c.html#a19f4f6c7d942dcba5ad2a4d2a60affad", null ],
-    [ "itrs_to_hor", "system_8c.html#aef3c1f8e4c443e51e65003018449768a", null ]
+    [ "itrs_to_hor", "system_8c.html#aef3c1f8e4c443e51e65003018449768a", null ],
+    [ "novas_e2h_offset", "system_8c.html#a13cd0b80eaa7bc682013f7e8ffbdbd6f", null ],
+    [ "novas_epa", "system_8c.html#a095ba0ee644dc00c11dcdc5616bc96b0", null ],
+    [ "novas_h2e_offset", "system_8c.html#a7977de3e3edf8120b50cbd026c155f47", null ],
+    [ "novas_hpa", "system_8c.html#a73fcb54e47b2be0aa92810b5f55f7a3c", null ],
+    [ "novas_los_to_xyz", "system_8c.html#a601d246673742cf72a5dbe1449c97560", null ],
+    [ "novas_uvw_to_xyz", "system_8c.html#a16c920eee105431247e9a1d9bf1c3021", null ],
+    [ "novas_xyz_to_los", "system_8c.html#a14deb6fdce80ba213e1f1d5238306e17", null ],
+    [ "novas_xyz_to_uvw", "system_8c.html#a87867e8e7fc7decaa44777a696465353", null ]
 ];

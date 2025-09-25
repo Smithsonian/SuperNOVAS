@@ -1085,15 +1085,7 @@
           <topic label="make_on_surface" href="observer_8c.html#a42c084465aedee75965f74e23e6571fe"/>
           <topic label="make_solar_system_observer" href="observer_8c.html#a9c3f1a1bc3fd9ac6d211806913d2d529"/>
           <topic label="make_xyz_site" href="observer_8c.html#a9e3cbe310a40919ff94d2d530ffa74ee"/>
-          <topic label="novas_e2h_offset" href="observer_8c.html#a13cd0b80eaa7bc682013f7e8ffbdbd6f"/>
-          <topic label="novas_epa" href="observer_8c.html#a095ba0ee644dc00c11dcdc5616bc96b0"/>
-          <topic label="novas_h2e_offset" href="observer_8c.html#a7977de3e3edf8120b50cbd026c155f47"/>
-          <topic label="novas_hpa" href="observer_8c.html#a73fcb54e47b2be0aa92810b5f55f7a3c"/>
-          <topic label="novas_los_to_xyz" href="observer_8c.html#a601d246673742cf72a5dbe1449c97560"/>
           <topic label="novas_set_default_weather" href="observer_8c.html#a0fc8f315f8606e09571ab49efb13baca"/>
-          <topic label="novas_uvw_to_xyz" href="observer_8c.html#a16c920eee105431247e9a1d9bf1c3021"/>
-          <topic label="novas_xyz_to_los" href="observer_8c.html#a14deb6fdce80ba213e1f1d5238306e17"/>
-          <topic label="novas_xyz_to_uvw" href="observer_8c.html#a87867e8e7fc7decaa44777a696465353"/>
           <topic label="obs_planets" href="observer_8c.html#a07490a134a685fe0842b2b4816559292"/>
           <topic label="obs_posvel" href="observer_8c.html#a0e4e5ff7c37e6521ca75ae62aaf4050e"/>
         </topic>
@@ -1214,6 +1206,14 @@
           <topic label="gal2equ" href="system_8c.html#adcce501bd3f8f70974e7f55527162f83"/>
           <topic label="hor_to_itrs" href="system_8c.html#a19f4f6c7d942dcba5ad2a4d2a60affad"/>
           <topic label="itrs_to_hor" href="system_8c.html#aef3c1f8e4c443e51e65003018449768a"/>
+          <topic label="novas_e2h_offset" href="system_8c.html#a13cd0b80eaa7bc682013f7e8ffbdbd6f"/>
+          <topic label="novas_epa" href="system_8c.html#a095ba0ee644dc00c11dcdc5616bc96b0"/>
+          <topic label="novas_h2e_offset" href="system_8c.html#a7977de3e3edf8120b50cbd026c155f47"/>
+          <topic label="novas_hpa" href="system_8c.html#a73fcb54e47b2be0aa92810b5f55f7a3c"/>
+          <topic label="novas_los_to_xyz" href="system_8c.html#a601d246673742cf72a5dbe1449c97560"/>
+          <topic label="novas_uvw_to_xyz" href="system_8c.html#a16c920eee105431247e9a1d9bf1c3021"/>
+          <topic label="novas_xyz_to_los" href="system_8c.html#a14deb6fdce80ba213e1f1d5238306e17"/>
+          <topic label="novas_xyz_to_uvw" href="system_8c.html#a87867e8e7fc7decaa44777a696465353"/>
         </topic>
         <topic label="target.c" href="target_8c.html">
           <topic label="make_cat_entry" href="target_8c.html#aa040bcfe8bee7d8e1307800f48efddd7"/>
