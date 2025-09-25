@@ -296,7 +296,6 @@ __NOTE__
 <a name="cmake-build"></a>
 ### Build SuperNOVAS using CMake 
 
-
 As of v1.5, __SuperNOVAS__ can be built using [CMake](https://cmake.org/) (many thanks to Kiran Shila). CMake allows 
 for greater portability than the regular GNU `Makefile`. Note, however, that the CMake configuration does not support 
 all of the build options of the GNU `Makefile`, such as automatic CALCEPH and CSPICE integration on Linux, supporting 
@@ -320,11 +319,7 @@ The __SuperNOVAS__ CMake build supports the following options (in addition to th
  - `ENABLE_CALCEPH=ON|OFF` (default: OFF) - Enable CALCEPH ephemeris plugin support. Requires CALCEPH package.
  - `ENABLE_CSPICE=ON|OFF` (default: OFF) - Enable CSPICE ephemeris plugin support. Requires `cspice` library 
    installed.
- - `ENABLE_SOLSYS1=ON|OFF` (default: OFF) - Enable legacy DE200 -- DE421 ephemeris plugin support via `eph_manager()` 
-   (i.e., `solsys1.c`).
- - `ENABLE_SOLSYS2=ON|OFF` (default: OFF) - Enable ephemeris plugin support via the PLEPH Fortran library and a 
-   user-provided `jplint.f` implementation (i.e., `solsys2.c`).
- 
+
 For example, to build __SuperNOVAS__ as shared libraries with 
 [CALCEPH](https://calceph.imcce.fr/docs/4.0.0/html/c/index.html) integration for ephemeris support:
 
@@ -445,24 +440,22 @@ After that, your compiler will complain if your source code references any of th
 change that part of your code to use the recommended alternatives instead.
 
 <a name="legacy-application"></a>
-### Legacy linking `solarsystem()` and `readeph()` modules
+### Legacy linking `solarsystem()` / `solarsystem_hp()` and `readeph()` modules
 
 The NOVAS C way to handle planet or other ephemeris functions was to link particular modules to provide the
-`solarsystem()` / `solarsystem_hp()` and `readeph()` functions. This approach is discouraged in __SuperNOVAS__, since 
-it will prevent you from selecting other implementations at runtime. The old, deprecated way, of incorporating 
-Solar-system data is supported, nevertheless, for legacy applications.
+`solarsystem()` / `solarsystem_hp()` and `readeph()` functions. This approach is discouraged in __SuperNOVAS__, with
+preference for selecting implementations at runtime. The old, deprecated way, of incorporating Solar-system data is 
+supported, nevertheless, for legacy applications.
 
 
-To use your own existing default `solarsystem()` implementation in this way, you must build the library with 
-`DEFAULT_SOLSYS` unset (or else set to 0) in `config.mk`, and your applications `Makefile` may contain something like:
+To use your own existing default `solarsystem()` implementation in this way, you will have to build __SuperNOVAS__
+with `SOLSYS_SOURCE` set to the source file(s) of the implementation (`config.mk` or the environment).
 
-```make
-  myastroapp: myastroapp.c my_solsys.c 
-  	$(CC) -o $@ $(CFLAGS) $^ -lm -lsupernovas
-```
+The same principle applies to using your specific legacy `readeph()` implementation, except that you must set 
+`READEPH_SOURCE` to the source file(s) of the chosen implementation when building __SuperNOVAS__). 
 
-The same principle applies to using your specific `readeph()` implementation (only with `DEFAULT_READEPH` being unset 
-in `config.mk`).
+(You might have to also add additional include directories to `CPPFLAGS`, e.g. `-I/my-path/include` for you custom 
+sources).
 
 
 <a name="preferred-legacy-application"></a>
@@ -479,6 +472,9 @@ E.g.:
   set_planet_calculator(my_planet_calculator_hp);
 ```
 
+(You might also change the `short` type parameters to the SuperNOVAS enum types while at it, to conform to the 
+SuperNOVAS `novas_planet_provider` / `novas_planet_provider_hp` types.)
+
 For `readeph()` implementations, it is recommended that you change both the name and the footprint to e.g.:
 
 ```c
@@ -492,10 +488,8 @@ and then then apply it in your application as:
   set_ephem_provider(my_ephem_provider);
 ```
 
-While it requires some minimal changes to your old code, the advantage of this preferred approach is (a) that you do 
-not need to re-build the library with the `DEFAULT_SOLSYS` and `DEFAULT_READEPH` options disabled, and (b) you, and
-other users of the library, can switch between different planet and ephemeris calculator functions at will, during 
-runtime.
+While all of that requires some minimal changes to your old code, the advantage of this preferred approach is that
+you do not need to re-build the library with `USER_SOLSYS` and/or `USER_READEPH` defined.
 
 
 -----------------------------------------------------------------------------
@@ -1067,9 +1061,9 @@ The same transform can also be used to convert apparent positions in a `sky_pos`
 ## Incorporating Solar-system ephemeris data or services
 
 If you want to use __SuperNOVAS__ to calculate positions for a range of Solar-system objects, and/or to do it with 
-precision, you will have to interface it to a suitable provider of ephemeris data. Given the NOVAS C heritage, and 
-some added __SuperNOVAS__ flexibility in this area, you have several options for going about it. These are listed from 
-the most practical (and preferred) to the least so (the old ways). 
+precision, you will have to interface it to a suitable provider of ephemeris data. The preferred ways to do that in
+__SuperNOVAS__ enumerated below. (The legacy NOVAS C ways are not covered here, since they require specialized builds of 
+__SuperNOVAS__, which are covered [further above](#legacy-application).)
 
 NASA/JPL provides [generic ephemerides](https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/) for the major 
 planets, satellites thereof, the 300 largest asteroids, the Lagrange points, and some Earth orbiting stations. For 
@@ -1081,9 +1075,6 @@ generate custom ephemerides (SPK/BSP) for just about all known solar systems bod
  - [CALCEPH integration](#calceph-integration)
  - [NAIF CSPICE toolkit integration](#cspice-integration)
  - [Universal ephemeris data / service integration](#universal-ephemerides)
- - [Legacy support for (older) JPL major planet ephemerides](#builtin-ephem-readers)
- - [Legacy linking of custom ephemeris functions](#explicit-ephem-linking)
-
 
 <a name="calceph-integration"></a>
 ### CALCEPH integration
@@ -1235,93 +1226,6 @@ The above simply instructs __SuperNOVAS__ to use the same ephemeris provider fun
 for `NOVAS_EPHEM_OBJECT` type objects, provided you compiled __SuperNOVAS__ with `BUILTIN_SOLSYS_EPHEM = 1` (in 
 `config.mk`), or else you link your code against `solsys-ephem.c` explicitly. Easy-peasy.
 
-
-<a name="builtin-ephem-readers"></a>
-### Legacy support for (older) JPL major planet ephemerides
-
-If you only need support for major planets, you may be able to use one of the modules included with the distribution. 
-The legacy NOVAS modules `solsys1.c` and `solsys2.c` provide built-in support to older JPL ephemerides (DE200 to 
-DE421), either via the `eph_manager` interface of `solsys1.c` or via the FORTRAN `pleph` interface with `solsys2.c`.
-
-<summary>Planets via `eph_manager`</summary>
-
-To use the `eph_manager` interface for 1997 JPL planet ephemeris (DE200 through DE421), you must either build 
-__SuperNOVAS__ with `BUILTIN_SOLSYS1 = 1` in `config.mk`, or else link your application with `solsys1.c` and 
-`eph_manager.c` from __SuperNOVAS__ explicitly. If you want `eph_manager` to be your default ephemeris provider (the 
-old way) you might also want to set `DEFAULT_SOLSYS = 1` in `config.mk`. Otherwise, your application should set 
-`eph_manager` as your planetary ephemeris provider at runtime via:
-
-```c
- set_planet_provider(planet_eph_manager);
- set_planet_provider_hp(planet_eph_manager_hp);
-```
-
-Either way, before you can use the ephemeris, you must also open the relevant ephemeris data file with `ephem_open()`:
-
-```c
- double from_jd, to_jd;  // [day] Julian date range of the ephemeris data
- int de_number;	         // Will be set to the DE number, e.g. 405 for DE405
-  
- ephem_open("path/to/de405.bsp", &from_jd, &to_jd, &de_number);
-```
-
-And, when you are done using the ephemeris file, you should close it with
-
-```c
- ephem_close();
-```
- 
-Note, that at any given time `eph_manager` can have only one ephemeris data file opened. You cannot use it to 
-retrieve data from multiple ephemeris input files at the same time. (But you can with CALCEPH or the CSPICE toolkit, 
-either of which you can interface as discussed further above!)
-
-That's all, except the warning that this method will not work with newer JPL ephemeris data, beyond DE421.
-
-
-<summary>Planets via JPL's `pleph` FORTRAN interface</summary>
-
-To interface with the venerable JPL PLEPH library (FORTRAN) for planet ephemerides, you must either build 
-__SuperNOVAS__ with `BUILTIN_SOLSYS2 = 1` in `config.mk`, or else link your application with `solsys2.c` and your 
-appropriately modified `jplint.f` (from the `examples` sub-directory) explicitly, together with the JPL PLEPH library. 
-If you want this to be your default ephemeris provider (the old way) you might also want to set `DEFAULT_SOLSYS = 2` 
-in `config.mk`. Otherwise, your application should set your planetary ephemeris provider at runtime via:
-
-```c
- set_planet_provider(planet_jplint);
- set_planet_provider_hp(planet_jplint_hp);
-```
-
-Integrating JPL ephemeris data this way can be arduous. You will need to compile and link FORTRAN with C (not the end
-of the world), but you may also have to modify `jplint.f` (providing the intermediate FORTRAN `jplint_()` / 
-`jplihp_()` interfaces to `pleph_()`) to work with the version of `pleph.f` that you will be using. Unless you already 
-have code that relies on this method, you are probably better off choosing one of the other ways for integrating 
-planetary ephemeris data with __SuperNOVAS__.
-
-
-<a name="explicit-ephem-linking"></a>
-### Legacy linking of custom ephemeris functions
-
-Finally, if none of the above is appealing to you, and you are fond of the old ways of providing a non-configurable 
-set of adapter functions, linked from your own source modules, you can do that also. It was the NOVAS C way, after 
-all. 
-
-To link your own non-configurable adapter modules, first you compile __SuperNOVAS__ with the `DEFAULT_SOLSYS` option 
-disabled (commented, removed, or else set to 0), and then link your own implementation of `solarsystem()` and 
-`solarsystem_hp()` calls with your application. 
-
-For Solar-system objects other than the major planets, you may also provide your own `readeph()` implementation. (In
-this case you will want to set `DEFAULT_READEPH` in `config.mk` to specify your source code for that function before
-building the __SuperNOVAS__ library, or else disable that option entirely (e.g. by commenting or removing it), and 
-link your application explicitly with your `readeph()` implementation.
-
-The downside of this approach is that your __SuperNOVAS__ library will not be usable without invariably providing the 
-one and only `solarsystem()` / `solarsystem_hp()` and/or `readeph()` implementations for _every_ application that you 
-will want to use __SuperNOVAS__ with. This is why the runtime configuration of the ephemeris provider functions is the 
-best and most generic way to add your preferred implementations while also providing some minimum default 
-implementations for _other users_ of the library, who may not want _your_ ephemeris service, or have no need for 
-planet data beyond the approximate positions for the Earth and Sun.
-
------------------------------------------------------------------------------
 
 <a name="precision"></a>
 ## Notes on precision

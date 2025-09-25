@@ -4,7 +4,6 @@ var place_8c =
     [ "app_star", "place_8c.html#a906b17f06b42e31a29cafad4856f565f", null ],
     [ "astro_planet", "place_8c.html#a9ea79f60493a3a21a9228d048fa5a9a2", null ],
     [ "astro_star", "place_8c.html#a9530c770e83db2cbc5a31d8d1f8c36f4", null ],
-    [ "ephemeris", "place_8c.html#a713982e1f2bae0a72b39d03007f00d23", null ],
     [ "local_planet", "place_8c.html#adcb9b273dfda5d97a1c01379a16997f9", null ],
     [ "local_star", "place_8c.html#acd56c41e811a002d6280b3b315730fbd", null ],
     [ "mean_star", "place_8c.html#aaf51bf000e993807101a34adf423d36b", null ],

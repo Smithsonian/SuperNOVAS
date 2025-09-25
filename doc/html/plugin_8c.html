@@ -108,6 +108,8 @@ $(function(){initNavTree('plugin_8c.html',''); initResizable(true); });
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a713982e1f2bae0a72b39d03007f00d23" id="r_a713982e1f2bae0a72b39d03007f00d23"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a713982e1f2bae0a72b39d03007f00d23">ephemeris</a> (const double *restrict jd_tdb, const <a class="el" href="structobject.html">object</a> *restrict body, enum <a class="el" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27be">novas_origin</a> origin, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, double *restrict pos, double *restrict vel)</td></tr>
+<tr class="separator:a713982e1f2bae0a72b39d03007f00d23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa6fad38297a49ba78a6bd49cedf889b1" id="r_aa6fad38297a49ba78a6bd49cedf889b1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="solarsystem_8h.html#aebb3d71006e8d93de242df61510374ad">novas_ephem_provider</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa6fad38297a49ba78a6bd49cedf889b1">get_ephem_provider</a> ()</td></tr>
 <tr class="separator:aa6fad38297a49ba78a6bd49cedf889b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a416a96426a0b3c52c1d5fc6452357366" id="r_a416a96426a0b3c52c1d5fc6452357366"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nutation_8h.html#a1f0e319630e7a47f17247bf51f7bf36c">novas_nutation_provider</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a416a96426a0b3c52c1d5fc6452357366">get_nutation_lp_provider</a> ()</td></tr>
@@ -130,6 +132,66 @@ Functions</h2></td></tr>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
 <p>Functions that allow to define or access user-defined plugin routines. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
+<a id="a713982e1f2bae0a72b39d03007f00d23" name="a713982e1f2bae0a72b39d03007f00d23"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a713982e1f2bae0a72b39d03007f00d23">&#9670;&#160;</a></span>ephemeris()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">short ephemeris </td>
+          <td>(</td>
+          <td class="paramtype">const double *restrict</td>          <td class="paramname"><span class="paramname"><em>jd_tdb</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structobject.html">object</a> *restrict</td>          <td class="paramname"><span class="paramname"><em>body</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27be">novas_origin</a></td>          <td class="paramname"><span class="paramname"><em>origin</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a></td>          <td class="paramname"><span class="paramname"><em>accuracy</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *restrict</td>          <td class="paramname"><span class="paramname"><em>pos</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *restrict</td>          <td class="paramname"><span class="paramname"><em>vel</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Retrieves the position and velocity of a solar system body using the currently configured plugins that provide them.</p>
+<p>It is recommended that the input structure 'cel_obj' be created using <a class="el" href="target_8c.html#a411f70fb77582d750c5269fcd64b0ce2">make_object()</a></p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamic Time (TDB) based Julian date </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">body</td><td>Pointer to structure containing the designation of the body of interest </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">origin</td><td>NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOCAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">pos</td><td>[AU] Pointer to structure containing the designation of the body of interest </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">vel</td><td>[AU/day] Velocity vector of the body at 'jd_tdb'; equatorial rectangular coordinates in AU/day referred to the ICRS. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if the 'jd_tdb' or input object argument is NULL, or else 1 if 'origin' is invalid, 2 if <code>cel_obj-&gt;type</code> is invalid, 10 + the error code from the currently configured <code><a class="el" href="solarsystem_8h.html#ae8d7c10a8b9e69b1f0654ef4038482fd">novas_planet_provider_hp</a></code> call, or 20 + the error code from <code><a class="el" href="solarsystem_8h.html#aa5f22db2fa785675372d45b88f2f1736">readeph()</a></code>.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a>, <a class="el" href="#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a>, <a class="el" href="#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a> </dd>
+<dd>
+<a class="el" href="target_8c.html#a4c7846be95299769f4d0377bf127bcf5">make_planet()</a>, <a class="el" href="target_8c.html#aa22303f98df2d63edf6d8452ff3a43b2">make_ephem_object()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a>, <a class="el" href="#aa6fad38297a49ba78a6bd49cedf889b1">get_ephem_provider()</a>, <a class="el" href="target_8c.html#a4c7846be95299769f4d0377bf127bcf5">make_planet()</a>, <a class="el" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27beade504a1c5ccf790ce9d8ad52797bb94c">NOVAS_BARYCENTER</a>, <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa58f22833170aee0959154d3a7be6c269">NOVAS_EPHEM_OBJECT</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27bea13c0711a025b9aebd4186ab9127cbd7b">NOVAS_HELIOCENTER</a>, <a class="el" href="orbital_8c.html#a4510a3235a693f122899983901211c30">novas_orbit_posvel()</a>, <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa17562d2cd1b0b56d59d31f6ca51c759a">NOVAS_ORBITAL_OBJECT</a>, <a class="el" href="novas_8h.html#aab57b6b4c8c96ed32414fe3964813e5f">NOVAS_ORIGIN_TYPES</a>, <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fad1eeaddaa96b028742a8ba424e311aa8">NOVAS_PLANET</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045aaeb39686d0e998c9188b47c31ee9c6b5">NOVAS_SSB</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a170e1c704bd29c8d46f66d4d9a03d9c2">NOVAS_SUN</a>, and <a class="el" href="solarsystem_8h.html#aa5f22db2fa785675372d45b88f2f1736">readeph()</a>.</p>
+
+</div>
+</div>
 <a id="aa6fad38297a49ba78a6bd49cedf889b1" name="aa6fad38297a49ba78a6bd49cedf889b1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa6fad38297a49ba78a6bd49cedf889b1">&#9670;&#160;</a></span>get_ephem_provider()</h2>
 
@@ -148,7 +210,7 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>the currently defined function for accessing ephemeris data for minor planets or satellites, ot NULL if no function was set via <a class="el" href="#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a> previously.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a>, <a class="el" href="#a0f0a786b5614a788c02b37a462eae2d2">get_planet_provider()</a>, <a class="el" href="#ae45badb450c1ca73920d982e12346c5b">get_planet_provider_hp()</a>, <a class="el" href="place_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a>, <a class="el" href="#a0f0a786b5614a788c02b37a462eae2d2">get_planet_provider()</a>, <a class="el" href="#ae45badb450c1ca73920d982e12346c5b">get_planet_provider_hp()</a>, <a class="el" href="#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a> </dd></dl>
 
 </div>
 </div>
@@ -290,16 +352,16 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Set a custom function to use for regular precision (see NOVAS_REDUCED_ACCURACY) ephemeris calculations instead of the default <a class="el" href="solsys1_8c.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a> routine.</p>
+<p>Set a custom function to use for regular precision (see NOVAS_REDUCED_ACCURACY) ephemeris calculations instead of the default <a class="el" href="solarsystem_8h.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a> routine.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">func</td><td>The function to use for solar system position/velocity calculations. See <a class="el" href="solsys1_8c.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a> for further details on what is required of this function.</td></tr>
+    <tr><td class="paramname">func</td><td>The function to use for solar system position/velocity calculations. See <a class="el" href="solarsystem_8h.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a> for further details on what is required of this function.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a0f0a786b5614a788c02b37a462eae2d2">get_planet_provider()</a>, <a class="el" href="#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a>, <a class="el" href="solsys1_8c.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a0f0a786b5614a788c02b37a462eae2d2">get_planet_provider()</a>, <a class="el" href="#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a> </dd>
 <dd>
 <a class="el" href="solsys-calceph_8c.html#a35fc86a939602ec910dbdfde180d7f31">novas_use_calceph()</a>, <a class="el" href="solsys-cspice_8c.html#a9b44218bca5fce1e9e5103494c15dde4">novas_use_cspice()</a> </dd></dl>
 
@@ -319,16 +381,16 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Set a custom function to use for high precision (see NOVAS_FULL_ACCURACY) ephemeris calculations instead of the default <a class="el" href="solsys1_8c.html#a17846f3fafcce208dbbca1384e3a7fb0">solarsystem_hp()</a> routine.</p>
+<p>Set a custom function to use for high precision (see NOVAS_FULL_ACCURACY) ephemeris calculations instead of the default <a class="el" href="solarsystem_8h.html#a17846f3fafcce208dbbca1384e3a7fb0">solarsystem_hp()</a> routine.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">func</td><td>The function to use for solar system position/velocity calculations. See <a class="el" href="solsys1_8c.html#a17846f3fafcce208dbbca1384e3a7fb0">solarsystem_hp()</a> for further details on what is required of this function.</td></tr>
+    <tr><td class="paramname">func</td><td>The function to use for solar system position/velocity calculations. See <a class="el" href="solarsystem_8h.html#a17846f3fafcce208dbbca1384e3a7fb0">solarsystem_hp()</a> for further details on what is required of this function.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ae45badb450c1ca73920d982e12346c5b">get_planet_provider_hp()</a>, <a class="el" href="#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a>, <a class="el" href="solsys1_8c.html#a17846f3fafcce208dbbca1384e3a7fb0">solarsystem_hp()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ae45badb450c1ca73920d982e12346c5b">get_planet_provider_hp()</a>, <a class="el" href="#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a>, <a class="el" href="solarsystem_8h.html#a17846f3fafcce208dbbca1384e3a7fb0">solarsystem_hp()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a> </dd>
 <dd>
 <a class="el" href="solsys-calceph_8c.html#a35fc86a939602ec910dbdfde180d7f31">novas_use_calceph()</a>, <a class="el" href="solsys-cspice_8c.html#a9b44218bca5fce1e9e5103494c15dde4">novas_use_cspice()</a> </dd></dl>
 

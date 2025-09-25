@@ -348,7 +348,7 @@ Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if any of the poiinter arguments is NULL, 1 if the algorithm failed to converge after 10 iterations, or 10 + the error from <a class="el" href="place_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a>.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if any of the poiinter arguments is NULL, 1 if the algorithm failed to converge after 10 iterations, or 10 + the error from <a class="el" href="plugin_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a>.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#a5c940b62732d74e6c6b1c844931aaa76">light_time2()</a>, <a class="el" href="frames_8c.html#adc72577f99a7b076b23e0e44ddbca838">novas_make_frame()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="#a5c940b62732d74e6c6b1c844931aaa76">light_time2()</a>.</p>
@@ -421,14 +421,14 @@ This function is called by <code><a class="el" href="frames_8c.html#ac6652ee3257
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if any of the pointer arguments is NULL or if the output vectors are the same or if they are the same as pos_obs, 1 if the algorithm failed to converge after 10 iterations, or 10 + the error from <a class="el" href="place_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a>.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if any of the pointer arguments is NULL or if the output vectors are the same or if they are the same as pos_obs, 1 if the algorithm failed to converge after 10 iterations, or 10 + the error from <a class="el" href="plugin_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a>.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#afb2cc37c7bdcd34c5c167afe092aed68">light_time()</a> </dd>
 <dd>
 <a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
-<p class="reference">References <a class="el" href="#a1d58fd371e7604f75df315365672941e">bary2obs()</a>, <a class="el" href="place_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a>, <a class="el" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27beade504a1c5ccf790ce9d8ad52797bb94c">NOVAS_BARYCENTER</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, and <a class="el" href="util_8c.html#ad2b933ce2f58e8b04bbe76ffbff99eb0">novas_inv_max_iter</a>.</p>
+<p class="reference">References <a class="el" href="#a1d58fd371e7604f75df315365672941e">bary2obs()</a>, <a class="el" href="plugin_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a>, <a class="el" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27beade504a1c5ccf790ce9d8ad52797bb94c">NOVAS_BARYCENTER</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, and <a class="el" href="util_8c.html#ad2b933ce2f58e8b04bbe76ffbff99eb0">novas_inv_max_iter</a>.</p>
 
 </div>
 </div>
@@ -742,7 +742,7 @@ This function is called by <code><a class="el" href="frames_8c.html#ac6652ee3257
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000011">Deprecated</a></b></dt><dd>It is recommended that you use one of the more specific ways of initializing the observer data structure, e.g. with <code><a class="el" href="#ad8b2d2e6ca9570f09a0ca1f82957ed48">make_itrf_observer()</a></code>, <code><a class="el" href="#aa2f9fc986f99c1ec7092330dbf233fef">make_gps_observer()</a></code>, <code><a class="el" href="#aa82db32ce7b115db4f0a077ca899589b">make_observer_at_site()</a></code>, <code><a class="el" href="#aa423a88cd3f434642fc89d47390184f4">make_airborne_observer()</a></code> <code><a class="el" href="#a9c3f1a1bc3fd9ac6d211806913d2d529">make_solar_system_observer()</a>, or</code><a class="el" href="#aabb3ab0d99aa6e487cdcf6b454949b75">make_observer_at_geocenter()</a>`. This function will be available for the foreseeable future also.</dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000007">Deprecated</a></b></dt><dd>It is recommended that you use one of the more specific ways of initializing the observer data structure, e.g. with <code><a class="el" href="#ad8b2d2e6ca9570f09a0ca1f82957ed48">make_itrf_observer()</a></code>, <code><a class="el" href="#aa2f9fc986f99c1ec7092330dbf233fef">make_gps_observer()</a></code>, <code><a class="el" href="#aa82db32ce7b115db4f0a077ca899589b">make_observer_at_site()</a></code>, <code><a class="el" href="#aa423a88cd3f434642fc89d47390184f4">make_airborne_observer()</a></code> <code><a class="el" href="#a9c3f1a1bc3fd9ac6d211806913d2d529">make_solar_system_observer()</a>, or</code><a class="el" href="#aabb3ab0d99aa6e487cdcf6b454949b75">make_observer_at_geocenter()</a>`. This function will be available for the foreseeable future also.</dd></dl>
 <p>Populates an 'observer' data structure given the parameters. The output data structure may be used an the the inputs to NOVAS-C functions, such as <code>make_frame()</code> or <code><a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -906,7 +906,7 @@ This function is called by <code><a class="el" href="frames_8c.html#ac6652ee3257
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000012">Deprecated</a></b></dt><dd>This old NOVAS C function has a few too many caveats. It is recommended that you use <code><a class="el" href="#ad8b2d2e6ca9570f09a0ca1f82957ed48">make_itrf_observer()</a></code>, <code><a class="el" href="#aa2f9fc986f99c1ec7092330dbf233fef">make_gps_observer()</a></code>, or <code><a class="el" href="#aa82db32ce7b115db4f0a077ca899589b">make_observer_at_site()</a></code> instead (all of which set default mean annual weather parameters for approximate refraction correction), and optionally set actual weather data afterwards, based on the measurements available. This function will be available for the foreseeable future also.</dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000008">Deprecated</a></b></dt><dd>This old NOVAS C function has a few too many caveats. It is recommended that you use <code><a class="el" href="#ad8b2d2e6ca9570f09a0ca1f82957ed48">make_itrf_observer()</a></code>, <code><a class="el" href="#aa2f9fc986f99c1ec7092330dbf233fef">make_gps_observer()</a></code>, or <code><a class="el" href="#aa82db32ce7b115db4f0a077ca899589b">make_observer_at_site()</a></code> instead (all of which set default mean annual weather parameters for approximate refraction correction), and optionally set actual weather data afterwards, based on the measurements available. This function will be available for the foreseeable future also.</dd></dl>
 <p>Initializes an observer data structure with the specified ITRF / GRS80 location, and he specified local pressure and temperature. This old NOVAS C function does not set humidity. Thus, if humidity is needed for refraction correction, then you should set it explicitly after this call.</p>
 <p>NOTES: </p><ol>
 <li>
@@ -974,7 +974,7 @@ novas_set_weather(), <a class="el" href="itrf_8c.html#a7479134485c298faa858d73ee
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000013">Deprecated</a></b></dt><dd>This old NOVAS C function has a few too many caveats. It is recommended that you use <code><a class="el" href="#a236750f494f3dcd943e71ba24aa2a55b">make_itrf_site()</a></code> or <code><a class="el" href="#ab5fb62a9fb185632175ae622bce28dea">make_gps_site()</a></code> instead (both of which set default mean annual weather parameters for approximate refraction correction), and optionally set actual weather data afterwards, based on the measurements available. This function will be available for the foreseeable future also.</dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000009">Deprecated</a></b></dt><dd>This old NOVAS C function has a few too many caveats. It is recommended that you use <code><a class="el" href="#a236750f494f3dcd943e71ba24aa2a55b">make_itrf_site()</a></code> or <code><a class="el" href="#ab5fb62a9fb185632175ae622bce28dea">make_gps_site()</a></code> instead (both of which set default mean annual weather parameters for approximate refraction correction), and optionally set actual weather data afterwards, based on the measurements available. This function will be available for the foreseeable future also.</dd></dl>
 <p>Populates an '<a class="el" href="structon__surface.html">on_surface</a>' data structure, for an observer on the surface of the Earth, with the given parameters.</p>
 <p>Note, that because this is an original NOVAS C routine, it does not have an argument to set a humidity value (e.g. for radio refraction). As such, the humidity is set to a a default mean annual value for the location. To set an actual humidity, set the output structure's field after calling this funcion.</p>
 <p>NOTES </p><ol>
@@ -1550,7 +1550,7 @@ Mendez-Astudillo, J., et al. (2021), Urban Heat Island (UHI) Mitigation (pp.43-5
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if any of the pointer arguments is NULL or if the output vector is the same as pos_obs, or the error from <a class="el" href="place_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a>.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if any of the pointer arguments is NULL or if the output vector is the same as pos_obs, or the error from <a class="el" href="plugin_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a>.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a>, <a class="el" href="grav_8c.html#ae36bc31e1dad8a68f94f7a6414f0519f">grav_planets()</a>, <a class="el" href="grav_8c.html#a1b107a24b9fadc79cc5df8c6f5505d16">grav_undo_planets()</a>, <a class="el" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a>, <a class="el" href="plugin_8c.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
@@ -1626,7 +1626,7 @@ Mendez-Astudillo, J., et al. (2021), Urban Heat Island (UHI) Mitigation (pp.43-5
 <dl class="section since"><dt>Since</dt><dd>1.3</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html#adc72577f99a7b076b23e0e44ddbca838">novas_make_frame()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="place_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a>, <a class="el" href="earth_8c.html#ada5ca37110e66c8b65f623c9e26ae52e">geo_posvel()</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3a1665bf146ca1a4d11380bf4d7d9d7058">NOVAS_AIRBORNE_OBSERVER</a>, <a class="el" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27beade504a1c5ccf790ce9d8ad52797bb94c">NOVAS_BARYCENTER</a>, <a class="el" href="novas_8h.html#abad802a863342aebe9a40587b4e47bab">NOVAS_EARTH_INIT</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3aca418efc57ac159cf541c324c008eb27">NOVAS_OBSERVER_IN_EARTH_ORBIT</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3aadb64b75d1bf5344760b942f241e52e8">NOVAS_OBSERVER_ON_EARTH</a>, <a class="el" href="novas_8h.html#a7af86c48f77394688f4ad43eb20760f4">NOVAS_OBSERVER_PLACES</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3a82474207bac139bc2a8826b9d317a42c">NOVAS_SOLAR_SYSTEM_OBSERVER</a>, and <a class="el" href="timescale_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb()</a>.</p>
+<p class="reference">References <a class="el" href="plugin_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a>, <a class="el" href="earth_8c.html#ada5ca37110e66c8b65f623c9e26ae52e">geo_posvel()</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3a1665bf146ca1a4d11380bf4d7d9d7058">NOVAS_AIRBORNE_OBSERVER</a>, <a class="el" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27beade504a1c5ccf790ce9d8ad52797bb94c">NOVAS_BARYCENTER</a>, <a class="el" href="novas_8h.html#abad802a863342aebe9a40587b4e47bab">NOVAS_EARTH_INIT</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3aca418efc57ac159cf541c324c008eb27">NOVAS_OBSERVER_IN_EARTH_ORBIT</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3aadb64b75d1bf5344760b942f241e52e8">NOVAS_OBSERVER_ON_EARTH</a>, <a class="el" href="novas_8h.html#a7af86c48f77394688f4ad43eb20760f4">NOVAS_OBSERVER_PLACES</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3a82474207bac139bc2a8826b9d317a42c">NOVAS_SOLAR_SYSTEM_OBSERVER</a>, and <a class="el" href="timescale_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb()</a>.</p>
 
 </div>
 </div>

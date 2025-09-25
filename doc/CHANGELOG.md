@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [1.5.0-rc5] - 2025-09-24
+## [Unreleased]
 
 Upcoming feature release, expected around 1 November 2025.
 
@@ -73,6 +73,18 @@ Upcoming feature release, expected around 1 November 2025.
    application with `-D_EXCLUDE_DEPRECATED` or else define `EXCLUDE_DEPRECATED` in your source __before_ including
    `novas.h`. 
 
+### Removed
+
+ - #250: No longer including `CIO_RA.TXT` (now unused) in the distribution.
+ 
+ - #252: Removed the option to build `libsolsys1` / `libsolsys2`, `libsolsys3`, and `libsolsys-ephem` as separate 
+   libraries. The source codes for the former two are available in the `legacy/` folder for those who need it, while 
+   the latter two are always integral to the `libsupernovas` library.
+ 
+ - #252: Some build configuration options have been removed, such as the GNU make `BUILTIN_SOLSYS1`, `BUILTIN_SOLSYS2`,
+   `BUILTIN_SOLSYS3`, `BUILTIN_SOLSYS_EPHEM`, `DEFAULT_SOLSYS`, and `DEFAULT_READEPH` configuration options, or the
+   CMake `BUILD_SOLSYS1` / `BUILD_SOLSYS2` options.
+
 ### Changed
 
  - #208: `cio_location()` now always returns the CIO's right ascension relative to the true equinox of date (on the 
@@ -105,9 +117,6 @@ Upcoming feature release, expected around 1 November 2025.
  
  - #231: Changed documentation build to wean off the likes of `sed` or `tail`, thus allowing to build documentation in 
    a more platform-independent way.
- 
- - #236: No longer installing `CIO_RA.TXT` (e.g. to `/usr/share/supernovas`). It is no longer used in any way by the 
-   library.
    
  - #237: Both CMake and GNU make now install more developer docs into `$(docdir)/supernovas`, such as `examples/`,
    `legacy/`, source code, and markdown files.
@@ -121,10 +130,11 @@ Upcoming feature release, expected around 1 November 2025.
    in any way use a CIO locator data file any more for any purpose. The change also ensures consistency with the 
    implemented standards, such as the precession-nutation model.
    
- - #250: No longer including `CIO_RA.TXT` (now unused) or the associated conversion tool `cio_file` in the 
-   distribution.
-
  - #251: Added further CI checks via Github Actions.
+
+ - #252: Overhauled how legacy `solarsystem()` / `solarsystem_hp()` and `readeph()` functions can be added to the
+   build if needed, e.g. via externally provided sources at build time. If a `solarsystem()` / `solarsystem_hp()` 
+   module is not explicitly defined for the build, `solsys3.c` will provide a default implementation for these.
 
  - Both CMake and GNU make now install only the headers for the components that were included in the build. E.g. 
    `novas-calceph.h` is installed only if the library is built with the CALCEPH support option enabled.
@@ -150,7 +160,7 @@ Upcoming feature release, expected around 1 November 2025.
    `make_observer()` no longer supports all SuperNOVAS observer types, hence it's less relevant now than the targeted 
    set of SuperNOVAS functions available for every type of observer.
 
- - #250: Deprecated `set_cio_locator_file()`. It has no function any more, and does exacly nothing beyond providing
+ - #250: Deprecated `set_cio_locator_file()`. It has no function any more, and does exactly nothing beyond providing
    API compatibility.
    
  - Deprecated the functions in `solsys2.c`. This NOVAS C module is half-baked at best, requiring a custom Fortran 

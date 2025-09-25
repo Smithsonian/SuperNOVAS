@@ -1,5 +1,6 @@
 var plugin_8c =
 [
+    [ "ephemeris", "plugin_8c.html#a713982e1f2bae0a72b39d03007f00d23", null ],
     [ "get_ephem_provider", "plugin_8c.html#aa6fad38297a49ba78a6bd49cedf889b1", null ],
     [ "get_nutation_lp_provider", "plugin_8c.html#a416a96426a0b3c52c1d5fc6452357366", null ],
     [ "get_planet_provider", "plugin_8c.html#a0f0a786b5614a788c02b37a462eae2d2", null ],
