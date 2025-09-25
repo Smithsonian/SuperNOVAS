@@ -5,42 +5,12 @@
 # You can include this snipplet in your Makefile also.
 # ============================================================================
 
-# Folders in which sources and headers are located, respectively
-SRC := src
-INC := include
-
-# Folders for compiled objects, libraries, and binaries, respectively 
-OBJ := obj
-LIB := lib
-BIN ?= bin
-
-# Compiler: use gcc by default
+# Default compiler to use (if not defined externally)
 CC ?= gcc
 
-# Add include directory
-CPPFLAGS += -I$(INC)
-
-# Base compiler options (if not defined externally...)
-# -std=c99 may not be supported by some very old compilers...
+# Default compiler options (if not defined externally)
 CFLAGS ?= -g -Os -Wall
 
-# Grab the build platform (OS type) information
-PLATFORM ?= $(shell uname -s)
-
-# Compile for specific C standard
-ifdef CSTANDARD
-  CFLAGS += -std=$(CSTANDARD)
-endif
-
-# Extra warnings (not supported on all compilers)
-ifeq ($(WEXTRA), 1) 
-  CFLAGS += -Wextra
-endif
-
-# Add source code fortification checks
-ifdef FORTIFY 
-  CFLAGS += -D_FORTIFY_SOURCE=$(FORTIFY)
-endif
 
 # Specific Doxygen to use if not the default one
 #DOXYGEN ?= /opt/bin/doxygen
@@ -110,6 +80,56 @@ CHECKOPTS += --inline-suppr $(CHECKEXTRA)
 # Below are some generated constants based on the one that were set above
 # ============================================================================
 
+# Folders in which sources and headers are located, respectively
+SRC := src
+INC := include
+
+# Folders for compiled objects, libraries, and binaries, respectively 
+OBJ := obj
+LIB := lib
+BIN ?= bin
+
+# Add include directory
+CPPFLAGS += -I$(INC)
+
+# If the THREAD_LOCAL variable was defined externally, use that definition to 
+# specify the thread local keyword to use. 
+ifdef THREAD_LOCAL
+  CPPFLAGS += -DTHREAD_LOCAL=\"$(THREAD_LOCAL)\"
+endif
+
+# Whether to use user-provided legacy `solarsystem()` / `solarsystem_hp()` 
+# functions as the  default planetary ephemeris provider.
+ifdef SOLSYS_SOURCE
+  SOURCES += $(SOLSYS_SOURCE)
+  CPPFLAGS += -DUSER_SOLSYS=1
+endif
+
+# Whether to use a legacy `readeph()` function as the default non-planetary
+# ephemeris provider.
+ifdef READEPH_SOURCE
+  SOURCES += $(READEPH_SOURCE)
+  CPPFLAGS += -DUSER_READEPH=1
+endif
+
+# Compile for specific C standard
+ifdef CSTANDARD
+  CFLAGS += -std=$(CSTANDARD)
+endif
+
+# Extra warnings (not supported on all compilers)
+ifeq ($(WEXTRA), 1) 
+  CFLAGS += -Wextra
+endif
+
+# Add source code fortification checks
+ifdef FORTIFY 
+  CFLAGS += -D_FORTIFY_SOURCE=$(FORTIFY)
+endif
+
+# By default determine the build platform (OS type)
+PLATFORM ?= $(shell uname -s)
+
 # Platform-specific configurations
 ifeq ($(PLATFORM),Darwin)
   # macOS specific
@@ -134,44 +154,16 @@ else
   MISSING_SYMBOLS_OK := 0
 endif 
 
-# If the THREAD_LOCAL variable was defined externally, use that definition to 
-# specify the thread local keyword to use. 
-ifdef THREAD_LOCAL
-  CPPFLAGS += -DTHREAD_LOCAL=\"$(THREAD_LOCAL)\"
-endif
-
-# Whether to use user-provided legacy `solarsystem()` / `solarsystem_hp()` 
-# functions as the  default planetary ephemeris provider.
-ifdef SOLSYS_SOURCE
-  SOURCES += $(SOLSYS_SOURCE)
-  CPPFLAGS += -DUSER_SOLSYS=1
-endif
-
-# Whether to use a legacy `readeph()` function as the default non-planetary
-# ephemeris provider.
-ifdef READEPH_SOURCE
-  SOURCES += $(READEPH_SOURCE)
-  CPPFLAGS += -DUSER_READEPH=1
-endif
-
-# Use ldconfig (if available) to detect CALCEPH / CSPICE shared libs automatically
 ifeq ($(AUTO_DETECT_LIBS),1)
+  # Use ldconfig (if available) to detect CALCEPH / CSPICE shared libs automatically
   ifndef CALCEPH_SUPPORT
     ifneq ($(shell ldconfig -p | grep libcalceph), )
-      #$(info INFO: CALCEPH support is enabled automatically.)
       CALCEPH_SUPPORT = 1
-    else
-      #$(info INFO: optional CALCEPH support is not enabled.)
-      CALCEPH_SUPPORT = 0
     endif
   endif
   ifndef CSPICE_SUPPORT
     ifneq ($(shell ldconfig -p | grep libcspice), )
-      #$(info INFO: CSPICE support is enabled automatically.)
       CSPICE_SUPPORT = 1
-    else
-      #$(info INFO: optional CSPICE support is not enabled.)
-      CSPICE_SUPPORT = 0
     endif
   endif
 endif

@@ -73,7 +73,7 @@ if(WIN32)
 endif()
 
 # Preprocessor definitions
-set(SUPERNOVAS_COMPILE_DEFINITIONS DEFAULT_SOLSYS=1)
+set(SUPERNOVAS_COMPILE_DEFINITIONS "")
 
 # Check for math library
 check_library_exists(m sin "" HAVE_LIBM)
