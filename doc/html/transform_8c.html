@@ -109,48 +109,68 @@ $(function(){initNavTree('transform_8c.html',''); initResizable(true); });
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a3fa57a154f2f423612736e5e3a5addbf" id="r_a3fa57a154f2f423612736e5e3a5addbf"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3fa57a154f2f423612736e5e3a5addbf">app_to_cirs_ra</a> (double jd_tt, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, double ra)</td></tr>
+<tr class="memdesc:a3fa57a154f2f423612736e5e3a5addbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an apparent right ascension coordinate (measured from the true equinox of date) to a CIRS R.A., measured from the CIO.  <br /></td></tr>
 <tr class="separator:a3fa57a154f2f423612736e5e3a5addbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6217852bfd7d3a58d3266d0daadfc6bc" id="r_a6217852bfd7d3a58d3266d0daadfc6bc"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6217852bfd7d3a58d3266d0daadfc6bc">cel2ter</a> (double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609">novas_earth_rotation_measure</a> erot, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, enum <a class="el" href="novas_8h.html#a3789b2c39c26f01bb1bffe8ebc953467">novas_equatorial_class</a> coordType, double xp, double yp, const double *in, double *out)</td></tr>
 <tr class="separator:a6217852bfd7d3a58d3266d0daadfc6bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af90d52a6527d9b62b8ac35d8c1ac7c6b" id="r_af90d52a6527d9b62b8ac35d8c1ac7c6b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af90d52a6527d9b62b8ac35d8c1ac7c6b">cirs_to_app_ra</a> (double jd_tt, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, double ra)</td></tr>
+<tr class="memdesc:af90d52a6527d9b62b8ac35d8c1ac7c6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a CIRS right ascension coordinate (measured from the CIO) to an apparent R.A.  <br /></td></tr>
 <tr class="separator:af90d52a6527d9b62b8ac35d8c1ac7c6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac0ba048cd1732d0d0398397396d158bc" id="r_ac0ba048cd1732d0d0398397396d158bc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac0ba048cd1732d0d0398397396d158bc">cirs_to_gcrs</a> (double jd_tdb, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, const double *in, double *out)</td></tr>
+<tr class="memdesc:ac0ba048cd1732d0d0398397396d158bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms a rectangular equatorial (x, y, z) vector from the Celestial Intermediate Reference System (CIRS) frame at the given epoch to the ICRS / GCRS.  <br /></td></tr>
 <tr class="separator:ac0ba048cd1732d0d0398397396d158bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2768d89d499a7155f90a6fd8c176d8d" id="r_aa2768d89d499a7155f90a6fd8c176d8d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa2768d89d499a7155f90a6fd8c176d8d">cirs_to_itrs</a> (double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, double xp, double yp, const double *in, double *out)</td></tr>
+<tr class="memdesc:aa2768d89d499a7155f90a6fd8c176d8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rotates a position vector from the dynamical CIRS frame of date to the Earth-fixed ITRS frame (IAU 2000 standard method).  <br /></td></tr>
 <tr class="separator:aa2768d89d499a7155f90a6fd8c176d8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9cac4f3a18d4c14939519e7123b4d504" id="r_a9cac4f3a18d4c14939519e7123b4d504"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9cac4f3a18d4c14939519e7123b4d504">cirs_to_tod</a> (double jd_tt, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, const double *in, double *out)</td></tr>
+<tr class="memdesc:a9cac4f3a18d4c14939519e7123b4d504"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms a rectangular equatorial (x, y, z) vector from the Celestial Intermediate Reference System (CIRS) at the given epoch to the True of Date (TOD) reference system.  <br /></td></tr>
 <tr class="separator:a9cac4f3a18d4c14939519e7123b4d504"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa11d2253a44261370af8d0c32f0715e9" id="r_aa11d2253a44261370af8d0c32f0715e9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa11d2253a44261370af8d0c32f0715e9">frame_tie</a> (const double *in, enum <a class="el" href="novas_8h.html#ae8b91a9b4fe4af63c7054d1eacdb996e">novas_frametie_direction</a> direction, double *out)</td></tr>
+<tr class="memdesc:aa11d2253a44261370af8d0c32f0715e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms a vector from the dynamical reference system to the International Celestial Reference System (ICRS), or vice versa.  <br /></td></tr>
 <tr class="separator:aa11d2253a44261370af8d0c32f0715e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd38071a8d4bdc342feaecfac2fc7856" id="r_abd38071a8d4bdc342feaecfac2fc7856"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abd38071a8d4bdc342feaecfac2fc7856">gcrs2equ</a> (double jd_tt, enum <a class="el" href="novas_8h.html#a61f6463d05c29930c667981fdcb1f341">novas_dynamical_type</a> sys, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, double rag, double decg, double *restrict ra, double *restrict dec)</td></tr>
+<tr class="memdesc:abd38071a8d4bdc342feaecfac2fc7856"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts GCRS right ascension and declination to coordinates with respect to the equator of date (mean or true).  <br /></td></tr>
 <tr class="separator:abd38071a8d4bdc342feaecfac2fc7856"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51ea4a016336dd3cf7783061c14d165c" id="r_a51ea4a016336dd3cf7783061c14d165c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a51ea4a016336dd3cf7783061c14d165c">gcrs_to_cirs</a> (double jd_tdb, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, const double *in, double *out)</td></tr>
+<tr class="memdesc:a51ea4a016336dd3cf7783061c14d165c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms a rectangular equatorial (x, y, z) vector from the ICRS / GCRS to the Celestial Intermediate Reference System (CIRS) frame at the given epoch.  <br /></td></tr>
 <tr class="separator:a51ea4a016336dd3cf7783061c14d165c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeea4b5085c7267714492fae6108fb975" id="r_aeea4b5085c7267714492fae6108fb975"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeea4b5085c7267714492fae6108fb975">gcrs_to_j2000</a> (const double *in, double *out)</td></tr>
+<tr class="memdesc:aeea4b5085c7267714492fae6108fb975"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes ICRS / GCRS coordinates to J2000 coordinates.  <br /></td></tr>
 <tr class="separator:aeea4b5085c7267714492fae6108fb975"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75de6cca190c5fbc3056db726f317c7f" id="r_a75de6cca190c5fbc3056db726f317c7f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a75de6cca190c5fbc3056db726f317c7f">gcrs_to_mod</a> (double jd_tdb, const double *in, double *out)</td></tr>
+<tr class="memdesc:a75de6cca190c5fbc3056db726f317c7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms a rectangular equatorial (x, y, z) vector from the ICRS / GCRS to the Mean of Date (MOD) reference frame at the given epoch.  <br /></td></tr>
 <tr class="separator:a75de6cca190c5fbc3056db726f317c7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c900b81a718a184281a8a0b733b4db7" id="r_a9c900b81a718a184281a8a0b733b4db7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9c900b81a718a184281a8a0b733b4db7">gcrs_to_tod</a> (double jd_tdb, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, const double *in, double *out)</td></tr>
+<tr class="memdesc:a9c900b81a718a184281a8a0b733b4db7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms a rectangular equatorial (x, y, z) vector from the ICRS / GCRS to the True of Date (TOD) reference frame at the given epoch.  <br /></td></tr>
 <tr class="separator:a9c900b81a718a184281a8a0b733b4db7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12953f66c0f774284f0700ae785784d0" id="r_a12953f66c0f774284f0700ae785784d0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a12953f66c0f774284f0700ae785784d0">itrs_to_cirs</a> (double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, double xp, double yp, const double *in, double *out)</td></tr>
+<tr class="memdesc:a12953f66c0f774284f0700ae785784d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rotates a position vector from the Earth-fixed ITRS frame to the dynamical CIRS frame of date (IAU 2000 standard method).  <br /></td></tr>
 <tr class="separator:a12953f66c0f774284f0700ae785784d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f6ae564cfac3766a21e0754905e5f7c" id="r_a3f6ae564cfac3766a21e0754905e5f7c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3f6ae564cfac3766a21e0754905e5f7c">itrs_to_tod</a> (double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, double xp, double yp, const double *in, double *out)</td></tr>
+<tr class="memdesc:a3f6ae564cfac3766a21e0754905e5f7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rotates a position vector from the Earth-fixed ITRS frame to the dynamical True of Date (TOD) frame of date (pre IAU 2000 method).  <br /></td></tr>
 <tr class="separator:a3f6ae564cfac3766a21e0754905e5f7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d51ca5c972013024755c644c96d0586" id="r_a9d51ca5c972013024755c644c96d0586"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9d51ca5c972013024755c644c96d0586">j2000_to_gcrs</a> (const double *in, double *out)</td></tr>
+<tr class="memdesc:a9d51ca5c972013024755c644c96d0586"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change J2000 coordinates to ICRS / GCRS coordinates.  <br /></td></tr>
 <tr class="separator:a9d51ca5c972013024755c644c96d0586"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02fa1ee652c20160055cbd2c7bd9ca63" id="r_a02fa1ee652c20160055cbd2c7bd9ca63"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a02fa1ee652c20160055cbd2c7bd9ca63">j2000_to_tod</a> (double jd_tdb, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, const double *in, double *out)</td></tr>
+<tr class="memdesc:a02fa1ee652c20160055cbd2c7bd9ca63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms a rectangular equatorial (x, y, z) vector from J2000 coordinates to the True of Date (TOD) reference frame at the given epoch.  <br /></td></tr>
 <tr class="separator:a02fa1ee652c20160055cbd2c7bd9ca63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9cc07f0e6af9339096e15a440b113e5" id="r_ad9cc07f0e6af9339096e15a440b113e5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad9cc07f0e6af9339096e15a440b113e5">mod_to_gcrs</a> (double jd_tdb, const double *in, double *out)</td></tr>
+<tr class="memdesc:ad9cc07f0e6af9339096e15a440b113e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms a rectangular equatorial (x, y, z) vector from Mean of Date (MOD) reference frame at the given epoch to the ICRS / GCRS.  <br /></td></tr>
 <tr class="separator:ad9cc07f0e6af9339096e15a440b113e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8c5ff3cc13126aba2ec5a6cbe187a31" id="r_ac8c5ff3cc13126aba2ec5a6cbe187a31"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac8c5ff3cc13126aba2ec5a6cbe187a31">ter2cel</a> (double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609">novas_earth_rotation_measure</a> erot, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, enum <a class="el" href="novas_8h.html#a3789b2c39c26f01bb1bffe8ebc953467">novas_equatorial_class</a> coordType, double xp, double yp, const double *in, double *out)</td></tr>
 <tr class="separator:ac8c5ff3cc13126aba2ec5a6cbe187a31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb48b2acaf76cc3a1e3a1412cc42c232" id="r_adb48b2acaf76cc3a1e3a1412cc42c232"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adb48b2acaf76cc3a1e3a1412cc42c232">tod_to_cirs</a> (double jd_tt, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, const double *in, double *out)</td></tr>
+<tr class="memdesc:adb48b2acaf76cc3a1e3a1412cc42c232"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms a rectangular equatorial (x, y, z) vector from the True of Date (TOD) reference system to the Celestial Intermediate Reference System (CIRS) at the given epoch to the .  <br /></td></tr>
 <tr class="separator:adb48b2acaf76cc3a1e3a1412cc42c232"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6871e7fecde44084c7b4e1b8dda5ac70" id="r_a6871e7fecde44084c7b4e1b8dda5ac70"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6871e7fecde44084c7b4e1b8dda5ac70">tod_to_gcrs</a> (double jd_tdb, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, const double *in, double *out)</td></tr>
+<tr class="memdesc:a6871e7fecde44084c7b4e1b8dda5ac70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms a rectangular equatorial (x, y, z) vector from True of Date (TOD) reference frame at the given epoch to the ICRS / GCRS.  <br /></td></tr>
 <tr class="separator:a6871e7fecde44084c7b4e1b8dda5ac70"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4551e2ac083e34c1b2b61b3805efb9a3" id="r_a4551e2ac083e34c1b2b61b3805efb9a3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4551e2ac083e34c1b2b61b3805efb9a3">tod_to_itrs</a> (double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, double xp, double yp, const double *in, double *out)</td></tr>
+<tr class="memdesc:a4551e2ac083e34c1b2b61b3805efb9a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rotates a position vector from the dynamical True of Date (TOD) frame of date the Earth-fixed ITRS frame (pre IAU 2000 method).  <br /></td></tr>
 <tr class="separator:a4551e2ac083e34c1b2b61b3805efb9a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6205edb1361e56cc0c7aed0f088f7437" id="r_a6205edb1361e56cc0c7aed0f088f7437"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6205edb1361e56cc0c7aed0f088f7437">tod_to_j2000</a> (double jd_tdb, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, const double *in, double *out)</td></tr>
+<tr class="memdesc:a6205edb1361e56cc0c7aed0f088f7437"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms a rectangular equatorial (x, y, z) vector from True of Date (TOD) reference frame at the given epoch to the J2000 coordinates.  <br /></td></tr>
 <tr class="separator:a6205edb1361e56cc0c7aed0f088f7437"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -181,7 +201,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Converts an apparent right ascension coordinate (measured from the true equinox of date) to a CIRS R.A., measured from the CIO.</p>
+
+<p>Converts an apparent right ascension coordinate (measured from the true equinox of date) to a CIRS R.A., measured from the CIO. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date </td></tr>
@@ -190,10 +211,10 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>[h] The CIRS right ascension coordinate, measured from the CIO [0:24], or NAN if the accuracy is invalid, or if there wan an error from <a class="el" href="cio_8c.html#acc331c69187b3077b98280bfb57f6670">cio_ra()</a>.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>[h] The CIRS right ascension coordinate, measured from the CIO [0:24], or NAN if the accuracy is invalid, or if there wan an error from <a class="el" href="cio_8c.html#acc331c69187b3077b98280bfb57f6670" title="Computes the true right ascension of the celestial intermediate origin (CIO) vs the equinox of date o...">cio_ra()</a>.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0.1 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#af90d52a6527d9b62b8ac35d8c1ac7c6b">cirs_to_app_ra()</a>, <a class="el" href="#adb48b2acaf76cc3a1e3a1412cc42c232">tod_to_cirs()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#af90d52a6527d9b62b8ac35d8c1ac7c6b" title="Converts a CIRS right ascension coordinate (measured from the CIO) to an apparent R....">cirs_to_app_ra()</a>, <a class="el" href="#adb48b2acaf76cc3a1e3a1412cc42c232" title="Transforms a rectangular equatorial (x, y, z) vector from the True of Date (TOD) reference system to ...">tod_to_cirs()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="cio_8c.html#acc331c69187b3077b98280bfb57f6670">cio_ra()</a>.</p>
 
@@ -257,7 +278,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000017">Deprecated</a></b></dt><dd>This function can be confusing to use due to the input coordinate system being specified by a combination of two options. Use <a class="el" href="#a12953f66c0f774284f0700ae785784d0">itrs_to_cirs()</a> or <a class="el" href="#a3f6ae564cfac3766a21e0754905e5f7c">itrs_to_tod()</a> instead. You can then follow these with other conversions to GCRS (or whatever else) as appropriate.</dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000017">Deprecated</a></b></dt><dd>This function can be confusing to use due to the input coordinate system being specified by a combination of two options. Use <a class="el" href="#a12953f66c0f774284f0700ae785784d0" title="Rotates a position vector from the Earth-fixed ITRS frame to the dynamical CIRS frame of date (IAU 20...">itrs_to_cirs()</a> or <a class="el" href="#a3f6ae564cfac3766a21e0754905e5f7c" title="Rotates a position vector from the Earth-fixed ITRS frame to the dynamical True of Date (TOD) frame o...">itrs_to_tod()</a> instead. You can then follow these with other conversions to GCRS (or whatever else) as appropriate.</dd></dl>
 <p>Rotates a vector from the celestial to the terrestrial system. Specifically, it transforms a vector in the GCRS, or the dynamical (CIRS or TOD) frames to the ITRS (a rotating Earth-fixed system) by applying rotations for the GCRS-to-dynamical frame tie, precession, nutation, Earth rotation, and polar motion.</p>
 <p>If 'system' is NOVAS_CIRS then method EROT_ERA must be used. Similarly, if 'system' is NOVAS_TOD then method must be EROT_ERA. Otherwise an error 3 is returned.</p>
 <p>If both 'xp' and 'yp' are set to 0 no polar motion is included in the transformation.</p>
@@ -283,7 +304,7 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if either of the vector arguments is NULL, 1 if 'accuracy' is invalid, 2 if 'method' is invalid, or else 10 + the error from <a class="el" href="cio_8c.html#a65ffaaa2b527ed03149eadc7568f3714">cio_location()</a>, or 20 + error from <a class="el" href="cio_8c.html#a51bfbe9b491f50851326b2522dc2a29f">cio_basis()</a>.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html#a3cd947f2e48d6c5cc88ad7a1bab9b8ca">novas_app_to_hor()</a>, <a class="el" href="#a51ea4a016336dd3cf7783061c14d165c">gcrs_to_cirs()</a>, <a class="el" href="#aa2768d89d499a7155f90a6fd8c176d8d">cirs_to_itrs()</a>, <a class="el" href="#aa11d2253a44261370af8d0c32f0715e9">frame_tie()</a>, <a class="el" href="#a02fa1ee652c20160055cbd2c7bd9ca63">j2000_to_tod()</a>, <a class="el" href="#a4551e2ac083e34c1b2b61b3805efb9a3">tod_to_itrs()</a>, <a class="el" href="#ac8c5ff3cc13126aba2ec5a6cbe187a31">ter2cel()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html#a3cd947f2e48d6c5cc88ad7a1bab9b8ca" title="Converts an observed apparent position vector in the specified coordinate system to local horizontal ...">novas_app_to_hor()</a>, <a class="el" href="#a51ea4a016336dd3cf7783061c14d165c" title="Transforms a rectangular equatorial (x, y, z) vector from the ICRS / GCRS to the Celestial Intermedia...">gcrs_to_cirs()</a>, <a class="el" href="#aa2768d89d499a7155f90a6fd8c176d8d" title="Rotates a position vector from the dynamical CIRS frame of date to the Earth-fixed ITRS frame (IAU 20...">cirs_to_itrs()</a>, <a class="el" href="#aa11d2253a44261370af8d0c32f0715e9" title="Transforms a vector from the dynamical reference system to the International Celestial Reference Syst...">frame_tie()</a>, <a class="el" href="#a02fa1ee652c20160055cbd2c7bd9ca63" title="Transforms a rectangular equatorial (x, y, z) vector from J2000 coordinates to the True of Date (TOD)...">j2000_to_tod()</a>, <a class="el" href="#a4551e2ac083e34c1b2b61b3805efb9a3" title="Rotates a position vector from the dynamical True of Date (TOD) frame of date the Earth-fixed ITRS fr...">tod_to_itrs()</a>, <a class="el" href="#ac8c5ff3cc13126aba2ec5a6cbe187a31">ter2cel()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="earth_8c.html#aef1f8daaad470353648de90576aefc66">era()</a>, <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609ab07b6e5ed11fd50e7c2287b5b6626b46">EROT_ERA</a>, <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609a1d56a4fb59b567049ed1937bfcdf0f62">EROT_GST</a>, <a class="el" href="#a51ea4a016336dd3cf7783061c14d165c">gcrs_to_cirs()</a>, <a class="el" href="#a9c900b81a718a184281a8a0b733b4db7">gcrs_to_tod()</a>, <a class="el" href="novas_8h.html#a3789b2c39c26f01bb1bffe8ebc953467aba4a23444c495f90061ec1a906585faa">NOVAS_DYNAMICAL_CLASS</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="earth_8c.html#a348c4fd2a4a046e9768038075717b693">novas_gast()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, <a class="el" href="util_8c.html#af4090e519d7ce7ab1fcdb24b10126eb4">spin()</a>, <a class="el" href="earth_8c.html#aead87744eeb3029ce7d5ffb1801ee652">wobble()</a>, <a class="el" href="novas_8h.html#aab27106a2d5c2c7fa64b2f208deff7f5a6148979c7c2a121fc0852ec129eb4b10">WOBBLE_PEF_TO_ITRS</a>, and <a class="el" href="novas_8h.html#aab27106a2d5c2c7fa64b2f208deff7f5a4b792b9dcf18048019f1a4fb486b7c97">WOBBLE_TIRS_TO_ITRS</a>.</p>
 
@@ -312,7 +333,9 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Converts a CIRS right ascension coordinate (measured from the CIO) to an apparent R.A. measured from the true equinox of date.</p>
+
+<p>Converts a CIRS right ascension coordinate (measured from the CIO) to an apparent R.A. </p>
+<p>measured from the true equinox of date.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date </td></tr>
@@ -321,10 +344,10 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>[h] the apparent R.A. coordinate measured from the true equinox of date [0:24], or NAN if the accuracy is invalid, or if there wan an error from <a class="el" href="cio_8c.html#acc331c69187b3077b98280bfb57f6670">cio_ra()</a>.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>[h] the apparent R.A. coordinate measured from the true equinox of date [0:24], or NAN if the accuracy is invalid, or if there wan an error from <a class="el" href="cio_8c.html#acc331c69187b3077b98280bfb57f6670" title="Computes the true right ascension of the celestial intermediate origin (CIO) vs the equinox of date o...">cio_ra()</a>.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0.1 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a3fa57a154f2f423612736e5e3a5addbf">app_to_cirs_ra()</a>, <a class="el" href="#a9cac4f3a18d4c14939519e7123b4d504">cirs_to_tod()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a3fa57a154f2f423612736e5e3a5addbf" title="Converts an apparent right ascension coordinate (measured from the true equinox of date) to a CIRS R....">app_to_cirs_ra()</a>, <a class="el" href="#a9cac4f3a18d4c14939519e7123b4d504" title="Transforms a rectangular equatorial (x, y, z) vector from the Celestial Intermediate Reference System...">cirs_to_tod()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="cio_8c.html#acc331c69187b3077b98280bfb57f6670">cio_ra()</a>.</p>
 
@@ -358,7 +381,9 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Transforms a rectangular equatorial (x, y, z) vector from the Celestial Intermediate Reference System (CIRS) frame at the given epoch to the ICRS / GCRS. (We treat ICRS and GCRS the same, since they only define the orientation of the equator, and not the origin. The origin is defined by the observer location separately.)</p>
+
+<p>Transforms a rectangular equatorial (x, y, z) vector from the Celestial Intermediate Reference System (CIRS) frame at the given epoch to the ICRS / GCRS. </p>
+<p>(We treat ICRS and GCRS the same, since they only define the orientation of the equator, and not the origin. The origin is defined by the observer location separately.)</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date that defines the output epoch. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result </td></tr>
@@ -371,7 +396,7 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if either of the vector arguments is NULL or the accuracy is invalid, or else 10 + the error from <a class="el" href="cio_8c.html#a51bfbe9b491f50851326b2522dc2a29f">cio_basis()</a>.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a6871e7fecde44084c7b4e1b8dda5ac70">tod_to_gcrs()</a>, <a class="el" href="#a51ea4a016336dd3cf7783061c14d165c">gcrs_to_cirs()</a>, <a class="el" href="#aa2768d89d499a7155f90a6fd8c176d8d">cirs_to_itrs()</a>, <a class="el" href="#a9cac4f3a18d4c14939519e7123b4d504">cirs_to_tod()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a6871e7fecde44084c7b4e1b8dda5ac70" title="Transforms a rectangular equatorial (x, y, z) vector from True of Date (TOD) reference frame at the g...">tod_to_gcrs()</a>, <a class="el" href="#a51ea4a016336dd3cf7783061c14d165c" title="Transforms a rectangular equatorial (x, y, z) vector from the ICRS / GCRS to the Celestial Intermedia...">gcrs_to_cirs()</a>, <a class="el" href="#aa2768d89d499a7155f90a6fd8c176d8d" title="Rotates a position vector from the dynamical CIRS frame of date to the Earth-fixed ITRS frame (IAU 20...">cirs_to_itrs()</a>, <a class="el" href="#a9cac4f3a18d4c14939519e7123b4d504" title="Transforms a rectangular equatorial (x, y, z) vector from the Celestial Intermediate Reference System...">cirs_to_tod()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="#a9cac4f3a18d4c14939519e7123b4d504">cirs_to_tod()</a>, and <a class="el" href="#a6871e7fecde44084c7b4e1b8dda5ac70">tod_to_gcrs()</a>.</p>
 
@@ -425,7 +450,8 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Rotates a position vector from the dynamical CIRS frame of date to the Earth-fixed ITRS frame (IAU 2000 standard method).</p>
+
+<p>Rotates a position vector from the dynamical CIRS frame of date to the Earth-fixed ITRS frame (IAU 2000 standard method). </p>
 <p>If both 'xp' and 'yp' are set to 0 no polar motion is included in the transformation.</p>
 <p>If extreme (sub-microarcsecond) accuracy is not required, you can use UT1-based Julian date instead of the TT-based Julian date and set the 'ut1_to_tt' argument to 0.0. and you can use UTC-based Julian date the same way.for arcsec-level precision also.</p>
 <p>REFERENCES: </p><ol>
@@ -450,7 +476,7 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if either of the vector arguments is NULL, 1 if 'accuracy' is invalid, 2 if 'method' is invalid 10&ndash;20, 3 if the method and option are mutually incompatible, or else 10 + the error from <a class="el" href="cio_8c.html#a65ffaaa2b527ed03149eadc7568f3714">cio_location()</a>, or 20 + error from <a class="el" href="cio_8c.html#a51bfbe9b491f50851326b2522dc2a29f">cio_basis()</a>.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a4551e2ac083e34c1b2b61b3805efb9a3">tod_to_itrs()</a>, <a class="el" href="#a12953f66c0f774284f0700ae785784d0">itrs_to_cirs()</a>, <a class="el" href="#a51ea4a016336dd3cf7783061c14d165c">gcrs_to_cirs()</a>, <a class="el" href="#ac0ba048cd1732d0d0398397396d158bc">cirs_to_gcrs()</a>, <a class="el" href="#a9cac4f3a18d4c14939519e7123b4d504">cirs_to_tod()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a4551e2ac083e34c1b2b61b3805efb9a3" title="Rotates a position vector from the dynamical True of Date (TOD) frame of date the Earth-fixed ITRS fr...">tod_to_itrs()</a>, <a class="el" href="#a12953f66c0f774284f0700ae785784d0" title="Rotates a position vector from the Earth-fixed ITRS frame to the dynamical CIRS frame of date (IAU 20...">itrs_to_cirs()</a>, <a class="el" href="#a51ea4a016336dd3cf7783061c14d165c" title="Transforms a rectangular equatorial (x, y, z) vector from the ICRS / GCRS to the Celestial Intermedia...">gcrs_to_cirs()</a>, <a class="el" href="#ac0ba048cd1732d0d0398397396d158bc" title="Transforms a rectangular equatorial (x, y, z) vector from the Celestial Intermediate Reference System...">cirs_to_gcrs()</a>, <a class="el" href="#a9cac4f3a18d4c14939519e7123b4d504" title="Transforms a rectangular equatorial (x, y, z) vector from the Celestial Intermediate Reference System...">cirs_to_tod()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="#a6217852bfd7d3a58d3266d0daadfc6bc">cel2ter()</a>, <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609ab07b6e5ed11fd50e7c2287b5b6626b46">EROT_ERA</a>, and <a class="el" href="novas_8h.html#a3789b2c39c26f01bb1bffe8ebc953467aba4a23444c495f90061ec1a906585faa">NOVAS_DYNAMICAL_CLASS</a>.</p>
 
@@ -484,7 +510,8 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Transforms a rectangular equatorial (x, y, z) vector from the Celestial Intermediate Reference System (CIRS) at the given epoch to the True of Date (TOD) reference system.</p>
+
+<p>Transforms a rectangular equatorial (x, y, z) vector from the Celestial Intermediate Reference System (CIRS) at the given epoch to the True of Date (TOD) reference system. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date that defines the output epoch. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result </td></tr>
@@ -497,7 +524,7 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if either of the vector arguments is NULL or the accuracy is invalid, or else 20 + the error from <a class="el" href="cio_8c.html#a51bfbe9b491f50851326b2522dc2a29f">cio_basis()</a>.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#adb48b2acaf76cc3a1e3a1412cc42c232">tod_to_cirs()</a>, <a class="el" href="#af90d52a6527d9b62b8ac35d8c1ac7c6b">cirs_to_app_ra()</a>, <a class="el" href="#ac0ba048cd1732d0d0398397396d158bc">cirs_to_gcrs()</a>, <a class="el" href="#aa2768d89d499a7155f90a6fd8c176d8d">cirs_to_itrs()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#adb48b2acaf76cc3a1e3a1412cc42c232" title="Transforms a rectangular equatorial (x, y, z) vector from the True of Date (TOD) reference system to ...">tod_to_cirs()</a>, <a class="el" href="#af90d52a6527d9b62b8ac35d8c1ac7c6b" title="Converts a CIRS right ascension coordinate (measured from the CIO) to an apparent R....">cirs_to_app_ra()</a>, <a class="el" href="#ac0ba048cd1732d0d0398397396d158bc" title="Transforms a rectangular equatorial (x, y, z) vector from the Celestial Intermediate Reference System...">cirs_to_gcrs()</a>, <a class="el" href="#aa2768d89d499a7155f90a6fd8c176d8d" title="Rotates a position vector from the dynamical CIRS frame of date to the Earth-fixed ITRS frame (IAU 20...">cirs_to_itrs()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="equinox_8c.html#aea0e1028baf14d16d9de800e36a17086">ira_equinox()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, <a class="el" href="novas_8h.html#ab970f5de5d5e04874cb31865459b0b4fa1096785746d1a9bc678ea2c51fc21055">NOVAS_TRUE_EQUINOX</a>, and <a class="el" href="util_8c.html#af4090e519d7ce7ab1fcdb24b10126eb4">spin()</a>.</p>
 
@@ -526,7 +553,9 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Transforms a vector from the dynamical reference system to the International Celestial Reference System (ICRS), or vice versa. The dynamical reference system is based on the dynamical mean equator and equinox of J2000.0. The ICRS is based on the space-fixed ICRS axes defined by the radio catalog positions of several hundred extragalactic objects.</p>
+
+<p>Transforms a vector from the dynamical reference system to the International Celestial Reference System (ICRS), or vice versa. </p>
+<p>The dynamical reference system is based on the dynamical mean equator and equinox of J2000.0. The ICRS is based on the space-fixed ICRS axes defined by the radio catalog positions of several hundred extragalactic objects.</p>
 <p>For geocentric coordinates, the same transformation is used between the dynamical reference system and the GCRS.</p>
 <p>NOTES: </p><ol>
 <li>
@@ -547,7 +576,7 @@ IERS (2003) Conventions, Chapter 5. </li>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successfor or -1 if either of the vector arguments is NULL.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a9d51ca5c972013024755c644c96d0586">j2000_to_gcrs()</a>, <a class="el" href="#aeea4b5085c7267714492fae6108fb975">gcrs_to_j2000()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a9d51ca5c972013024755c644c96d0586" title="Change J2000 coordinates to ICRS / GCRS coordinates.">j2000_to_gcrs()</a>, <a class="el" href="#aeea4b5085c7267714492fae6108fb975" title="Changes ICRS / GCRS coordinates to J2000 coordinates.">gcrs_to_j2000()</a> </dd></dl>
 
 </div>
 </div>
@@ -594,7 +623,9 @@ IERS (2003) Conventions, Chapter 5. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Converts GCRS right ascension and declination to coordinates with respect to the equator of date (mean or true). For coordinates with respect to the true equator of date, the origin of right ascension can be either the true equinox or the celestial intermediate origin (CIO). This function only supports the CIO-based method.</p>
+
+<p>Converts GCRS right ascension and declination to coordinates with respect to the equator of date (mean or true). </p>
+<p>For coordinates with respect to the true equator of date, the origin of right ascension can be either the true equinox or the celestial intermediate origin (CIO). This function only supports the CIO-based method.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date. (Unused if 'coord_sys' is NOVAS_ICRS_EQUATOR) </td></tr>
@@ -607,8 +638,8 @@ IERS (2003) Conventions, Chapter 5. </li>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 with errno set to EINVAL if the output pointers are NULL, or sys and/or accuracy is invalid; otherwise &lt;0 if an error from <a class="el" href="util_8c.html#a84f672dc1c37e3af374198f29cbcfba9">vector2radec()</a>; 10&ndash;20 error is 10 + error <a class="el" href="cio_8c.html#a65ffaaa2b527ed03149eadc7568f3714">cio_location()</a>; or else 20 + error from <a class="el" href="cio_8c.html#a51bfbe9b491f50851326b2522dc2a29f">cio_basis()</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a9c900b81a718a184281a8a0b733b4db7">gcrs_to_tod()</a>, <a class="el" href="#a75de6cca190c5fbc3056db726f317c7f">gcrs_to_mod()</a>, <a class="el" href="#a51ea4a016336dd3cf7783061c14d165c">gcrs_to_cirs()</a>, <a class="el" href="frames_8c.html#acfcfb90637cd1fdb25ef9afd1bda8e30">novas_transform_sky_pos()</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 with errno set to EINVAL if the output pointers are NULL, or sys and/or accuracy is invalid; otherwise &lt;0 if an error from <a class="el" href="util_8c.html#a84f672dc1c37e3af374198f29cbcfba9" title="Converts an vector in equatorial rectangular coordinates to equatorial spherical coordinates.">vector2radec()</a>; 10&ndash;20 error is 10 + error <a class="el" href="cio_8c.html#a65ffaaa2b527ed03149eadc7568f3714">cio_location()</a>; or else 20 + error from <a class="el" href="cio_8c.html#a51bfbe9b491f50851326b2522dc2a29f">cio_basis()</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a9c900b81a718a184281a8a0b733b4db7" title="Transforms a rectangular equatorial (x, y, z) vector from the ICRS / GCRS to the True of Date (TOD) r...">gcrs_to_tod()</a>, <a class="el" href="#a75de6cca190c5fbc3056db726f317c7f" title="Transforms a rectangular equatorial (x, y, z) vector from the ICRS / GCRS to the Mean of Date (MOD) r...">gcrs_to_mod()</a>, <a class="el" href="#a51ea4a016336dd3cf7783061c14d165c" title="Transforms a rectangular equatorial (x, y, z) vector from the ICRS / GCRS to the Celestial Intermedia...">gcrs_to_cirs()</a>, <a class="el" href="frames_8c.html#acfcfb90637cd1fdb25ef9afd1bda8e30" title="Transforms a position or velocity 3-vector from one coordinate reference system to another.">novas_transform_sky_pos()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="#a51ea4a016336dd3cf7783061c14d165c">gcrs_to_cirs()</a>, <a class="el" href="#a75de6cca190c5fbc3056db726f317c7f">gcrs_to_mod()</a>, <a class="el" href="#a9c900b81a718a184281a8a0b733b4db7">gcrs_to_tod()</a>, <a class="el" href="novas_8h.html#a61f6463d05c29930c667981fdcb1f341a3bf824e91c250babd516eadef253d1fe">NOVAS_DYNAMICAL_CIRS</a>, <a class="el" href="novas_8h.html#a61f6463d05c29930c667981fdcb1f341a5b6fd4adbb29dd7a90e5100730eda1e8">NOVAS_DYNAMICAL_MOD</a>, <a class="el" href="novas_8h.html#a61f6463d05c29930c667981fdcb1f341a39ca3eead3c36784e06eff2a8598aea0">NOVAS_DYNAMICAL_TOD</a>, <a class="el" href="util_8c.html#ae104afd1bc638def9bdbce1801e5054a">radec2vector()</a>, and <a class="el" href="util_8c.html#a84f672dc1c37e3af374198f29cbcfba9">vector2radec()</a>.</p>
 
@@ -642,7 +673,9 @@ IERS (2003) Conventions, Chapter 5. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Transforms a rectangular equatorial (x, y, z) vector from the ICRS / GCRS to the Celestial Intermediate Reference System (CIRS) frame at the given epoch. (We treat ICRS and GCRS the same, since they only define the orientation of the equator, and not the origin. The origin is defined by the observer location separately.)</p>
+
+<p>Transforms a rectangular equatorial (x, y, z) vector from the ICRS / GCRS to the Celestial Intermediate Reference System (CIRS) frame at the given epoch. </p>
+<p>(We treat ICRS and GCRS the same, since they only define the orientation of the equator, and not the origin. The origin is defined by the observer location separately.)</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date that defines the output epoch. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result </td></tr>
@@ -655,7 +688,7 @@ IERS (2003) Conventions, Chapter 5. </li>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if either of the vector arguments is NULL or the accuracy is invalid, or else 10 + the error from <a class="el" href="cio_8c.html#a51bfbe9b491f50851326b2522dc2a29f">cio_basis()</a>.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#aeea4b5085c7267714492fae6108fb975">gcrs_to_j2000()</a>, <a class="el" href="#ac0ba048cd1732d0d0398397396d158bc">cirs_to_gcrs()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#aeea4b5085c7267714492fae6108fb975" title="Changes ICRS / GCRS coordinates to J2000 coordinates.">gcrs_to_j2000()</a>, <a class="el" href="#ac0ba048cd1732d0d0398397396d158bc" title="Transforms a rectangular equatorial (x, y, z) vector from the Celestial Intermediate Reference System...">cirs_to_gcrs()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="#a9c900b81a718a184281a8a0b733b4db7">gcrs_to_tod()</a>, and <a class="el" href="#adb48b2acaf76cc3a1e3a1412cc42c232">tod_to_cirs()</a>.</p>
 
@@ -679,7 +712,9 @@ IERS (2003) Conventions, Chapter 5. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Changes ICRS / GCRS coordinates to J2000 coordinates. Same as <a class="el" href="#aa11d2253a44261370af8d0c32f0715e9">frame_tie()</a> called with ICRS_TO_J2000. (We treat ICRS and GCRS the same, since they only define the orientation of the equator, and not the origin. The origin is defined by the observer location separately.)</p>
+
+<p>Changes ICRS / GCRS coordinates to J2000 coordinates. </p>
+<p>Same as <a class="el" href="#aa11d2253a44261370af8d0c32f0715e9" title="Transforms a vector from the dynamical reference system to the International Celestial Reference Syst...">frame_tie()</a> called with ICRS_TO_J2000. (We treat ICRS and GCRS the same, since they only define the orientation of the equator, and not the origin. The origin is defined by the observer location separately.)</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">in</td><td>ICRS / GCRS input 3-vector </td></tr>
@@ -687,10 +722,10 @@ IERS (2003) Conventions, Chapter 5. </li>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, or else an error from <a class="el" href="#aa11d2253a44261370af8d0c32f0715e9">frame_tie()</a></dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or else an error from <a class="el" href="#aa11d2253a44261370af8d0c32f0715e9" title="Transforms a vector from the dynamical reference system to the International Celestial Reference Syst...">frame_tie()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a9d51ca5c972013024755c644c96d0586">j2000_to_gcrs()</a>, <a class="el" href="#a6205edb1361e56cc0c7aed0f088f7437">tod_to_j2000()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a9d51ca5c972013024755c644c96d0586" title="Change J2000 coordinates to ICRS / GCRS coordinates.">j2000_to_gcrs()</a>, <a class="el" href="#a6205edb1361e56cc0c7aed0f088f7437" title="Transforms a rectangular equatorial (x, y, z) vector from True of Date (TOD) reference frame at the g...">tod_to_j2000()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="#aa11d2253a44261370af8d0c32f0715e9">frame_tie()</a>, and <a class="el" href="novas_8h.html#ae8b91a9b4fe4af63c7054d1eacdb996ea8557604d6604356e6620b42f78aec999">ICRS_TO_J2000</a>.</p>
 
@@ -719,7 +754,9 @@ IERS (2003) Conventions, Chapter 5. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Transforms a rectangular equatorial (x, y, z) vector from the ICRS / GCRS to the Mean of Date (MOD) reference frame at the given epoch. (We treat ICRS and GCRS the same, since they only define the orientation of the equator, and not the origin. The origin is defined by the observer location separately.)</p>
+
+<p>Transforms a rectangular equatorial (x, y, z) vector from the ICRS / GCRS to the Mean of Date (MOD) reference frame at the given epoch. </p>
+<p>(We treat ICRS and GCRS the same, since they only define the orientation of the equator, and not the origin. The origin is defined by the observer location separately.)</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TT) based Julian date that defines the output epoch. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result </td></tr>
@@ -731,7 +768,7 @@ IERS (2003) Conventions, Chapter 5. </li>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if either of the vector arguments is NULL.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ad9cc07f0e6af9339096e15a440b113e5">mod_to_gcrs()</a>, <a class="el" href="#a9c900b81a718a184281a8a0b733b4db7">gcrs_to_tod()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ad9cc07f0e6af9339096e15a440b113e5" title="Transforms a rectangular equatorial (x, y, z) vector from Mean of Date (MOD) reference frame at the g...">mod_to_gcrs()</a>, <a class="el" href="#a9c900b81a718a184281a8a0b733b4db7" title="Transforms a rectangular equatorial (x, y, z) vector from the ICRS / GCRS to the True of Date (TOD) r...">gcrs_to_tod()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="#aa11d2253a44261370af8d0c32f0715e9">frame_tie()</a>, <a class="el" href="novas_8h.html#ae8b91a9b4fe4af63c7054d1eacdb996ea8557604d6604356e6620b42f78aec999">ICRS_TO_J2000</a>, <a class="el" href="novas_8h.html#a31bf4a08940bfa3e97ae6a1abee80422">NOVAS_JD_J2000</a>, and <a class="el" href="equinox_8c.html#a9178358732325399f3a5e3582080ced3">precession()</a>.</p>
 
@@ -765,7 +802,9 @@ IERS (2003) Conventions, Chapter 5. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Transforms a rectangular equatorial (x, y, z) vector from the ICRS / GCRS to the True of Date (TOD) reference frame at the given epoch. (We treat ICRS and GCRS the same, since they only define the orientation of the equator, and not the origin. The origin is defined by the observer location separately.)</p>
+
+<p>Transforms a rectangular equatorial (x, y, z) vector from the ICRS / GCRS to the True of Date (TOD) reference frame at the given epoch. </p>
+<p>(We treat ICRS and GCRS the same, since they only define the orientation of the equator, and not the origin. The origin is defined by the observer location separately.)</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TT) based Julian date that defines the output epoch. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result </td></tr>
@@ -778,7 +817,7 @@ IERS (2003) Conventions, Chapter 5. </li>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if either of the vector arguments is NULL, or if the accuracy argument is invalid.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a51ea4a016336dd3cf7783061c14d165c">gcrs_to_cirs()</a>, <a class="el" href="#a6871e7fecde44084c7b4e1b8dda5ac70">tod_to_gcrs()</a>, <a class="el" href="#a02fa1ee652c20160055cbd2c7bd9ca63">j2000_to_tod()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a51ea4a016336dd3cf7783061c14d165c" title="Transforms a rectangular equatorial (x, y, z) vector from the ICRS / GCRS to the Celestial Intermedia...">gcrs_to_cirs()</a>, <a class="el" href="#a6871e7fecde44084c7b4e1b8dda5ac70" title="Transforms a rectangular equatorial (x, y, z) vector from True of Date (TOD) reference frame at the g...">tod_to_gcrs()</a>, <a class="el" href="#a02fa1ee652c20160055cbd2c7bd9ca63" title="Transforms a rectangular equatorial (x, y, z) vector from J2000 coordinates to the True of Date (TOD)...">j2000_to_tod()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="#aa11d2253a44261370af8d0c32f0715e9">frame_tie()</a>, <a class="el" href="novas_8h.html#ae8b91a9b4fe4af63c7054d1eacdb996ea8557604d6604356e6620b42f78aec999">ICRS_TO_J2000</a>, and <a class="el" href="#a02fa1ee652c20160055cbd2c7bd9ca63">j2000_to_tod()</a>.</p>
 
@@ -832,7 +871,8 @@ IERS (2003) Conventions, Chapter 5. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Rotates a position vector from the Earth-fixed ITRS frame to the dynamical CIRS frame of date (IAU 2000 standard method).</p>
+
+<p>Rotates a position vector from the Earth-fixed ITRS frame to the dynamical CIRS frame of date (IAU 2000 standard method). </p>
 <p>If both 'xp' and 'yp' are set to 0 no polar motion is included in the transformation.</p>
 <p>If extreme (sub-microarcsecond) accuracy is not required, you can use UT1-based Julian date instead of the TT-based Julian date and set the 'ut1_to_tt' argument to 0.0. and you can use UTC-based Julian date the same way.for arcsec-level precision also.</p>
 <p>REFERENCES: </p><ol>
@@ -857,7 +897,7 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if either of the vector arguments is NULL, 1 if 'accuracy' is invalid, or else 10 + the error from <a class="el" href="cio_8c.html#a65ffaaa2b527ed03149eadc7568f3714">cio_location()</a>, or 20 + error from <a class="el" href="cio_8c.html#a51bfbe9b491f50851326b2522dc2a29f">cio_basis()</a>.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a3f6ae564cfac3766a21e0754905e5f7c">itrs_to_tod()</a>, <a class="el" href="#aa2768d89d499a7155f90a6fd8c176d8d">cirs_to_itrs()</a>, <a class="el" href="#ac0ba048cd1732d0d0398397396d158bc">cirs_to_gcrs()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a3f6ae564cfac3766a21e0754905e5f7c" title="Rotates a position vector from the Earth-fixed ITRS frame to the dynamical True of Date (TOD) frame o...">itrs_to_tod()</a>, <a class="el" href="#aa2768d89d499a7155f90a6fd8c176d8d" title="Rotates a position vector from the dynamical CIRS frame of date to the Earth-fixed ITRS frame (IAU 20...">cirs_to_itrs()</a>, <a class="el" href="#ac0ba048cd1732d0d0398397396d158bc" title="Transforms a rectangular equatorial (x, y, z) vector from the Celestial Intermediate Reference System...">cirs_to_gcrs()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609ab07b6e5ed11fd50e7c2287b5b6626b46">EROT_ERA</a>, <a class="el" href="novas_8h.html#a3789b2c39c26f01bb1bffe8ebc953467aba4a23444c495f90061ec1a906585faa">NOVAS_DYNAMICAL_CLASS</a>, and <a class="el" href="#ac8c5ff3cc13126aba2ec5a6cbe187a31">ter2cel()</a>.</p>
 
@@ -911,7 +951,8 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Rotates a position vector from the Earth-fixed ITRS frame to the dynamical True of Date (TOD) frame of date (pre IAU 2000 method).</p>
+
+<p>Rotates a position vector from the Earth-fixed ITRS frame to the dynamical True of Date (TOD) frame of date (pre IAU 2000 method). </p>
 <p>If both 'xp' and 'yp' are set to 0 no polar motion is included in the transformation.</p>
 <p>If extreme (sub-microarcsecond) accuracy is not required, you can use UT1-based Julian date instead of the TT-based Julian date and set the 'ut1_to_tt' argument to 0.0. and you can use UTC-based Julian date the same way.for arcsec-level precision also.</p>
 <p>REFERENCES: </p><ol>
@@ -936,7 +977,7 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if either of the vector arguments is NULL, 1 if 'accuracy' is invalid, or else 10 + the error from <a class="el" href="cio_8c.html#a65ffaaa2b527ed03149eadc7568f3714">cio_location()</a>, or 20 + error from <a class="el" href="cio_8c.html#a51bfbe9b491f50851326b2522dc2a29f">cio_basis()</a>. </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a12953f66c0f774284f0700ae785784d0">itrs_to_cirs()</a>, <a class="el" href="#a4551e2ac083e34c1b2b61b3805efb9a3">tod_to_itrs()</a>, <a class="el" href="#a6205edb1361e56cc0c7aed0f088f7437">tod_to_j2000()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a12953f66c0f774284f0700ae785784d0" title="Rotates a position vector from the Earth-fixed ITRS frame to the dynamical CIRS frame of date (IAU 20...">itrs_to_cirs()</a>, <a class="el" href="#a4551e2ac083e34c1b2b61b3805efb9a3" title="Rotates a position vector from the dynamical True of Date (TOD) frame of date the Earth-fixed ITRS fr...">tod_to_itrs()</a>, <a class="el" href="#a6205edb1361e56cc0c7aed0f088f7437" title="Transforms a rectangular equatorial (x, y, z) vector from True of Date (TOD) reference frame at the g...">tod_to_j2000()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609a1d56a4fb59b567049ed1937bfcdf0f62">EROT_GST</a>, <a class="el" href="novas_8h.html#a3789b2c39c26f01bb1bffe8ebc953467aba4a23444c495f90061ec1a906585faa">NOVAS_DYNAMICAL_CLASS</a>, and <a class="el" href="#ac8c5ff3cc13126aba2ec5a6cbe187a31">ter2cel()</a>.</p>
 
@@ -960,7 +1001,9 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Change J2000 coordinates to ICRS / GCRS coordinates. Same as <a class="el" href="#aa11d2253a44261370af8d0c32f0715e9">frame_tie()</a> called with J2000_TO_ICRS. (We treat ICRS and GCRS the same, since they only define the orientation of the equator, and not the origin. The origin is defined by the observer location separately.)</p>
+
+<p>Change J2000 coordinates to ICRS / GCRS coordinates. </p>
+<p>Same as <a class="el" href="#aa11d2253a44261370af8d0c32f0715e9" title="Transforms a vector from the dynamical reference system to the International Celestial Reference Syst...">frame_tie()</a> called with J2000_TO_ICRS. (We treat ICRS and GCRS the same, since they only define the orientation of the equator, and not the origin. The origin is defined by the observer location separately.)</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">in</td><td>J2000 input 3-vector </td></tr>
@@ -968,10 +1011,10 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, or else an error from <a class="el" href="#aa11d2253a44261370af8d0c32f0715e9">frame_tie()</a></dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or else an error from <a class="el" href="#aa11d2253a44261370af8d0c32f0715e9" title="Transforms a vector from the dynamical reference system to the International Celestial Reference Syst...">frame_tie()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a02fa1ee652c20160055cbd2c7bd9ca63">j2000_to_tod()</a>, <a class="el" href="#aeea4b5085c7267714492fae6108fb975">gcrs_to_j2000()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a02fa1ee652c20160055cbd2c7bd9ca63" title="Transforms a rectangular equatorial (x, y, z) vector from J2000 coordinates to the True of Date (TOD)...">j2000_to_tod()</a>, <a class="el" href="#aeea4b5085c7267714492fae6108fb975" title="Changes ICRS / GCRS coordinates to J2000 coordinates.">gcrs_to_j2000()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="#aa11d2253a44261370af8d0c32f0715e9">frame_tie()</a>, and <a class="el" href="novas_8h.html#ae8b91a9b4fe4af63c7054d1eacdb996ea7e5dc966849295dce29fb339b960da4f">J2000_TO_ICRS</a>.</p>
 
@@ -1005,7 +1048,8 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Transforms a rectangular equatorial (x, y, z) vector from J2000 coordinates to the True of Date (TOD) reference frame at the given epoch</p>
+
+<p>Transforms a rectangular equatorial (x, y, z) vector from J2000 coordinates to the True of Date (TOD) reference frame at the given epoch. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date that defines the output epoch. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result </td></tr>
@@ -1018,7 +1062,7 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if either of the vector arguments is NULL or the accuracy is invalid.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a9d51ca5c972013024755c644c96d0586">j2000_to_gcrs()</a>, <a class="el" href="#a6205edb1361e56cc0c7aed0f088f7437">tod_to_j2000()</a>, <a class="el" href="#aeea4b5085c7267714492fae6108fb975">gcrs_to_j2000()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a9d51ca5c972013024755c644c96d0586" title="Change J2000 coordinates to ICRS / GCRS coordinates.">j2000_to_gcrs()</a>, <a class="el" href="#a6205edb1361e56cc0c7aed0f088f7437" title="Transforms a rectangular equatorial (x, y, z) vector from True of Date (TOD) reference frame at the g...">tod_to_j2000()</a>, <a class="el" href="#aeea4b5085c7267714492fae6108fb975" title="Changes ICRS / GCRS coordinates to J2000 coordinates.">gcrs_to_j2000()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, <a class="el" href="novas_8h.html#ae2d3d508d68d268bec838bdc013d0adaacd57b0308467899ec6304aa26dcc8f4c">NUTATE_MEAN_TO_TRUE</a>, <a class="el" href="equinox_8c.html#a69df5671751c09a7575963b94ad1151e">nutation()</a>, and <a class="el" href="equinox_8c.html#a9178358732325399f3a5e3582080ced3">precession()</a>.</p>
 
@@ -1047,7 +1091,9 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Transforms a rectangular equatorial (x, y, z) vector from Mean of Date (MOD) reference frame at the given epoch to the ICRS / GCRS. (We treat ICRS and GCRS the same, since they only define the orientation of the equator, and not the origin. The origin is defined by the observer location separately.)</p>
+
+<p>Transforms a rectangular equatorial (x, y, z) vector from Mean of Date (MOD) reference frame at the given epoch to the ICRS / GCRS. </p>
+<p>(We treat ICRS and GCRS the same, since they only define the orientation of the equator, and not the origin. The origin is defined by the observer location separately.)</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date that defines the input epoch. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result </td></tr>
@@ -1059,7 +1105,7 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if either of the vector arguments is NULL.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a75de6cca190c5fbc3056db726f317c7f">gcrs_to_mod()</a>, <a class="el" href="#a6871e7fecde44084c7b4e1b8dda5ac70">tod_to_gcrs()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a75de6cca190c5fbc3056db726f317c7f" title="Transforms a rectangular equatorial (x, y, z) vector from the ICRS / GCRS to the Mean of Date (MOD) r...">gcrs_to_mod()</a>, <a class="el" href="#a6871e7fecde44084c7b4e1b8dda5ac70" title="Transforms a rectangular equatorial (x, y, z) vector from True of Date (TOD) reference frame at the g...">tod_to_gcrs()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="#aa11d2253a44261370af8d0c32f0715e9">frame_tie()</a>, <a class="el" href="novas_8h.html#ae8b91a9b4fe4af63c7054d1eacdb996ea7e5dc966849295dce29fb339b960da4f">J2000_TO_ICRS</a>, <a class="el" href="novas_8h.html#a31bf4a08940bfa3e97ae6a1abee80422">NOVAS_JD_J2000</a>, and <a class="el" href="equinox_8c.html#a9178358732325399f3a5e3582080ced3">precession()</a>.</p>
 
@@ -1123,7 +1169,7 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000016">Deprecated</a></b></dt><dd>This function can be confusing to use due to the output coordinate system being specified by a combination of two options. Use <a class="el" href="#a12953f66c0f774284f0700ae785784d0">itrs_to_cirs()</a> or <a class="el" href="#a3f6ae564cfac3766a21e0754905e5f7c">itrs_to_tod()</a> instead. You can then follow these with other conversions to GCRS (or whatever else) as appropriate.</dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000016">Deprecated</a></b></dt><dd>This function can be confusing to use due to the output coordinate system being specified by a combination of two options. Use <a class="el" href="#a12953f66c0f774284f0700ae785784d0" title="Rotates a position vector from the Earth-fixed ITRS frame to the dynamical CIRS frame of date (IAU 20...">itrs_to_cirs()</a> or <a class="el" href="#a3f6ae564cfac3766a21e0754905e5f7c" title="Rotates a position vector from the Earth-fixed ITRS frame to the dynamical True of Date (TOD) frame o...">itrs_to_tod()</a> instead. You can then follow these with other conversions to GCRS (or whatever else) as appropriate.</dd></dl>
 <p>Rotates a vector from the terrestrial to the celestial system. Specifically, it transforms a vector in the ITRS (rotating earth-fixed system) to the True of Date (TOD), CIRS, or GCRS (a local space-fixed system) by applying rotations for polar motion, Earth rotation (for TOD); and nutation, precession, and the dynamical-to-GCRS frame tie (for GCRS).</p>
 <p>If 'system' is NOVAS_CIRS then method EROT_ERA must be used. Similarly, if 'system' is NOVAS_TOD then method must be EROT_ERA. Otherwise an error 3 is returned.</p>
 <p>If both 'xp' and 'yp' are set to 0 no polar motion is included in the transformation.</p>
@@ -1149,7 +1195,7 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if either of the vector arguments is NULL, 1 if 'accuracy' is invalid, 2 if 'method' is invalid 10&ndash;20, or else 10 + the error from <a class="el" href="cio_8c.html#a65ffaaa2b527ed03149eadc7568f3714">cio_location()</a>, or 20 + error from <a class="el" href="cio_8c.html#a51bfbe9b491f50851326b2522dc2a29f">cio_basis()</a>.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html#aa57cbcae2001fece2ee4a2babfbc5f89">novas_hor_to_app()</a>, <a class="el" href="#a12953f66c0f774284f0700ae785784d0">itrs_to_cirs()</a>, <a class="el" href="#ac0ba048cd1732d0d0398397396d158bc">cirs_to_gcrs()</a>, <a class="el" href="#a3f6ae564cfac3766a21e0754905e5f7c">itrs_to_tod()</a>, <a class="el" href="#a6205edb1361e56cc0c7aed0f088f7437">tod_to_j2000()</a>, <a class="el" href="#aa11d2253a44261370af8d0c32f0715e9">frame_tie()</a>, <a class="el" href="#a6217852bfd7d3a58d3266d0daadfc6bc">cel2ter()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html#aa57cbcae2001fece2ee4a2babfbc5f89" title="Converts an observed azimuth and elevation coordinate to right ascension (R.A.) and declination coord...">novas_hor_to_app()</a>, <a class="el" href="#a12953f66c0f774284f0700ae785784d0" title="Rotates a position vector from the Earth-fixed ITRS frame to the dynamical CIRS frame of date (IAU 20...">itrs_to_cirs()</a>, <a class="el" href="#ac0ba048cd1732d0d0398397396d158bc" title="Transforms a rectangular equatorial (x, y, z) vector from the Celestial Intermediate Reference System...">cirs_to_gcrs()</a>, <a class="el" href="#a3f6ae564cfac3766a21e0754905e5f7c" title="Rotates a position vector from the Earth-fixed ITRS frame to the dynamical True of Date (TOD) frame o...">itrs_to_tod()</a>, <a class="el" href="#a6205edb1361e56cc0c7aed0f088f7437" title="Transforms a rectangular equatorial (x, y, z) vector from True of Date (TOD) reference frame at the g...">tod_to_j2000()</a>, <a class="el" href="#aa11d2253a44261370af8d0c32f0715e9" title="Transforms a vector from the dynamical reference system to the International Celestial Reference Syst...">frame_tie()</a>, <a class="el" href="#a6217852bfd7d3a58d3266d0daadfc6bc">cel2ter()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="#ac0ba048cd1732d0d0398397396d158bc">cirs_to_gcrs()</a>, <a class="el" href="earth_8c.html#aef1f8daaad470353648de90576aefc66">era()</a>, <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609ab07b6e5ed11fd50e7c2287b5b6626b46">EROT_ERA</a>, <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609a1d56a4fb59b567049ed1937bfcdf0f62">EROT_GST</a>, <a class="el" href="novas_8h.html#a3789b2c39c26f01bb1bffe8ebc953467aba4a23444c495f90061ec1a906585faa">NOVAS_DYNAMICAL_CLASS</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="earth_8c.html#a348c4fd2a4a046e9768038075717b693">novas_gast()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, <a class="el" href="util_8c.html#af4090e519d7ce7ab1fcdb24b10126eb4">spin()</a>, <a class="el" href="#a6871e7fecde44084c7b4e1b8dda5ac70">tod_to_gcrs()</a>, <a class="el" href="earth_8c.html#aead87744eeb3029ce7d5ffb1801ee652">wobble()</a>, <a class="el" href="novas_8h.html#aab27106a2d5c2c7fa64b2f208deff7f5ac1fc144f868517a2268a56343cc218a9">WOBBLE_ITRS_TO_PEF</a>, and <a class="el" href="novas_8h.html#aab27106a2d5c2c7fa64b2f208deff7f5a88d1bc6832a20ed34c4dab5753864851">WOBBLE_ITRS_TO_TIRS</a>.</p>
 
@@ -1183,7 +1229,8 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Transforms a rectangular equatorial (x, y, z) vector from the True of Date (TOD) reference system to the Celestial Intermediate Reference System (CIRS) at the given epoch to the .</p>
+
+<p>Transforms a rectangular equatorial (x, y, z) vector from the True of Date (TOD) reference system to the Celestial Intermediate Reference System (CIRS) at the given epoch to the . </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date that defines the output epoch. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result </td></tr>
@@ -1193,10 +1240,10 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if either of the vector arguments is NULL or the accuracy is invalid, or 10 + the error from <a class="el" href="cio_8c.html#acc331c69187b3077b98280bfb57f6670">cio_ra()</a>, or else 20 + the error from <a class="el" href="cio_8c.html#a51bfbe9b491f50851326b2522dc2a29f">cio_basis()</a>.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if either of the vector arguments is NULL or the accuracy is invalid, or 10 + the error from <a class="el" href="cio_8c.html#acc331c69187b3077b98280bfb57f6670" title="Computes the true right ascension of the celestial intermediate origin (CIO) vs the equinox of date o...">cio_ra()</a>, or else 20 + the error from <a class="el" href="cio_8c.html#a51bfbe9b491f50851326b2522dc2a29f">cio_basis()</a>.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a9cac4f3a18d4c14939519e7123b4d504">cirs_to_tod()</a>, <a class="el" href="#a3fa57a154f2f423612736e5e3a5addbf">app_to_cirs_ra()</a>, <a class="el" href="#a6871e7fecde44084c7b4e1b8dda5ac70">tod_to_gcrs()</a>, <a class="el" href="#a6205edb1361e56cc0c7aed0f088f7437">tod_to_j2000()</a>, <a class="el" href="#a4551e2ac083e34c1b2b61b3805efb9a3">tod_to_itrs()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a9cac4f3a18d4c14939519e7123b4d504" title="Transforms a rectangular equatorial (x, y, z) vector from the Celestial Intermediate Reference System...">cirs_to_tod()</a>, <a class="el" href="#a3fa57a154f2f423612736e5e3a5addbf" title="Converts an apparent right ascension coordinate (measured from the true equinox of date) to a CIRS R....">app_to_cirs_ra()</a>, <a class="el" href="#a6871e7fecde44084c7b4e1b8dda5ac70" title="Transforms a rectangular equatorial (x, y, z) vector from True of Date (TOD) reference frame at the g...">tod_to_gcrs()</a>, <a class="el" href="#a6205edb1361e56cc0c7aed0f088f7437" title="Transforms a rectangular equatorial (x, y, z) vector from True of Date (TOD) reference frame at the g...">tod_to_j2000()</a>, <a class="el" href="#a4551e2ac083e34c1b2b61b3805efb9a3" title="Rotates a position vector from the dynamical True of Date (TOD) frame of date the Earth-fixed ITRS fr...">tod_to_itrs()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="equinox_8c.html#aea0e1028baf14d16d9de800e36a17086">ira_equinox()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, <a class="el" href="novas_8h.html#ab970f5de5d5e04874cb31865459b0b4fa1096785746d1a9bc678ea2c51fc21055">NOVAS_TRUE_EQUINOX</a>, and <a class="el" href="util_8c.html#af4090e519d7ce7ab1fcdb24b10126eb4">spin()</a>.</p>
 
@@ -1230,7 +1277,9 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Transforms a rectangular equatorial (x, y, z) vector from True of Date (TOD) reference frame at the given epoch to the ICRS / GCRS. (We treat ICRS and GCRS the same, since they only define the orientation of the equator, and not the origin. The origin is defined by the observer location separately.)</p>
+
+<p>Transforms a rectangular equatorial (x, y, z) vector from True of Date (TOD) reference frame at the given epoch to the ICRS / GCRS. </p>
+<p>(We treat ICRS and GCRS the same, since they only define the orientation of the equator, and not the origin. The origin is defined by the observer location separately.)</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date that defines the input epoch. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result </td></tr>
@@ -1243,7 +1292,7 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if either of the vector arguments is NULL.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a02fa1ee652c20160055cbd2c7bd9ca63">j2000_to_tod()</a>, <a class="el" href="#adb48b2acaf76cc3a1e3a1412cc42c232">tod_to_cirs()</a>, <a class="el" href="#a6205edb1361e56cc0c7aed0f088f7437">tod_to_j2000()</a>, <a class="el" href="#a4551e2ac083e34c1b2b61b3805efb9a3">tod_to_itrs()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a02fa1ee652c20160055cbd2c7bd9ca63" title="Transforms a rectangular equatorial (x, y, z) vector from J2000 coordinates to the True of Date (TOD)...">j2000_to_tod()</a>, <a class="el" href="#adb48b2acaf76cc3a1e3a1412cc42c232" title="Transforms a rectangular equatorial (x, y, z) vector from the True of Date (TOD) reference system to ...">tod_to_cirs()</a>, <a class="el" href="#a6205edb1361e56cc0c7aed0f088f7437" title="Transforms a rectangular equatorial (x, y, z) vector from True of Date (TOD) reference frame at the g...">tod_to_j2000()</a>, <a class="el" href="#a4551e2ac083e34c1b2b61b3805efb9a3" title="Rotates a position vector from the dynamical True of Date (TOD) frame of date the Earth-fixed ITRS fr...">tod_to_itrs()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="#aa11d2253a44261370af8d0c32f0715e9">frame_tie()</a>, <a class="el" href="novas_8h.html#ae8b91a9b4fe4af63c7054d1eacdb996ea7e5dc966849295dce29fb339b960da4f">J2000_TO_ICRS</a>, and <a class="el" href="#a6205edb1361e56cc0c7aed0f088f7437">tod_to_j2000()</a>.</p>
 
@@ -1297,7 +1346,8 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Rotates a position vector from the dynamical True of Date (TOD) frame of date the Earth-fixed ITRS frame (pre IAU 2000 method).</p>
+
+<p>Rotates a position vector from the dynamical True of Date (TOD) frame of date the Earth-fixed ITRS frame (pre IAU 2000 method). </p>
 <p>If both 'xp' and 'yp' are set to 0 no polar motion is included in the transformation.</p>
 <p>If extreme (sub-microarcsecond) accuracy is not required, you can use UT1-based Julian date instead of the TT-based Julian date and set the 'ut1_to_tt' argument to 0.0. and you can use UTC-based Julian date the same way.for arcsec-level precision also.</p>
 <p>REFERENCES: </p><ol>
@@ -1322,7 +1372,7 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if either of the vector arguments is NULL, 1 if 'accuracy' is invalid, 2 if 'method' is invalid 10&ndash;20, 3 if the method and option are mutually incompatible, or else 10 + the error from <a class="el" href="cio_8c.html#a65ffaaa2b527ed03149eadc7568f3714">cio_location()</a>, or 20 + error from <a class="el" href="cio_8c.html#a51bfbe9b491f50851326b2522dc2a29f">cio_basis()</a>.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#aa2768d89d499a7155f90a6fd8c176d8d">cirs_to_itrs()</a>, <a class="el" href="#a3f6ae564cfac3766a21e0754905e5f7c">itrs_to_tod()</a>, <a class="el" href="#a02fa1ee652c20160055cbd2c7bd9ca63">j2000_to_tod()</a>, <a class="el" href="#a6871e7fecde44084c7b4e1b8dda5ac70">tod_to_gcrs()</a>, <a class="el" href="#a6205edb1361e56cc0c7aed0f088f7437">tod_to_j2000()</a>, <a class="el" href="#adb48b2acaf76cc3a1e3a1412cc42c232">tod_to_cirs()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#aa2768d89d499a7155f90a6fd8c176d8d" title="Rotates a position vector from the dynamical CIRS frame of date to the Earth-fixed ITRS frame (IAU 20...">cirs_to_itrs()</a>, <a class="el" href="#a3f6ae564cfac3766a21e0754905e5f7c" title="Rotates a position vector from the Earth-fixed ITRS frame to the dynamical True of Date (TOD) frame o...">itrs_to_tod()</a>, <a class="el" href="#a02fa1ee652c20160055cbd2c7bd9ca63" title="Transforms a rectangular equatorial (x, y, z) vector from J2000 coordinates to the True of Date (TOD)...">j2000_to_tod()</a>, <a class="el" href="#a6871e7fecde44084c7b4e1b8dda5ac70" title="Transforms a rectangular equatorial (x, y, z) vector from True of Date (TOD) reference frame at the g...">tod_to_gcrs()</a>, <a class="el" href="#a6205edb1361e56cc0c7aed0f088f7437" title="Transforms a rectangular equatorial (x, y, z) vector from True of Date (TOD) reference frame at the g...">tod_to_j2000()</a>, <a class="el" href="#adb48b2acaf76cc3a1e3a1412cc42c232" title="Transforms a rectangular equatorial (x, y, z) vector from the True of Date (TOD) reference system to ...">tod_to_cirs()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="#a6217852bfd7d3a58d3266d0daadfc6bc">cel2ter()</a>, <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609a1d56a4fb59b567049ed1937bfcdf0f62">EROT_GST</a>, and <a class="el" href="novas_8h.html#a3789b2c39c26f01bb1bffe8ebc953467aba4a23444c495f90061ec1a906585faa">NOVAS_DYNAMICAL_CLASS</a>.</p>
 
@@ -1356,7 +1406,8 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Transforms a rectangular equatorial (x, y, z) vector from True of Date (TOD) reference frame at the given epoch to the J2000 coordinates.</p>
+
+<p>Transforms a rectangular equatorial (x, y, z) vector from True of Date (TOD) reference frame at the given epoch to the J2000 coordinates. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date that defines the input epoch. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result </td></tr>
@@ -1369,7 +1420,7 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if either of the vector arguments is NULL or the 'accuracy' is invalid.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a02fa1ee652c20160055cbd2c7bd9ca63">j2000_to_tod()</a>, <a class="el" href="#a9d51ca5c972013024755c644c96d0586">j2000_to_gcrs()</a>, <a class="el" href="#a6871e7fecde44084c7b4e1b8dda5ac70">tod_to_gcrs()</a>, <a class="el" href="#adb48b2acaf76cc3a1e3a1412cc42c232">tod_to_cirs()</a>, <a class="el" href="#a4551e2ac083e34c1b2b61b3805efb9a3">tod_to_itrs()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a02fa1ee652c20160055cbd2c7bd9ca63" title="Transforms a rectangular equatorial (x, y, z) vector from J2000 coordinates to the True of Date (TOD)...">j2000_to_tod()</a>, <a class="el" href="#a9d51ca5c972013024755c644c96d0586" title="Change J2000 coordinates to ICRS / GCRS coordinates.">j2000_to_gcrs()</a>, <a class="el" href="#a6871e7fecde44084c7b4e1b8dda5ac70" title="Transforms a rectangular equatorial (x, y, z) vector from True of Date (TOD) reference frame at the g...">tod_to_gcrs()</a>, <a class="el" href="#adb48b2acaf76cc3a1e3a1412cc42c232" title="Transforms a rectangular equatorial (x, y, z) vector from the True of Date (TOD) reference system to ...">tod_to_cirs()</a>, <a class="el" href="#a4551e2ac083e34c1b2b61b3805efb9a3" title="Rotates a position vector from the dynamical True of Date (TOD) frame of date the Earth-fixed ITRS fr...">tod_to_itrs()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, <a class="el" href="novas_8h.html#ae2d3d508d68d268bec838bdc013d0adaa20ce1e5229410b6286bcc98a7ce69573">NUTATE_TRUE_TO_MEAN</a>, <a class="el" href="equinox_8c.html#a69df5671751c09a7575963b94ad1151e">nutation()</a>, and <a class="el" href="equinox_8c.html#a9178358732325399f3a5e3582080ced3">precession()</a>.</p>
 

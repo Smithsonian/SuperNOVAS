@@ -109,18 +109,25 @@ $(function(){initNavTree('planets_8c.html',''); initResizable(true); });
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a9ead627eed7fabd8583f1353e89f42e7" id="r_a9ead627eed7fabd8583f1353e89f42e7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9ead627eed7fabd8583f1353e89f42e7">novas_approx_heliocentric</a> (enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a> id, double jd_tdb, double *restrict pos, double *restrict vel)</td></tr>
+<tr class="memdesc:a9ead627eed7fabd8583f1353e89f42e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the approximate geometric heliocentric orbital positions and velocities for the major planets, Sun, or Earth-Moon Barycenter (EMB).  <br /></td></tr>
 <tr class="separator:a9ead627eed7fabd8583f1353e89f42e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4cb01609f76b0ff8487817b9446a3a62" id="r_a4cb01609f76b0ff8487817b9446a3a62"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4cb01609f76b0ff8487817b9446a3a62">novas_approx_sky_pos</a> (enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a> id, const <a class="el" href="structnovas__frame.html">novas_frame</a> *restrict frame, enum <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651e">novas_reference_system</a> sys, <a class="el" href="structsky__pos.html">sky_pos</a> *restrict out)</td></tr>
+<tr class="memdesc:a4cb01609f76b0ff8487817b9446a3a62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates an approximate apparent location on sky for a major planet, Sun, Moon, Earth-Moon Barycenter (EMB) &ndash; typically to arcmin level accuracy &ndash; using Keplerian orbital elements.  <br /></td></tr>
 <tr class="separator:a4cb01609f76b0ff8487817b9446a3a62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6e6c7f6dc2745030e3fd4d407e982bd" id="r_ad6e6c7f6dc2745030e3fd4d407e982bd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad6e6c7f6dc2745030e3fd4d407e982bd">novas_make_moon_orbit</a> (double jd_tdb, <a class="el" href="structnovas__orbital.html">novas_orbital</a> *restrict orbit)</td></tr>
+<tr class="memdesc:ad6e6c7f6dc2745030e3fd4d407e982bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the current orbital elements for the Moon relative to the geocenter for the specified epoch of observation.  <br /></td></tr>
 <tr class="separator:ad6e6c7f6dc2745030e3fd4d407e982bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63b094e813d8b752a6f3344419e80031" id="r_a63b094e813d8b752a6f3344419e80031"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a63b094e813d8b752a6f3344419e80031">novas_make_planet_orbit</a> (enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a> id, double jd_tdb, <a class="el" href="structnovas__orbital.html">novas_orbital</a> *restrict orbit)</td></tr>
+<tr class="memdesc:a63b094e813d8b752a6f3344419e80031"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get approximate current heliocentric orbital elements for the major planets.  <br /></td></tr>
 <tr class="separator:a63b094e813d8b752a6f3344419e80031"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2dbdafd6b07f079815ae52d00e142861" id="r_a2dbdafd6b07f079815ae52d00e142861"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2dbdafd6b07f079815ae52d00e142861">novas_moon_phase</a> (double jd_tdb)</td></tr>
+<tr class="memdesc:a2dbdafd6b07f079815ae52d00e142861"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the Moon's phase at a given time.  <br /></td></tr>
 <tr class="separator:a2dbdafd6b07f079815ae52d00e142861"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0bd6e212af549309b0fcb792ed8cb79" id="r_ad0bd6e212af549309b0fcb792ed8cb79"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad0bd6e212af549309b0fcb792ed8cb79">novas_next_moon_phase</a> (double phase, double jd_tdb)</td></tr>
+<tr class="memdesc:ad0bd6e212af549309b0fcb792ed8cb79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the date / time at which the Moon will reach the specified phase next, <em>after</em> the specified time.  <br /></td></tr>
 <tr class="separator:ad0bd6e212af549309b0fcb792ed8cb79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aacc6a0daf29b8bdc18f46647a94694d3" id="r_aacc6a0daf29b8bdc18f46647a94694d3"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aacc6a0daf29b8bdc18f46647a94694d3">planet_lon</a> (double t, enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a> planet)</td></tr>
+<tr class="memdesc:aacc6a0daf29b8bdc18f46647a94694d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the planetary longitude, for Mercury through Neptune, w.r.t.  <br /></td></tr>
 <tr class="separator:aacc6a0daf29b8bdc18f46647a94694d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -158,19 +165,21 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the approximate geometric heliocentric orbital positions and velocities for the major planets, Sun, or Earth-Moon Barycenter (EMB). The returned positions and velocities are not suitable for precise calculations. However, they may be used to provide rough guidance about the approximate locations of the planets, e.g. for determining approximate rise or set times or the approximate azimuth / elevation angles from an observing site.</p>
+
+<p>Returns the approximate geometric heliocentric orbital positions and velocities for the major planets, Sun, or Earth-Moon Barycenter (EMB). </p>
+<p>The returned positions and velocities are not suitable for precise calculations. However, they may be used to provide rough guidance about the approximate locations of the planets, e.g. for determining approximate rise or set times or the approximate azimuth / elevation angles from an observing site.</p>
 <p>The orbitals can provide planet positions to arcmin-level precision for the rocky inner planets, and to a fraction of a degree precision for the gas and ice giants and Pluto. The accuracies for Uranus, Neptune, and Pluto are significantly improved (to the arcmin level) if used in the time range of 1800 AD to 2050 AD. For a more detailed summary of the typical accuracies, see either of the top two references below.</p>
-<p>For accurate positions, you should use planetary ephemerides (such as the JPL ephemerides via the CALCEPH or CSPICE plugins) and <code><a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7">novas_geom_posvel()</a></code> instead.</p>
-<p>While this function is generally similar to creating an orbital object with an orbit initialized with <code><a class="el" href="#a63b094e813d8b752a6f3344419e80031">novas_make_planet_orbit()</a></code> or <code><a class="el" href="#ad6e6c7f6dc2745030e3fd4d407e982bd">novas_make_moon_orbit()</a></code>, and then calling <code><a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7">novas_geom_posvel()</a></code>, there are a few important differences:</p>
+<p>For accurate positions, you should use planetary ephemerides (such as the JPL ephemerides via the CALCEPH or CSPICE plugins) and <code><a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7" title="Calculates the geometric position and velocity vectors, relative to the observer, for a source in the...">novas_geom_posvel()</a></code> instead.</p>
+<p>While this function is generally similar to creating an orbital object with an orbit initialized with <code><a class="el" href="#a63b094e813d8b752a6f3344419e80031" title="Get approximate current heliocentric orbital elements for the major planets.">novas_make_planet_orbit()</a></code> or <code><a class="el" href="#ad6e6c7f6dc2745030e3fd4d407e982bd" title="Gets the current orbital elements for the Moon relative to the geocenter for the specified epoch of o...">novas_make_moon_orbit()</a></code>, and then calling <code><a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7" title="Calculates the geometric position and velocity vectors, relative to the observer, for a source in the...">novas_geom_posvel()</a></code>, there are a few important differences:</p>
 <ol>
 <li>
-This function returns geometric positions referenced to the Sun (i.e., heliocentric), whereas <code><a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7">novas_geom_posvel()</a></code> references the calculated positions to the Solar-system Barycenter (SSB). </li>
+This function returns geometric positions referenced to the Sun (i.e., heliocentric), whereas <code><a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7" title="Calculates the geometric position and velocity vectors, relative to the observer, for a source in the...">novas_geom_posvel()</a></code> references the calculated positions to the Solar-system Barycenter (SSB). </li>
 <li>
-This function calculates Earth and Moon positions about the Keplerian orbital position of the Earth-Moon Barycenter (EMB). In constrast, <code><a class="el" href="#a63b094e813d8b752a6f3344419e80031">novas_make_planet_orbit()</a></code> does not provide orbitals for the Earth directly, and <code>make_moot_orbit()</code> references the Moon's orbital to the Earth position returned by the currently configured planet calculator function (see <code><a class="el" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a></code>). </li>
+This function calculates Earth and Moon positions about the Keplerian orbital position of the Earth-Moon Barycenter (EMB). In constrast, <code><a class="el" href="#a63b094e813d8b752a6f3344419e80031" title="Get approximate current heliocentric orbital elements for the major planets.">novas_make_planet_orbit()</a></code> does not provide orbitals for the Earth directly, and <code>make_moot_orbit()</code> references the Moon's orbital to the Earth position returned by the currently configured planet calculator function (see <code><a class="el" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973" title="Set a custom function to use for regular precision (see NOVAS_REDUCED_ACCURACY) ephemeris calculation...">set_planet_provider()</a></code>). </li>
 </ol>
 <p>NOTES: </p><ol>
 <li>
-The Sun's position w.r.t. the Solar-system Barycenter is calculated using <code><a class="el" href="solsys3_8c.html#a580f5949c8a29cdd7bf4787aee891f2b">earth_sun_calc()</a></code>. All other orbitals are also referenced to the Sun's position calculated that way. </li>
+The Sun's position w.r.t. the Solar-system Barycenter is calculated using <code><a class="el" href="solsys3_8c.html#a580f5949c8a29cdd7bf4787aee891f2b" title="Provides the position and velocity of the Earth and Sun only at epoch &#39;jd_tdb&#39; by evaluating a closed...">earth_sun_calc()</a></code>. All other orbitals are also referenced to the Sun's position calculated that way. </li>
 </ol>
 <p>REFERENCES: </p><ol>
 <li>
@@ -194,9 +203,9 @@ Chapront-Touze, M, and Chapront, J. 1983, Astronomy and Astrophysics (ISSN 0004-
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or if the JD date is outside of the range with valid parameters, or else -1 if the planet ID is not supported or if both output vectors are NULL. In case of errors errno will be set to indicate the type of error.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.4 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a4cb01609f76b0ff8487817b9446a3a62">novas_approx_sky_pos()</a>, <a class="el" href="solsys3_8c.html#a580f5949c8a29cdd7bf4787aee891f2b">earth_sun_calc()</a>, <a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7">novas_geom_posvel()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a4cb01609f76b0ff8487817b9446a3a62" title="Calculates an approximate apparent location on sky for a major planet, Sun, Moon, Earth-Moon Barycent...">novas_approx_sky_pos()</a>, <a class="el" href="solsys3_8c.html#a580f5949c8a29cdd7bf4787aee891f2b" title="Provides the position and velocity of the Earth and Sun only at epoch &#39;jd_tdb&#39; by evaluating a closed...">earth_sun_calc()</a>, <a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7" title="Calculates the geometric position and velocity vectors, relative to the observer, for a source in the...">novas_geom_posvel()</a> </dd>
 <dd>
-<a class="el" href="solsys-calceph_8c.html#a35fc86a939602ec910dbdfde180d7f31">novas_use_calceph()</a>, <a class="el" href="solsys-cspice_8c.html#a9b44218bca5fce1e9e5103494c15dde4">novas_use_cspice()</a> </dd></dl>
+<a class="el" href="solsys-calceph_8c.html#a35fc86a939602ec910dbdfde180d7f31" title="Sets a ephemeris provider for Solar-system objects using the CALCEPH C library and the specified set ...">novas_use_calceph()</a>, <a class="el" href="solsys-cspice_8c.html#a9b44218bca5fce1e9e5103494c15dde4" title="Sets CSPICE as the default ephemeris provider for all types of Solar-system objects (both NOVAS_PLANE...">novas_use_cspice()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045adc941f5a3613952d6d6102281e70e5c0">NOVAS_EARTH</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045ad1785b619d72877c4eb78d61aedf9e1a">NOVAS_EMB</a>, <a class="el" href="#ad6e6c7f6dc2745030e3fd4d407e982bd">novas_make_moon_orbit()</a>, <a class="el" href="#a63b094e813d8b752a6f3344419e80031">novas_make_planet_orbit()</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a9fcf58133828600a062725ced448cfcf">NOVAS_MOON</a>, <a class="el" href="novas_8h.html#a85243a6b9eee259d3fb84ee1a587e065">NOVAS_ORBIT_INIT</a>, <a class="el" href="orbital_8c.html#a4510a3235a693f122899983901211c30">novas_orbit_posvel()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, and <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a170e1c704bd29c8d46f66d4d9a03d9c2">NOVAS_SUN</a>.</p>
 
@@ -230,13 +239,15 @@ Chapront-Touze, M, and Chapront, J. 1983, Astronomy and Astrophysics (ISSN 0004-
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Calculates an approximate apparent location on sky for a major planet, Sun, Moon, Earth-Moon Barycenter (EMB) &ndash; typically to arcmin level accuracy &ndash; using Keplerian orbital elements. The returned position is antedated for light-travel time (for Solar-System bodies). It also applies an appropriate aberration correction (but not gravitational deflection).</p>
+
+<p>Calculates an approximate apparent location on sky for a major planet, Sun, Moon, Earth-Moon Barycenter (EMB) &ndash; typically to arcmin level accuracy &ndash; using Keplerian orbital elements. </p>
+<p>The returned position is antedated for light-travel time (for Solar-System bodies). It also applies an appropriate aberration correction (but not gravitational deflection).</p>
 <p>The orbitals can provide planet positions to arcmin-level precision for the rocky inner planets, and to a fraction of a degree precision for the gas and ice giants and Pluto. The accuracies for Uranus, Neptune, and Pluto are significantly improved (to the arcmin level) if used in the time range of 1800 AD to 2050 AD. For a more detailed summary of the typical accuracies, see either of the top two references below.</p>
-<p>For accurate positions, you should use planetary ephemerides (such as the JPL ephemerides via the CALCEPH or CSPICE plugins) and <code><a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a></code> instead.</p>
-<p>While this function is generally similar to creating an orbital object with an orbit initialized with <code><a class="el" href="#a63b094e813d8b752a6f3344419e80031">novas_make_planet_orbit()</a></code> or <code><a class="el" href="#ad6e6c7f6dc2745030e3fd4d407e982bd">novas_make_moon_orbit()</a></code>, and then calling <code><a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a></code>, there are a few important differences to note:</p>
+<p>For accurate positions, you should use planetary ephemerides (such as the JPL ephemerides via the CALCEPH or CSPICE plugins) and <code><a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f" title="Calculates an apparent location on sky for the source.">novas_sky_pos()</a></code> instead.</p>
+<p>While this function is generally similar to creating an orbital object with an orbit initialized with <code><a class="el" href="#a63b094e813d8b752a6f3344419e80031" title="Get approximate current heliocentric orbital elements for the major planets.">novas_make_planet_orbit()</a></code> or <code><a class="el" href="#ad6e6c7f6dc2745030e3fd4d407e982bd" title="Gets the current orbital elements for the Moon relative to the geocenter for the specified epoch of o...">novas_make_moon_orbit()</a></code>, and then calling <code><a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f" title="Calculates an apparent location on sky for the source.">novas_sky_pos()</a></code>, there are a few important differences to note:</p>
 <ol>
 <li>
-This function calculates Earth and Moon positions about the Keplerian orbital position of the Earth-Moon Barycenter (EMB). In constrast, <code><a class="el" href="#a63b094e813d8b752a6f3344419e80031">novas_make_planet_orbit()</a></code> does not provide orbitals for the Earth directly, and <code>make_moot_orbit()</code> references the Moon's orbital to the Earth position returned by the currently configured planet calculator function (see <code><a class="el" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a></code>). </li>
+This function calculates Earth and Moon positions about the Keplerian orbital position of the Earth-Moon Barycenter (EMB). In constrast, <code><a class="el" href="#a63b094e813d8b752a6f3344419e80031" title="Get approximate current heliocentric orbital elements for the major planets.">novas_make_planet_orbit()</a></code> does not provide orbitals for the Earth directly, and <code>make_moot_orbit()</code> references the Moon's orbital to the Earth position returned by the currently configured planet calculator function (see <code><a class="el" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973" title="Set a custom function to use for regular precision (see NOVAS_REDUCED_ACCURACY) ephemeris calculation...">set_planet_provider()</a></code>). </li>
 <li>
 This function ignores gravitational deflection. It makes little sense to bother about corrections that are orders of magnitude below the accuracy of the orbital positions obtained. </li>
 </ol>
@@ -262,9 +273,9 @@ Chapront-Touze, M, and Chapront, J. 1983, Astronomy and Astrophysics (ISSN 0004-
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 in case of an error (errno will indicate the type of error).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.4 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a>, <a class="el" href="frames_8c.html#a3cd947f2e48d6c5cc88ad7a1bab9b8ca">novas_app_to_hor()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f" title="Calculates an apparent location on sky for the source.">novas_sky_pos()</a>, <a class="el" href="frames_8c.html#a3cd947f2e48d6c5cc88ad7a1bab9b8ca" title="Converts an observed apparent position vector in the specified coordinate system to local horizontal ...">novas_app_to_hor()</a> </dd>
 <dd>
-<a class="el" href="frames_8c.html#adc72577f99a7b076b23e0e44ddbca838">novas_make_frame()</a> </dd></dl>
+<a class="el" href="frames_8c.html#adc72577f99a7b076b23e0e44ddbca838" title="Sets up a observing frame for a specific observer location, time of observation, and accuracy require...">novas_make_frame()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="target_8c.html#a4c7846be95299769f4d0377bf127bcf5">make_planet()</a>, <a class="el" href="#a9ead627eed7fabd8583f1353e89f42e7">novas_approx_heliocentric()</a>, <a class="el" href="frames_8c.html#a4817703c9357f702a27812584c91f87c">novas_geom_to_app()</a>, <a class="el" href="timescale_8c.html#ae30e3dd8e30bdcf4e8486cfce696fb98">novas_get_time()</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0baf5d992bdf01b4f3fd7b22e3e24c6974d">NOVAS_TDB</a>, <a class="el" href="util_8c.html#a0f41cefb8c872973b07e936b5026d143">novas_vlen()</a>, and <a class="el" href="spectral_8c.html#a37f22e463cc06b4e381aa18659e6319d">rad_vel2()</a>.</p>
 
@@ -288,7 +299,8 @@ Chapront-Touze, M, and Chapront, J. 1983, Astronomy and Astrophysics (ISSN 0004-
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Gets the current orbital elements for the Moon relative to the geocenter for the specified epoch of observation.</p>
+
+<p>Gets the current orbital elements for the Moon relative to the geocenter for the specified epoch of observation. </p>
 <p>REFERENCES: </p><ol>
 <li>
 Chapront, J. et al., 2002, A&amp;A 387, 700–709 </li>
@@ -305,7 +317,7 @@ Chapront-Touze, M, and Chapront, J. 1983, Astronomy and Astrophysics (ISSN 0004-
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 (<code>errno</code> set to <code>EINVAL</code>).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.4 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a63b094e813d8b752a6f3344419e80031">novas_make_planet_orbit()</a>, <a class="el" href="target_8c.html#a3c5e215babeeba078ca7b3e9be42e555">make_orbital_object()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a63b094e813d8b752a6f3344419e80031" title="Get approximate current heliocentric orbital elements for the major planets.">novas_make_planet_orbit()</a>, <a class="el" href="target_8c.html#a3c5e215babeeba078ca7b3e9be42e555" title="Sets a celestial object to be a Solar-system orbital body.">make_orbital_object()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#abc8f275a2d431e59a1ec9e276abaca1a">NOVAS_AU</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045adc941f5a3613952d6d6102281e70e5c0">NOVAS_EARTH</a>, <a class="el" href="novas_8h.html#a31bf4a08940bfa3e97ae6a1abee80422">NOVAS_JD_J2000</a>, <a class="el" href="novas_8h.html#a85243a6b9eee259d3fb84ee1a587e065">NOVAS_ORBIT_INIT</a>, and <a class="el" href="novas_8h.html#a4912c64aec0c943b7985db6cb61ff83a">TWOPI</a>.</p>
 
@@ -334,7 +346,9 @@ Chapront-Touze, M, and Chapront, J. 1983, Astronomy and Astrophysics (ISSN 0004-
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get approximate current heliocentric orbital elements for the major planets. These orbital elements are not suitable for precise position velocity calculations, but they may be useful to obtain approximate positions for the major planets, e.g. to estimate rise or set times, or apparent elevation angles from an observing site.</p>
+
+<p>Get approximate current heliocentric orbital elements for the major planets. </p>
+<p>These orbital elements are not suitable for precise position velocity calculations, but they may be useful to obtain approximate positions for the major planets, e.g. to estimate rise or set times, or apparent elevation angles from an observing site.</p>
 <p>These orbitals can provide planet positions to arcmin-level precision for the rocky inner planets, and to a fraction of a degree precision for the gas and ice giants and Pluto. The accuracies for Uranus, Neptune, and Pluto are significantly improved (to the arcmin level) if used in the time range of 1800 AD to 2050 AD. For a more detailed summary of the typical accuracies, see either of the references below.</p>
 <p>NOTES: </p><ol>
 <li>
@@ -359,7 +373,7 @@ E.M. Standish and J.G. Williams 1992. </li>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 (<code>errno</code> set to <code>EINVAL</code>).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.4 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ad6e6c7f6dc2745030e3fd4d407e982bd">novas_make_moon_orbit()</a>, <a class="el" href="#a4cb01609f76b0ff8487817b9446a3a62">novas_approx_sky_pos()</a>, <a class="el" href="#a9ead627eed7fabd8583f1353e89f42e7">novas_approx_heliocentric()</a>, <a class="el" href="target_8c.html#a3c5e215babeeba078ca7b3e9be42e555">make_orbital_object()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ad6e6c7f6dc2745030e3fd4d407e982bd" title="Gets the current orbital elements for the Moon relative to the geocenter for the specified epoch of o...">novas_make_moon_orbit()</a>, <a class="el" href="#a4cb01609f76b0ff8487817b9446a3a62" title="Calculates an approximate apparent location on sky for a major planet, Sun, Moon, Earth-Moon Barycent...">novas_approx_sky_pos()</a>, <a class="el" href="#a9ead627eed7fabd8583f1353e89f42e7" title="Returns the approximate geometric heliocentric orbital positions and velocities for the major planets...">novas_approx_heliocentric()</a>, <a class="el" href="target_8c.html#a3c5e215babeeba078ca7b3e9be42e555" title="Sets a celestial object to be a Solar-system orbital body.">make_orbital_object()</a> </dd></dl>
 <p>Keplerian orbital elements at J2000 from Table 8.10.2 of E.M. Standish and J.G. Williams 1992, valid for 1800 AD to 2050 AD.</p>
 <p>Temporal evolution of the Keplerian orbital elements from Table 8.10.2 of E.M. Standish and J.G. Williams 1992, valid for 1800 AD to 2050 AD.</p>
 <p>Keplerian orbital elements at J2000 from Table 8.10.3 of E.M. Standish and J.G. Williams 1992, valid for 3000 BC to 3000 AD.</p>
@@ -384,7 +398,9 @@ E.M. Standish and J.G. Williams 1992. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Calculates the Moon's phase at a given time. It uses orbital models for Earth (E.M. Standish and J.G. Williams 1992), and for the Moon (Chapront, J. et al., 2002), and takes into account the slightly eccentric nature of both orbits.</p>
+
+<p>Calculates the Moon's phase at a given time. </p>
+<p>It uses orbital models for Earth (E.M. Standish and J.G. Williams 1992), and for the Moon (Chapront, J. et al., 2002), and takes into account the slightly eccentric nature of both orbits.</p>
 <p>NOTES: </p><ol>
 <li>
 The Moon's phase here follows the definition by the Astronomical Almanac, as the excess ecliptic longitude of the Moon over that of the Sun seen from the geocenter. </li>
@@ -412,7 +428,7 @@ Chapront-Touze, M, and Chapront, J. 1983, Astronomy and Astrophysics (ISSN 0004-
 <dl class="section return"><dt>Returns</dt><dd>[deg] The Moon's phase, or more precisely the ecliptic longitude difference between the Sun and the Moon, as seen from the geocenter. 0: New Moon, 90: 1st quarter, +/- 180 Full Moon, -90: 3rd quarter or NAN if the solution failed to converge (errno will be set to ECANCELED), or if the JD date is outside the range of the orbital model (errno set to EINVAL).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.4 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ad0bd6e212af549309b0fcb792ed8cb79">novas_next_moon_phase()</a>, <a class="el" href="#ad6e6c7f6dc2745030e3fd4d407e982bd">novas_make_moon_orbit()</a>, <a class="el" href="frames_8c.html#ac780bd907a12957995d36ad916dd4ec1">novas_solar_illum()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ad0bd6e212af549309b0fcb792ed8cb79" title="Calculates the date / time at which the Moon will reach the specified phase next, after the specified...">novas_next_moon_phase()</a>, <a class="el" href="#ad6e6c7f6dc2745030e3fd4d407e982bd" title="Gets the current orbital elements for the Moon relative to the geocenter for the specified epoch of o...">novas_make_moon_orbit()</a>, <a class="el" href="frames_8c.html#ac780bd907a12957995d36ad916dd4ec1" title="Returns the Solar illumination fraction of a source, assuming a spherical geometry for the observed b...">novas_solar_illum()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045ad1785b619d72877c4eb78d61aedf9e1a">NOVAS_EMB</a>, <a class="el" href="#ad6e6c7f6dc2745030e3fd4d407e982bd">novas_make_moon_orbit()</a>, <a class="el" href="#a63b094e813d8b752a6f3344419e80031">novas_make_planet_orbit()</a>, <a class="el" href="novas_8h.html#a85243a6b9eee259d3fb84ee1a587e065">NOVAS_ORBIT_INIT</a>, <a class="el" href="orbital_8c.html#a6b88d2403a3051ab32229244cf98d7ab">novas_orbit_native_posvel()</a>, and <a class="el" href="util_8c.html#a84f672dc1c37e3af374198f29cbcfba9">vector2radec()</a>.</p>
 
@@ -436,7 +452,9 @@ Chapront-Touze, M, and Chapront, J. 1983, Astronomy and Astrophysics (ISSN 0004-
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Calculates the date / time at which the Moon will reach the specified phase next, <em>after</em> the specified time. It uses orbital models for Earth (E.M. Standish and J.G. Williams 1992), and for the Moon (Chapront, J. et al., 2002), and takes into account the slightly eccentric nature of both orbits.</p>
+
+<p>Calculates the date / time at which the Moon will reach the specified phase next, <em>after</em> the specified time. </p>
+<p>It uses orbital models for Earth (E.M. Standish and J.G. Williams 1992), and for the Moon (Chapront, J. et al., 2002), and takes into account the slightly eccentric nature of both orbits.</p>
 <p>NOTES: </p><ol>
 <li>
 The Moon's phase here follows the definition by the Astronomical Almanac, as the excess ecliptic longitude of the Moon over that of the Sun seen from the geocenter. </li>
@@ -465,7 +483,7 @@ Chapront-Touze, M, and Chapront, J. 1983, Astronomy and Astrophysics (ISSN 0004-
 <dl class="section return"><dt>Returns</dt><dd>[day] The Barycentric Dynamical Time (TDB) based Julian Date when the Moon will be in the desired phase next after the input date; or NAN if the solution failed to converge (errno will be set to ECANCELED).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.4 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a2dbdafd6b07f079815ae52d00e142861">novas_moon_phase()</a>, <a class="el" href="#ad6e6c7f6dc2745030e3fd4d407e982bd">novas_make_moon_orbit()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a2dbdafd6b07f079815ae52d00e142861" title="Calculates the Moon&#39;s phase at a given time.">novas_moon_phase()</a>, <a class="el" href="#ad6e6c7f6dc2745030e3fd4d407e982bd" title="Gets the current orbital elements for the Moon relative to the geocenter for the specified epoch of o...">novas_make_moon_orbit()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="util_8c.html#ad2b933ce2f58e8b04bbe76ffbff99eb0">novas_inv_max_iter</a>, <a class="el" href="novas_8h.html#a31bf4a08940bfa3e97ae6a1abee80422">NOVAS_JD_J2000</a>, and <a class="el" href="#a2dbdafd6b07f079815ae52d00e142861">novas_moon_phase()</a>.</p>
 
@@ -489,7 +507,9 @@ Chapront-Touze, M, and Chapront, J. 1983, Astronomy and Astrophysics (ISSN 0004-
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the planetary longitude, for Mercury through Neptune, w.r.t. mean dynamical ecliptic and equinox of J2000, with high order terms omitted (Simon et al. 1994, 5.8.1-5.8.8).</p>
+
+<p>Returns the planetary longitude, for Mercury through Neptune, w.r.t. </p>
+<p>mean dynamical ecliptic and equinox of J2000, with high order terms omitted (Simon et al. 1994, 5.8.1-5.8.8).</p>
 <p>REFERENCES: </p><ol>
 <li>
 IERS Conventions Chapter 5, Eq. 5.44. </li>
@@ -502,7 +522,7 @@ IERS Conventions Chapter 5, Eq. 5.44. </li>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>[rad] The approximate longitude of the planet in radians [-&pi;:&pi;], or NAN if the <code>planet</code> id is out of range.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="equinox_8c.html#ad1de5b481e41cf193c199bd0dc5084bd">accum_prec()</a>, <a class="el" href="nutation_8c.html#a6e9ced7b0aec544ad7b057b58f777ec4">nutation_angles()</a>, <a class="el" href="novas_8h.html#a31bf4a08940bfa3e97ae6a1abee80422" title="[day] Julian date at J2000">NOVAS_JD_J2000</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="equinox_8c.html#ad1de5b481e41cf193c199bd0dc5084bd" title="Returns the general precession in longitude (Simon et al.">accum_prec()</a>, <a class="el" href="nutation_8c.html#a6e9ced7b0aec544ad7b057b58f777ec4" title="Returns the IAU2000 / 2006 values for nutation in longitude and nutation in obliquity for a given TDB...">nutation_angles()</a>, <a class="el" href="novas_8h.html#a31bf4a08940bfa3e97ae6a1abee80422" title="[day] Julian date at J2000">NOVAS_JD_J2000</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 

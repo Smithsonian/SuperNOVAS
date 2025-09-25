@@ -106,6 +106,9 @@ $(function(){initNavTree('structnovas__orbital.html',''); initResizable(true); }
 </div><!--header-->
 <div class="contents">
 
+<p>Keplerian orbital elements for <code>NOVAS_ORBITAL_OBJECT</code> type.  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;novas.h&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -135,6 +138,7 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>M0</b></td></tr>
 <tr class="memdesc:adc4cda6fcbff8922621b0a08f911957d"><td class="mdescLeft">&#160;</td><td class="mdescRight">[deg] mean anomaly at the reference time <br /></td></tr>
 <tr class="separator:adc4cda6fcbff8922621b0a08f911957d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe63e991a7bf5d666068b15c9064428d" id="r_abe63e991a7bf5d666068b15c9064428d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abe63e991a7bf5d666068b15c9064428d">n</a></td></tr>
+<tr class="memdesc:abe63e991a7bf5d666068b15c9064428d"><td class="mdescLeft">&#160;</td><td class="mdescRight">[deg/day] mean daily motion, i.e.  <br /></td></tr>
 <tr class="separator:abe63e991a7bf5d666068b15c9064428d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc96d50a65bae0b26750df2d93492fea" id="r_abc96d50a65bae0b26750df2d93492fea"><td class="memItemLeft" align="right" valign="top"><a id="abc96d50a65bae0b26750df2d93492fea" name="abc96d50a65bae0b26750df2d93492fea"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>node_period</b></td></tr>
@@ -154,7 +158,8 @@ struct <a class="el" href="structnovas__orbital__system.html">novas_orbital_syst
 <tr class="separator:a7ccd081fe6b1424bd644317068578775"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Keplerian orbital elements for <code>NOVAS_ORBITAL_OBJECT</code> type. Orbital elements can be used to provide approximate positions for various Solar-system bodies. JPL publishes orbital elements (and their evolution) for the major planets and their satellites. However, these are suitable only for very approximate calculations, with up to degree scale errors for the gas giants for the time range between 1850 AD and 2050 AD. Accurate positions and velocities for planets and their satellites should generally require the use of precise ephemeris data instead, such as obtained from the JPL Horizons system.</p>
+<div class="textblock"><p>Keplerian orbital elements for <code>NOVAS_ORBITAL_OBJECT</code> type. </p>
+<p>Orbital elements can be used to provide approximate positions for various Solar-system bodies. JPL publishes orbital elements (and their evolution) for the major planets and their satellites. However, these are suitable only for very approximate calculations, with up to degree scale errors for the gas giants for the time range between 1850 AD and 2050 AD. Accurate positions and velocities for planets and their satellites should generally require the use of precise ephemeris data instead, such as obtained from the JPL Horizons system.</p>
 <p>Orbital elements describe motion from a purely Keplerian perspective. However, for short periods, for which the perturbing bodies can be ignored, this description can be quite accurate provided that an up-to-date set of values are used. The Minor Planet Center (MPC) thus regularly publishes orbital elements for all known asteroids and comets. For such objects, orbital elements can offer precise, and the most up-to-date positions and velocities.</p>
 <p>REFERENCES: </p><ol>
 <li>
@@ -166,7 +171,7 @@ Low accuracy mean elements for planets from JPL Horizons: <a href="https://ssd.j
 </ol>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="target_8c.html#a3c5e215babeeba078ca7b3e9be42e555">make_orbital_object()</a>, <a class="el" href="novas_8h.html#a85243a6b9eee259d3fb84ee1a587e065">NOVAS_ORBIT_INIT</a>, enum <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa17562d2cd1b0b56d59d31f6ca51c759a">NOVAS_ORBITAL_OBJECT</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="target_8c.html#a3c5e215babeeba078ca7b3e9be42e555" title="Sets a celestial object to be a Solar-system orbital body.">make_orbital_object()</a>, <a class="el" href="novas_8h.html#a85243a6b9eee259d3fb84ee1a587e065" title="Initializer for novas_orbital for heliocentric orbits using GCRS ecliptic pqrametrization.">NOVAS_ORBIT_INIT</a>, enum <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa17562d2cd1b0b56d59d31f6ca51c759a" title="Any Solar-system body, whose position is determined by a set of orbital elements.">NOVAS_ORBITAL_OBJECT</a> </dd></dl>
 </div><h2 class="groupheader">Field Documentation</h2>
 <a id="abe63e991a7bf5d666068b15c9064428d" name="abe63e991a7bf5d666068b15c9064428d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abe63e991a7bf5d666068b15c9064428d">&#9670;&#160;</a></span>n</h2>
@@ -179,7 +184,9 @@ Low accuracy mean elements for planets from JPL Horizons: <a href="https://ssd.j
         </tr>
       </table>
 </div><div class="memdoc">
-<p>[deg/day] mean daily motion, i.e. (<em>GM</em>/_a_<sup>3</sup>)<sup>1/2</sup> for the central body, or 360/T, where T is orbital period in days. </p>
+
+<p>[deg/day] mean daily motion, i.e. </p>
+<p>(<em>GM</em>/_a_<sup>3</sup>)<sup>1/2</sup> for the central body, or 360/T, where T is orbital period in days. </p>
 
 </div>
 </div>

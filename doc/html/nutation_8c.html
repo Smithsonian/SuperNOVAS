@@ -109,12 +109,16 @@ $(function(){initNavTree('nutation_8c.html',''); initResizable(true); });
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a280cbf02b13ca57b3d77451be06e7dbc" id="r_a280cbf02b13ca57b3d77451be06e7dbc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a280cbf02b13ca57b3d77451be06e7dbc">iau2000a</a> (double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps)</td></tr>
+<tr class="memdesc:a280cbf02b13ca57b3d77451be06e7dbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the IAU 2000A high-precision nutation series for the specified date, to 0.1 &mu;as accuracy.  <br /></td></tr>
 <tr class="separator:a280cbf02b13ca57b3d77451be06e7dbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f9cddeb8c3dd906b9b0b5941249ad0c" id="r_a6f9cddeb8c3dd906b9b0b5941249ad0c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6f9cddeb8c3dd906b9b0b5941249ad0c">iau2000b</a> (double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps)</td></tr>
+<tr class="memdesc:a6f9cddeb8c3dd906b9b0b5941249ad0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the forced nutation of the non-rigid Earth based at reduced precision.  <br /></td></tr>
 <tr class="separator:a6f9cddeb8c3dd906b9b0b5941249ad0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd066c2857d1b1cc06d8bd51b912d841" id="r_abd066c2857d1b1cc06d8bd51b912d841"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abd066c2857d1b1cc06d8bd51b912d841">nu2000k</a> (double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps)</td></tr>
+<tr class="memdesc:abd066c2857d1b1cc06d8bd51b912d841"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the forced nutation of the non-rigid Earth: Model NU2000K.  <br /></td></tr>
 <tr class="separator:abd066c2857d1b1cc06d8bd51b912d841"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e9ced7b0aec544ad7b057b58f777ec4" id="r_a6e9ced7b0aec544ad7b057b58f777ec4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6e9ced7b0aec544ad7b057b58f777ec4">nutation_angles</a> (double t, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, double *restrict dpsi, double *restrict deps)</td></tr>
+<tr class="memdesc:a6e9ced7b0aec544ad7b057b58f777ec4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the IAU2000 / 2006 values for nutation in longitude and nutation in obliquity for a given TDB Julian date and the desired level of accuracy.  <br /></td></tr>
 <tr class="separator:a6e9ced7b0aec544ad7b057b58f777ec4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -154,7 +158,9 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Computes the IAU 2000A high-precision nutation series for the specified date, to 0.1 &mu;as accuracy. It is rather expensive computationally.</p>
+
+<p>Computes the IAU 2000A high-precision nutation series for the specified date, to 0.1 &mu;as accuracy. </p>
+<p>It is rather expensive computationally.</p>
 <p>NOTES: </p><ol>
 <li>
 As of SuperNOVAS v1.4.2, this function has been modified to replace the original IAU2000A model coefficients with the IAU2006 (a.k.a. IAU2000A R06) model coefficients, to provide an updated nutation model, which is dynamically consistent with the IAU2006 (P03) precesion model of Capitaine et al. 2003. This is now the same model with respect to which the IERS Earth orinetation parameters are computed and published. </li>
@@ -179,7 +185,7 @@ Capitaine, N. et al. (2003), Astronomy And Astrophysics 412, pp. 567-586. </li>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a6f9cddeb8c3dd906b9b0b5941249ad0c">iau2000b()</a>, <a class="el" href="#abd066c2857d1b1cc06d8bd51b912d841">nu2000k()</a>, <a class="el" href="#a6e9ced7b0aec544ad7b057b58f777ec4">nutation_angles()</a>, <a class="el" href="equinox_8c.html#a69df5671751c09a7575963b94ad1151e">nutation()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a6f9cddeb8c3dd906b9b0b5941249ad0c" title="Computes the forced nutation of the non-rigid Earth based at reduced precision.">iau2000b()</a>, <a class="el" href="#abd066c2857d1b1cc06d8bd51b912d841" title="Computes the forced nutation of the non-rigid Earth: Model NU2000K.">nu2000k()</a>, <a class="el" href="#a6e9ced7b0aec544ad7b057b58f777ec4" title="Returns the IAU2000 / 2006 values for nutation in longitude and nutation in obliquity for a given TDB...">nutation_angles()</a>, <a class="el" href="equinox_8c.html#a69df5671751c09a7575963b94ad1151e" title="Nutates equatorial rectangular coordinates from mean equator and equinox of epoch to true equator and...">nutation()</a> </dd></dl>
 
 </div>
 </div>
@@ -211,7 +217,9 @@ Capitaine, N. et al. (2003), Astronomy And Astrophysics 412, pp. 567-586. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Computes the forced nutation of the non-rigid Earth based at reduced precision. It reproduces the IAU 2000A (R06) model to a precision of 1 milliarcsecond in the interval 1995-2020, while being about 15x faster than <code><a class="el" href="#a280cbf02b13ca57b3d77451be06e7dbc">iau2000a()</a></code>.</p>
+
+<p>Computes the forced nutation of the non-rigid Earth based at reduced precision. </p>
+<p>It reproduces the IAU 2000A (R06) model to a precision of 1 milliarcsecond in the interval 1995-2020, while being about 15x faster than <code><a class="el" href="#a280cbf02b13ca57b3d77451be06e7dbc" title="Computes the IAU 2000A high-precision nutation series for the specified date, to 0....">iau2000a()</a></code>.</p>
 <p>NOTES </p><ol>
 <li>
 <p class="startli">Originally this was the IAU2000B series of McCarthy &amp; Luzum (2003), consistent with the original IAU2000 precession model</p>
@@ -237,7 +245,7 @@ Capitaine, N. et al. (2003), Astronomy And Astrophysics 412, pp. 567-586. </li>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a280cbf02b13ca57b3d77451be06e7dbc">iau2000a()</a>, <a class="el" href="#abd066c2857d1b1cc06d8bd51b912d841">nu2000k()</a>, <a class="el" href="#a6e9ced7b0aec544ad7b057b58f777ec4">nutation_angles()</a>, <a class="el" href="plugin_8c.html#a694288eb631d6a69ecf313b7b5b4a677">set_nutation_lp_provider()</a>, <a class="el" href="equinox_8c.html#a69df5671751c09a7575963b94ad1151e">nutation()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a280cbf02b13ca57b3d77451be06e7dbc" title="Computes the IAU 2000A high-precision nutation series for the specified date, to 0....">iau2000a()</a>, <a class="el" href="#abd066c2857d1b1cc06d8bd51b912d841" title="Computes the forced nutation of the non-rigid Earth: Model NU2000K.">nu2000k()</a>, <a class="el" href="#a6e9ced7b0aec544ad7b057b58f777ec4" title="Returns the IAU2000 / 2006 values for nutation in longitude and nutation in obliquity for a given TDB...">nutation_angles()</a>, <a class="el" href="plugin_8c.html#a694288eb631d6a69ecf313b7b5b4a677" title="Set the function to use for low-precision IAU 2000 nutation calculations instead of the default nu200...">set_nutation_lp_provider()</a>, <a class="el" href="equinox_8c.html#a69df5671751c09a7575963b94ad1151e" title="Nutates equatorial rectangular coordinates from mean equator and equinox of epoch to true equator and...">nutation()</a> </dd></dl>
 
 </div>
 </div>
@@ -269,7 +277,9 @@ Capitaine, N. et al. (2003), Astronomy And Astrophysics 412, pp. 567-586. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Computes the forced nutation of the non-rigid Earth: Model NU2000K. This model is a modified version of the original IAU 2000A, which has been truncated for speed of execution. NU2000K agrees with IAU 2000A at the 0.1 milliarcsecond level from 1700 to 2300, while being is about 5x faster than the more precise <code><a class="el" href="#a280cbf02b13ca57b3d77451be06e7dbc">iau2000a()</a></code>.</p>
+
+<p>Computes the forced nutation of the non-rigid Earth: Model NU2000K. </p>
+<p>This model is a modified version of the original IAU 2000A, which has been truncated for speed of execution. NU2000K agrees with IAU 2000A at the 0.1 milliarcsecond level from 1700 to 2300, while being is about 5x faster than the more precise <code><a class="el" href="#a280cbf02b13ca57b3d77451be06e7dbc" title="Computes the IAU 2000A high-precision nutation series for the specified date, to 0....">iau2000a()</a></code>.</p>
 <p>NU2000K was compared to IAU 2000A over six centuries (1700-2300). The average error in d&psi; is 20 microarcseconds, with 98% of the errors &lt; 60 microarcseconds; the average error in d&epsilon;is 8 microarcseconds, with 100% of the errors &lt; 60 microarcseconds.</p>
 <p>NU2000K was developed by G. Kaplan (USNO) in March 2004</p>
 <p>NOTES: </p><ol>
@@ -296,7 +306,7 @@ Coppola, V., Seago, G.H., &amp; Vallado, D.A. (2009), AAS 09-159 </li>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a280cbf02b13ca57b3d77451be06e7dbc">iau2000a()</a>, <a class="el" href="#a6f9cddeb8c3dd906b9b0b5941249ad0c">iau2000b()</a>, <a class="el" href="#a6e9ced7b0aec544ad7b057b58f777ec4">nutation_angles()</a>, <a class="el" href="plugin_8c.html#a694288eb631d6a69ecf313b7b5b4a677">set_nutation_lp_provider()</a>, <a class="el" href="equinox_8c.html#a69df5671751c09a7575963b94ad1151e">nutation()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a280cbf02b13ca57b3d77451be06e7dbc" title="Computes the IAU 2000A high-precision nutation series for the specified date, to 0....">iau2000a()</a>, <a class="el" href="#a6f9cddeb8c3dd906b9b0b5941249ad0c" title="Computes the forced nutation of the non-rigid Earth based at reduced precision.">iau2000b()</a>, <a class="el" href="#a6e9ced7b0aec544ad7b057b58f777ec4" title="Returns the IAU2000 / 2006 values for nutation in longitude and nutation in obliquity for a given TDB...">nutation_angles()</a>, <a class="el" href="plugin_8c.html#a694288eb631d6a69ecf313b7b5b4a677" title="Set the function to use for low-precision IAU 2000 nutation calculations instead of the default nu200...">set_nutation_lp_provider()</a>, <a class="el" href="equinox_8c.html#a69df5671751c09a7575963b94ad1151e" title="Nutates equatorial rectangular coordinates from mean equator and equinox of epoch to true equator and...">nutation()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="equinox_8c.html#ad1de5b481e41cf193c199bd0dc5084bd">accum_prec()</a>, <a class="el" href="structnovas__delaunay__args.html#ad8657a5ec76e12f3066fb4b4eb75ace9">novas_delaunay_args::D</a>, <a class="el" href="structnovas__delaunay__args.html#ae3520ebb3ff8d6feab3e6afb47ed4040">novas_delaunay_args::F</a>, <a class="el" href="equinox_8c.html#a312b5ab1a004b179d80463a07ca7da8f">fund_args()</a>, <a class="el" href="structnovas__delaunay__args.html#a59e80b8ba32c12c6d0a868f17a19ae48">novas_delaunay_args::l</a>, <a class="el" href="structnovas__delaunay__args.html#ad7a541093aca44890413459c6248db6c">novas_delaunay_args::l1</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045adc941f5a3613952d6d6102281e70e5c0">NOVAS_EARTH</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a994baf0c30caeaaee7b8b4d5a12921a3">NOVAS_JUPITER</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a479f3eb097c0aeb4ac7dc3ae2e6c376e">NOVAS_MARS</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a03b12ea0f93a1a1045d7bcccd613c6f2">NOVAS_SATURN</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a7c452cc654265f03e78801f9aead83de">NOVAS_VENUS</a>, <a class="el" href="structnovas__delaunay__args.html#a1b5bf6735b7465aec5c931281d240737">novas_delaunay_args::Omega</a>, and <a class="el" href="planets_8c.html#aacc6a0daf29b8bdc18f46647a94694d3">planet_lon()</a>.</p>
 
@@ -330,7 +340,9 @@ Coppola, V., Seago, G.H., &amp; Vallado, D.A. (2009), AAS 09-159 </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the IAU2000 / 2006 values for nutation in longitude and nutation in obliquity for a given TDB Julian date and the desired level of accuracy. For NOVAS_FULL_ACCURACY (0), the IAU 2000A R06 nutation model is used. Otherwise, the model set by <a class="el" href="plugin_8c.html#a694288eb631d6a69ecf313b7b5b4a677">set_nutation_lp_provider()</a> is used, or else the <a class="el" href="#a6f9cddeb8c3dd906b9b0b5941249ad0c">iau2000b()</a> by default.</p>
+
+<p>Returns the IAU2000 / 2006 values for nutation in longitude and nutation in obliquity for a given TDB Julian date and the desired level of accuracy. </p>
+<p>For NOVAS_FULL_ACCURACY (0), the IAU 2000A R06 nutation model is used. Otherwise, the model set by <a class="el" href="plugin_8c.html#a694288eb631d6a69ecf313b7b5b4a677" title="Set the function to use for low-precision IAU 2000 nutation calculations instead of the default nu200...">set_nutation_lp_provider()</a> is used, or else the <a class="el" href="#a6f9cddeb8c3dd906b9b0b5941249ad0c" title="Computes the forced nutation of the non-rigid Earth based at reduced precision.">iau2000b()</a> by default.</p>
 <p>REFERENCES: </p><ol>
 <li>
 Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
@@ -349,9 +361,9 @@ Coppola, V., Seago, G.H., &amp; Vallado, D.A. (2009), AAS 09-159 </li>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if the output pointer arguments are NULL</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="equinox_8c.html#a69df5671751c09a7575963b94ad1151e">nutation()</a>, <a class="el" href="plugin_8c.html#a694288eb631d6a69ecf313b7b5b4a677">set_nutation_lp_provider()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="equinox_8c.html#a69df5671751c09a7575963b94ad1151e" title="Nutates equatorial rectangular coordinates from mean equator and equinox of epoch to true equator and...">nutation()</a>, <a class="el" href="plugin_8c.html#a694288eb631d6a69ecf313b7b5b4a677" title="Set the function to use for low-precision IAU 2000 nutation calculations instead of the default nu200...">set_nutation_lp_provider()</a> </dd>
 <dd>
-<a class="el" href="#a280cbf02b13ca57b3d77451be06e7dbc">iau2000a()</a>, <a class="el" href="#a6f9cddeb8c3dd906b9b0b5941249ad0c">iau2000b()</a>, <a class="el" href="#abd066c2857d1b1cc06d8bd51b912d841">nu2000k()</a> </dd>
+<a class="el" href="#a280cbf02b13ca57b3d77451be06e7dbc" title="Computes the IAU 2000A high-precision nutation series for the specified date, to 0....">iau2000a()</a>, <a class="el" href="#a6f9cddeb8c3dd906b9b0b5941249ad0c" title="Computes the forced nutation of the non-rigid Earth based at reduced precision.">iau2000b()</a>, <a class="el" href="#abd066c2857d1b1cc06d8bd51b912d841" title="Computes the forced nutation of the non-rigid Earth: Model NU2000K.">nu2000k()</a> </dd>
 <dd>
 <a class="el" href="novas_8h.html#a31bf4a08940bfa3e97ae6a1abee80422" title="[day] Julian date at J2000">NOVAS_JD_J2000</a> </dd></dl>
 

@@ -106,13 +106,20 @@ $(function(){initNavTree('structobserver.html',''); initResizable(true); });
 </div><!--header-->
 <div class="contents">
 
+<p>Observer location.  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;novas.h&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a1ab1241c3bb4d3afc4710e02e948c0cb" id="r_a1ab1241c3bb4d3afc4710e02e948c0cb"><td class="memItemLeft" align="right" valign="top">struct novas_in_space&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1ab1241c3bb4d3afc4710e02e948c0cb">near_earth</a></td></tr>
+<tr class="memitem:a1ab1241c3bb4d3afc4710e02e948c0cb" id="r_a1ab1241c3bb4d3afc4710e02e948c0cb"><td class="memItemLeft" align="right" valign="top"><a id="a1ab1241c3bb4d3afc4710e02e948c0cb" name="a1ab1241c3bb4d3afc4710e02e948c0cb"></a>
+struct novas_in_space&#160;</td><td class="memItemRight" valign="bottom"><b>near_earth</b></td></tr>
+<tr class="memdesc:a1ab1241c3bb4d3afc4710e02e948c0cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">data for an observer's location in orbit (if where = NOVAS_OBSERVER_IN_EARTH_ORBIT) As of v1.1 the same structure may be used to store heliocentric location and motion for any Solar-system observer also (if where = NOVAS_SOLAR_SYSTEM_OBSERVER). <br /></td></tr>
 <tr class="separator:a1ab1241c3bb4d3afc4710e02e948c0cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45fe4eb871c346c1b8315c4c6a41e96d" id="r_a45fe4eb871c346c1b8315c4c6a41e96d"><td class="memItemLeft" align="right" valign="top">struct novas_on_surface&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a45fe4eb871c346c1b8315c4c6a41e96d">on_surf</a></td></tr>
+<tr class="memitem:a45fe4eb871c346c1b8315c4c6a41e96d" id="r_a45fe4eb871c346c1b8315c4c6a41e96d"><td class="memItemLeft" align="right" valign="top"><a id="a45fe4eb871c346c1b8315c4c6a41e96d" name="a45fe4eb871c346c1b8315c4c6a41e96d"></a>
+struct novas_on_surface&#160;</td><td class="memItemRight" valign="bottom"><b>on_surf</b></td></tr>
+<tr class="memdesc:a45fe4eb871c346c1b8315c4c6a41e96d"><td class="mdescLeft">&#160;</td><td class="mdescRight">structure containing data for an observer's location on the surface of the Earth (if where = NOVAS_OBSERVER_ON_EARTH) <br /></td></tr>
 <tr class="separator:a45fe4eb871c346c1b8315c4c6a41e96d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a11f2eb69df64b674d938b34bbb842ab1" id="r_a11f2eb69df64b674d938b34bbb842ab1"><td class="memItemLeft" align="right" valign="top"><a id="a11f2eb69df64b674d938b34bbb842ab1" name="a11f2eb69df64b674d938b34bbb842ab1"></a>
 enum <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3">novas_observer_place</a>&#160;</td><td class="memItemRight" valign="bottom"><b>where</b></td></tr>
@@ -120,42 +127,11 @@ enum <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3">novas_
 <tr class="separator:a11f2eb69df64b674d938b34bbb842ab1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Observer location.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="observer_8c.html#ad8b2d2e6ca9570f09a0ca1f82957ed48">make_itrf_observer()</a>, <a class="el" href="observer_8c.html#aa2f9fc986f99c1ec7092330dbf233fef">make_gps_observer()</a>, <a class="el" href="observer_8c.html#aa82db32ce7b115db4f0a077ca899589b">make_observer_at_site()</a>, <a class="el" href="observer_8c.html#aa423a88cd3f434642fc89d47390184f4">make_airborne_observer()</a>, <a class="el" href="observer_8c.html#aabb3ab0d99aa6e487cdcf6b454949b75">make_observer_at_geocenter()</a>, <a class="el" href="observer_8c.html#a6c146e4d10152d5e1ffb978f2fc962be">make_observer_in_space()</a>, <a class="el" href="observer_8c.html#a9c3f1a1bc3fd9ac6d211806913d2d529">make_solar_system_observer()</a>, <a class="el" href="novas_8h.html#a8b1485a1563288c8d060d935c21e3a63">OBSERVER_INIT</a> </dd>
+<div class="textblock"><p>Observer location. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="observer_8c.html#ad8b2d2e6ca9570f09a0ca1f82957ed48" title="Initializes an observer data structure for a ground-based observer with the specified International T...">make_itrf_observer()</a>, <a class="el" href="observer_8c.html#aa2f9fc986f99c1ec7092330dbf233fef" title="Initializes an observer data structure for a ground-based observer with the specified GPS / WGS84 loc...">make_gps_observer()</a>, <a class="el" href="observer_8c.html#aa82db32ce7b115db4f0a077ca899589b" title="Initializes an observer data structure for a ground-based observer at the specified observing site,...">make_observer_at_site()</a>, <a class="el" href="observer_8c.html#aa423a88cd3f434642fc89d47390184f4" title="Populates an &#39;observer&#39; data structure for an observer moving relative to the surface of Earth,...">make_airborne_observer()</a>, <a class="el" href="observer_8c.html#aabb3ab0d99aa6e487cdcf6b454949b75" title="Populates an &#39;observer&#39; data structure for a hypothetical observer located at Earth&#39;s geocenter.">make_observer_at_geocenter()</a>, <a class="el" href="observer_8c.html#a6c146e4d10152d5e1ffb978f2fc962be" title="Populates an &#39;observer&#39; data structure, for an observer situated on a near-Earth spacecraft,...">make_observer_in_space()</a>, <a class="el" href="observer_8c.html#a9c3f1a1bc3fd9ac6d211806913d2d529" title="Populates an &#39;observer&#39; data structure, for an observer situated on a near-Earth spacecraft,...">make_solar_system_observer()</a>, <a class="el" href="novas_8h.html#a8b1485a1563288c8d060d935c21e3a63" title="Empty initializer for observer.">OBSERVER_INIT</a> </dd>
 <dd>
-<a class="el" href="frames_8c.html#adc72577f99a7b076b23e0e44ddbca838">novas_make_frame()</a> </dd></dl>
-</div><h2 class="groupheader">Field Documentation</h2>
-<a id="a1ab1241c3bb4d3afc4710e02e948c0cb" name="a1ab1241c3bb4d3afc4710e02e948c0cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1ab1241c3bb4d3afc4710e02e948c0cb">&#9670;&#160;</a></span>near_earth</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct novas_in_space near_earth</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>data for an observer's location in orbit (if where = NOVAS_OBSERVER_IN_EARTH_ORBIT) As of v1.1 the same structure may be used to store heliocentric location and motion for any Solar-system observer also (if where = NOVAS_SOLAR_SYSTEM_OBSERVER). </p>
-
-</div>
-</div>
-<a id="a45fe4eb871c346c1b8315c4c6a41e96d" name="a45fe4eb871c346c1b8315c4c6a41e96d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a45fe4eb871c346c1b8315c4c6a41e96d">&#9670;&#160;</a></span>on_surf</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct novas_on_surface on_surf</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>structure containing data for an observer's location on the surface of the Earth (if where = NOVAS_OBSERVER_ON_EARTH) </p>
-
-</div>
-</div>
-<hr/>The documentation for this struct was generated from the following file:<ul>
+<a class="el" href="frames_8c.html#adc72577f99a7b076b23e0e44ddbca838" title="Sets up a observing frame for a specific observer location, time of observation, and accuracy require...">novas_make_frame()</a> </dd></dl>
+</div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/github/workspace/include/<a class="el" href="novas_8h.html">novas.h</a></li>
 </ul>
 </div><!-- contents -->

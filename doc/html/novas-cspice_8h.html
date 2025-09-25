@@ -109,14 +109,19 @@ $(function(){initNavTree('novas-cspice_8h.html',''); initResizable(true); });
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ae02d26964099f56c375dc78172ad135b" id="r_ae02d26964099f56c375dc78172ad135b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel</a> (const char *filename)</td></tr>
+<tr class="memdesc:ae02d26964099f56c375dc78172ad135b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a SPICE kernel to the currently managed open kernels.  <br /></td></tr>
 <tr class="separator:ae02d26964099f56c375dc78172ad135b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38e3b3155cad3b3822fbc3e553060ab1" id="r_a38e3b3155cad3b3822fbc3e553060ab1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a38e3b3155cad3b3822fbc3e553060ab1">cspice_remove_kernel</a> (const char *filename)</td></tr>
+<tr class="memdesc:a38e3b3155cad3b3822fbc3e553060ab1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes a SPICE kernel from the currently managed open kernels.  <br /></td></tr>
 <tr class="separator:a38e3b3155cad3b3822fbc3e553060ab1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b44218bca5fce1e9e5103494c15dde4" id="r_a9b44218bca5fce1e9e5103494c15dde4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9b44218bca5fce1e9e5103494c15dde4">novas_use_cspice</a> ()</td></tr>
+<tr class="memdesc:a9b44218bca5fce1e9e5103494c15dde4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets CSPICE as the default ephemeris provider for all types of Solar-system objects (both NOVAS_PLANET and NOVAS_EPHEM_OBJECT types).  <br /></td></tr>
 <tr class="separator:a9b44218bca5fce1e9e5103494c15dde4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb078e1df9b5b08999d24e68d7b4ecdc" id="r_afb078e1df9b5b08999d24e68d7b4ecdc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afb078e1df9b5b08999d24e68d7b4ecdc">novas_use_cspice_ephem</a> ()</td></tr>
+<tr class="memdesc:afb078e1df9b5b08999d24e68d7b4ecdc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a ephemeris provider for NOVAS_EPHEM_OBJECT types using the NAIF CSPICE library.  <br /></td></tr>
 <tr class="separator:afb078e1df9b5b08999d24e68d7b4ecdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a943549e395b19f6a91064e3d6fa1c577" id="r_a943549e395b19f6a91064e3d6fa1c577"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a943549e395b19f6a91064e3d6fa1c577">novas_use_cspice_planets</a> ()</td></tr>
+<tr class="memdesc:a943549e395b19f6a91064e3d6fa1c577"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets CSPICE as the ephemeris provider for the major planets (and Sun, Moon, SSB...) using the NAIF CSPICE library.  <br /></td></tr>
 <tr class="separator:a943549e395b19f6a91064e3d6fa1c577"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -138,7 +143,9 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Adds a SPICE kernel to the currently managed open kernels. Subsequent ephemeris lookups through CSPICE will use the added kernel. It's simply a wrapper around the CSPICE <code>furnsh_c()</code> routine, with graceful error handling. You can of course add kernels using <code>furnsh_c()</code> directly to the same effect.</p>
+
+<p>Adds a SPICE kernel to the currently managed open kernels. </p>
+<p>Subsequent ephemeris lookups through CSPICE will use the added kernel. It's simply a wrapper around the CSPICE <code>furnsh_c()</code> routine, with graceful error handling. You can of course add kernels using <code>furnsh_c()</code> directly to the same effect.</p>
 <p>REFERENCES: </p><ol>
 <li>
 <a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/cspice/furnsh_c.html">https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/cspice/furnsh_c.html</a> </li>
@@ -152,7 +159,7 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if there was an error (errno will be set to EINVAL).</dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="solsys-cspice_8c.html#a38e3b3155cad3b3822fbc3e553060ab1">cspice_remove_kernel()</a>, <a class="el" href="solsys-cspice_8c.html#a9b44218bca5fce1e9e5103494c15dde4">novas_use_cspice()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="solsys-cspice_8c.html#a38e3b3155cad3b3822fbc3e553060ab1" title="Removes a SPICE kernel from the currently managed open kernels.">cspice_remove_kernel()</a>, <a class="el" href="solsys-cspice_8c.html#a9b44218bca5fce1e9e5103494c15dde4" title="Sets CSPICE as the default ephemeris provider for all types of Solar-system objects (both NOVAS_PLANE...">novas_use_cspice()</a> </dd></dl>
 
 </div>
 </div>
@@ -170,7 +177,9 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Removes a SPICE kernel from the currently managed open kernels. Subsequent ephemeris lookups through CSPICE will not use the removed kernel data. It's simply a wrapper around the CSPICE <code>unload_c()</code> routine, with graceful error handling. You can of course remove kernels using <code>unload_c()</code> directly to the same effect.</p>
+
+<p>Removes a SPICE kernel from the currently managed open kernels. </p>
+<p>Subsequent ephemeris lookups through CSPICE will not use the removed kernel data. It's simply a wrapper around the CSPICE <code>unload_c()</code> routine, with graceful error handling. You can of course remove kernels using <code>unload_c()</code> directly to the same effect.</p>
 <p>REFERENCES: </p><ol>
 <li>
 <a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/cspice/unload_c.html">https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/cspice/unload_c.html</a> </li>
@@ -184,7 +193,7 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if there was an error (errno will be set to EINVAL).</dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="solsys-cspice_8c.html#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="solsys-cspice_8c.html#ae02d26964099f56c375dc78172ad135b" title="Adds a SPICE kernel to the currently managed open kernels.">cspice_add_kernel()</a> </dd></dl>
 
 </div>
 </div>
@@ -202,12 +211,13 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Sets CSPICE as the default ephemeris provider for all types of Solar-system objects (both NOVAS_PLANET and NOVAS_EPHEM_OBJECT types).</p>
+
+<p>Sets CSPICE as the default ephemeris provider for all types of Solar-system objects (both NOVAS_PLANET and NOVAS_EPHEM_OBJECT types). </p>
 <p>CSPICE is configured to suppress error messages and to not exit on errors, since we will check errors and handle them ourselves. You can adjust the behavior after this call with the CSPICE errprt_c() and erract_c() functions, respectively.</p>
 <dl class="section return"><dt>Returns</dt><dd>0</dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="solsys-cspice_8c.html#a943549e395b19f6a91064e3d6fa1c577">novas_use_cspice_planets()</a>, <a class="el" href="solsys-cspice_8c.html#afb078e1df9b5b08999d24e68d7b4ecdc">novas_use_cspice_ephem()</a>, <a class="el" href="solsys-cspice_8c.html#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="solsys-cspice_8c.html#a943549e395b19f6a91064e3d6fa1c577" title="Sets CSPICE as the ephemeris provider for the major planets (and Sun, Moon, SSB......">novas_use_cspice_planets()</a>, <a class="el" href="solsys-cspice_8c.html#afb078e1df9b5b08999d24e68d7b4ecdc" title="Sets a ephemeris provider for NOVAS_EPHEM_OBJECT types using the NAIF CSPICE library.">novas_use_cspice_ephem()</a>, <a class="el" href="solsys-cspice_8c.html#ae02d26964099f56c375dc78172ad135b" title="Adds a SPICE kernel to the currently managed open kernels.">cspice_add_kernel()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="solsys-cspice_8c.html#afb078e1df9b5b08999d24e68d7b4ecdc">novas_use_cspice_ephem()</a>, and <a class="el" href="solsys-cspice_8c.html#a943549e395b19f6a91064e3d6fa1c577">novas_use_cspice_planets()</a>.</p>
 
@@ -227,14 +237,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Sets a ephemeris provider for NOVAS_EPHEM_OBJECT types using the NAIF CSPICE library.</p>
+
+<p>Sets a ephemeris provider for NOVAS_EPHEM_OBJECT types using the NAIF CSPICE library. </p>
 <p>CSPICE is configured to suppress error messages and to not exit on errors, since we will check errors and handle them ourselves. You can adjust the behavior after this call with the CSPICE errprt_c() and erract_c() functions, respectively.</p>
 <dl class="section return"><dt>Returns</dt><dd>0</dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="solsys-cspice_8c.html#a943549e395b19f6a91064e3d6fa1c577">novas_use_cspice_planets()</a>, <a class="el" href="solsys-cspice_8c.html#a9b44218bca5fce1e9e5103494c15dde4">novas_use_cspice()</a>, <a class="el" href="solsys-cspice_8c.html#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="solsys-cspice_8c.html#a943549e395b19f6a91064e3d6fa1c577" title="Sets CSPICE as the ephemeris provider for the major planets (and Sun, Moon, SSB......">novas_use_cspice_planets()</a>, <a class="el" href="solsys-cspice_8c.html#a9b44218bca5fce1e9e5103494c15dde4" title="Sets CSPICE as the default ephemeris provider for all types of Solar-system objects (both NOVAS_PLANE...">novas_use_cspice()</a>, <a class="el" href="solsys-cspice_8c.html#ae02d26964099f56c375dc78172ad135b" title="Adds a SPICE kernel to the currently managed open kernels.">cspice_add_kernel()</a> </dd>
 <dd>
-<a class="el" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a> </dd></dl>
+<a class="el" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030" title="Sets the function to use for obtaining position / velocity information for minor planets,...">set_ephem_provider()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a>.</p>
 
@@ -254,14 +265,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Sets CSPICE as the ephemeris provider for the major planets (and Sun, Moon, SSB...) using the NAIF CSPICE library.</p>
+
+<p>Sets CSPICE as the ephemeris provider for the major planets (and Sun, Moon, SSB...) using the NAIF CSPICE library. </p>
 <p>CSPICE is configured to suppress error messages and to not exit on errors, since we will check errors and handle them ourselves. You can adjust the behavior after this call with the CSPICE errprt_c() and erract_c() functions, respectively.</p>
 <dl class="section return"><dt>Returns</dt><dd>0</dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="solsys-cspice_8c.html#afb078e1df9b5b08999d24e68d7b4ecdc">novas_use_cspice_ephem()</a>, <a class="el" href="solsys-cspice_8c.html#a9b44218bca5fce1e9e5103494c15dde4">novas_use_cspice()</a>, <a class="el" href="solsys-cspice_8c.html#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="solsys-cspice_8c.html#afb078e1df9b5b08999d24e68d7b4ecdc" title="Sets a ephemeris provider for NOVAS_EPHEM_OBJECT types using the NAIF CSPICE library.">novas_use_cspice_ephem()</a>, <a class="el" href="solsys-cspice_8c.html#a9b44218bca5fce1e9e5103494c15dde4" title="Sets CSPICE as the default ephemeris provider for all types of Solar-system objects (both NOVAS_PLANE...">novas_use_cspice()</a>, <a class="el" href="solsys-cspice_8c.html#ae02d26964099f56c375dc78172ad135b" title="Adds a SPICE kernel to the currently managed open kernels.">cspice_add_kernel()</a> </dd>
 <dd>
-<a class="el" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a>, <a class="el" href="plugin_8c.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a> </dd></dl>
+<a class="el" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973" title="Set a custom function to use for regular precision (see NOVAS_REDUCED_ACCURACY) ephemeris calculation...">set_planet_provider()</a>, <a class="el" href="plugin_8c.html#a418f45a11ce7f92ba0ef817558415640" title="Set a custom function to use for high precision (see NOVAS_FULL_ACCURACY) ephemeris calculations inst...">set_planet_provider_hp()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a>, and <a class="el" href="plugin_8c.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a>.</p>
 

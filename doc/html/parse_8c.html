@@ -117,26 +117,37 @@ Macros</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:aca89d2a0f49afad45dbddffc09c3adae" id="r_aca89d2a0f49afad45dbddffc09c3adae"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aca89d2a0f49afad45dbddffc09c3adae">novas_dms_degrees</a> (const char *restrict dms)</td></tr>
+<tr class="memdesc:aca89d2a0f49afad45dbddffc09c3adae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the decimal degrees for a DMS string specification.  <br /></td></tr>
 <tr class="separator:aca89d2a0f49afad45dbddffc09c3adae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4e18885b7d173eb3fe5f18b06f0b4d4" id="r_af4e18885b7d173eb3fe5f18b06f0b4d4"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af4e18885b7d173eb3fe5f18b06f0b4d4">novas_epoch</a> (const char *restrict system)</td></tr>
+<tr class="memdesc:af4e18885b7d173eb3fe5f18b06f0b4d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the Julian day corresponding to an astronomical coordinate epoch.  <br /></td></tr>
 <tr class="separator:af4e18885b7d173eb3fe5f18b06f0b4d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a696e44a2d1c788f9f335611efd7ed958" id="r_a696e44a2d1c788f9f335611efd7ed958"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a696e44a2d1c788f9f335611efd7ed958">novas_hms_hours</a> (const char *restrict hms)</td></tr>
+<tr class="memdesc:a696e44a2d1c788f9f335611efd7ed958"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the decimal hours for a HMS string specification.  <br /></td></tr>
 <tr class="separator:a696e44a2d1c788f9f335611efd7ed958"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3d04d065e76a5921995e96f67c24c41" id="r_ad3d04d065e76a5921995e96f67c24c41"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad3d04d065e76a5921995e96f67c24c41">novas_parse_degrees</a> (const char *restrict str, char **restrict tail)</td></tr>
+<tr class="memdesc:ad3d04d065e76a5921995e96f67c24c41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses an angle in degrees from a string that contains either a decimal degrees or else a broken-down DMS representation.  <br /></td></tr>
 <tr class="separator:ad3d04d065e76a5921995e96f67c24c41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac651a7737d1f10e5267572f5c54fae92" id="r_ac651a7737d1f10e5267572f5c54fae92"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac651a7737d1f10e5267572f5c54fae92">novas_parse_dms</a> (const char *restrict dms, char **restrict tail)</td></tr>
+<tr class="memdesc:ac651a7737d1f10e5267572f5c54fae92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses the decimal degrees for a DMS string specification.  <br /></td></tr>
 <tr class="separator:ac651a7737d1f10e5267572f5c54fae92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1aad2a903328080626db399450a7e297" id="r_a1aad2a903328080626db399450a7e297"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1aad2a903328080626db399450a7e297">novas_parse_hms</a> (const char *restrict hms, char **restrict tail)</td></tr>
+<tr class="memdesc:a1aad2a903328080626db399450a7e297"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses the decimal hours for a HMS string specification.  <br /></td></tr>
 <tr class="separator:a1aad2a903328080626db399450a7e297"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff8c2c3fae3be867d3fc73972a158514" id="r_aff8c2c3fae3be867d3fc73972a158514"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aff8c2c3fae3be867d3fc73972a158514">novas_parse_hours</a> (const char *restrict str, char **restrict tail)</td></tr>
+<tr class="memdesc:aff8c2c3fae3be867d3fc73972a158514"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a time or time-like angle from a string that contains either a decimal hours or else a broken-down HMS representation.  <br /></td></tr>
 <tr class="separator:aff8c2c3fae3be867d3fc73972a158514"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad778a440540ed687572b78b675bebd60" id="r_ad778a440540ed687572b78b675bebd60"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad778a440540ed687572b78b675bebd60">novas_print_dms</a> (double degrees, enum <a class="el" href="novas_8h.html#acb27ba6ec7f4ed7486f4419f8803f40e">novas_separator_type</a> sep, int decimals, char *restrict buf, int len)</td></tr>
+<tr class="memdesc:ad778a440540ed687572b78b675bebd60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints an angle in degrees as [-]ddd:mm:ss[.S...] into the specified buffer, with up to nanosecond precision.  <br /></td></tr>
 <tr class="separator:ad778a440540ed687572b78b675bebd60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a713869893ad7e58c53e44b37a3bcf768" id="r_a713869893ad7e58c53e44b37a3bcf768"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a713869893ad7e58c53e44b37a3bcf768">novas_print_hms</a> (double hours, enum <a class="el" href="novas_8h.html#acb27ba6ec7f4ed7486f4419f8803f40e">novas_separator_type</a> sep, int decimals, char *restrict buf, int len)</td></tr>
+<tr class="memdesc:a713869893ad7e58c53e44b37a3bcf768"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a time in hours as hh:mm:ss[.S...] into the specified buffer, with up to nanosecond precision.  <br /></td></tr>
 <tr class="separator:a713869893ad7e58c53e44b37a3bcf768"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10a24fc28fa74efa75abf566bb61af5b" id="r_a10a24fc28fa74efa75abf566bb61af5b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a10a24fc28fa74efa75abf566bb61af5b">novas_str_degrees</a> (const char *restrict str)</td></tr>
+<tr class="memdesc:a10a24fc28fa74efa75abf566bb61af5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an angle parsed from a string that contains either a decimal degrees or else a broken-down DMS representation.  <br /></td></tr>
 <tr class="separator:a10a24fc28fa74efa75abf566bb61af5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac69c17c646ddf3a5447557338a8490b4" id="r_ac69c17c646ddf3a5447557338a8490b4"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac69c17c646ddf3a5447557338a8490b4">novas_str_hours</a> (const char *restrict str)</td></tr>
+<tr class="memdesc:ac69c17c646ddf3a5447557338a8490b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a time or time-like angleparsed from a string that contains either a decimal hours or else a broken-down HMS representation.  <br /></td></tr>
 <tr class="separator:ac69c17c646ddf3a5447557338a8490b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -158,7 +169,9 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the decimal degrees for a DMS string specification. The degree, (arc)minute, and (arc)second components may be separated by spaces, tabs, colons <code>:</code>, or a combination thereof. Additionally, the degree and minutes may be separated by the letter <code>d</code>, and the minutes and seconds may be separated by <code>m</code> or a single quote &lsquo;&rsquo;&lsquo;. The seconds may be followed by 's&rsquo; or double quote <code>"</code>. Finally, the leading or trailing component may additionally be a standalone upper-case letter 'N', 'E', 'S', or 'W' or the words 'North', 'East', 'South', or 'West' (case insensitive), signifying a compass direction.</p>
+
+<p>Returns the decimal degrees for a DMS string specification. </p>
+<p>The degree, (arc)minute, and (arc)second components may be separated by spaces, tabs, colons <code>:</code>, or a combination thereof. Additionally, the degree and minutes may be separated by the letter <code>d</code>, and the minutes and seconds may be separated by <code>m</code> or a single quote &lsquo;&rsquo;&lsquo;. The seconds may be followed by 's&rsquo; or double quote <code>"</code>. Finally, the leading or trailing component may additionally be a standalone upper-case letter 'N', 'E', 'S', or 'W' or the words 'North', 'East', 'South', or 'West' (case insensitive), signifying a compass direction.</p>
 <p>There is no enforcement on the range of angles that can be represented in this way. Any finite angle is parseable, even if it is outside its conventional range, such as +- 90 degrees N/S.</p>
 <p>For example, all of the lines below are valid specifications:</p>
 <pre>
@@ -185,7 +198,7 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
 <dl class="section return"><dt>Returns</dt><dd>[deg] Corresponding decimal angle value, or else NAN if there was an error parsing the string (errno will be set to EINVAL).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a10a24fc28fa74efa75abf566bb61af5b">novas_str_degrees()</a>, <a class="el" href="#ac651a7737d1f10e5267572f5c54fae92">novas_parse_dms()</a>, <a class="el" href="#a696e44a2d1c788f9f335611efd7ed958">novas_hms_hours()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a10a24fc28fa74efa75abf566bb61af5b" title="Returns an angle parsed from a string that contains either a decimal degrees or else a broken-down DM...">novas_str_degrees()</a>, <a class="el" href="#ac651a7737d1f10e5267572f5c54fae92" title="Parses the decimal degrees for a DMS string specification.">novas_parse_dms()</a>, <a class="el" href="#a696e44a2d1c788f9f335611efd7ed958" title="Returns the decimal hours for a HMS string specification.">novas_hms_hours()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="#ac651a7737d1f10e5267572f5c54fae92">novas_parse_dms()</a>.</p>
 
@@ -205,7 +218,8 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the Julian day corresponding to an astronomical coordinate epoch.</p>
+
+<p>Returns the Julian day corresponding to an astronomical coordinate epoch. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">system</td><td>Coordinate system, e.g. "ICRS", "B1950.0", "J2000.0", "FK4", "FK5", "1950", "2000", or "HIP". In general, any Besselian or Julian year epoch can be used by year (e.g. "B1933.193" or "J2022.033"), or else the fixed values listed. If 'B' or 'J' is ommitted in front of the epoch year, then Besselian epochs are assumed prior to 1984.0. </td></tr>
@@ -215,9 +229,9 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
 <dl class="section return"><dt>Returns</dt><dd>[day] The Julian day corresponding to the given coordinate epoch, or else NAN if the input string is NULL or the input is not recognised as a coordinate epoch specification (errno will be set to EINVAL).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="target_8c.html#a5104d7db66ce2d8c61c7ad21599fb45e">make_cat_object_sys()</a>, <a class="el" href="target_8c.html#a257abae9391aec835dc2b94d9788b9f9">make_redshifted_object_sys()</a>, <a class="el" href="target_8c.html#abe0c6e6fc60a49efa88c365aef8cdc50">transform_cat()</a>, <a class="el" href="equinox_8c.html#a9178358732325399f3a5e3582080ced3">precession()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="target_8c.html#a5104d7db66ce2d8c61c7ad21599fb45e" title="Populates and object data structure with the data for a catalog source for a given system of catalog ...">make_cat_object_sys()</a>, <a class="el" href="target_8c.html#a257abae9391aec835dc2b94d9788b9f9" title="Populates a celestial object data structure with the parameters for a redhifted catalog source,...">make_redshifted_object_sys()</a>, <a class="el" href="target_8c.html#abe0c6e6fc60a49efa88c365aef8cdc50" title="Transform a star&#39;s catalog quantities for a change the coordinate system and/or the date for which th...">transform_cat()</a>, <a class="el" href="equinox_8c.html#a9178358732325399f3a5e3582080ced3" title="Precesses equatorial rectangular coordinates from one epoch to another using the IAU2006 (P03) preces...">precession()</a> </dd>
 <dd>
-<a class="el" href="novas_8h.html#a9d170036a074eff7634bdb23e54871b0">NOVAS_SYSTEM_ICRS</a>, <a class="el" href="novas_8h.html#aaf00ed93616e93d09df832d485a0e115">NOVAS_SYSTEM_B1950</a>, <a class="el" href="novas_8h.html#ae67fecc99f46afc9b4f12fc27b4fbe6c">NOVAS_SYSTEM_J2000</a>, <a class="el" href="novas_8h.html#a773bb459e1ec420cd7d93d064e70eb7f">NOVAS_SYSTEM_HIP</a> </dd></dl>
+<a class="el" href="novas_8h.html#a9d170036a074eff7634bdb23e54871b0" title="The ICRS system as a string.">NOVAS_SYSTEM_ICRS</a>, <a class="el" href="novas_8h.html#aaf00ed93616e93d09df832d485a0e115" title="The B1950 coordiante system as a string.">NOVAS_SYSTEM_B1950</a>, <a class="el" href="novas_8h.html#ae67fecc99f46afc9b4f12fc27b4fbe6c" title="The J2000 coordinate syste, as a string.">NOVAS_SYSTEM_J2000</a>, <a class="el" href="novas_8h.html#a773bb459e1ec420cd7d93d064e70eb7f" title="The Hipparcos dataset coordinate system as a string.">NOVAS_SYSTEM_HIP</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a3785083ae52bbbc1e749dbedd7e5d85e">NOVAS_JD_B1950</a>, <a class="el" href="novas_8h.html#a4100ecc5d9badfa07301024baffe9ded">NOVAS_JD_HIP</a>, <a class="el" href="novas_8h.html#a31bf4a08940bfa3e97ae6a1abee80422">NOVAS_JD_J2000</a>, <a class="el" href="novas_8h.html#ae7ab88078608cf4f4499cedcf4c0ca75">NOVAS_SYSTEM_FK4</a>, <a class="el" href="novas_8h.html#abf795b4cd3cc6205b88508bcc77586c1">NOVAS_SYSTEM_FK5</a>, <a class="el" href="novas_8h.html#a773bb459e1ec420cd7d93d064e70eb7f">NOVAS_SYSTEM_HIP</a>, and <a class="el" href="novas_8h.html#a9d170036a074eff7634bdb23e54871b0">NOVAS_SYSTEM_ICRS</a>.</p>
 
@@ -237,7 +251,9 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the decimal hours for a HMS string specification. The hour, minute, and second components may be separated by spaces, tabs, colons <code>:</code>, or a combination thereof. Additionally, the hours and minutes may be separated by the letter <code>h</code>, and the minutes and seconds may be separated by <code>m</code> or a single quote &lsquo;&rsquo;&lsquo;. The seconds may be followed by 's&rsquo; or double quote <code>"</code>.</p>
+
+<p>Returns the decimal hours for a HMS string specification. </p>
+<p>The hour, minute, and second components may be separated by spaces, tabs, colons <code>:</code>, or a combination thereof. Additionally, the hours and minutes may be separated by the letter <code>h</code>, and the minutes and seconds may be separated by <code>m</code> or a single quote &lsquo;&rsquo;&lsquo;. The seconds may be followed by 's&rsquo; or double quote <code>"</code>.</p>
 <p>There is no enforcement on the range of hours that can be represented in this way. Any finite angle is parseable, even if it is outside its conventional range of 0-24h.</p>
 <p>For example, all of the lines below specify the same time:</p>
 <pre>
@@ -261,7 +277,7 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
 <dl class="section return"><dt>Returns</dt><dd>[hours] Corresponding decimal time value, or else NAN if there was an error parsing the string (errno will be set to EINVAL).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ac69c17c646ddf3a5447557338a8490b4">novas_str_hours()</a>, <a class="el" href="#a1aad2a903328080626db399450a7e297">novas_parse_hms()</a>, <a class="el" href="#aca89d2a0f49afad45dbddffc09c3adae">novas_dms_degrees()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ac69c17c646ddf3a5447557338a8490b4" title="Returns a time or time-like angleparsed from a string that contains either a decimal hours or else a ...">novas_str_hours()</a>, <a class="el" href="#a1aad2a903328080626db399450a7e297" title="Parses the decimal hours for a HMS string specification.">novas_parse_hms()</a>, <a class="el" href="#aca89d2a0f49afad45dbddffc09c3adae" title="Returns the decimal degrees for a DMS string specification.">novas_dms_degrees()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="#a1aad2a903328080626db399450a7e297">novas_parse_hms()</a>.</p>
 
@@ -285,7 +301,8 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Parses an angle in degrees from a string that contains either a decimal degrees or else a broken-down DMS representation.</p>
+
+<p>Parses an angle in degrees from a string that contains either a decimal degrees or else a broken-down DMS representation. </p>
 <p>The decimal representation may be followed by a unit designator: "d", "dg", "deg", "degree", or "degrees", which will be parsed case-insensitively also, if present.</p>
 <p>Both DMS and decimal values may start or end with a compass direction: such as an upper-case letter <code>N</code>, <code>E</code>, <code>S</code>, or <code>W</code>, or else the case-insensitive words 'North', 'East', 'South' or 'West'.</p>
 <p>There is no enforcement on the range of angles that can be represented in this way. Any finite angle is parseable, even if it is outside its conventional range, such as +- 90 degrees N/S.</p>
@@ -305,7 +322,7 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
  east 179.99 degrees
 </pre><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir"></td><td class="paramname">str</td><td>The input string that specified an angle either as decimal degrees or as a broken down DMS speficication. The decimal value may be followed by the letter <code>d</code> immediately. And both the decimal and DMS representation may be ended with a compass direction marker, <code>N</code>, <code>E</code>, <code>S</code>, or <code>W</code>. See more in <code><a class="el" href="#ac651a7737d1f10e5267572f5c54fae92">novas_parse_dms()</a></code> on acceptable DMS specifications. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">str</td><td>The input string that specified an angle either as decimal degrees or as a broken down DMS speficication. The decimal value may be followed by the letter <code>d</code> immediately. And both the decimal and DMS representation may be ended with a compass direction marker, <code>N</code>, <code>E</code>, <code>S</code>, or <code>W</code>. See more in <code><a class="el" href="#ac651a7737d1f10e5267572f5c54fae92" title="Parses the decimal degrees for a DMS string specification.">novas_parse_dms()</a></code> on acceptable DMS specifications. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">tail</td><td>(optional) If not NULL it will be set to the next character in the string after the parsed angle. </td></tr>
   </table>
   </dd>
@@ -313,7 +330,7 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
 <dl class="section return"><dt>Returns</dt><dd>[deg] The angle represented by the string, or else NAN if the string could not be parsed into an angle value (errno will indicate the type of error).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a10a24fc28fa74efa75abf566bb61af5b">novas_str_degrees()</a>, <a class="el" href="#ac651a7737d1f10e5267572f5c54fae92">novas_parse_dms()</a>, <a class="el" href="#aff8c2c3fae3be867d3fc73972a158514">novas_parse_hours()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a10a24fc28fa74efa75abf566bb61af5b" title="Returns an angle parsed from a string that contains either a decimal degrees or else a broken-down DM...">novas_str_degrees()</a>, <a class="el" href="#ac651a7737d1f10e5267572f5c54fae92" title="Parses the decimal degrees for a DMS string specification.">novas_parse_dms()</a>, <a class="el" href="#aff8c2c3fae3be867d3fc73972a158514" title="Parses a time or time-like angle from a string that contains either a decimal hours or else a broken-...">novas_parse_hours()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="util_8c.html#aab45a580efb78b53bcb4a09d40868e4d">novas_debug()</a>, <a class="el" href="novas_8h.html#a9d8d2a1f5c06b488e4c817bc9877e3baa0b25a908023b92a2f4f42114736de9cf">NOVAS_DEBUG_OFF</a>, <a class="el" href="util_8c.html#a29cad12337acfce5f1e370320dcefb79">novas_get_debug_mode()</a>, and <a class="el" href="#ac651a7737d1f10e5267572f5c54fae92">novas_parse_dms()</a>.</p>
 
@@ -337,7 +354,9 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Parses the decimal degrees for a DMS string specification. The degree, (arc)minute, and (arc)second components may be separated by spaces, tabs, colons <code>:</code>, underscore <code>_</code>, or a combination thereof. Additionally, the degree and minutes may be separated by the letter <code>d</code>, and the minutes and seconds may be separated by <code>m</code> or a single quote &lsquo;&rsquo;<code>. The seconds may be followed by</code>s<code>or a double quote</code>"&lsquo;. Finally, the leading or trailing component may additionally be a standalone upper-case letter 'N&rsquo;, 'E', 'S', or 'W' or the words 'North', 'East', 'South', or 'West' (case insensitive), signifying a compass direction.</p>
+
+<p>Parses the decimal degrees for a DMS string specification. </p>
+<p>The degree, (arc)minute, and (arc)second components may be separated by spaces, tabs, colons <code>:</code>, underscore <code>_</code>, or a combination thereof. Additionally, the degree and minutes may be separated by the letter <code>d</code>, and the minutes and seconds may be separated by <code>m</code> or a single quote &lsquo;&rsquo;<code>. The seconds may be followed by</code>s<code>or a double quote</code>"&lsquo;. Finally, the leading or trailing component may additionally be a standalone upper-case letter 'N&rsquo;, 'E', 'S', or 'W' or the words 'North', 'East', 'South', or 'West' (case insensitive), signifying a compass direction.</p>
 <p>There is no enforcement on the range of angles that can be represented in this way. Any finite angle is parseable, even if it is outside its conventional range, such as +- 90 degrees N/S.</p>
 <p>For example, all of the lines below are valid specifications:</p>
 <pre>
@@ -362,7 +381,7 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
 <dl class="section return"><dt>Returns</dt><dd>[deg] Corresponding decimal angle value, or else NAN if there was an error parsing the string (errno will be set to EINVAL).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#aca89d2a0f49afad45dbddffc09c3adae">novas_dms_degrees()</a>, <a class="el" href="#ad3d04d065e76a5921995e96f67c24c41">novas_parse_degrees()</a>, <a class="el" href="#ad778a440540ed687572b78b675bebd60">novas_print_dms()</a>, <a class="el" href="#a1aad2a903328080626db399450a7e297">novas_parse_hms()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#aca89d2a0f49afad45dbddffc09c3adae" title="Returns the decimal degrees for a DMS string specification.">novas_dms_degrees()</a>, <a class="el" href="#ad3d04d065e76a5921995e96f67c24c41" title="Parses an angle in degrees from a string that contains either a decimal degrees or else a broken-down...">novas_parse_degrees()</a>, <a class="el" href="#ad778a440540ed687572b78b675bebd60" title="Prints an angle in degrees as [-]ddd:mm:ss[.S...] into the specified buffer, with up to nanosecond pr...">novas_print_dms()</a>, <a class="el" href="#a1aad2a903328080626db399450a7e297" title="Parses the decimal hours for a HMS string specification.">novas_parse_hms()</a> </dd></dl>
 
 </div>
 </div>
@@ -384,7 +403,9 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Parses the decimal hours for a HMS string specification. The hour, minute, and second components may be separated by spaces, tabs, colons <code>:</code>, underscore <code>_</code>, or a combination thereof. Additionally, the hours and minutes may be separated by the letter <code>h</code>, and the minutes and seconds may be separated by <code>m</code> or a single quote &lsquo;&rsquo;&lsquo;. The seconds may be followed by 's&rsquo; or double quote <code>"</code>.</p>
+
+<p>Parses the decimal hours for a HMS string specification. </p>
+<p>The hour, minute, and second components may be separated by spaces, tabs, colons <code>:</code>, underscore <code>_</code>, or a combination thereof. Additionally, the hours and minutes may be separated by the letter <code>h</code>, and the minutes and seconds may be separated by <code>m</code> or a single quote &lsquo;&rsquo;&lsquo;. The seconds may be followed by 's&rsquo; or double quote <code>"</code>.</p>
 <p>There is no enforcement on the range of hours that can be represented in this way. Any finite angle is parseable, even if it is outside its conventional range of 0-24h.</p>
 <p>For example, all of the lines below are valid specifications:</p>
 <pre>
@@ -404,7 +425,7 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
 <dl class="section return"><dt>Returns</dt><dd>[hours] Corresponding decimal time value, or else NAN if there was an error parsing the string (errno will be set to EINVAL).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a696e44a2d1c788f9f335611efd7ed958">novas_hms_hours()</a>, <a class="el" href="#aff8c2c3fae3be867d3fc73972a158514">novas_parse_hours()</a>, <a class="el" href="#a713869893ad7e58c53e44b37a3bcf768">novas_print_hms()</a>, <a class="el" href="#ac651a7737d1f10e5267572f5c54fae92">novas_parse_dms()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a696e44a2d1c788f9f335611efd7ed958" title="Returns the decimal hours for a HMS string specification.">novas_hms_hours()</a>, <a class="el" href="#aff8c2c3fae3be867d3fc73972a158514" title="Parses a time or time-like angle from a string that contains either a decimal hours or else a broken-...">novas_parse_hours()</a>, <a class="el" href="#a713869893ad7e58c53e44b37a3bcf768" title="Prints a time in hours as hh:mm:ss[.S...] into the specified buffer, with up to nanosecond precision.">novas_print_hms()</a>, <a class="el" href="#ac651a7737d1f10e5267572f5c54fae92" title="Parses the decimal degrees for a DMS string specification.">novas_parse_dms()</a> </dd></dl>
 
 </div>
 </div>
@@ -426,7 +447,8 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Parses a time or time-like angle from a string that contains either a decimal hours or else a broken-down HMS representation.</p>
+
+<p>Parses a time or time-like angle from a string that contains either a decimal hours or else a broken-down HMS representation. </p>
 <p>The decimal representation may be followed by a unit designator: "h", "hr", "hrs", "hour", or "hours", which will be parsed case-insensitively also, if present.</p>
 <p>There is no enforcement on the range of hours that can be represented in this way. Any finite angle is parseable, even if it is outside its conventional range of 0-24h.</p>
 <p>A few examples of angles that may be parsed:</p>
@@ -440,7 +462,7 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
  23.999999
 </pre><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir"></td><td class="paramname">str</td><td>The input string that specified an angle either as decimal hours or as a broken down HMS speficication. The decimal value may be immediately followed by a letter 'h'. See more in <code><a class="el" href="#a1aad2a903328080626db399450a7e297">novas_parse_hms()</a></code> on acceptable HMS input specifications. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">str</td><td>The input string that specified an angle either as decimal hours or as a broken down HMS speficication. The decimal value may be immediately followed by a letter 'h'. See more in <code><a class="el" href="#a1aad2a903328080626db399450a7e297" title="Parses the decimal hours for a HMS string specification.">novas_parse_hms()</a></code> on acceptable HMS input specifications. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">tail</td><td>(optional) If not NULL it will be set to the next character in the string after the parsed angle. </td></tr>
   </table>
   </dd>
@@ -448,7 +470,7 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
 <dl class="section return"><dt>Returns</dt><dd>[h] The time-like value represented by the string, or else NAN if the string could not be parsed into a time-like value (errno will indicate the type of error).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ac69c17c646ddf3a5447557338a8490b4">novas_str_hours()</a>, <a class="el" href="#a1aad2a903328080626db399450a7e297">novas_parse_hms()</a>, <a class="el" href="#ad3d04d065e76a5921995e96f67c24c41">novas_parse_degrees()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ac69c17c646ddf3a5447557338a8490b4" title="Returns a time or time-like angleparsed from a string that contains either a decimal hours or else a ...">novas_str_hours()</a>, <a class="el" href="#a1aad2a903328080626db399450a7e297" title="Parses the decimal hours for a HMS string specification.">novas_parse_hms()</a>, <a class="el" href="#ad3d04d065e76a5921995e96f67c24c41" title="Parses an angle in degrees from a string that contains either a decimal degrees or else a broken-down...">novas_parse_degrees()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="util_8c.html#aab45a580efb78b53bcb4a09d40868e4d">novas_debug()</a>, <a class="el" href="novas_8h.html#a9d8d2a1f5c06b488e4c817bc9877e3baa0b25a908023b92a2f4f42114736de9cf">NOVAS_DEBUG_OFF</a>, <a class="el" href="util_8c.html#a29cad12337acfce5f1e370320dcefb79">novas_get_debug_mode()</a>, and <a class="el" href="#a1aad2a903328080626db399450a7e297">novas_parse_hms()</a>.</p>
 
@@ -487,7 +509,8 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Prints an angle in degrees as [-]ddd:mm:ss[.S...] into the specified buffer, with up to nanosecond precision.</p>
+
+<p>Prints an angle in degrees as [-]ddd:mm:ss[.S...] into the specified buffer, with up to nanosecond precision. </p>
 <p>The degrees component is always printed as 4 characters (up to 3 digits plus optional negative sign), so the output is always aligned. If positive values are expected to be explicitly signed also, the caller may simply put the '+' sign into the leading byte.</p>
 <p>NaN and infinite values, are printed as their standard floating-point representations.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -503,7 +526,7 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
 <dl class="section return"><dt>Returns</dt><dd>The number of characters actually printed in the buffer, excluding termination, or else -1 if the input buffer is NULL or the length is less than 1 (errno will be set to EINVAL).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ac651a7737d1f10e5267572f5c54fae92">novas_parse_dms()</a>, <a class="el" href="#a713869893ad7e58c53e44b37a3bcf768">novas_print_hms()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ac651a7737d1f10e5267572f5c54fae92" title="Parses the decimal degrees for a DMS string specification.">novas_parse_dms()</a>, <a class="el" href="#a713869893ad7e58c53e44b37a3bcf768" title="Prints a time in hours as hh:mm:ss[.S...] into the specified buffer, with up to nanosecond precision.">novas_print_hms()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="#a93d0a993c2c1e6458c1e93fbd446b417">MAX_DECIMALS</a>, <a class="el" href="novas_8h.html#acb27ba6ec7f4ed7486f4419f8803f40ead0a359b222721a18e8c7c0260ffd7e50">NOVAS_SEP_COLONS</a>, <a class="el" href="novas_8h.html#acb27ba6ec7f4ed7486f4419f8803f40ea0164600609e97493df66ed70ca926c2f">NOVAS_SEP_SPACES</a>, <a class="el" href="novas_8h.html#acb27ba6ec7f4ed7486f4419f8803f40ea0def47a09a4c410ccb20b64cf204c76e">NOVAS_SEP_UNITS</a>, and <a class="el" href="novas_8h.html#acb27ba6ec7f4ed7486f4419f8803f40ea9bf01302bc64e585197728c074d0bbee">NOVAS_SEP_UNITS_AND_SPACES</a>.</p>
 
@@ -542,7 +565,8 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Prints a time in hours as hh:mm:ss[.S...] into the specified buffer, with up to nanosecond precision.</p>
+
+<p>Prints a time in hours as hh:mm:ss[.S...] into the specified buffer, with up to nanosecond precision. </p>
 <p>NaN and infinite values, are printed as their standard floating-point representations.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -557,7 +581,7 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
 <dl class="section return"><dt>Returns</dt><dd>The number of characters actually printed in the buffer, excluding termination, or else -1 if the input buffer is NULL or the length is less than 1 (errno will be set to EINVAL).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a1aad2a903328080626db399450a7e297">novas_parse_hms()</a>, <a class="el" href="#ad778a440540ed687572b78b675bebd60">novas_print_dms()</a>, <a class="el" href="timescale_8c.html#ac8e83c48005d5aabb3e7bbf8d9f8ed81">novas_timestamp()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a1aad2a903328080626db399450a7e297" title="Parses the decimal hours for a HMS string specification.">novas_parse_hms()</a>, <a class="el" href="#ad778a440540ed687572b78b675bebd60" title="Prints an angle in degrees as [-]ddd:mm:ss[.S...] into the specified buffer, with up to nanosecond pr...">novas_print_dms()</a>, <a class="el" href="timescale_8c.html#ac8e83c48005d5aabb3e7bbf8d9f8ed81" title="Prints an astronomical timestamp to millisecond precision in the specified timescale to the specified...">novas_timestamp()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="#a93d0a993c2c1e6458c1e93fbd446b417">MAX_DECIMALS</a>, <a class="el" href="novas_8h.html#acb27ba6ec7f4ed7486f4419f8803f40ead0a359b222721a18e8c7c0260ffd7e50">NOVAS_SEP_COLONS</a>, <a class="el" href="novas_8h.html#acb27ba6ec7f4ed7486f4419f8803f40ea0164600609e97493df66ed70ca926c2f">NOVAS_SEP_SPACES</a>, <a class="el" href="novas_8h.html#acb27ba6ec7f4ed7486f4419f8803f40ea0def47a09a4c410ccb20b64cf204c76e">NOVAS_SEP_UNITS</a>, and <a class="el" href="novas_8h.html#acb27ba6ec7f4ed7486f4419f8803f40ea9bf01302bc64e585197728c074d0bbee">NOVAS_SEP_UNITS_AND_SPACES</a>.</p>
 
@@ -577,18 +601,20 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns an angle parsed from a string that contains either a decimal degrees or else a broken-down DMS representation. See <code><a class="el" href="#ad3d04d065e76a5921995e96f67c24c41">novas_parse_degrees()</a></code> to see what string representations may be used.</p>
+
+<p>Returns an angle parsed from a string that contains either a decimal degrees or else a broken-down DMS representation. </p>
+<p>See <code><a class="el" href="#ad3d04d065e76a5921995e96f67c24c41" title="Parses an angle in degrees from a string that contains either a decimal degrees or else a broken-down...">novas_parse_degrees()</a></code> to see what string representations may be used.</p>
 <p>To see if the string was fully parsed when returning a valid (non-NAN) value, you can check <code>errno</code>: it should be zero (0) if all non-whitespace and punctuation characters have been parsed from the input string, or else <code>EINVAL</code> if the parsed value used only the leading part of the string.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">str</td><td>The input string that specified an angle either as decimal degrees or as a broken down DMS speficication. The decimal value may be immediately followed by a letter 'd'. See more in <code><a class="el" href="#ad3d04d065e76a5921995e96f67c24c41">novas_parse_degrees()</a></code> on acceptable input specifications. </td></tr>
+    <tr><td class="paramname">str</td><td>The input string that specified an angle either as decimal degrees or as a broken down DMS speficication. The decimal value may be immediately followed by a letter 'd'. See more in <code><a class="el" href="#ad3d04d065e76a5921995e96f67c24c41" title="Parses an angle in degrees from a string that contains either a decimal degrees or else a broken-down...">novas_parse_degrees()</a></code> on acceptable input specifications. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>[deg] The angle represented by the string, or else NAN if the string could not be parsed into an angle value (errno will indicate the type of error).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ad3d04d065e76a5921995e96f67c24c41">novas_parse_degrees()</a>, <a class="el" href="#ac651a7737d1f10e5267572f5c54fae92">novas_parse_dms()</a>, <a class="el" href="#ad778a440540ed687572b78b675bebd60">novas_print_dms()</a>, <a class="el" href="#ac69c17c646ddf3a5447557338a8490b4">novas_str_hours()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ad3d04d065e76a5921995e96f67c24c41" title="Parses an angle in degrees from a string that contains either a decimal degrees or else a broken-down...">novas_parse_degrees()</a>, <a class="el" href="#ac651a7737d1f10e5267572f5c54fae92" title="Parses the decimal degrees for a DMS string specification.">novas_parse_dms()</a>, <a class="el" href="#ad778a440540ed687572b78b675bebd60" title="Prints an angle in degrees as [-]ddd:mm:ss[.S...] into the specified buffer, with up to nanosecond pr...">novas_print_dms()</a>, <a class="el" href="#ac69c17c646ddf3a5447557338a8490b4" title="Returns a time or time-like angleparsed from a string that contains either a decimal hours or else a ...">novas_str_hours()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="#ad3d04d065e76a5921995e96f67c24c41">novas_parse_degrees()</a>.</p>
 
@@ -608,18 +634,20 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns a time or time-like angleparsed from a string that contains either a decimal hours or else a broken-down HMS representation. See <code><a class="el" href="#aff8c2c3fae3be867d3fc73972a158514">novas_parse_hours()</a></code> to see what string representations may be used.</p>
+
+<p>Returns a time or time-like angleparsed from a string that contains either a decimal hours or else a broken-down HMS representation. </p>
+<p>See <code><a class="el" href="#aff8c2c3fae3be867d3fc73972a158514" title="Parses a time or time-like angle from a string that contains either a decimal hours or else a broken-...">novas_parse_hours()</a></code> to see what string representations may be used.</p>
 <p>To check if the string was fully parsed when returning a valid (non-NAN) value you can check <code>errno</code>: it should be zero (0) if all non-whitespace and punctuation characters have been parsed from the input string, or else <code>EINVAL</code> if the parsed value used only the leading part of the string.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">str</td><td>The input string that specified an angle either as decimal hours or as a broken down HMS speficication. The decimal value may be immediately followed by a letter 'h'. See more in <code><a class="el" href="#aff8c2c3fae3be867d3fc73972a158514">novas_parse_hours()</a></code> on acceptable input specifications. </td></tr>
+    <tr><td class="paramname">str</td><td>The input string that specified an angle either as decimal hours or as a broken down HMS speficication. The decimal value may be immediately followed by a letter 'h'. See more in <code><a class="el" href="#aff8c2c3fae3be867d3fc73972a158514" title="Parses a time or time-like angle from a string that contains either a decimal hours or else a broken-...">novas_parse_hours()</a></code> on acceptable input specifications. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>[h] The time-like value represented by the string, or else NAN if the string could not be parsed into a time-like value (errno will indicate the type of error).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#aff8c2c3fae3be867d3fc73972a158514">novas_parse_hours()</a>, <a class="el" href="#a1aad2a903328080626db399450a7e297">novas_parse_hms()</a>, <a class="el" href="#a713869893ad7e58c53e44b37a3bcf768">novas_print_hms()</a>, <a class="el" href="#a10a24fc28fa74efa75abf566bb61af5b">novas_str_degrees()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#aff8c2c3fae3be867d3fc73972a158514" title="Parses a time or time-like angle from a string that contains either a decimal hours or else a broken-...">novas_parse_hours()</a>, <a class="el" href="#a1aad2a903328080626db399450a7e297" title="Parses the decimal hours for a HMS string specification.">novas_parse_hms()</a>, <a class="el" href="#a713869893ad7e58c53e44b37a3bcf768" title="Prints a time in hours as hh:mm:ss[.S...] into the specified buffer, with up to nanosecond precision.">novas_print_hms()</a>, <a class="el" href="#a10a24fc28fa74efa75abf566bb61af5b" title="Returns an angle parsed from a string that contains either a decimal degrees or else a broken-down DM...">novas_str_degrees()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="#aff8c2c3fae3be867d3fc73972a158514">novas_parse_hours()</a>.</p>
 

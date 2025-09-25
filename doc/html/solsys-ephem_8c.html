@@ -105,16 +105,21 @@ $(function(){initNavTree('solsys-ephem_8c.html',''); initResizable(true); });
   <div class="headertitle"><div class="title">solsys-ephem.c File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>SuperNOVAS major planet ephemeris handler via the same generic ephemeris reader that is configured by <a class="el" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030" title="Sets the function to use for obtaining position / velocity information for minor planets,...">set_ephem_provider()</a> prior to calling this routine.  
+<a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a9d0f54c0ab00827768e61a353488b0ee" id="r_a9d0f54c0ab00827768e61a353488b0ee"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9d0f54c0ab00827768e61a353488b0ee">planet_ephem_provider</a> (double jd_tdb, enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a> body, enum <a class="el" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27be">novas_origin</a> origin, double *restrict position, double *restrict velocity)</td></tr>
+<tr class="memdesc:a9d0f54c0ab00827768e61a353488b0ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Major planet ephemeris data via the same generic ephemeris provider that is configured by <a class="el" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030" title="Sets the function to use for obtaining position / velocity information for minor planets,...">set_ephem_provider()</a> prior to calling this routine.  <br /></td></tr>
 <tr class="separator:a9d0f54c0ab00827768e61a353488b0ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a93d0f96d81f3c52e05163643bd23eb7d" id="r_a93d0f96d81f3c52e05163643bd23eb7d"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a93d0f96d81f3c52e05163643bd23eb7d">planet_ephem_provider_hp</a> (const double jd_tdb[restrict 2], enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a> body, enum <a class="el" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27be">novas_origin</a> origin, double *restrict position, double *restrict velocity)</td></tr>
+<tr class="memdesc:a93d0f96d81f3c52e05163643bd23eb7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Major planet ephemeris data via the same generic ephemeris provider that is configured by <a class="el" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030" title="Sets the function to use for obtaining position / velocity information for minor planets,...">set_ephem_provider()</a> prior to calling this routine.  <br /></td></tr>
 <tr class="separator:a93d0f96d81f3c52e05163643bd23eb7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>SuperNOVAS major planet ephemeris handler via the same generic ephemeris reader that is configured by <a class="el" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a> prior to calling this routine.</p>
+<div class="textblock"><p>SuperNOVAS major planet ephemeris handler via the same generic ephemeris reader that is configured by <a class="el" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030" title="Sets the function to use for obtaining position / velocity information for minor planets,...">set_ephem_provider()</a> prior to calling this routine. </p>
 <dl class="section date"><dt>Date</dt><dd>Created on Jan 29, 2024 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="solarsystem_8h.html">solarsystem.h</a> </dd>
@@ -156,7 +161,9 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Major planet ephemeris data via the same generic ephemeris provider that is configured by <a class="el" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a> prior to calling this routine. This is the regular (reduced) precision version.</p>
+
+<p>Major planet ephemeris data via the same generic ephemeris provider that is configured by <a class="el" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030" title="Sets the function to use for obtaining position / velocity information for minor planets,...">set_ephem_provider()</a> prior to calling this routine. </p>
+<p>This is the regular (reduced) precision version.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date. </td></tr>
@@ -167,10 +174,10 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, or else an error code defined by <a class="el" href="solarsystem_8h.html#aae2b06af367d7b0a70a8b89c258b00b0">novas_planet_provider</a>.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or else an error code defined by <a class="el" href="solarsystem_8h.html#aae2b06af367d7b0a70a8b89c258b00b0" title="Provides the position and velocity of major planets (as well as the Sun, Moon, Solar-system Barycente...">novas_planet_provider</a>.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a93d0f96d81f3c52e05163643bd23eb7d">planet_ephem_provider_hp()</a>, <a class="el" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a93d0f96d81f3c52e05163643bd23eb7d" title="Major planet ephemeris data via the same generic ephemeris provider that is configured by set_ephem_p...">planet_ephem_provider_hp()</a>, <a class="el" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030" title="Sets the function to use for obtaining position / velocity information for minor planets,...">set_ephem_provider()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="#a93d0f96d81f3c52e05163643bd23eb7d">planet_ephem_provider_hp()</a>.</p>
 
@@ -209,7 +216,9 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Major planet ephemeris data via the same generic ephemeris provider that is configured by <a class="el" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a> prior to calling this routine. This is the highest precision version.</p>
+
+<p>Major planet ephemeris data via the same generic ephemeris provider that is configured by <a class="el" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030" title="Sets the function to use for obtaining position / velocity information for minor planets,...">set_ephem_provider()</a> prior to calling this routine. </p>
+<p>This is the highest precision version.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date, split into high and low order components (e.g. integer and fractional parts) for high-precision calculations. </td></tr>
@@ -223,7 +232,7 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else an error code of <a class="el" href="solarsystem_8h.html#a17846f3fafcce208dbbca1384e3a7fb0">solarsystem_hp()</a>.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a9d0f54c0ab00827768e61a353488b0ee">planet_ephem_provider()</a>, <a class="el" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a9d0f54c0ab00827768e61a353488b0ee" title="Major planet ephemeris data via the same generic ephemeris provider that is configured by set_ephem_p...">planet_ephem_provider()</a>, <a class="el" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030" title="Sets the function to use for obtaining position / velocity information for minor planets,...">set_ephem_provider()</a> </dd>
 <dd>
 <a class="el" href="solarsystem_8h.html#a17846f3fafcce208dbbca1384e3a7fb0">solarsystem_hp()</a> </dd></dl>
 

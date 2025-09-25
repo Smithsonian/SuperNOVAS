@@ -109,16 +109,22 @@ $(function(){initNavTree('itrf_8c.html',''); initResizable(true); });
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a7479134485c298faa858d73ee0513a11" id="r_a7479134485c298faa858d73ee0513a11"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7479134485c298faa858d73ee0513a11">novas_cartesian_to_geodetic</a> (const double *restrict xyz, enum <a class="el" href="novas_8h.html#a5928ca4a09c2883b58e951a4582255b3">novas_reference_ellipsoid</a> ellipsoid, double *restrict lon, double *restrict lat, double *restrict alt)</td></tr>
+<tr class="memdesc:a7479134485c298faa858d73ee0513a11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts geocentric Cartesian site coordinates to geodetic coordinates on the given reference ellipsoid.  <br /></td></tr>
 <tr class="separator:a7479134485c298faa858d73ee0513a11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab07d86d425d68a62e94e965dd36b7a32" id="r_ab07d86d425d68a62e94e965dd36b7a32"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab07d86d425d68a62e94e965dd36b7a32">novas_geodetic_to_cartesian</a> (double lon, double lat, double alt, enum <a class="el" href="novas_8h.html#a5928ca4a09c2883b58e951a4582255b3">novas_reference_ellipsoid</a> ellipsoid, double *xyz)</td></tr>
+<tr class="memdesc:ab07d86d425d68a62e94e965dd36b7a32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts geodetic site coordinates to geocentric Cartesian coordinates, using the specified reference ellipsoid.  <br /></td></tr>
 <tr class="separator:ab07d86d425d68a62e94e965dd36b7a32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adcd71f60a1f042af1eb7103134fad8c4" id="r_adcd71f60a1f042af1eb7103134fad8c4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adcd71f60a1f042af1eb7103134fad8c4">novas_geodetic_transform_site</a> (enum <a class="el" href="novas_8h.html#a5928ca4a09c2883b58e951a4582255b3">novas_reference_ellipsoid</a> from_ellipsoid, const <a class="el" href="structon__surface.html">on_surface</a> *in, enum <a class="el" href="novas_8h.html#a5928ca4a09c2883b58e951a4582255b3">novas_reference_ellipsoid</a> to_ellipsoid, <a class="el" href="structon__surface.html">on_surface</a> *out)</td></tr>
+<tr class="memdesc:adcd71f60a1f042af1eb7103134fad8c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms a geodetic location from one reference ellipsoid to another.  <br /></td></tr>
 <tr class="separator:adcd71f60a1f042af1eb7103134fad8c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd98ed01148f1291018809d77785527f" id="r_afd98ed01148f1291018809d77785527f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afd98ed01148f1291018809d77785527f">novas_itrf_transform</a> (int from_year, const double *restrict from_coords, const double *restrict from_rates, int to_year, double *to_coords, double *to_rates)</td></tr>
+<tr class="memdesc:afd98ed01148f1291018809d77785527f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts ITRF coordinates between different realizations of the ITRF coordinate system.  <br /></td></tr>
 <tr class="separator:afd98ed01148f1291018809d77785527f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c8c9b8f709d1e5a7aa3a915f8fafcbb" id="r_a3c8c9b8f709d1e5a7aa3a915f8fafcbb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3c8c9b8f709d1e5a7aa3a915f8fafcbb">novas_itrf_transform_eop</a> (int from_year, double from_xp, double from_yp, double from_dut1, int to_year, double *restrict to_xp, double *restrict to_yp, double *restrict to_dut1)</td></tr>
+<tr class="memdesc:a3c8c9b8f709d1e5a7aa3a915f8fafcbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms Earth orientation parameters (xp, yp, dUT1) from one ITRF realization to another.  <br /></td></tr>
 <tr class="separator:a3c8c9b8f709d1e5a7aa3a915f8fafcbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad252294c7d4b3e62609c21f7550e2d09" id="r_ad252294c7d4b3e62609c21f7550e2d09"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad252294c7d4b3e62609c21f7550e2d09">novas_itrf_transform_site</a> (int from_year, const <a class="el" href="structon__surface.html">on_surface</a> *in, int to_year, <a class="el" href="structon__surface.html">on_surface</a> *out)</td></tr>
+<tr class="memdesc:ad252294c7d4b3e62609c21f7550e2d09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms a geodetic location between two International Terrestrial Reference Frame (ITRF) realizations.  <br /></td></tr>
 <tr class="separator:ad252294c7d4b3e62609c21f7550e2d09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -163,7 +169,8 @@ ITRS Conventions Chapter 4, see <a href="https://iers-conventions.obspm.fr/conte
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Converts geocentric Cartesian site coordinates to geodetic coordinates on the given reference ellipsoid.</p>
+
+<p>Converts geocentric Cartesian site coordinates to geodetic coordinates on the given reference ellipsoid. </p>
 <p>NOTES: </p><ol>
 <li>
 Adapted from the IERS <code>GCONV2.F</code> source code, see <a href="https://iers-conventions.obspm.fr/content/chapter4/software/GCONV2.F">https://iers-conventions.obspm.fr/content/chapter4/software/GCONV2.F</a>.  </li>
@@ -188,9 +195,9 @@ Petit, G. and Luzum, B. (eds.), IERS Conventions (2010), IERS Technical Note No.
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if the input vector is NULL (errno is set to EINVAL).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.5 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ab07d86d425d68a62e94e965dd36b7a32">novas_geodetic_to_cartesian()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ab07d86d425d68a62e94e965dd36b7a32" title="Converts geodetic site coordinates to geocentric Cartesian coordinates, using the specified reference...">novas_geodetic_to_cartesian()</a> </dd>
 <dd>
-<a class="el" href="#afd98ed01148f1291018809d77785527f">novas_itrf_transform()</a>, <a class="el" href="#ad252294c7d4b3e62609c21f7550e2d09">novas_itrf_transform_site()</a> </dd></dl>
+<a class="el" href="#afd98ed01148f1291018809d77785527f" title="Converts ITRF coordinates between different realizations of the ITRF coordinate system.">novas_itrf_transform()</a>, <a class="el" href="#ad252294c7d4b3e62609c21f7550e2d09" title="Transforms a geodetic location between two International Terrestrial Reference Frame (ITRF) realizati...">novas_itrf_transform_site()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#ae71449b1cc6e6250b91f539153a7a0d3">M_PI</a>, <a class="el" href="novas_8h.html#ae283901f9a884acc6c5b88c6afb040b4">NOVAS_GRS80_FLATTENING</a>, and <a class="el" href="novas_8h.html#a5518e094e90ed1053aeb03c41d531452">NOVAS_GRS80_RADIUS</a>.</p>
 
@@ -229,7 +236,8 @@ Petit, G. and Luzum, B. (eds.), IERS Conventions (2010), IERS Technical Note No.
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Converts geodetic site coordinates to geocentric Cartesian coordinates, using the specified reference ellipsoid.</p>
+
+<p>Converts geodetic site coordinates to geocentric Cartesian coordinates, using the specified reference ellipsoid. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">lon</td><td>[deg] Geodetic longitude </td></tr>
@@ -243,9 +251,9 @@ Petit, G. and Luzum, B. (eds.), IERS Conventions (2010), IERS Technical Note No.
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if the output vector is NULL (errno is set to EINVAL).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.5 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a7479134485c298faa858d73ee0513a11">novas_cartesian_to_geodetic()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a7479134485c298faa858d73ee0513a11" title="Converts geocentric Cartesian site coordinates to geodetic coordinates on the given reference ellipso...">novas_cartesian_to_geodetic()</a> </dd>
 <dd>
-<a class="el" href="#ad252294c7d4b3e62609c21f7550e2d09">novas_itrf_transform_site()</a>, <a class="el" href="#afd98ed01148f1291018809d77785527f">novas_itrf_transform()</a> </dd></dl>
+<a class="el" href="#ad252294c7d4b3e62609c21f7550e2d09" title="Transforms a geodetic location between two International Terrestrial Reference Frame (ITRF) realizati...">novas_itrf_transform_site()</a>, <a class="el" href="#afd98ed01148f1291018809d77785527f" title="Converts ITRF coordinates between different realizations of the ITRF coordinate system.">novas_itrf_transform()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#ae283901f9a884acc6c5b88c6afb040b4">NOVAS_GRS80_FLATTENING</a>, and <a class="el" href="novas_8h.html#a5518e094e90ed1053aeb03c41d531452">NOVAS_GRS80_RADIUS</a>.</p>
 
@@ -279,7 +287,9 @@ Petit, G. and Luzum, B. (eds.), IERS Conventions (2010), IERS Technical Note No.
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Transforms a geodetic location from one reference ellipsoid to another. For example to transform a GPS location (defined on the WGS84 ellipsoid) to an International Terrestrial Reference Frame (ITRF) location (defined on the GRS80 ellipsoid), or vice versa.</p>
+
+<p>Transforms a geodetic location from one reference ellipsoid to another. </p>
+<p>For example to transform a GPS location (defined on the WGS84 ellipsoid) to an International Terrestrial Reference Frame (ITRF) location (defined on the GRS80 ellipsoid), or vice versa.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">from_ellipsoid</td><td>Reference ellipsoid of the input coordinates. </td></tr>
@@ -292,7 +302,7 @@ Petit, G. and Luzum, B. (eds.), IERS Conventions (2010), IERS Technical Note No.
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if either site pointer is NULL (errno set to EINVAL).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.5 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ad252294c7d4b3e62609c21f7550e2d09">novas_itrf_transform_site()</a>, <a class="el" href="observer_8c.html#ab5fb62a9fb185632175ae622bce28dea">make_gps_site()</a>, <a class="el" href="observer_8c.html#a236750f494f3dcd943e71ba24aa2a55b">make_itrf_site()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ad252294c7d4b3e62609c21f7550e2d09" title="Transforms a geodetic location between two International Terrestrial Reference Frame (ITRF) realizati...">novas_itrf_transform_site()</a>, <a class="el" href="observer_8c.html#ab5fb62a9fb185632175ae622bce28dea" title="Initializes an observing site with the specified GPS / WGS84 location, and sets mean (annual) weather...">make_gps_site()</a>, <a class="el" href="observer_8c.html#a236750f494f3dcd943e71ba24aa2a55b" title="Initializes an observing site with the specified International Terrestrial Reference Frame (ITRF) / G...">make_itrf_site()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="structon__surface.html#a89f6abd564014faeff7cd20c340a9c7d">on_surface::height</a>, <a class="el" href="structon__surface.html#a987616dbcfdfc936af3e5874ef5a41e7">on_surface::humidity</a>, <a class="el" href="structon__surface.html#a76714bdbc5c536fa77dfb14533ff82a9">on_surface::latitude</a>, <a class="el" href="structon__surface.html#ac155e35fdeebafc89723a51520fb9fe6">on_surface::longitude</a>, <a class="el" href="#a7479134485c298faa858d73ee0513a11">novas_cartesian_to_geodetic()</a>, <a class="el" href="#ab07d86d425d68a62e94e965dd36b7a32">novas_geodetic_to_cartesian()</a>, <a class="el" href="structon__surface.html#aee1c5d07ac79c5c036195858afe33405">on_surface::pressure</a>, and <a class="el" href="structon__surface.html#ab4b11c8d9c758430960896bc3fe82ead">on_surface::temperature</a>.</p>
 
@@ -336,14 +346,16 @@ Petit, G. and Luzum, B. (eds.), IERS Conventions (2010), IERS Technical Note No.
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Converts ITRF coordinates between different realizations of the ITRF coordinate system. It does not account for station motions, which the user should apply separately. For example, consider the use case when input coordinates are given in ITRF88, for measurement in the epoch 1994.36, and output is expected in ITRF2000 for measurements at 2006.78. This function simply translates the input, measured in epoch 1994.36, to ITRF2000. Proper motion between the epochs (2006.78 and 1994.36) can be calculated with the input rates before conversion, e.g.:</p>
+
+<p>Converts ITRF coordinates between different realizations of the ITRF coordinate system. </p>
+<p>It does not account for station motions, which the user should apply separately. For example, consider the use case when input coordinates are given in ITRF88, for measurement in the epoch 1994.36, and output is expected in ITRF2000 for measurements at 2006.78. This function simply translates the input, measured in epoch 1994.36, to ITRF2000. Proper motion between the epochs (2006.78 and 1994.36) can be calculated with the input rates before conversion, e.g.:</p>
 <div class="fragment"><div class="line"><span class="comment">// Apply station motion in ITRF88</span></div>
 <div class="line"><span class="keywordflow">for</span>(i = 0; i &lt; 3; i++)</div>
 <div class="line">  from_coords[i] += from_rates[i] * (2006.78 - 1994.36)</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Convert ITRF88 coordinates to ITRF2000</span></div>
 <div class="line"><a class="code hl_function" href="#afd98ed01148f1291018809d77785527f">novas_itrf_transform</a>(1988, from_coords, from_rates, 2000, ...);</div>
-<div class="ttc" id="aitrf_8c_html_afd98ed01148f1291018809d77785527f"><div class="ttname"><a href="#afd98ed01148f1291018809d77785527f">novas_itrf_transform</a></div><div class="ttdeci">int novas_itrf_transform(int from_year, const double *restrict from_coords, const double *restrict from_rates, int to_year, double *to_coords, double *to_rates)</div><div class="ttdef"><b>Definition</b> itrf.c:223</div></div>
+<div class="ttc" id="aitrf_8c_html_afd98ed01148f1291018809d77785527f"><div class="ttname"><a href="#afd98ed01148f1291018809d77785527f">novas_itrf_transform</a></div><div class="ttdeci">int novas_itrf_transform(int from_year, const double *restrict from_coords, const double *restrict from_rates, int to_year, double *to_coords, double *to_rates)</div><div class="ttdoc">Converts ITRF coordinates between different realizations of the ITRF coordinate system.</div><div class="ttdef"><b>Definition</b> itrf.c:223</div></div>
 </div><!-- fragment --><p>or equivalently, after the transformation to ITRF2000, as:</p>
 <div class="fragment"><div class="line"><span class="comment">// Convert ITRF88 coordinates to ITRF2000</span></div>
 <div class="line"><a class="code hl_function" href="#afd98ed01148f1291018809d77785527f">novas_itrf_transform</a>(1988, from_coords, from_rates, 2000, to_coords, to_rates);</div>
@@ -369,9 +381,9 @@ IERS Conventions, Chapter 4, Eq. 4.13 and Table 4.1. See <a href="https://iers-c
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 (errno set to EINVAL) if the input coordinates are NULL, or if input rates are NULL <em>but</em> output_rates are not NULL.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.5 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ad252294c7d4b3e62609c21f7550e2d09">novas_itrf_transform_site()</a>, <a class="el" href="#a3c8c9b8f709d1e5a7aa3a915f8fafcbb">novas_itrf_transform_eop()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ad252294c7d4b3e62609c21f7550e2d09" title="Transforms a geodetic location between two International Terrestrial Reference Frame (ITRF) realizati...">novas_itrf_transform_site()</a>, <a class="el" href="#a3c8c9b8f709d1e5a7aa3a915f8fafcbb" title="Transforms Earth orientation parameters (xp, yp, dUT1) from one ITRF realization to another.">novas_itrf_transform_eop()</a> </dd>
 <dd>
-<a class="el" href="#ab07d86d425d68a62e94e965dd36b7a32">novas_geodetic_to_cartesian()</a> </dd></dl>
+<a class="el" href="#ab07d86d425d68a62e94e965dd36b7a32" title="Converts geodetic site coordinates to geocentric Cartesian coordinates, using the specified reference...">novas_geodetic_to_cartesian()</a> </dd></dl>
 
 </div>
 </div>
@@ -423,7 +435,9 @@ IERS Conventions, Chapter 4, Eq. 4.13 and Table 4.1. See <a href="https://iers-c
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Transforms Earth orientation parameters (xp, yp, dUT1) from one ITRF realization to another. For the highest precision applications, observing sites should be defined in the same ITRF realization as the IERS Earth orientation parameters (EOP). To reconcile you may transform either the site location or the EOP between different realizations to match.</p>
+
+<p>Transforms Earth orientation parameters (xp, yp, dUT1) from one ITRF realization to another. </p>
+<p>For the highest precision applications, observing sites should be defined in the same ITRF realization as the IERS Earth orientation parameters (EOP). To reconcile you may transform either the site location or the EOP between different realizations to match.</p>
 <p>REFERENCES: </p><ol>
 <li>
 IERS Conventions, Chapter 4, Eq. 4.14 and Table 4.1. See <a href="https://iers-conventions.obspm.fr/content/chapter4/icc4.pdf">https://iers-conventions.obspm.fr/content/chapter4/icc4.pdf</a> </li>
@@ -444,9 +458,9 @@ IERS Conventions, Chapter 4, Eq. 4.14 and Table 4.1. See <a href="https://iers-c
 <dl class="section return"><dt>Returns</dt><dd>0</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.5 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#afd98ed01148f1291018809d77785527f">novas_itrf_transform()</a>, <a class="el" href="#ad252294c7d4b3e62609c21f7550e2d09">novas_itrf_transform_site()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#afd98ed01148f1291018809d77785527f" title="Converts ITRF coordinates between different realizations of the ITRF coordinate system.">novas_itrf_transform()</a>, <a class="el" href="#ad252294c7d4b3e62609c21f7550e2d09" title="Transforms a geodetic location between two International Terrestrial Reference Frame (ITRF) realizati...">novas_itrf_transform_site()</a> </dd>
 <dd>
-<a class="el" href="frames_8c.html#adc72577f99a7b076b23e0e44ddbca838">novas_make_frame()</a>, <a class="el" href="structnovas__timespec.html">novas_timespec</a>, <a class="el" href="earth_8c.html#aead87744eeb3029ce7d5ffb1801ee652">wobble()</a> </dd></dl>
+<a class="el" href="frames_8c.html#adc72577f99a7b076b23e0e44ddbca838" title="Sets up a observing frame for a specific observer location, time of observation, and accuracy require...">novas_make_frame()</a>, <a class="el" href="structnovas__timespec.html" title="A structure, which defines a precise instant of time that can be extpressed in any of the astronomica...">novas_timespec</a>, <a class="el" href="earth_8c.html#aead87744eeb3029ce7d5ffb1801ee652" title="Corrects a vector in the ITRS (rotating Earth-fixed system) for polar motion, and also corrects the l...">wobble()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a0b0c2c5ccc61c8740de2e2ac277cd836">NOVAS_DAY</a>, <a class="el" href="novas_8h.html#a1830a25e886366263653167369213d8b">NOVAS_EARTH_FLATTENING</a>, and <a class="el" href="novas_8h.html#a4912c64aec0c943b7985db6cb61ff83a">TWOPI</a>.</p>
 
@@ -480,7 +494,9 @@ IERS Conventions, Chapter 4, Eq. 4.14 and Table 4.1. See <a href="https://iers-c
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Transforms a geodetic location between two International Terrestrial Reference Frame (ITRF) realizations. ITRF realizations differ at the mm / &mu;as level. Thus for the highest accuracy astrometry, from e.g. VLBI sites, it may be desirable to ensure that the site coordinates are defined for the same ITRF realization, as the one in which Earth-orientation parameters (EOP) are provided for <code><a class="el" href="frames_8c.html#adc72577f99a7b076b23e0e44ddbca838">novas_make_frame()</a></code>, <code><a class="el" href="structnovas__timespec.html">novas_timespec</a></code>, or <code><a class="el" href="earth_8c.html#aead87744eeb3029ce7d5ffb1801ee652">wobble()</a></code>.</p>
+
+<p>Transforms a geodetic location between two International Terrestrial Reference Frame (ITRF) realizations. </p>
+<p>ITRF realizations differ at the mm / &mu;as level. Thus for the highest accuracy astrometry, from e.g. VLBI sites, it may be desirable to ensure that the site coordinates are defined for the same ITRF realization, as the one in which Earth-orientation parameters (EOP) are provided for <code><a class="el" href="frames_8c.html#adc72577f99a7b076b23e0e44ddbca838" title="Sets up a observing frame for a specific observer location, time of observation, and accuracy require...">novas_make_frame()</a></code>, <code><a class="el" href="structnovas__timespec.html" title="A structure, which defines a precise instant of time that can be extpressed in any of the astronomica...">novas_timespec</a></code>, or <code><a class="el" href="earth_8c.html#aead87744eeb3029ce7d5ffb1801ee652" title="Corrects a vector in the ITRS (rotating Earth-fixed system) for polar motion, and also corrects the l...">wobble()</a></code>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">from_year</td><td>[yr] ITRF realization year of input coordinates / rates. E.g. 1992 for ITRF92. </td></tr>
@@ -493,7 +509,7 @@ IERS Conventions, Chapter 4, Eq. 4.14 and Table 4.1. See <a href="https://iers-c
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if either site pointer is NULL (errno set to EINVAL).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.5 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a3c8c9b8f709d1e5a7aa3a915f8fafcbb">novas_itrf_transform_eop()</a>, <a class="el" href="#afd98ed01148f1291018809d77785527f">novas_itrf_transform()</a>, <a class="el" href="observer_8c.html#a236750f494f3dcd943e71ba24aa2a55b">make_itrf_site()</a>, <a class="el" href="observer_8c.html#ad8b2d2e6ca9570f09a0ca1f82957ed48">make_itrf_observer()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a3c8c9b8f709d1e5a7aa3a915f8fafcbb" title="Transforms Earth orientation parameters (xp, yp, dUT1) from one ITRF realization to another.">novas_itrf_transform_eop()</a>, <a class="el" href="#afd98ed01148f1291018809d77785527f" title="Converts ITRF coordinates between different realizations of the ITRF coordinate system.">novas_itrf_transform()</a>, <a class="el" href="observer_8c.html#a236750f494f3dcd943e71ba24aa2a55b" title="Initializes an observing site with the specified International Terrestrial Reference Frame (ITRF) / G...">make_itrf_site()</a>, <a class="el" href="observer_8c.html#ad8b2d2e6ca9570f09a0ca1f82957ed48" title="Initializes an observer data structure for a ground-based observer with the specified International T...">make_itrf_observer()</a> </dd>
 <dd>
 novas_transform_ellipsoid() </dd></dl>
 
