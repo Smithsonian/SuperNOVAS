@@ -1,10 +1,10 @@
 /**
+ * @file
  * @author G. Kaplan and A. Kovacs
  *
  *  SuperNOVAS tool to Produces binary data file of RA values for CIO. The resulting binary file
  *  is platform-dependent. As of SuperNOVAS version 1.1, one may use the ASCII file directly with
- *  SuperNOVAS. As such, there is no longer the need to produce the platform-dependent binary, and
- *  the use of the ASCII CIO locator file is now preferred for reasons of portability.
+ *  SuperNOVAS.
  *
  *  Based on the NOVAS C Edition, Version 3.1:
  *
@@ -19,6 +19,17 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
+static int usage() {
+  printf(" cio_file -- Legacy conversion tool for NOVAS C CIO vs GCRS locator data.\n\n");
+  printf(" Syntax: cio_file [ascii-file [binary-file]]\n\n");
+  printf(" Parameters:\n\n");
+  printf("   ascii-file      File name/path of the input ASCII data ('CIO_RA.TXT').\n");
+  printf("   binary-file     File name/path of the output binary data ('cio_ra.bin').\n");
+  printf("\n");
+  return 0;
+}
 
 int main(int argc, const char *argv[]) {
 
@@ -51,8 +62,13 @@ int main(int argc, const char *argv[]) {
   header_size = (long) ((size_t) 3 * double_size + long_size);
   record_size = (long) ((size_t) 2 * double_size);
 
-  if(argc > 1)
+  if(argc > 1) {
+    if(strcmp(argv[1], "--help") == 0 || strcmp(argv[1], "-h") == 0) return usage();
+    if(strcmp(argv[1], "/help") == 0 || strcmp(argv[1], "/h") == 0) return usage();
+    if(strcmp(argv[1], "-?") == 0 || strcmp(argv[1], "/?") == 0) return usage();
+
     filename = argv[1];
+  }
   if(argc > 2)
     outname = argv[2];
 

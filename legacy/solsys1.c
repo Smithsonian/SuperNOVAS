@@ -1,8 +1,10 @@
 /**
+ * @file
  *
  * @author G. Kaplan and A. Kovacs
+ * @version 1.5.0
  *
- *  @deprecated This NOVAS C planetary ephemeris module supports older JPL planetary ephemerides
+ * @deprecated This NOVAS C planetary ephemeris module supports older JPL planetary ephemerides
  *             DE200 -- DE421 only. We recommend using the SuperNOVAS plugin interfaces to the
  *             CALCEPH or CSPICE libraries instead, for more complete, more-up-to-date, and more
  *             generalized ephemeris support. See @ref solsys-calceph.c, @ref solsys-cspice.c

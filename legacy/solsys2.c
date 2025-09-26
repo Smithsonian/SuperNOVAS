@@ -2,6 +2,7 @@
  * @file
  *
  * @author G. Kaplan and A. Kovacs
+ * @version 1.5.0
  *
  * @deprecated This old NOVAS-C interface to the Fortran PLEPH library is incomplete at best.
  *             Unless you have already written functional adapters for this interface, you are

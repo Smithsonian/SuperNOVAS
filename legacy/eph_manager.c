@@ -2,6 +2,7 @@
  * @file
  *
  * @author G. Kaplan and A. Kovacs
+ * @version 1.5.0
  *
  * @deprecated This NOVAS C planetrary ephemeris reader supports older JPL planetary ephemerides
  *             DE200 -- DE421 only. We recommend using the SuperNOVAS plugin interfaces to the
