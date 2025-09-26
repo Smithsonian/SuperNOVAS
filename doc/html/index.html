@@ -319,13 +319,13 @@ Using CMake</h3>
 <summary >
 Details</summary>
 <p></p>
-<p>Add the appropriate bits from below to the <code>CMakeLists.txt</code> file of your application:</p>
+<p>Add the appropriate bits from below to the <code>CMakeLists.txt</code> file of your application (<code>my-application</code>):</p>
 <div class="fragment"><div class="line"># Link core library</div>
 <div class="line">find_package(SuperNOVAS REQUIRED)</div>
-<div class="line">target_link_libraries(your_target PRIVATE supernovas)</div>
+<div class="line">target_link_libraries(my-application PRIVATE supernovas)</div>
 <div class="line"> </div>
 <div class="line"># If you built with CALCEPH support, link the plugin library</div>
-<div class="line">target_link_libraries(your_target PRIVATE solsys-calceph)</div>
+<div class="line">target_link_libraries(my-application PRIVATE solsys-calceph)</div>
 </div><!-- fragment --><p></p>
 </details>
 <p><a class="anchor" id="deprecations"></a> </p>

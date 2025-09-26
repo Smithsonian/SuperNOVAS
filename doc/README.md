@@ -403,15 +403,15 @@ shared libraries also:
 ### Using CMake
 
 
-Add the appropriate bits from below to the `CMakeLists.txt` file of your application:
+Add the appropriate bits from below to the `CMakeLists.txt` file of your application (`my-application`):
 
 ```cmake
   # Link core library
   find_package(SuperNOVAS REQUIRED)
-  target_link_libraries(your_target PRIVATE supernovas)
+  target_link_libraries(my-application PRIVATE supernovas)
 
   # If you built with CALCEPH support, link the plugin library
-  target_link_libraries(your_target PRIVATE solsys-calceph)
+  target_link_libraries(my-application PRIVATE solsys-calceph)
 ```
 
 
