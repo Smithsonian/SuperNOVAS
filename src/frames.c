@@ -2042,20 +2042,36 @@ int novas_hor_track(const object *restrict source, const novas_frame *restrict f
 
 /**
  * Calculates a projected position and redshift for a source, given the available tracking
- * position and derivatives. Using 'tracks' to project positions can be much faster than the
- * repeated full recalculation of the source position over some short period.
+ * position and derivatives, in the system for which the track was calculated. Thus if the input
+ * track was obtained with `novas_hor_track()` it will calculate momentary azimuth and elevation
+ * (Az/El) for the specified time. And, if you use `novas_equ_track()` then it will give you the
+ * instntaneous R.A. and declination for the input time.
+ *
+ * Using 'tracks' to project positions can be much faster than the repeated full recalculation of
+ * the source position over some short period. Alternatively, drive systems may need not only a
+ * sequence of pointings, but also speeds, and sometimes accelerations. A `novas_track` readily
+ * provides these also.
  *
  * In SuperNOVAS terminology a 'track' is a 2nd order Taylor series expansion of the observed
  * position and redshift in time. For most but the fastest moving sources, horizontal (Az/El)
  * tracks are sufficiently precise on minute timescales, whereas depending on the type of source
  * equatorial tracks can be precise for up to days.
  *
- * @param track       Tracking position and motion (first and second derivatives)
- * @param time        Astrometric time of observation
- * @param[out] lon    [deg] projected observed Eastward longitude in tracking coordinate system
- * @param[out] lat    [deg] projected observed latitude in tracking coordinate system
- * @param[out] dist   [AU] projected apparent distance to source from observer
- * @param[out] z      projected observed redshift
+ * @param track       Tracking position and motion (first and second derivatives), obtained e.g.
+ *                    in horizontal (Az/El) coordinates with `novas_hor_track()` or in equatorial
+ *                    coordinates with `novas_equ_track()`.
+ * @param time        Astrometric time of observation, for which to calculate projected positions
+ *                    using the track.
+ * @param[out] lon    [deg] projected observed Eastward longitude in tracking coordinate system.
+ *                    Thus, if the track was calculated with `novas_hor_track()` it will return
+ *                    the projected azimuth coordinate for the given time. And, if you used
+ *                    `novas_equ_track()`, then this will be R.A. (in degrees, nevertheless).
+ * @param[out] lat    [deg] projected observed latitude in tracking coordinate system. Thus, if
+ *                    the track was calculated with `novas_hor_track()` it will return
+ *                    the projected elevation coordinate for the given time. And, if you used
+ *                    `novas_equ_track()`, then this will be declination.
+ * @param[out] dist   [AU] projected apparent distance to source from observer.
+ * @param[out] z      projected observed redshift.
  * @return            0 if successful, or else -1 if either input pointer is NULL (errno is set to
  *                    EINVAL).
  *
