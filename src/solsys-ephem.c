@@ -2,7 +2,7 @@
  * @file
  *
  * SuperNOVAS major planet ephemeris handler via the same generic ephemeris reader that is
- * configured by set_ephem_provider() prior to calling this routine.
+ * configured by set_ephem_provider().
  *
  * @date Created  on Jan 29, 2024
  * @author Attila Kovacs
@@ -82,7 +82,8 @@ short planet_ephem_provider_hp(const double jd_tdb[restrict 2], enum novas_plane
 /**
  * Major planet ephemeris data via the same generic ephemeris provider that is configured by
  * set_ephem_provider() prior to calling this routine. This is the regular (reduced) precision
- * version.
+ * version, but in reality it's exactly the same as the high-precision version, except for the
+ * way the TDB-based Julian date is specified.
  *
  * @param jd_tdb         [day] Barycentric Dynamical Time (TDB) based Julian date.
  * @param body           Major planet number (or that for Sun, Moon, SSB...)

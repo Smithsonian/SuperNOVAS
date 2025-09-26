@@ -236,7 +236,7 @@ int cspice_remove_kernel(const char *filename) {
  * access under the hood.
  *
  * The call will use whatever ephemeris (SPK) files were loaded by the CSPICE library prior
- * to the call (see furnsh_c() function)
+ * to the call (see cspice_add_kernel(), or the CSPICE furnsh_c() functions)
  *
  * REFERENCES:
  * <ol>
@@ -265,7 +265,7 @@ int cspice_remove_kernel(const char *filename) {
  * @author Attila Kovacs
  * @since 1.2
  *
- * @sa planet_cspice(), novas_use_cspice(), novas_use_cspice_planet()
+ * @sa planet_cspice(), novas_use_cspice(), novas_use_cspice_planet(), cspice_add_kernel()
  */
 static short planet_cspice_hp(const double jd_tdb[restrict 2], enum novas_planet body, enum novas_origin origin,
         double *restrict position, double *restrict velocity) {
@@ -334,14 +334,15 @@ static short planet_cspice_hp(const double jd_tdb[restrict 2], enum novas_planet
 
 /**
  * Provides an interface between the NAIF CSPICE library and NOVAS-C for regular (reduced)
- * precision applications.
+ * precision applications, but in reality it's exactly the same as the high-precision version,
+ * except for the way the TDB-based Julian date is specified.
  *
  * This call is generally thread safe (notwithstanding outside access to the ephemeris files),
  * even if CSPICE itself may not be. All ephemeris access will be mutexed to ensure sequential
  * access under the hood.
  *
  * The call will use whatever ephemeris (SPK) files were loaded by the CSPICE library prior
- * to the call (see furnsh_c() function)
+ * to the call (see cspice_add_kernel(), or the CSPICE furnsh_c() functions)
  *
  * REFERENCES:
  * <ol>
@@ -367,7 +368,7 @@ static short planet_cspice_hp(const double jd_tdb[restrict 2], enum novas_planet
  * @author Attila Kovacs
  * @since 1.2
  *
- * @sa set_planet_provider(), planet_cspice_hp()
+ * @sa set_planet_provider(), planet_cspice_hp(), cspice_add_kernel()
  */
 static short planet_cspice(double jd_tdb, enum novas_planet body, enum novas_origin origin,
         double *restrict position, double *restrict velocity) {

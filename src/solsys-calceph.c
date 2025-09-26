@@ -255,9 +255,10 @@ static short planet_calceph_hp(const double jd_tdb[restrict 2], enum novas_plane
 
 /**
  * Provides an interface between the CALCEPH C library and NOVAS-C for regular (reduced) precision
- * applications. The user must set the CALCEPH ephemeris binary data to use using the
- * novas_use_calceph() or novas_use_calceph_planet() to activate the desired CALCEPH ephemeris
- * data prior to use.
+ * applications, but in reality it's exactly the same as the high-precision version, except for
+ * the way the TDB-based Julian date is specified. The user must set the CALCEPH ephemeris binary
+ * data to use using the novas_use_calceph() or novas_use_calceph_planet() to activate the desired
+ * CALCEPH ephemeris data prior to use.
  *
  * This call is always thread safe, even when CALCEPH and the ephemeris data may not be. When
  * necessary, the ephemeris access will be mutexed to ensure sequential access under the hood.
