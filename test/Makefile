@@ -110,7 +110,7 @@ clean: clean-test clean-cov
 	rm -f *.o
 
 .PHONY: distclean
-distclean: clean
+distclean: clean clean-data
 
 .PHONY: help
 help:
