@@ -45,7 +45,7 @@
 
 int main(int argc, char *argv[]) {
   // Program Options -------------------------------------------------------->
-   char *datafile = "/path/to/de440s.bsp";  // // Ephemeris file to use
+  const char *datafile = "/path/to/de440s.bsp";  // // Ephemeris file to use
 
   // SuperNOVAS variables used for the calculations ------------------------->
   object source;                    // observed source

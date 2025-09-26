@@ -7,6 +7,23 @@
 #
 # Author: Attila Kovacs
 
+cmake_minimum_required(VERSION 3.20)
+
+# Configuration in case this is a standalone project....
+if(NOT PROJECT_NAME)
+    project(supernovas-examples 
+        VERSION 1.5.0
+        DESCRIPTION "SuperNOVAS example programs"
+        HOMEPAGE_URL "https://smithsonian.github.io/SuperNOVAS/"
+        LANGUAGES C
+    )
+    
+    include(GNUInstallDirs)
+    
+    # Check for math library
+    check_library_exists(m sin "" HAVE_LIBM)
+endif()
+
 # List of example programs to build
 set(EXAMPLE_PROGRAMS
     example-star

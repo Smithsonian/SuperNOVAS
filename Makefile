@@ -12,9 +12,6 @@ include config.mk
 # Specific build targets and recipes below...
 # ===============================================================================
 
-# The version of the shared .so libraries
-SO_VERSION := 1
-
 # We'll need math functions to link
 LDFLAGS += -lm
 
@@ -113,6 +110,7 @@ dox:
 local-dox:
 	$(MAKE) -C doc
 
+
 # ----------------------------------------------------------------------------
 # The nitty-gritty stuff below
 # ----------------------------------------------------------------------------
@@ -152,7 +150,7 @@ INSTALL_PROGRAM ?= install
 INSTALL_DATA ?= install -m 644
 
 .PHONY: install
-install: install-libs install-headers install-docs
+install: install-libs install-headers install-docs install-legacy
 
 .PHONY: install-libs
 install-libs:
@@ -217,10 +215,9 @@ install-examples:
 
 .PHONY: install-legacy
 install-legacy:
-	@echo "installing legacy source code to $(DESTDIR)$(docdir)/legacy"
+	@echo "installing legacy files to $(DESTDIR)$(docdir)/legacy"
 	install -d $(DESTDIR)$(docdir)/legacy
 	$(INSTALL_DATA) legacy/* $(DESTDIR)$(docdir)/legacy/
-
 
 # Some standard GNU targets, that should always exist...
 .PHONY: html

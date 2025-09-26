@@ -5,6 +5,11 @@
 # You can include this snipplet in your Makefile also.
 # ============================================================================
 
+# Folders for compiled objects, libraries, and binaries, respectively 
+OBJ ?= obj
+LIB ?= lib
+BIN ?= bin
+
 # Default compiler to use (if not defined externally)
 CC ?= gcc
 
@@ -80,14 +85,15 @@ CHECKOPTS += --inline-suppr $(CHECKEXTRA)
 # Below are some generated constants based on the one that were set above
 # ============================================================================
 
+SUPERNOVAS_BUILD := 1
+export SUPERNOVAS_BUILD
+
+# The version of the shared .so libraries
+SO_VERSION := 1
+
 # Folders in which sources and headers are located, respectively
 SRC := src
 INC := include
-
-# Folders for compiled objects, libraries, and binaries, respectively 
-OBJ := obj
-LIB := lib
-BIN ?= bin
 
 # Add include directory
 CPPFLAGS += -I$(INC)

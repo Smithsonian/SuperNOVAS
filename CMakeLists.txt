@@ -168,7 +168,9 @@ add_library(novas ALIAS supernovas)
 # Plugins
 
 # plugins via external libraries (e.g. calceph or cspice). 
-function(solsys_plugin PLUGIN)
+function(solsys_plugin EPHEM_LIB)
+    set(PLUGIN solsys-${EPHEM_LIB})
+    
     add_library(${PLUGIN} src/${PLUGIN}.c)
     add_library(supernovas::${PLUGIN} ALIAS ${PLUGIN})
 
