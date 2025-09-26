@@ -422,15 +422,15 @@ shared libraries also:
 
 <details>
 
-Add the appropriate bits from below to the `CMakeLists.txt` file of your application:
+Add the appropriate bits from below to the `CMakeLists.txt` file of your application (`my-application`):
 
 ```cmake
   # Link core library
-  find_package(SuperNOVAS REQUIRED)
-  target_link_libraries(your_target PRIVATE SuperNOVAS::supernovas)
+  find_package(supernovas REQUIRED)
+  target_link_libraries(my-application PRIVATE supernovas)
 
   # If you built with CALCEPH support, link the plugin library
-  target_link_libraries(your_target PRIVATE SuperNOVAS::solsys-calceph)
+  target_link_libraries(my-application PRIVATE solsys-calceph)
 ```
 
 </details>
@@ -469,8 +469,8 @@ supported, nevertheless, for legacy applications with some caveats.
 
 <details>
 
-To use your own existing default `solarsystem()` implementation in the NOVAS Cway, you will have to build 
-__SuperNOVAS__with `SOLSYS_SOURCE` set to the source file(s) of the implementation (`config.mk` or the environment).
+To use your own existing default `solarsystem()` implementation in the NOVAS C way, you will have to build 
+__SuperNOVAS__ with `SOLSYS_SOURCE` set to the source file(s) of the implementation (`config.mk` or the environment).
 
 The same principle applies to using your specific legacy `readeph()` implementation, except that you must set 
 `READEPH_SOURCE` to the source file(s) of the chosen implementation when building __SuperNOVAS__). 
