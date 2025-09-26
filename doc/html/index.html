@@ -322,10 +322,10 @@ Details</summary>
 <p>Add the appropriate bits from below to the <code>CMakeLists.txt</code> file of your application:</p>
 <div class="fragment"><div class="line"># Link core library</div>
 <div class="line">find_package(SuperNOVAS REQUIRED)</div>
-<div class="line">target_link_libraries(your_target PRIVATE SuperNOVAS::supernovas)</div>
+<div class="line">target_link_libraries(your_target PRIVATE supernovas)</div>
 <div class="line"> </div>
 <div class="line"># If you built with CALCEPH support, link the plugin library</div>
-<div class="line">target_link_libraries(your_target PRIVATE SuperNOVAS::solsys-calceph)</div>
+<div class="line">target_link_libraries(your_target PRIVATE solsys-calceph)</div>
 </div><!-- fragment --><p></p>
 </details>
 <p><a class="anchor" id="deprecations"></a> </p>
@@ -347,7 +347,7 @@ Legacy linking <code>solarsystem()</code> / <code>solarsystem_hp()</code> and <c
 <summary >
 Details</summary>
 <p></p>
-<p>To use your own existing default <code><a class="el" href="solarsystem_8h.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a></code> implementation in the NOVAS Cway, you will have to build <b>SuperNOVAS</b> with <code>SOLSYS_SOURCE</code> set to the source file(s) of the implementation (<code>config.mk</code> or the environment).</p>
+<p>To use your own existing default <code><a class="el" href="solarsystem_8h.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a></code> implementation in the NOVAS C way, you will have to build <b>SuperNOVAS</b> with <code>SOLSYS_SOURCE</code> set to the source file(s) of the implementation (<code>config.mk</code> or the environment).</p>
 <p>The same principle applies to using your specific legacy <code><a class="el" href="solarsystem_8h.html#aa5f22db2fa785675372d45b88f2f1736">readeph()</a></code> implementation, except that you must set <code>READEPH_SOURCE</code> to the source file(s) of the chosen implementation when building <b>SuperNOVAS</b>).</p>
 <p>(You might have to also add additional include directories to <code>CPPFLAGS</code>, e.g. <code>-I/my-path/include</code> for you custom sources for their associated headers).</p>
 <p></p>
