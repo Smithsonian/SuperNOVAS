@@ -15,12 +15,12 @@ LDFLAGS += -L../$(LIB) -lsupernovas
 .PHONY: all
 all: build run
 
+.PHONY: build
+build: $(BENCHMARKS)
+
 .PHONY: run
 run: build
 	@for prog in $(BENCHMARKS) ; do $(LIB_PATH_VAR)=../$(LIB) ./$${prog} ; done
-
-.PHONY: build
-all: $(BENCHMARKS)
 
 .PHONY: clean
 clean:
@@ -31,8 +31,8 @@ distclean: clean
 
 benchmark-%: benchmark-%.c
 	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $< $(LDFLAGS)
-	
-	# Built-in help screen for `make help`
+
+# Built-in help screen for `make help`
 .PHONY: help
 help:
 	@echo
