@@ -407,7 +407,7 @@ Add the appropriate bits from below to the `CMakeLists.txt` file of your applica
 
 ```cmake
   # Link core library
-  find_package(SuperNOVAS REQUIRED)
+  find_package(supernovas REQUIRED)
   target_link_libraries(my-application PRIVATE supernovas)
 
   # If you built with CALCEPH support, link the plugin library
