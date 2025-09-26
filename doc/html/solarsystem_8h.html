@@ -1559,7 +1559,7 @@ You should not expect much precision from the long-range orbital approximations 
 </div><div class="memdoc">
 
 <p>Major planet ephemeris data via the same generic ephemeris provider that is configured by <a class="el" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030" title="Sets the function to use for obtaining position / velocity information for minor planets,...">set_ephem_provider()</a> prior to calling this routine. </p>
-<p>This is the regular (reduced) precision version.</p>
+<p>This is the regular (reduced) precision version, but in reality it's exactly the same as the high-precision version, except for the way the TDB-based Julian date is specified.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date. </td></tr>
