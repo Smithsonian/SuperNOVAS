@@ -268,8 +268,8 @@ Details</summary>
 <li><code>BUILD_EXAMPLES=ON|OFF</code> (default: ON) - Build the included examples</li>
 <li><code>BUILD_TESTING=ON|OFF</code> (default: ON - Build regression tests</li>
 <li><code>BUILD_BENCHMARK=ON|OFF</code> (default: OFF - Build benchmarking programs</li>
-<li><code>ENABLE_CALCEPH=ON|OFF</code> (default: OFF) - Enable CALCEPH ephemeris plugin support. Requires CALCEPH package.</li>
-<li><code>ENABLE_CSPICE=ON|OFF</code> (default: OFF) - Enable CSPICE ephemeris plugin support. Requires <code>cspice</code> library installed.</li>
+<li><code>ENABLE_CALCEPH=ON|OFF</code> (default: OFF) - Optional CALCEPH ephemeris plugin support. Requires CALCEPH package.</li>
+<li><code>ENABLE_CSPICE=ON|OFF</code> (default: OFF) - Optional CSPICE ephemeris plugin support. Requires <code>cspice</code> library installed.</li>
 </ul>
 <p>For example, to build <b>SuperNOVAS</b> as shared libraries with <a href="https://calceph.imcce.fr/docs/4.0.0/html/c/index.html">CALCEPH</a> integration for ephemeris support:</p>
 <div class="fragment"><div class="line">$ cmake -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DENABLE_CALCEPH=ON</div>
@@ -342,14 +342,14 @@ Deprecated API</h3>
 <p><a class="anchor" id="legacy-application"></a> </p>
 <h3><a class="anchor" id="autotoc_md65"></a>
 Legacy linking <code>solarsystem()</code> / <code>solarsystem_hp()</code> and <code>readeph()</code> modules</h3>
-<p>The NOVAS C way to handle planet or other ephemeris functions was to link particular modules to provide the <code><a class="el" href="solarsystem_8h.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a></code> / <code><a class="el" href="solarsystem_8h.html#a17846f3fafcce208dbbca1384e3a7fb0">solarsystem_hp()</a></code> and <code><a class="el" href="solarsystem_8h.html#aa5f22db2fa785675372d45b88f2f1736">readeph()</a></code> functions. This approach is discouraged in <b>SuperNOVAS</b>, with preference for selecting implementations at runtime. The old, deprecated way, of incorporating Solar-system data is supported, nevertheless, for legacy applications.</p>
+<p>The NOVAS C way to handle planet or other ephemeris functions was to link particular modules to provide the <code><a class="el" href="solarsystem_8h.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a></code> / <code><a class="el" href="solarsystem_8h.html#a17846f3fafcce208dbbca1384e3a7fb0">solarsystem_hp()</a></code> and <code><a class="el" href="solarsystem_8h.html#aa5f22db2fa785675372d45b88f2f1736">readeph()</a></code> functions. This approach is discouraged in <b>SuperNOVAS</b>, with preference for selecting implementations at runtime. The old, deprecated way, of incorporating Solar-system data is supported, nevertheless, for legacy applications with some caveats.</p>
 <details >
 <summary >
 Details</summary>
 <p></p>
-<p>To use your own existing default <code><a class="el" href="solarsystem_8h.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a></code> implementation in this way, you will have to build <b>SuperNOVAS</b> with <code>SOLSYS_SOURCE</code> set to the source file(s) of the implementation (<code>config.mk</code> or the environment).</p>
+<p>To use your own existing default <code><a class="el" href="solarsystem_8h.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a></code> implementation in the NOVAS Cway, you will have to build <b>SuperNOVAS</b> with <code>SOLSYS_SOURCE</code> set to the source file(s) of the implementation (<code>config.mk</code> or the environment).</p>
 <p>The same principle applies to using your specific legacy <code><a class="el" href="solarsystem_8h.html#aa5f22db2fa785675372d45b88f2f1736">readeph()</a></code> implementation, except that you must set <code>READEPH_SOURCE</code> to the source file(s) of the chosen implementation when building <b>SuperNOVAS</b>).</p>
-<p>(You might have to also add additional include directories to <code>CPPFLAGS</code>, e.g. <code>-I/my-path/include</code> for you custom sources).</p>
+<p>(You might have to also add additional include directories to <code>CPPFLAGS</code>, e.g. <code>-I/my-path/include</code> for you custom sources for their associated headers).</p>
 <p></p>
 </details>
 <p><a class="anchor" id="preferred-legacy-application"></a> </p>
