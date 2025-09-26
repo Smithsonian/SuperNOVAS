@@ -10,14 +10,14 @@
 $(OBJ)/%.o: $(SRC)/%.c $(OBJ) Makefile
 	$(CC) -o $@ -c $(CPPFLAGS) $(CFLAGS) $<
 
-# Share library recipe
+# Shared library recipe
 $(LIB)/%.$(SOEXT).$(SO_VERSION): | $(LIB)
 	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $^ $(SHARED_FLAGS) $(SONAME_FLAG)$(notdir $@) $(LDFLAGS)
 
 # Unversioned shared libs (for linking against)
 $(LIB)/lib%.$(SOEXT):
 	@rm -f $@
-	( cd $(LIB); ln -s $(notdir $<) $(notdir $@) )
+	( cd $(dir $@); ln -s $(notdir $<) $(notdir $@) )
 
 # Static library recipe
 $(LIB)/%.a:

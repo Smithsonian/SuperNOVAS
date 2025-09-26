@@ -1,5 +1,12 @@
+# Part of SuperNOVAS
+#
+# Builds and runs regression tests, measures test coverage
+#
+# Author: Attila Kovacs
+
 include ../config.mk
 
+# Flags for measuring test coverage
 CFLAGS += -I../include -pg -Wall -fprofile-arcs -ftest-coverage
 LDFLAGS += -fprofile-arcs -ftest-coverage -lm
 
@@ -75,7 +82,6 @@ test-%.o: src/test-%.c | Makefile
 
 %.o: ../src/%.c | Makefile
 	$(CC) -c -o $@ $(CPPFLAGS) $(CFLAGS) $<
-
 
 test-calceph: LDFLAGS += -lcalceph
 

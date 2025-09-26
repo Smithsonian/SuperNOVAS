@@ -331,8 +331,8 @@ The __SuperNOVAS__ CMake build supports the following options (in addition to th
  - `BUILD_EXAMPLES=ON|OFF` (default: ON) - Build the included examples
  - `BUILD_TESTING=ON|OFF` (default: ON - Build regression tests
  - `BUILD_BENCHMARK=ON|OFF` (default: OFF - Build benchmarking programs 
- - `ENABLE_CALCEPH=ON|OFF` (default: OFF) - Enable CALCEPH ephemeris plugin support. Requires CALCEPH package.
- - `ENABLE_CSPICE=ON|OFF` (default: OFF) - Enable CSPICE ephemeris plugin support. Requires `cspice` library 
+ - `ENABLE_CALCEPH=ON|OFF` (default: OFF) - Optional CALCEPH ephemeris plugin support. Requires CALCEPH package.
+ - `ENABLE_CSPICE=ON|OFF` (default: OFF) - Optional CSPICE ephemeris plugin support. Requires `cspice` library 
    installed.
 
 For example, to build __SuperNOVAS__ as shared libraries with 
@@ -465,18 +465,18 @@ change that part of your code to use the recommended alternatives instead.
 The NOVAS C way to handle planet or other ephemeris functions was to link particular modules to provide the
 `solarsystem()` / `solarsystem_hp()` and `readeph()` functions. This approach is discouraged in __SuperNOVAS__, with
 preference for selecting implementations at runtime. The old, deprecated way, of incorporating Solar-system data is 
-supported, nevertheless, for legacy applications.
+supported, nevertheless, for legacy applications with some caveats.
 
 <details>
 
-To use your own existing default `solarsystem()` implementation in this way, you will have to build __SuperNOVAS__
-with `SOLSYS_SOURCE` set to the source file(s) of the implementation (`config.mk` or the environment).
+To use your own existing default `solarsystem()` implementation in the NOVAS Cway, you will have to build 
+__SuperNOVAS__with `SOLSYS_SOURCE` set to the source file(s) of the implementation (`config.mk` or the environment).
 
 The same principle applies to using your specific legacy `readeph()` implementation, except that you must set 
 `READEPH_SOURCE` to the source file(s) of the chosen implementation when building __SuperNOVAS__). 
 
 (You might have to also add additional include directories to `CPPFLAGS`, e.g. `-I/my-path/include` for you custom 
-sources).
+sources for their associated headers).
 
 </details>
 

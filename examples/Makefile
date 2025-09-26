@@ -1,6 +1,6 @@
 # Part of SuperNOVAS
 #
-# Generates headless README.md and HTML documentation 
+# Build exammple programs
 #
 # Author: Attila Kovacs
 
@@ -25,6 +25,12 @@ endif
 .PHONY: all
 all: $(EXAMPLES)
 
+# Static code analysis using 'cppcheck'
+.PHONY: analyze
+analyze:
+	@echo "   [analyze]"
+	@cppcheck $(CPPFLAGS) $(CHECKOPTS) .
+
 .PHONY: clean
 clean:
 
@@ -34,3 +40,16 @@ distclean:
 
 example-%: example-%.c
 	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $< $(LDFLAGS)
+
+.PHONY: help
+help:
+	@echo
+	@echo "Syntax: make [target]"
+	@echo
+	@echo "The following targets are available:"
+	@echo
+	@echo "  all           (default) Build all example programs."
+	@echo "  analyze       Runs 'cppcheck' static analysis tool on sources."
+	@echo "  clean         Removes intermediate products."
+	@echo "  distclean     Deletes all generated files."
+	@echo

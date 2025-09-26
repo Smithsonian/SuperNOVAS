@@ -32,22 +32,19 @@ jobs:
         include:
           - os: ubuntu-latest
             cc: gcc
-            cxx: g++
-            cmopt:
+            opt:
           - os: macos-latest
             cc: clang
-            cxx: clang++
-            cmopt:
+            opt:
           - os: windows-latest
             cc: gcc
-            cxx: g++
-            cmopt: -G "MinGW Makefiles"
+            opt: -G "MinGW Makefiles"
 
     steps:
       - uses: actions/checkout@v5
 
       - name: Configure CMake (Unix)
-        run: cmake -B build ${{ matrix.cmopt }} -DBUILD_SHARED_LIBS=ON -DBUILD_EXAMPLES=ON -DBUILD_BENCHMARK=ON -DENABLE_SOLSYS1=ON  -DCMAKE_C_COMPILER=${{ matrix.cc }} -DCMAKE_CXX_COMPILER=${{ matrix.cxx }}
+        run: cmake -B build -DCMAKE_C_COMPILER=${{ matrix.cc }} ${{ matrix.opt }} -DBUILD_SHARED_LIBS=ON -DBUILD_EXAMPLES=ON -DBUILD_BENCHMARK=ON
 
       - name: Build
         run: cmake --build build

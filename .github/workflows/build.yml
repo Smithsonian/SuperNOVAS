@@ -53,11 +53,8 @@ jobs:
       - name: Build shared library
         run: make shared
 
-      - name: Compile solsys variants
+      - name: Compile solsys plugins
         run: make solsys
-
-      - name: Generate legacy CIO locator data
-        run: make legacy
 
       - name: Build examples
         run: make examples

@@ -77,10 +77,6 @@ Upcoming feature release, expected around 1 November 2025.
 
  - #250: No longer including `CIO_RA.TXT` (now unused) in the distribution.
  
- - #252: Removed the option to build `libsolsys1` / `libsolsys2`, `libsolsys3`, and `libsolsys-ephem` as separate 
-   libraries. The source codes for the former two are available in the `legacy/` folder for those who need it, while 
-   the latter two are always integral to the `libsupernovas` library.
- 
  - #252: Some build configuration options have been removed, such as the GNU make `BUILTIN_SOLSYS1`, `BUILTIN_SOLSYS2`,
    `BUILTIN_SOLSYS3`, `BUILTIN_SOLSYS_EPHEM`, `DEFAULT_SOLSYS`, and `DEFAULT_READEPH` configuration options, or the
    CMake `BUILD_SOLSYS1` / `BUILD_SOLSYS2` options.
@@ -132,7 +128,7 @@ Upcoming feature release, expected around 1 November 2025.
    
  - #251: Added further CI checks via Github Actions.
 
- - #252: Overhauled how legacy `solarsystem()` / `solarsystem_hp()` and `readeph()` functions can be added to the
+ - #252: Overhauled how legacy `solarsystem()` / `solarsystem_hp()` and `readeph()` functions can be added to the 
    build if needed, e.g. via externally provided sources at build time. If a `solarsystem()` / `solarsystem_hp()` 
    module is not explicitly defined for the build, `solsys3.c` will provide a default implementation for these.
 
