@@ -19,10 +19,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-#include <strings.h>              // strcasecmp() / strncasecmp()
 #include <errno.h>
 #include <math.h>
-#include <ctype.h>                // isspace()
+
 
 #include "novas.h"
 
@@ -49,7 +48,7 @@
  * <li>Ryan S. Park et al. 2021 AJ 161 105, DOI 10.3847/1538-3881/abd414</li>
  * </ol>
  */
-#define TC_LB      1.550519768e-8
+#define TC_LB          1.550519768e-8
 
 /**
  * Relative rate at which Geocentric coordinate time progresses faster than time on Earth i.e.,
@@ -64,21 +63,15 @@
  * <li>Ryan S. Park et al. 2021 AJ 161 105, DOI 10.3847/1538-3881/abd414</li>
  * </ol>
  */
-#define TC_LG      6.969290134e-10
+#define TC_LG          6.969290134e-10
 
-#define TC_TDB0    (6.55e-5 / DAY)       ///< TDB time offset at TC_T0
+#define TC_TDB0        (6.55e-5 / DAY)    ///< TDB time offset at TC_T0
 
-#define E9          1000000000           ///< 10<sup>9</sup> as integer
+#define E9             1000000000         ///< 10<sup>9</sup> as integer
 
-#define DATE_SEP_CHARS  "-_./ \t\r\n\f"             ///< characters that may separate date components
-#define DATE_SEP        "%*[" DATE_SEP_CHARS "]"    ///< Parse pattern for ignored date separators
-
-/// Parse pattern for month specification, either as a 1-2 digit integer or as a month name or abbreviation.
-#define MONTH_SPEC      "%9[^" DATE_SEP_CHARS "]"
-
-#define DAY_MILLIS    86400000L         ///< milliseconds in a day
-#define HOUR_MILLIS   3600000L          ///< milliseconds in an hour
-#define MIN_MILLIS    60000L            ///< milliseconds in a minute
+#define DAY_MILLIS     86400000L          ///< milliseconds in a day
+#define HOUR_MILLIS    3600000L           ///< milliseconds in an hour
+#define MIN_MILLIS     60000L             ///< milliseconds in a minute
 
 static const double iM[] = NOVAS_RMASS_INIT;       ///< [1/M<sub>sun</sub>]
 static const double R[] = NOVAS_PLANET_RADII_INIT; ///< [m]
@@ -87,8 +80,7 @@ static const double R[] = NOVAS_PLANET_RADII_INIT; ///< [m]
 
 #if __Lynx__ && __powerpc__
 // strcasecmp() / strncasecmp() are not defined on PowerPC / LynxOS 3.1
-int strcasecmp(const char *s1, const char *s2);
-int strncasecmp(const char *s1, const char *s2, size_t n);
+extern int strcasecmp(const char *s1, const char *s2);
 #endif
 
 
@@ -931,331 +923,6 @@ time_t novas_get_unix_time(const novas_timespec *restrict time, long *restrict n
   return seconds;
 }
 
-static int skip_white(const char *str, char **tail) {
-  char *next = (char *) str;
-
-  // Consume trailing 'white' spaces / punctuation
-  for(; *next; next++)
-    if(!isspace(*next) && *next != '_')
-      break;
-
-  *tail = next;
-  return 0;
-}
-
-static int parse_zone(const char *str, char **tail) {
-  char *next = (char *) str;
-
-  *tail = next;
-
-  if(*str == '+' || *str == '-') {
-    static const char *fn = "parse_zone";
-
-    // zone in {+|-}HH[:[MM]] format...
-    int H = 0, M = 0;
-    int sign = *(next++) == '-' ? -1 : 1;
-    int colon = 0;
-
-    if(isdigit(next[0]) && isdigit(next[1])) {
-      H = 10 * (next[0] - '0') + (next[1] - '0');
-      if(H >= 24)
-        return novas_error(-1, EINVAL, fn, "invalid zone hours: %d, expected [0-23]", H);
-      next += 2;
-    }
-    else
-      return novas_error(-1, EINVAL, fn, "invalid time zone specification");
-
-    if(*next == ':') {
-      next++;
-      colon = 1;
-    }
-
-    if(isdigit(next[0])) {
-      if(!isdigit(next[1]))
-        return novas_error(-1, EINVAL, fn, "invalid time zone specification");
-
-      M = 10 * (next[0] - '0') + (next[1] - '0');
-      if(M >= 60)
-        return novas_error(-1, EINVAL, fn, "invalid zone minutes: %d, expected [0-60]", M);
-      next += 2;
-    }
-    else if(colon)
-      next--;
-
-    *tail = next;
-    return sign * (H * 3600 + M * 60); // zone time to UTC...
-  }
-
-  if(*str == 'Z' || *str == 'z')
-    *tail = (char *) str + 1;
-
-  return 0;
-}
-
-/**
- * Parses a calndar date/time string, expressed in the specified type of calendar, into a Julian
- * day (JD). The date must be composed of a full year (e.g. 2025), a month (numerical or name or
- * 3-letter abbreviation, e.g. "01", "1", "January", or "Jan"), and a day (e.g. "08" or "8"). The
- * components may be separated by dash `-`, underscore `_`, dot `.`,  slash '/', or spaces/tabs,
- * or any combination thereof. The components will be parsed in the specified order.
- *
- * The date may be followed by a time specification in HMS format, separated from the date by the
- * letter `T` or `t`, or spaces, comma `,`, or semicolon `;` or underscore '_', or a combination
- * thereof. Finally, the time may be followed by the letter `Z`, or `z` (for UTC) or else by a
- * {+/-}HH[:[MM]] time zone specification.
- *
- * For example, for `format` NOVAS_YMD, all of the following strings may specify the date:
- *
- * <pre>
- *  2025-01-26
- *  2025 January 26
- *  2025_Jan_26
- *  2025-01-26T19:33:08Z
- *  2025.01.26T19:33:08
- *  2025 1 26 19h33m28.113
- *  2025/1/26 19:33:28+02
- *  2025-01-26T19:33:28-0600
- *  2025 Jan 26 19:33:28+05:30
- * </pre>
- *
- * are all valid dates that can be parsed.
- *
- * If your date format cannot be parsed with this function, you may parse it with your own
- * function into year, month, day, and decimal hour-of-day components, and use julian_date() with
- * those.
- *
- * NOTES:
- * <ol>
- *  <li>B.C. dates are indicated with years &lt;=0 according to the astronomical
- * and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44.</li>
- * </oL>
- *
- * @param calendar    The type of calendar to use: NOVAS_ASTRONOMICAL_CALENDAR,
- *                    NOVAS_GREGORIAN_CALENDAR, or NOVAS_ROMAN_CALENDAR.
- * @param format      Expected order of date components: NOVAS_YMD, NOVAS_DMY, or NOVAS_MDY.
- * @param date        The date specification, possibly including time and timezone, in the
- *                    specified standard format.
- * @param[out] tail   (optional) If not NULL it will be set to the next character in the string
- *                    after the parsed time.
- *
- * @return            [day] The Julian Day corresponding to the string date/time specification or
- *                    NAN if the string is NULL or if it does not specify a date/time in the
- *                    expected format.
- *
- * @since 1.3
- * @author Attila Kovacs
- *
- * @sa novas_parse_date(), novas_parse_iso_date(), novas_timescale_for_string(), novas_iso_timestamp()
- *     novas_jd_from_date()
- */
-double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_date_format format, const char *restrict date,
-        char **restrict tail) {
-  static const char *fn = "novas_parse_date";
-  static const char md[13] = { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-
-  int y = 0, m = 0, d = 0, n = 0, N = 0;
-  double h = 0.0;
-  char month[10] = {'\0'}, *next = (char *) date;
-
-  if(tail)
-    *tail = (char *) date;
-
-  if(!date) {
-    novas_set_errno(EINVAL, fn, "input string is NULL");
-    return NAN;
-  }
-  if(!date[0]) {
-    novas_set_errno(EINVAL, fn, "input string is empty");
-    return NAN;
-  }
-
-  switch(format) {
-    case NOVAS_YMD:
-      N = sscanf(date, "%d" DATE_SEP MONTH_SPEC DATE_SEP "%d%n", &y, month, &d, &n);
-      break;
-    case NOVAS_DMY:
-      N = sscanf(date, "%d" DATE_SEP MONTH_SPEC DATE_SEP "%d%n", &d, month, &y, &n);
-      break;
-    case NOVAS_MDY:
-      N = sscanf(date, MONTH_SPEC DATE_SEP "%d" DATE_SEP "%d%n", month, &d, &y, &n);
-      break;
-    default:
-      novas_set_errno(EINVAL, fn, "invalid date format: %d", format);
-      return NAN;
-  }
-
-  if(N < 3) {
-    novas_set_errno(EINVAL, fn, "invalid date: '%s'", date);
-    return NAN;
-  }
-
-  if(sscanf(month, "%d", &m) == 1) {
-    // Month as integer, check if in expected range
-    if(m < 1 || m > 12) {
-      novas_set_errno(EINVAL, fn, "invalid month: got %d, expected 1-12", m);
-      return NAN;
-    }
-  }
-  else {
-    // Perhaps month as string...
-    for(m = 1; m <= 12; m++) {
-      static const char *monNames[13] = { NULL, "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
-
-      if(strcasecmp(monNames[m], month) == 0)
-        break;      // match full month name
-      if(strncasecmp(monNames[m], month, 3) == 0)
-        break;      // match abbreviated month name
-    }
-    if(m > 12) {
-      // No match to month names...
-      novas_set_errno(EINVAL, fn, "invalid month: %s", month);
-      return NAN;
-    }
-  }
-
-  // Check that day is valid in principle (for leap years)
-  if(d < 1 || d > md[m]) {
-    novas_set_errno(EINVAL, fn, "invalid day-of-month: got %d, expected 1-%d", d, md[m]);
-    return NAN;
-  }
-
-  if(tail)
-    *tail += n;
-
-  skip_white(&date[n], &next);
-
-  if(*next) {
-    char *from = next;
-    enum novas_debug_mode saved = novas_get_debug_mode();
-
-    // Check if 'T' is used to separate time component, as in ISO timestamps.
-    if(*next == 'T' || *next == 't')
-      next++;
-
-    // suppress debug messages while we parse time...
-    novas_debug(NOVAS_DEBUG_OFF);
-
-    // Try parse time
-    h = novas_parse_hms(next, &next);
-
-    // Restore prior debug state...
-    errno = 0;
-    novas_debug(saved);
-
-    if(!isnan(h)) {
-      int ds = parse_zone(next, &next);
-      if(errno)
-        return novas_trace_nan(fn);
-      h -= ds / 3600.0;
-    }
-    else if(tail) {
-      h = 0.0;
-      next = from; // Time parsing unsuccessful, no extra characters consumed.
-    }
-
-    if(tail)
-      *tail = next;
-  }
-
-  return novas_jd_from_date(calendar, y, m, d, h);
-}
-
-/**
- * Parses an astronomical date/time string into a Julian date specification.
- *
- * The date must be YMD-type with full year, followed the month (numerical or name or 3-letter
- * abbreviation), and the day. The components may be separated by dash `-`, underscore `_`, dot
- * `.`,  slash '/', or spaces/tabs, or any combination thereof. The date may be followed by a time
- * specification in HMS format, separated from the date by the letter `T` or `t`, or spaces, comma
- * `,`, or semicolon `;`, or underscore `_` or a combination thereof. Finally, the time may be
- * followed by the letter `Z`, or `z` (for UTC) or else {+/-}HH[:[MM]] time zone specification.
- *
- * For example:
- *
- * <pre>
- *  2025-01-26
- *  2025 January 26
- *  2025_Jan_26
- *  2025-01-26T19:33:08Z
- *  2025.01.26T19:33:08
- *  2025 1 26 19h33m28.113
- *  2025/1/26 19:33:28+02
- *  2025-01-26T19:33:28-0600
- *  2025 Jan 26 19:33:28+05:30
- * </pre>
- *
- * are all valid dates that can be parsed.
- *
- * NOTES:
- * <ol>
- * <li>This function assumes Gregorian dates after their introduction on 1582 October 15, and
- * Julian/Roman dates before that, as was the convention of the time. I.e., the day before of the
- * introduction of the Gregorian calendar reform is 1582 October 4. I.e., you should not use
- * this function with ISO 8601 timestamps containing dates prior to 1582 October 15 (for such
- * date you may use `novas_parse_iso_date()` instead).</li>
- *
- * <li>B.C. dates are indicated with years &lt;=0 according to the astronomical
- * and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44.</li>
- * </oL>
- *
- * @param date        The astronomical date specification, possibly including time and timezone,
- *                    in a standard format. The date is assumed to be in the astronomical calendar
- *                    of date, which differs from ISO 8601 timestamps for dates prior to the
- *                    Gregorian calendar reform of 1582 October 15 (otherwise, the two are
- *                    identical).
- * @param[out] tail   (optional) If not NULL it will be set to the next character in the string
- *                    after the parsed time.
- *
- * @return            [day] The Julian Day corresponding to the string date/time specification or
- *                    NAN if the string is NULL or if it does not specify a date/time in the
- *                    expected format.
- *
- * @since 1.3
- * @author Attila Kovacs
- *
- * @sa novas_parse_iso_date(), novas_parse_date_format(), novas_date(), novas_date_scale(),
- *     novas_timescale_for_string(), novas_iso_timestamp(), novas_timestamp()
- */
-double novas_parse_date(const char *restrict date, char **restrict tail) {
-  double jd = novas_parse_date_format(NOVAS_ASTRONOMICAL_CALENDAR, NOVAS_YMD, date, tail);
-  if(isnan(jd))
-    return novas_trace_nan("novas_parse_date");
-  return jd;
-}
-
-/**
- * Parses an ISO 8601 timestamp, converting it to a Julian day. It is equivalent to
- * `novas_parse_date()` for dates after the Gregorian calendar reform of 1582. For earlier dates,
- * ISO timestamps continue to assume the Gregorian calendar (i.e. proleptic Gregorian dates),
- * whereas `novas_parse_timestamp()` will assume Roman/Julian dates, which were conventionally
- * used before the calendar reform.
- *
- * NOTES:
- * <ol>
- * <li>B.C. dates are indicated with years &lt;=0 according to the astronomical
- * and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44.</li>
- * </oL>
- *
- * @param date        The ISO 8601 date specification, possibly including time and timezone, in a
- *                    standard format.
- * @param[out] tail   (optional) If not NULL it will be set to the next character in the string
- *                    after the parsed time.
- *
- * @return            [day] The Julian Day corresponding to the string date/time specification or
- *                    NAN if the string is NULL or if it does not specify a date/time in the
- *                    expected format.
- *
- * @since 1.3
- * @author Attila Kovacs
- *
- * @sa novas_iso_timestamp(), novas_parse_date()
- */
-double novas_parse_iso_date(const char *restrict date, char **restrict tail) {
-  double jd = novas_parse_date_format(NOVAS_GREGORIAN_CALENDAR, NOVAS_YMD, date, tail);
-  if(isnan(jd))
-    return novas_trace_nan("novas_parse_iso_date");
-  return jd;
-}
 
 /**
  * Returns a Julian date (in non-specific timescale) corresponding the specified input string date
@@ -1587,51 +1254,6 @@ enum novas_timescale novas_timescale_for_string(const char *restrict str) {
     return NOVAS_TDB;
 
   return novas_error(-1, EINVAL, fn, "unknown timescale: %s", str);
-}
-
-/**
- * Parses the timescale from a string containing a standard abbreviation (case insensitive), and
- * returns the updated parse position after the timescale specification (if any). The following
- * timescale values are recognised: "UTC", "UT", "UT0", "UT1", "GMT", "TAI", "GPS", "TT", "ET",
- * "TCG", "TCB", "TDB".
- *
- * @param str         String specifying an astronomical timescale. Leading white spaces will be
-                      skipped over.
- * @param[out] tail   (optional) If not NULL it will be set to the next character in the string
- *                    after the parsed timescale specification.
- *
- * @return            The SuperNOVAS timescale constant (&lt;=0), or else -1 if the string was
- *                    NULL, empty, or could not be matched to a timescale value (errno will be set
- *                    to EINVAL also).
- *
- * @since 1.3
- * @author Attila Kovacs
- *
- * @sa novas_timescale_for_string(), novas_set_str_time(), novas_print_timescale()
- */
-enum novas_timescale novas_parse_timescale(const char *restrict str, char **restrict tail) {
-  static const char *fn = "novas_parse_timescale";
-
-  enum novas_timescale scale = NOVAS_UTC;
-  char s[4] = {'\0'};
-  int n = 0;
-
-  if(tail)
-    *tail = (char *) str;
-
-  if(!str)
-    return novas_error(-1, EINVAL, fn, "input string is NULL");
-
-  if(sscanf(str, "%3s%n", s, &n) == 1) {
-    scale = novas_timescale_for_string(s);
-    if(scale < 0)
-      return novas_trace(fn, scale, 0);
-  }
-
-  if(tail)
-    *tail += n;
-
-  return scale;
 }
 
 /**
