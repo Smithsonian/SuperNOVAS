@@ -106,7 +106,7 @@ $(function(){initNavTree('solsys3_8c.html',''); initResizable(true); });
 </div><!--header-->
 <div class="contents">
 
-<p>SuperNOVAS plane calculator functions for the Earth and Sun only, with an orbital model based on the DE405 ephemerides by JPL.  
+<p>SuperNOVAS planet calculator functions for the Earth and Sun only, with an orbital model fotted to the DE405 ephemerides by JPL.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
@@ -115,7 +115,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:a580f5949c8a29cdd7bf4787aee891f2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides the position and velocity of the Earth and Sun only at epoch 'jd_tdb' by evaluating a closed-form theory without reference to an external file.  <br /></td></tr>
 <tr class="separator:a580f5949c8a29cdd7bf4787aee891f2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a338e3436ba86dadf6bd4d7390f9940ec" id="r_a338e3436ba86dadf6bd4d7390f9940ec"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a338e3436ba86dadf6bd4d7390f9940ec">earth_sun_calc_hp</a> (const double jd_tdb[restrict 2], enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a> body, enum <a class="el" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27be">novas_origin</a> origin, double *restrict position, double *restrict velocity)</td></tr>
-<tr class="memdesc:a338e3436ba86dadf6bd4d7390f9940ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">It may provide the position and velocity of the Earth and Sun, the same as solarsystem_earth_sun(), if <a class="el" href="#a279bca0519117cee9a3bd4382f38e7ad" title="Specify whether the high-precision call is allowed to return a low-precision result.">enable_earth_sun_hp()</a> is set to true (non-zero).  <br /></td></tr>
+<tr class="memdesc:a338e3436ba86dadf6bd4d7390f9940ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">It may provide the position and velocity of the Earth and Sun, the same as <a class="el" href="#a580f5949c8a29cdd7bf4787aee891f2b" title="Provides the position and velocity of the Earth and Sun only at epoch &#39;jd_tdb&#39; by evaluating a closed...">earth_sun_calc()</a>, if <a class="el" href="#a279bca0519117cee9a3bd4382f38e7ad" title="Specify whether the high-precision call is allowed to return a low-precision result.">enable_earth_sun_hp()</a> is set to true (non-zero).  <br /></td></tr>
 <tr class="separator:a338e3436ba86dadf6bd4d7390f9940ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a279bca0519117cee9a3bd4382f38e7ad" id="r_a279bca0519117cee9a3bd4382f38e7ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a279bca0519117cee9a3bd4382f38e7ad">enable_earth_sun_hp</a> (int value)</td></tr>
 <tr class="memdesc:a279bca0519117cee9a3bd4382f38e7ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify whether the high-precision call is allowed to return a low-precision result.  <br /></td></tr>
@@ -125,14 +125,16 @@ Functions</h2></td></tr>
 <tr class="separator:a869ec4c9fe91668611c0cfcc6bf332cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>SuperNOVAS plane calculator functions for the Earth and Sun only, with an orbital model based on the DE405 ephemerides by JPL. </p>
+<div class="textblock"><p>SuperNOVAS planet calculator functions for the Earth and Sun only, with an orbital model fotted to the DE405 ephemerides by JPL. </p>
+<p>This function is suitable for calculating the positions of Earth and the Sun around the Solar-system Barycenter (SSB) with a typical accutacy of around 10 arcseconds within a few centuries of J2000.</p>
+<p>It is inherently similar, at least in accuracy, to the planetary orbital models provided by <a class="el" href="planets_8c.html">planets.c</a>, except that it can be used more widely in SuperNOVAS internally by the various functions, which need Earth and/or Sun positions for their calculations.</p>
 <p>Based on the NOVAS C Edition, Version 3.1:</p>
 <p>U. S. Naval Observatory<br  />
  Astronomical Applications Dept.<br  />
  Washington, DC<br  />
  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">http://www.usno.navy.mil/USNO/astronomical-applications</a></p>
 <dl class="section author"><dt>Author</dt><dd>G. Kaplan and A. Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="ephemeris_8c.html" title="Functions that allow to define or access Solar-system ephemeris data.">ephemeris.c</a>, <a class="el" href="solsys-calceph_8c.html" title="SuperNOVAS Solar-system ephemeris lookup implementation via the CALCEPH C library.">solsys-calceph.c</a>, <a class="el" href="solsys-cspice_8c.html" title="SuperNOVAS Solar-system ephemeris lookup implementation via the NAIF CSPICE library.">solsys-cspice.c</a>, <a class="el" href="solsys-ephem_8c.html" title="SuperNOVAS major planet ephemeris handler via the same generic ephemeris reader that is configured by...">solsys-ephem.c</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="ephemeris_8c.html" title="Functions that allow to define or access Solar-system ephemeris data.">ephemeris.c</a>, <a class="el" href="planets_8c.html" title="Calculate approximate positions and velocities for the major planets, Sun, Moon, Earth-Moon Barycente...">planets.c</a>, <a class="el" href="solsys-calceph_8c.html" title="SuperNOVAS Solar-system ephemeris lookup implementation via the CALCEPH C library.">solsys-calceph.c</a>, <a class="el" href="solsys-cspice_8c.html" title="SuperNOVAS Solar-system ephemeris lookup implementation via the NAIF CSPICE library.">solsys-cspice.c</a>, <a class="el" href="solsys-ephem_8c.html" title="SuperNOVAS major planet ephemeris handler via the same generic ephemeris reader that is configured by...">solsys-ephem.c</a> </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a580f5949c8a29cdd7bf4787aee891f2b" name="a580f5949c8a29cdd7bf4787aee891f2b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a580f5949c8a29cdd7bf4787aee891f2b">&#9670;&#160;</a></span>earth_sun_calc()</h2>
@@ -188,7 +190,7 @@ Explanatory Supplement to The Astronomical Almanac (1992). </li>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if there is a required function is not provided (errno set to ENOSYS) or if one of the output pointer arguments is NULL (errno set to EINVAL). 1 if the input Julian date ('tjd') is out of range, 2 if 'body' is invalid.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a338e3436ba86dadf6bd4d7390f9940ec" title="It may provide the position and velocity of the Earth and Sun, the same as solarsystem_earth_sun(),...">earth_sun_calc_hp()</a>, <a class="el" href="ephemeris_8c.html#a9904c454bc7148b42d0f927b82ea3973" title="Set a custom function to use for regular precision (see NOVAS_REDUCED_ACCURACY) ephemeris calculation...">set_planet_provider()</a>, <a class="el" href="solarsystem_8h.html#aae2b06af367d7b0a70a8b89c258b00b0" title="Provides the position and velocity of major planets (as well as the Sun, Moon, Solar-system Barycente...">novas_planet_provider</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a338e3436ba86dadf6bd4d7390f9940ec" title="It may provide the position and velocity of the Earth and Sun, the same as earth_sun_calc(),...">earth_sun_calc_hp()</a>, <a class="el" href="ephemeris_8c.html#a9904c454bc7148b42d0f927b82ea3973" title="Set a custom function to use for regular precision (see NOVAS_REDUCED_ACCURACY) ephemeris calculation...">set_planet_provider()</a>, <a class="el" href="solarsystem_8h.html#aae2b06af367d7b0a70a8b89c258b00b0" title="Provides the position and velocity of major planets (as well as the Sun, Moon, Solar-system Barycente...">novas_planet_provider</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27beade504a1c5ccf790ce9d8ad52797bb94c">NOVAS_BARYCENTER</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045adc941f5a3613952d6d6102281e70e5c0">NOVAS_EARTH</a>, <a class="el" href="novas_8h.html#a1853540eae9f8699b6aaff9c0b518e08">NOVAS_PLANETS</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045aaeb39686d0e998c9188b47c31ee9c6b5">NOVAS_SSB</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a170e1c704bd29c8d46f66d4d9a03d9c2">NOVAS_SUN</a>, <a class="el" href="equinox_8c.html#a9178358732325399f3a5e3582080ced3">precession()</a>, <a class="el" href="util_8c.html#ae104afd1bc638def9bdbce1801e5054a">radec2vector()</a>, <a class="el" href="#a869ec4c9fe91668611c0cfcc6bf332cf">sun_eph()</a>, and <a class="el" href="novas_8h.html#a4912c64aec0c943b7985db6cb61ff83a">TWOPI</a>.</p>
 
@@ -228,7 +230,7 @@ Explanatory Supplement to The Astronomical Almanac (1992). </li>
       </table>
 </div><div class="memdoc">
 
-<p>It may provide the position and velocity of the Earth and Sun, the same as solarsystem_earth_sun(), if <a class="el" href="#a279bca0519117cee9a3bd4382f38e7ad" title="Specify whether the high-precision call is allowed to return a low-precision result.">enable_earth_sun_hp()</a> is set to true (non-zero). </p>
+<p>It may provide the position and velocity of the Earth and Sun, the same as <a class="el" href="#a580f5949c8a29cdd7bf4787aee891f2b" title="Provides the position and velocity of the Earth and Sun only at epoch &#39;jd_tdb&#39; by evaluating a closed...">earth_sun_calc()</a>, if <a class="el" href="#a279bca0519117cee9a3bd4382f38e7ad" title="Specify whether the high-precision call is allowed to return a low-precision result.">enable_earth_sun_hp()</a> is set to true (non-zero). </p>
 <p>Otherwise, it will return with an error code of 3, indicating that high-precision calculations are not provided by this implementation.</p>
 <p>NOTES: </p><ol>
 <li>
@@ -272,11 +274,11 @@ This implementation will always propulate the output position and velocity vecto
 <p>If set to 0 (false) solarsystem_earth_sun_hp() will return with an error code 3 indicating that a high-precision calculation is not possible. Otherise, a non-zero value (true) will let the function to be used without errors, returning the low-precison result of solarsystem_earth_sun() instead.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">value</td><td>(boolean) A non-zero value enables the error-free use of the <a class="el" href="#a338e3436ba86dadf6bd4d7390f9940ec" title="It may provide the position and velocity of the Earth and Sun, the same as solarsystem_earth_sun(),...">earth_sun_calc_hp()</a> by allowing to return the low-precision result. Otherwise, <a class="el" href="#a338e3436ba86dadf6bd4d7390f9940ec" title="It may provide the position and velocity of the Earth and Sun, the same as solarsystem_earth_sun(),...">earth_sun_calc_hp()</a> will return an error code 3 indicating that the high-precision result is not available (this latter is the default behavior).</td></tr>
+    <tr><td class="paramname">value</td><td>(boolean) A non-zero value enables the error-free use of the <a class="el" href="#a338e3436ba86dadf6bd4d7390f9940ec" title="It may provide the position and velocity of the Earth and Sun, the same as earth_sun_calc(),...">earth_sun_calc_hp()</a> by allowing to return the low-precision result. Otherwise, <a class="el" href="#a338e3436ba86dadf6bd4d7390f9940ec" title="It may provide the position and velocity of the Earth and Sun, the same as earth_sun_calc(),...">earth_sun_calc_hp()</a> will return an error code 3 indicating that the high-precision result is not available (this latter is the default behavior).</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a338e3436ba86dadf6bd4d7390f9940ec" title="It may provide the position and velocity of the Earth and Sun, the same as solarsystem_earth_sun(),...">earth_sun_calc_hp()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a338e3436ba86dadf6bd4d7390f9940ec" title="It may provide the position and velocity of the Earth and Sun, the same as earth_sun_calc(),...">earth_sun_calc_hp()</a> </dd></dl>
 
 </div>
 </div>
