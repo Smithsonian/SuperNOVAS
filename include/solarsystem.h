@@ -5,7 +5,7 @@
  *
  * Solar-system objects come in multiple varieties from the perspective of SuperNOVAS:
  *
- *  1. Major planets, plus the Sun, Moon, Solar-system Barucenter (SSB), and since v1.2 also
+ *  1. Major planets, plus the Sun, Moon, Solar-system Barycenter (SSB), and since v1.2 also
  *     the Earth-Moon Barycenter (EMB), and the Pluto system barycenter.
  *
  *  2. Ephemeris objects, which historically have been all sources other than the major planets
@@ -49,6 +49,112 @@
 #endif
 /// \endcond
 
+
+/// [W/m<sup>2</sup>] The Solar Constant i.e., typical incident Solar power on Earth.
+/// The value of 1367 Wm<sup>−2</sup> was adopted by the World Radiation Center
+/// (Gueymard, 2004).
+/// @since 1.3
+/// @sa novas_solar_power()
+#define NOVAS_SOLAR_CONSTANT      1367.0
+
+/**
+ * String array initializer for Major planet names, matching the enum novas_planet. E.g.
+ *
+ * ```c
+ * const char *planet_names[] = NOVAS_PLANET_NAMES_INIT;
+ * ```
+ *
+ * @hideinitializer
+ * @since 1.2
+ * @author Attila Kovacs
+ *
+ * @sa enum novas_planet
+ */
+#define NOVAS_PLANET_NAMES_INIT { \
+  "SSB", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto", \
+  "Sun", "Moon", "EMB", "Pluto-Barycenter" }
+
+/**
+ * Array initializer for mean planet radii in meters, matching the enum novas_planet. E.g.
+ *
+ * ```c
+ * const double *planet_radii[] = NOVAS_PLANET_RADII_INIT;
+ * ```
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>https://orbital-mechanics.space/reference/planetary-parameters.html, Table 3.</li>
+ * <li>B. A. Archinal, et al.,
+ * Report of the IAU Working Group on Cartographic Coordinates and Rotational Elements:
+ * 2015. Celestial Mechanics and Dynamical Astronomy, 130(3):22, March 2018.
+ * doi:10.1007/s10569-017-9805-5.</li>
+ * <li>B. A. Archinal, et al.,
+ * Report of the IAU Working Group on Cartographic Coordinates and Rotational Elements:
+ * 2015. Celestial Mechanics and Dynamical Astronomy, 130(3):22, March 2018.
+ * doi:10.1007/s10569-017-9805-5.
+ * </ol>
+ *
+ * @hideinitializer
+ * @since 1.5
+ * @author Attila Kovacs
+ *
+ * @sa enum novas_planet, NOVAS_PLANET_NAMES_INIT, NOVAS_RMASS_INIT
+ */
+#define NOVAS_PLANET_RADII_INIT { \
+  0.0, \
+  2440530.0, 6051800.0, 6378136.6, 3396190.0, 71492000.0, 60268000.0, 25559000.0, 24764000.0, 1188300.0, \
+  695700000.0, \
+  1737400.0, \
+  0.0, 0.0 \
+}
+
+/**
+ * Reciprocal masses of solar system bodies, from DE-405 (Sun mass / body mass).
+ * [0]: Earth/Moon barycenter (legacy from NOVAS C), MASS[1] = Mercury, ...,
+ * [9]: Pluto (barycenter), [10]: Sun, [11]: Moon.
+ * Barycentric reciprocal masses (index 12, 13) are not set.
+ *
+ * NOTES:
+ * <ol>
+ * <li>The values have been updated to used DE440 data (Park et al. 2021) in 1.4.
+ * </ol>
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>Ryan S. Park et al 2021 AJ 161 105, DOI 10.3847/1538-3881/abd414</li>
+ * <li>IERS Conventions, Chapter 3, Table 3.1</li>
+ * </ol>
+ *
+ * @hideinitializer
+ * @since 1.2
+ * @author Attila Kovacs
+ *
+ * @sa enum novas_planet, NOVAS_PLANET_NAMES_INIT, NOVAS_PLANET_RAII_INIT, NOVAS_PLANETS_GRAV_Z_INIT
+ */
+#define NOVAS_RMASS_INIT  { \
+      328900.559708565, \
+      6023657.9450387, 408523.718656268, 332946.048773067, 3098703.54671961, \
+      1047.348631244, 3497.9018007932, 22902.9507834766, 19412.2597758766, 136045556.16738, \
+      1.0, 27068702.9548773, \
+      0.0, 0.0 }
+
+/**
+ * Gravitational redshifts for major planets (and Moon and Sun) for light emitted at surface
+ * and detected at a large distance away. Barycenters are not considered, and for Pluto the
+ * redshift for the Pluto system is assumed for distant observers.
+ *
+ * @sa enum novas_planet
+ * @sa NOVAS_PLANETS
+ *
+ * @hideinitializer
+ * @since 1.1.1
+ * @author Attila Kovacs
+ */
+#define NOVAS_PLANET_GRAV_Z_INIT { \
+  0.0, 1.0047e-10, 5.9724e-10, 7.3050e-10, 1.4058e-10, 2.0166e-8, 7.2491e-9, 2.5420e-9, \
+  3.0893e-9, 9.1338e-12, 2.120483e-6, 3.1397e-11, 0.0, 0.0 }
+
+
 /**
  * Solar-system body IDs to use as object.number with @ref NOVAS_EPHEM_OBJECT types. JPL ephemerides
  * use <a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/req/naif_ids.html">NAIF IDs</a>
@@ -76,6 +182,56 @@ enum novas_id_type {
  * @sa enum novas_id_type
  */
 #define NOVAS_ID_TYPES      (NOVAS_ID_CALCEPH + 1)
+
+ /**
+  * Default set of gravitating bodies to use for deflection calculations in reduced accuracy mode.
+  * (only apply gravitational deflection for the Sun.)
+  *
+  * @since 1.1
+  * @author Attila Kovacs
+  *
+  * @sa grav_bodies_reduced_accuracy, grav_planets(), grav_undo_planets()
+  */
+ #define DEFAULT_GRAV_BODIES_REDUCED_ACCURACY   ( (1 << NOVAS_SUN) )
+
+ /**
+  * Default set of gravitating bodies to use for deflection calculations in full accuracy mode.
+  *
+  * @since 1.1
+  * @author Attila Kovacs
+  *
+  * @sa grav_bodies_full_accuracy, grav_planets(), grav_undo_planets()
+  */
+ #define DEFAULT_GRAV_BODIES_FULL_ACCURACY      ( DEFAULT_GRAV_BODIES_REDUCED_ACCURACY | (1 << NOVAS_JUPITER) | (1 << NOVAS_SATURN) )
+
+ /**
+  * Current set of gravitating bodies to use for deflection calculations in reduced accuracy mode. Each
+  * bit signifies whether a given body is to be accounted for as a gravitating body that bends light,
+  * such as the bit `(1 << NOVAS_JUPITER)` indicates whether or not Jupiter is considered as a deflecting
+  * body. You should also be sure that you provide ephemeris data for bodies that are designated for the
+  * deflection calculation.
+  *
+  * @since 1.1
+  *
+  * @sa grav_def(), grav_planets(), DEFAULT_GRAV_BODIES_REDUCED_ACCURACY
+  * @sa set_ephem_provider()
+  */
+ extern int grav_bodies_reduced_accuracy;
+
+ /**
+  * Current set of gravitating bodies to use for deflection calculations in full accuracy mode. Each
+  * bit signifies whether a given body is to be accounted for as a gravitating body that bends light,
+  * such as the bit `(1 << NOVAS_JUPITER)` indicates whether or not Jupiter is considered as a deflecting
+  * body. You should also be sure that you provide ephemeris data for bodies that are designated for the
+  * deflection calculation.
+  *
+  * @since 1.1
+  *
+  * @sa grav_def(), grav_planets(), DEFAULT_GRAV_BODIES_FULL_ACCURACY
+  * @sa set_ephem_provider_hp()
+  */
+ extern int grav_bodies_full_accuracy;
+
 
 /**
  * Provides the position and velocity of major planets (as well as the Sun, Moon, Solar-system
@@ -150,7 +306,6 @@ typedef short (*novas_planet_provider_hp)(const double jd_tdb[2], enum novas_pla
         double *restrict position, double *restrict velocity);
 
 
-
 /**
  * Function to obtain ephemeris data for minor planets, which are not handled by the
  * solarsystem() type calls. The library does not provide a default implementation, but users
@@ -195,6 +350,7 @@ typedef short (*novas_planet_provider_hp)(const double jd_tdb[2], enum novas_pla
  */
 typedef int (*novas_ephem_provider)(const char *name, long id, double jd_tdb_high, double jd_tdb_low,
         enum novas_origin *restrict origin, double *restrict pos, double *restrict vel);
+
 
 
 #ifndef _EXCLUDE_DEPRECATED
@@ -397,8 +553,6 @@ double novas_next_moon_phase(double phase, double jd_tdb);
 
 
 /// \cond PRIVATE
-
-
 // <================= SuperNOVAS internals ======================>
 
 #  ifdef __NOVAS_INTERNAL_API__
@@ -423,7 +577,6 @@ double novas_next_moon_phase(double phase, double jd_tdb);
 
 
 #  endif /* __NOVAS_INTERNAL_API__ */
-
 /// \endcond
 
 #endif /* _SOLSYS_ */

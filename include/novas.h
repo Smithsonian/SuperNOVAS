@@ -101,17 +101,14 @@
 #define SUPERNOVAS_VERSION_STRING str_2(SUPERNOVAS_MAJOR_VERSION) "." str_2(SUPERNOVAS_MINOR_VERSION) \
                                   "." str_2(SUPERNOVAS_PATCHLEVEL) SUPERNOVAS_RELEASE_STRING
 
+#undef str_1
+#undef str_2
+
 #define NOVAS_MAJOR_VERSION       3       ///< Major version of NOVAS on which this library is based
 #define NOVAS_MINOR_VERSION       1       ///< Minor version of NOVAS on which this library is based
 
 /// The version string of the upstream NOVAS library on which this library is based.
 #define NOVAS_VERSION_STRING      #NOVAS_MAJOR_VERSION "." NOVAS_MINOR_VERSION
-
-#ifndef _EXCLUDE_DEPRECATED
-/// @deprecated This definition is no longer needed internally.
-/// [pts] cache size for GCRS CIO locator data (16 bytes per point).
-#  define NOVAS_CIO_CACHE_SIZE      1024
-#endif
 
 /// [day] Julian date at J2000
 #define NOVAS_JD_J2000            2451545.0
@@ -233,13 +230,6 @@
 /// [s] TT - TAI time offset
 #define NOVAS_TAI_TO_TT           32.184
 
-/// [W/m<sup>2</sup>] The Solar Constant i.e., typical incident Solar power on Earth.
-/// The value of 1367 Wm<sup>−2</sup> was adopted by the World Radiation Center
-/// (Gueymard, 2004).
-/// @since 1.3
-/// @sa novas_solar_power()
-#define NOVAS_SOLAR_CONSTANT      1367.0
-
 /// [day] The Julian day the Gregorian calendar was introduced in 15 October 1582.
 /// The day prior to that was 4 October 1582 in the Julian Calendar.
 #define NOVAS_JD_START_GREGORIAN  2299160.5
@@ -310,6 +300,20 @@
 #  endif
 
 #endif
+
+#ifndef _EXCLUDE_DEPRECATED
+
+/**
+ * Deprecated.
+ * @deprecated Old definition of the Barycenter origin. @ref NOVAS_BARYCENTER is preferred. */
+#  define BARYC                     NOVAS_BARYCENTER
+
+/**
+ * Deprecated.
+ * @deprecated Old definition of the Center of Sun as the origin. @ref NOVAS_HELIOCENTER is preferred. */
+#  define HELIOC                    NOVAS_HELIOCENTER
+
+#endif // _EXCLUDE_DEPRECATED
 
 /**
  * Settings for 'novas_debug()'
@@ -385,101 +389,6 @@ enum novas_planet {
  * @sa enum novas_planet
  */
 #define NOVAS_PLANETS             (NOVAS_PLUTO_BARYCENTER + 1)
-
-/**
- * String array initializer for Major planet names, matching the enum novas_planet. E.g.
- *
- * ```c
- * const char *planet_names[] = NOVAS_PLANET_NAMES_INIT;
- * ```
- *
- * @since 1.2
- * @author Attila Kovacs
- *
- * @sa enum novas_planet
- */
-#define NOVAS_PLANET_NAMES_INIT { \
-  "SSB", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto", \
-  "Sun", "Moon", "EMB", "Pluto-Barycenter" }
-
-
-/**
- * Array initializer for mean planet radii in meters, matching the enum novas_planet. E.g.
- *
- * ```c
- * const double *planet_radii[] = NOVAS_PLANET_RADII_INIT;
- * ```
- *
- * REFERENCES:
- * <ol>
- * <li>https://orbital-mechanics.space/reference/planetary-parameters.html, Table 3.</li>
- * <li>B. A. Archinal, et al.,
- * Report of the IAU Working Group on Cartographic Coordinates and Rotational Elements:
- * 2015. Celestial Mechanics and Dynamical Astronomy, 130(3):22, March 2018.
- * doi:10.1007/s10569-017-9805-5.</li>
- * <li>B. A. Archinal, et al.,
- * Report of the IAU Working Group on Cartographic Coordinates and Rotational Elements:
- * 2015. Celestial Mechanics and Dynamical Astronomy, 130(3):22, March 2018.
- * doi:10.1007/s10569-017-9805-5.
- * </ol>
- *
- * @since 1.5
- * @author Attila Kovacs
- *
- * @sa enum novas_planet, NOVAS_PLANET_NAMES_INIT, NOVAS_RMASS_INIT
- */
-#define NOVAS_PLANET_RADII_INIT { \
-  0.0, \
-  2440530.0, 6051800.0, 6378136.6, 3396190.0, 71492000.0, 60268000.0, 25559000.0, 24764000.0, 1188300.0, \
-  695700000.0, \
-  1737400.0, \
-  0.0, 0.0 \
-}
-
-
-/**
- * Reciprocal masses of solar system bodies, from DE-405 (Sun mass / body mass).
- * [0]: Earth/Moon barycenter (legacy from NOVAS C), MASS[1] = Mercury, ...,
- * [9]: Pluto (barycenter), [10]: Sun, [11]: Moon.
- * Barycentric reciprocal masses (index 12, 13) are not set.
- *
- * NOTES:
- * <ol>
- * <li>The values have been updated to used DE440 data (Park et al. 2021) in 1.4.
- * </ol>
- *
- * REFERENCES:
- * <ol>
- * <li>Ryan S. Park et al 2021 AJ 161 105, DOI 10.3847/1538-3881/abd414</li>
- * <li>IERS Conventions, Chapter 3, Table 3.1</li>
- * </ol>
- *
- * @since 1.2
- * @author Attila Kovacs
- *
- * @sa enum novas_planet, NOVAS_PLANET_NAMES_INIT, NOVAS_PLANET_RAII_INIT, NOVAS_PLANETS_GRAV_Z_INIT
- */
-#define NOVAS_RMASS_INIT  { \
-      328900.559708565, \
-      6023657.9450387, 408523.718656268, 332946.048773067, 3098703.54671961, \
-      1047.348631244, 3497.9018007932, 22902.9507834766, 19412.2597758766, 136045556.16738, \
-      1.0, 27068702.9548773, \
-      0.0, 0.0 }
-
-/**
- * Gravitational redshifts for major planets (and Moon and Sun) for light emitted at surface
- * and detected at a large distance away. Barycenters are not considered, and for Pluto the
- * redshift for the Pluto system is assumed for distant observers.
- *
- * @sa enum novas_planet
- * @sa NOVAS_PLANETS
- *
- * @since 1.1.1
- * @author Attila Kovacs
- */
-#define NOVAS_PLANET_GRAV_Z_INIT { \
-  0.0, 1.0047e-10, 5.9724e-10, 7.3050e-10, 1.4058e-10, 2.0166e-8, 7.2491e-9, 2.5420e-9, \
-  3.0893e-9, 9.1338e-12, 2.120483e-6, 3.1397e-11, 0.0, 0.0 }
 
 /**
  * Types of places on and around Earth that may serve a a reference position for the observation.
@@ -749,15 +658,6 @@ enum novas_origin {
  */
 #define NOVAS_ORIGIN_TYPES        (NOVAS_HELIOCENTER + 1)
 
-#ifndef _EXCLUDE_DEPRECATED
-
-/** @deprecated Old definition of the Barycenter origin. @ref NOVAS_BARYCENTER is preferred. */
-#  define BARYC                     NOVAS_BARYCENTER
-
-/** @deprecated Old definition of the Center of Sun as the origin. @ref NOVAS_HELIOCENTER is preferred. */
-#  define HELIOC                    NOVAS_HELIOCENTER
-
-#endif // _EXCLUDE_DEPRECATED
 
 /**
  * The types of coordinate transformations available for tranform_cat().
@@ -903,6 +803,7 @@ typedef struct novas_delaunay_args {
 /**
  * Empty initializer for novas_delaunay_args
  *
+ * @hideinitializer
  * @since 1.3
  * @author Attila Kovacs
  * @sa novas_delaunay_args
@@ -939,6 +840,7 @@ typedef struct novas_cat_entry {
 /**
  * Initializer for a NOVAS cat_entry structure.
  *
+ * @hideinitializer
  * @author Attila Kovacs
  * @since 1.1.1
  *
@@ -984,6 +886,7 @@ typedef struct novas_orbital_system {
 /**
  * Default orbital system initializer for heliocentric GCRS ecliptic orbits.
  *
+ * @hideinitializer
  * @author Attila Kovacs
  * @since 1.2
  *
@@ -1037,6 +940,7 @@ typedef struct novas_orbital {
 /**
  * Initializer for novas_orbital for heliocentric orbits using GCRS ecliptic pqrametrization.
  *
+ * @hideinitializer
  * @author Attila Kovacs
  * @since 1.2
  *
@@ -1070,6 +974,7 @@ typedef struct novas_object {
 /**
  * Empty object initializer.
  *
+ * @hideinitializer
  * @since 1.3
  * @author Attila Kovacs
  *
@@ -1083,6 +988,7 @@ typedef struct novas_object {
  * @param num     An `enum novas_planet` number
  * @param name    The designated planet name
  *
+ * @hideinitializer
  * @since 1.2
  *
  * @sa object, make_planet()
@@ -1091,6 +997,7 @@ typedef struct novas_object {
 
 /**
  * `object` initializer for the Solar System Barycenter (SSB)
+ * @hideinitializer
  * @since 1.2
  * @sa object
  */
@@ -1098,6 +1005,7 @@ typedef struct novas_object {
 
 /**
  * `object` initializer for the planet Venus
+ * @hideinitializer
  * @since 1.2
  * @sa object
  */
@@ -1105,6 +1013,7 @@ typedef struct novas_object {
 
 /**
  * `object` initializer for the planet Mercury
+ * @hideinitializer
  * @since 1.2
  * @sa object
  */
@@ -1112,6 +1021,7 @@ typedef struct novas_object {
 
 /**
  * `object` initializer for the planet Earth
+ * @hideinitializer
  * @since 1.2
  * @sa object
  */
@@ -1119,6 +1029,7 @@ typedef struct novas_object {
 
 /**
  * `object` initializer for the planet Mars
+ * @hideinitializer
  * @since 1.2
  * @sa object
  */
@@ -1126,6 +1037,7 @@ typedef struct novas_object {
 
 /**
  * `object` initializer for the planet Jupiter
+ * @hideinitializer
  * @since 1.2
  * @sa object
  */
@@ -1133,6 +1045,7 @@ typedef struct novas_object {
 
 /**
  * `object` initializer for the planet Saturn
+ * @hideinitializer
  * @since 1.2
  * @sa object
  */
@@ -1140,6 +1053,7 @@ typedef struct novas_object {
 
 /**
  * `object` initializer for the planet Uranus
+ * @hideinitializer
  * @since 1.2
  * @sa object
  */
@@ -1147,6 +1061,7 @@ typedef struct novas_object {
 
 /**
  * `object` initializer for the planet Neptune
+ * @hideinitializer
  * @since 1.2
  * @sa object
  */
@@ -1154,6 +1069,7 @@ typedef struct novas_object {
 
 /**
  * `object` initializer for the minor planet Pluto
+ * @hideinitializer
  * @since 1.2
  * @sa object
  */
@@ -1161,6 +1077,7 @@ typedef struct novas_object {
 
 /**
  * `object` initializer for the Sun
+ * @hideinitializer
  * @since 1.2
  * @sa object
  */
@@ -1168,6 +1085,7 @@ typedef struct novas_object {
 
 /**
  * `object` initializer for the Moon
+ * @hideinitializer
  * @since 1.2
  * @sa object
  */
@@ -1175,6 +1093,7 @@ typedef struct novas_object {
 
 /**
  * `object` initializer for the the Earth-Moon Barycenter (EMB)
+ * @hideinitializer
  * @since 1.2
  * @sa object
  */
@@ -1182,6 +1101,7 @@ typedef struct novas_object {
 
 /**
  * `object` initializer for the Pluto system barycenter
+ * @hideinitializer
  * @since 1.2
  * @sa object
  */
@@ -1206,6 +1126,7 @@ typedef struct novas_on_surface {
 /**
  * Initializer for a NOVAS on_surface data structure.
  *
+ * @hideinitializer
  * @since 1.2
  * @author Attila Kovacs
  *
@@ -1220,6 +1141,7 @@ typedef struct novas_on_surface {
  * @param lat     [deg] Geodetic latitude of observer (North is positive)
  * @param alt     [m] Observer altitude above sea level.
  *
+ * @hideinitializer
  * @since 1.2
  * @author Attila Kovacs
  *
@@ -1241,6 +1163,7 @@ typedef struct novas_in_space {
 /**
  * Initializer for a NOVAS in_space structure.
  *
+ * @hideinitializer
  * @since 1.1.1
  * @author Attila Kovacs
  *
@@ -1272,6 +1195,7 @@ typedef struct novas_observer {
 /**
  * Empty initializer for observer
  *
+ * @hideinitializer
  * @since 1.3
  * @author Attila Kovacs
  *
@@ -1298,6 +1222,7 @@ typedef struct novas_sky_pos {
 /**
  * Initializer for a NOVAS sky_pos structure.
  *
+ * @hideinitializer
  * @since 1.1.1
  * @author Attila Kovacs
  *
@@ -1369,6 +1294,7 @@ typedef struct novas_timespec {
 /**
  * Empty initializer for novas_timespec
  *
+ * @hideinitializer
  * @since 1.3
  * @sa novas_timespec
  */
@@ -1387,6 +1313,7 @@ typedef struct novas_matrix {
 /**
  * Empty initializer for novas_matrix
  *
+ * @hideinitializer
  * @since 1.3
  * @sa novas_matrix, NOVAS_MATRIX_IDENTITY
  */
@@ -1395,6 +1322,7 @@ typedef struct novas_matrix {
 /**
  * novas_matric initializer for an indentity matrix
  *
+ * @hideinitializer
  * @since 1.3
  * @sa novas_matrix, NOVAS_MATRIX_INIT
  */
@@ -1416,6 +1344,7 @@ typedef struct novas_planet_bundle {
 /**
  * Empty initializer for novas_planet_bundle
  *
+ * @hideinitializer
  * @since 1.3
  * @sa novas_planet_bundle
  */
@@ -1479,6 +1408,7 @@ typedef struct novas_frame {
 /**
  * Empty initializer for novas_frame
  *
+ * @hideinitializer
  * @since 1.3
  * @sa novas_frame
  */
@@ -1509,6 +1439,7 @@ typedef struct novas_transform {
 /**
  * Empty initializer for NOVAS_TRANSFORM
  *
+ * @hideinitializer
  * @since 1.3
  * @sa novas_transform
  */
@@ -1525,55 +1456,6 @@ enum novas_refraction_type {
   NOVAS_REFRACT_OBSERVED = -1,  ///< Refract observed elevation value
   NOVAS_REFRACT_ASTROMETRIC     ///< Refract astrometric elevation value
 };
-
-/**
- * Default set of gravitating bodies to use for deflection calculations in reduced accuracy mode.
- * (only apply gravitational deflection for the Sun.)
- *
- * @since 1.1
- * @author Attila Kovacs
- *
- * @sa grav_bodies_reduced_accuracy, grav_planets(), grav_undo_planets()
- */
-#define DEFAULT_GRAV_BODIES_REDUCED_ACCURACY   ( (1 << NOVAS_SUN) )
-
-/**
- * Default set of gravitating bodies to use for deflection calculations in full accuracy mode.
- *
- * @since 1.1
- * @author Attila Kovacs
- *
- * @sa grav_bodies_full_accuracy, grav_planets(), grav_undo_planets()
- */
-#define DEFAULT_GRAV_BODIES_FULL_ACCURACY      ( DEFAULT_GRAV_BODIES_REDUCED_ACCURACY | (1 << NOVAS_JUPITER) | (1 << NOVAS_SATURN) )
-
-/**
- * Current set of gravitating bodies to use for deflection calculations in reduced accuracy mode. Each
- * bit signifies whether a given body is to be accounted for as a gravitating body that bends light,
- * such as the bit `(1 << NOVAS_JUPITER)` indicates whether or not Jupiter is considered as a deflecting
- * body. You should also be sure that you provide ephemeris data for bodies that are designated for the
- * deflection calculation.
- *
- * @since 1.1
- *
- * @sa grav_def(), grav_planets(), DEFAULT_GRAV_BODIES_REDUCED_ACCURACY
- * @sa set_ephem_provider()
- */
-extern int grav_bodies_reduced_accuracy;
-
-/**
- * Current set of gravitating bodies to use for deflection calculations in full accuracy mode. Each
- * bit signifies whether a given body is to be accounted for as a gravitating body that bends light,
- * such as the bit `(1 << NOVAS_JUPITER)` indicates whether or not Jupiter is considered as a deflecting
- * body. You should also be sure that you provide ephemeris data for bodies that are designated for the
- * deflection calculation.
- *
- * @since 1.1
- *
- * @sa grav_def(), grav_planets(), DEFAULT_GRAV_BODIES_FULL_ACCURACY
- * @sa set_ephem_provider_hp()
- */
-extern int grav_bodies_full_accuracy;
 
 /**
  * A function that returns a refraction correction for a given date/time of observation at the
@@ -1611,6 +1493,7 @@ typedef struct novas_observable {
 /**
  * Empty initializer for novas_observable
  *
+ * @hideinitializer
  * @since 1.3
  * @sa novas_observable
  */
@@ -1637,6 +1520,7 @@ typedef struct novas_track {
 /**
  * Empty initializer for novas_track
  *
+ * @hideinitializer
  * @since 1.3
  * @sa novas_track
  */
@@ -2535,9 +2419,7 @@ double novas_vdist2(const double *v1, const double *v2);
 double novas_vdot(const double *v1, const double *v2);
 
 int polar_dxdy_to_dpsideps(double jd_tt, double dx, double dy, double *restrict dpsi, double *restrict deps);
-
 int novas_frame_is_initialized(const novas_frame *frame);
-
 double novas_gmst_prec(double jd_tdb);
 double novas_cio_gcrs_ra(double jd_tdb);
 
