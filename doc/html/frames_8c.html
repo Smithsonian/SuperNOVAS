@@ -106,7 +106,7 @@ $(function(){initNavTree('frames_8c.html',''); initResizable(true); });
 </div><!--header-->
 <div class="contents">
 
-<p>SuperNOVAS routines for higher-level and efficient astrometric calculations using observing frames.  
+<p>High-level and efficient astrometric calculations using observing frames.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
@@ -182,8 +182,8 @@ Functions</h2></td></tr>
 <tr class="separator:ad04f1ebd7b2d39e5258b152fec231001"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>SuperNOVAS routines for higher-level and efficient astrometric calculations using observing frames. </p>
-<p>An observing frames represents an observer location at a specific astronomical time (instant), which can be re-used again and again to calculate or transform positions of celestial sources in a a range of astronomical coordinate systems.</p>
+<div class="textblock"><p>High-level and efficient astrometric calculations using observing frames. </p>
+<p>An observing frame represents an observer location at a specific astronomical time (instant), which can be re-used again and again to calculate or transform positions of celestial sources in a a range of astronomical coordinate systems.</p>
 <p>To use frames, you start with <code><a class="el" href="#adc72577f99a7b076b23e0e44ddbca838" title="Sets up a observing frame for a specific observer location, time of observation, and accuracy require...">novas_make_frame()</a></code> with an astrometric time and an observer location, and optionally Earth-orientation parameters if precision below the arcsecond level is needed. E.g.:</p>
 <div class="fragment"><div class="line"><a class="code hl_struct" href="structobserver.html">observer</a> obs;         <span class="comment">// observer location</span></div>
 <div class="line"><a class="code hl_struct" href="structnovas__timespec.html">novas_timespec</a> time;  <span class="comment">// astrometric time</span></div>
@@ -203,7 +203,7 @@ Functions</h2></td></tr>
 <div class="ttc" id="astructnovas__frame_html"><div class="ttname"><a href="structnovas__frame.html">novas_frame</a></div><div class="ttdoc">A set of parameters that uniquely define the place and time of observation.</div><div class="ttdef"><b>Definition</b> novas.h:1454</div></div>
 <div class="ttc" id="astructnovas__timespec_html"><div class="ttname"><a href="structnovas__timespec.html">novas_timespec</a></div><div class="ttdoc">A structure, which defines a precise instant of time that can be extpressed in any of the astronomica...</div><div class="ttdef"><b>Definition</b> novas.h:1368</div></div>
 <div class="ttc" id="astructobserver_html"><div class="ttname"><a href="structobserver.html">observer</a></div><div class="ttdoc">Observer location.</div><div class="ttdef"><b>Definition</b> novas.h:1267</div></div>
-<div class="ttc" id="atimescale_8c_html_a090f608cd5c82622e3534297fc27daa5"><div class="ttname"><a href="timescale_8c.html#a090f608cd5c82622e3534297fc27daa5">novas_set_current_time</a></div><div class="ttdeci">int novas_set_current_time(int leap, double dut1, novas_timespec *restrict time)</div><div class="ttdoc">Sets the time eith the UNIX time obtained from the system clock.</div><div class="ttdef"><b>Definition</b> timescale.c:890</div></div>
+<div class="ttc" id="atimescale_8c_html_a090f608cd5c82622e3534297fc27daa5"><div class="ttname"><a href="timescale_8c.html#a090f608cd5c82622e3534297fc27daa5">novas_set_current_time</a></div><div class="ttdeci">int novas_set_current_time(int leap, double dut1, novas_timespec *restrict time)</div><div class="ttdoc">Sets the time eith the UNIX time obtained from the system clock.</div><div class="ttdef"><b>Definition</b> timescale.c:889</div></div>
 </div><!-- fragment --><p>Once a frame is defined, you can perform various astrometric calculation within it efficiently. For example, calculate apparent positions, in the coordinate system of choice, to predict where objects would be seen by the observer:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">object</span> source = ...;   <span class="comment">// observed source</span></div>
 <div class="line"><a class="code hl_struct" href="structsky__pos.html">sky_pos</a> app;           <span class="comment">// apparent position to calculate.</span></div>
@@ -252,7 +252,7 @@ Functions</h2></td></tr>
 <dl class="section date"><dt>Date</dt><dd>Created on Jun 23, 2024 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.1</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html" title="A set of SuperNOVAS routines to make handling of astronomical timescales and conversions among them e...">timescale.c</a>, <a class="el" href="observer_8c.html" title="This module provides a set of functions that define an astronomical observer location,...">observer.c</a>, <a class="el" href="target_8c.html" title="This module contains functions that define an observing target, or which are target related.">target.c</a>, <a class="el" href="ephemeris_8c.html" title="Functions that allow to define or access Solar-system ephemeris data.">ephemeris.c</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html" title="Functions to define and use different astronomical timescales and to convert among them.">timescale.c</a>, <a class="el" href="observer_8c.html" title="This module provides a set of functions that define an astronomical observer location,...">observer.c</a>, <a class="el" href="target_8c.html" title="This module contains functions that define an observing target, or which are target related.">target.c</a>, <a class="el" href="ephemeris_8c.html" title="Functions that allow to define or access Solar-system ephemeris data.">ephemeris.c</a> </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="ab7db8026c598e8e126a4725ac3b388bf" name="ab7db8026c598e8e126a4725ac3b388bf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab7db8026c598e8e126a4725ac3b388bf">&#9670;&#160;</a></span>novas_app_to_geom()</h2>

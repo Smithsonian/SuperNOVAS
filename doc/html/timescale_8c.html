@@ -106,7 +106,7 @@ $(function(){initNavTree('timescale_8c.html',''); initResizable(true); });
 </div><!--header-->
 <div class="contents">
 
-<p>A set of SuperNOVAS routines to make handling of astronomical timescales and conversions among them easier.  
+<p>Functions to define and use different astronomical timescales and to convert among them.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
@@ -209,11 +209,11 @@ Functions</h2></td></tr>
 <tr class="separator:a5709058076f4aea4eeaeeb000342cd94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A set of SuperNOVAS routines to make handling of astronomical timescales and conversions among them easier. </p>
+<div class="textblock"><p>Functions to define and use different astronomical timescales and to convert among them. </p>
 <dl class="section date"><dt>Date</dt><dd>Created on Jun 24, 2024 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.1</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="calendar_8c.html" title="Various functions to convert between calendar dates and Julian days.">calendar.c</a>, <a class="el" href="frames_8c.html" title="SuperNOVAS routines for higher-level and efficient astrometric calculations using observing frames.">frames.c</a>, <a class="el" href="observer_8c.html" title="This module provides a set of functions that define an astronomical observer location,...">observer.c</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="calendar_8c.html" title="Various functions to convert between calendar dates and Julian days.">calendar.c</a>, <a class="el" href="frames_8c.html" title="High-level and efficient astrometric calculations using observing frames.">frames.c</a>, <a class="el" href="observer_8c.html" title="This module provides a set of functions that define an astronomical observer location,...">observer.c</a> </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a4d7470ca705efa1953e8b4beab77c6b6" name="a4d7470ca705efa1953e8b4beab77c6b6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4d7470ca705efa1953e8b4beab77c6b6">&#9670;&#160;</a></span>get_ut1_to_tt()</h2>
@@ -1512,12 +1512,12 @@ B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO
 <p>It has a maximum error of 10 &mu;s between for dates 1600 and 2200.</p>
 <p>This function is wrapped by <code><a class="el" href="#a129acca41760da486e1179c93cb9e86d" title="Returns the TDB - TT time difference in seconds for a given TT or TDB date, with a maximum error of 1...">tt2tdb()</a></code>, which is typically a lot easier to use as it returns the time difference directly, which can then be used to convert time in both directions with greater ease. For exable to convert a TT-based date to a TDB-based date:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">double</span> TDB = TT + <a class="code hl_function" href="#a129acca41760da486e1179c93cb9e86d">tt2tdb</a>(TT) / 86400.0;</div>
-<div class="ttc" id="atimescale_8c_html_a129acca41760da486e1179c93cb9e86d"><div class="ttname"><a href="#a129acca41760da486e1179c93cb9e86d">tt2tdb</a></div><div class="ttdeci">double tt2tdb(double jd_tt)</div><div class="ttdoc">Returns the TDB - TT time difference in seconds for a given TT or TDB date, with a maximum error of 1...</div><div class="ttdef"><b>Definition</b> timescale.c:181</div></div>
+<div class="ttc" id="atimescale_8c_html_a129acca41760da486e1179c93cb9e86d"><div class="ttname"><a href="#a129acca41760da486e1179c93cb9e86d">tt2tdb</a></div><div class="ttdeci">double tt2tdb(double jd_tt)</div><div class="ttdoc">Returns the TDB - TT time difference in seconds for a given TT or TDB date, with a maximum error of 1...</div><div class="ttdef"><b>Definition</b> timescale.c:180</div></div>
 </div><!-- fragment --><p>is equivalent to:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">double</span> dt;</div>
 <div class="line"><a class="code hl_function" href="#a90d5fae30728b51151c3daf355ca585b">tdb2tt</a>(TT, NULL, &amp;dt);   <span class="comment">// Uses TT input so don&#39;t attempt to calculate TT here...</span></div>
 <div class="line"><span class="keywordtype">double</span> TDB = TT + dt / 86400.0;</div>
-<div class="ttc" id="atimescale_8c_html_a90d5fae30728b51151c3daf355ca585b"><div class="ttname"><a href="#a90d5fae30728b51151c3daf355ca585b">tdb2tt</a></div><div class="ttdeci">int tdb2tt(double jd_tdb, double *restrict jd_tt, double *restrict secdiff)</div><div class="ttdoc">Computes the Terrestrial Time (TT) based Julian date corresponding to a Barycentric Dynamical Time (T...</div><div class="ttdef"><b>Definition</b> timescale.c:138</div></div>
+<div class="ttc" id="atimescale_8c_html_a90d5fae30728b51151c3daf355ca585b"><div class="ttname"><a href="#a90d5fae30728b51151c3daf355ca585b">tdb2tt</a></div><div class="ttdeci">int tdb2tt(double jd_tdb, double *restrict jd_tt, double *restrict secdiff)</div><div class="ttdoc">Computes the Terrestrial Time (TT) based Julian date corresponding to a Barycentric Dynamical Time (T...</div><div class="ttdef"><b>Definition</b> timescale.c:137</div></div>
 </div><!-- fragment --><p>NOTES: </p><ol>
 <li>
 This function caches the results of the last calculation in case it may be re-used at no extra computational cost for the next call. </li>

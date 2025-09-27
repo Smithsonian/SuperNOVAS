@@ -106,7 +106,7 @@ $(function(){initNavTree('solsys-cspice_8c.html',''); initResizable(true); });
 </div><!--header-->
 <div class="contents">
 
-<p>SuperNOVAS Solar-system ephemeris lookup implementation via the NAIF CSPICE library.  
+<p>Solar-system ephemeris lookup via the NAIF CSPICE library.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
@@ -128,7 +128,7 @@ Functions</h2></td></tr>
 <tr class="separator:a943549e395b19f6a91064e3d6fa1c577"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>SuperNOVAS Solar-system ephemeris lookup implementation via the NAIF CSPICE library. </p>
+<div class="textblock"><p>Solar-system ephemeris lookup via the NAIF CSPICE library. </p>
 <p>This is an optional component of SuperNOVAS, which interfaces to the NAIF CSPICE Toolkit. As such, you may need the CSPICE runtime libraries in an accessible location (such as in <code>/usr/lib</code>), and you will need development files (C headers under a <code>cspice/</code> sub-folder, such as in <code>/usr/include/cspice/</code>; and unversioned libraries) to build. Thus, this module is compiled only if <code>CSPICE_SUPPORT</code> is set to 1 prior to the build.</p>
 <p>Before building SuperNOVAS against CSPICE, you might want to check out the <code>Smithsonian/cspice-sharedlib</code> repository on Github to facilitate the building of CSPICE as a shared library instead of the static library built by the uptream distribution.</p>
 <p>To use, simply include <code><a class="el" href="novas-cspice_8h.html" title="SuperNOVAS functions interfacing with the NAIF CSPICE Toolkit.">novas-cspice.h</a></code> in your application source, load the requisite SPICE kernels (ephemeris data and more) using <code><a class="el" href="#ae02d26964099f56c375dc78172ad135b" title="Adds a SPICE kernel to the currently managed open kernels.">cspice_add_kernel()</a></code>, and then activate them with <code><a class="el" href="#a9b44218bca5fce1e9e5103494c15dde4" title="Sets CSPICE as the default ephemeris provider for all types of Solar-system objects (both NOVAS_PLANE...">novas_use_cspice()</a></code>. E.g.,</p>
@@ -163,7 +163,7 @@ the Smithsonian/cspice-sharedlib repository: <a href="https://github.com/Smithso
 </ol>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="solsys-calceph_8c.html" title="SuperNOVAS Solar-system ephemeris lookup implementation via the CALCEPH C library.">solsys-calceph.c</a>, <a class="el" href="ephemeris_8c.html" title="Functions that allow to define or access Solar-system ephemeris data.">ephemeris.c</a>, <a class="el" href="orbital_8c.html" title="Function relating to the use of Keplerian orbital elements.">orbital.c</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="solsys-calceph_8c.html" title="Solar-system ephemeris lookup via the CALCEPH C library.">solsys-calceph.c</a>, <a class="el" href="ephemeris_8c.html" title="Functions that allow to define or access Solar-system ephemeris data.">ephemeris.c</a>, <a class="el" href="orbital_8c.html" title="Function relating to the use of Keplerian orbital elements.">orbital.c</a> </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="ae02d26964099f56c375dc78172ad135b" name="ae02d26964099f56c375dc78172ad135b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae02d26964099f56c375dc78172ad135b">&#9670;&#160;</a></span>cspice_add_kernel()</h2>
