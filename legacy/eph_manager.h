@@ -1,6 +1,5 @@
 /**
- *
- * @author G. Kaplan and A. Kovacs
+ * @file
  *
  *  SuperNOVAS header for managing 1997 version of JPL ephemerides specifically for solsys1.c.
  *
@@ -11,6 +10,8 @@
  *  Washington, DC<br>
  *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">
  *  http://www.usno.navy.mil/USNO/astronomical-applications</a>
+ *
+ * @author G. Kaplan and Attila Kovacs
  *
  * @sa eph_manager.c
  * @sa solsys1.c

@@ -43,7 +43,7 @@
  *  `set_ephem_provider_hp()`.)
  *
  * @date Created  on Mar 6, 2025
- * @author Attila Kovacs
+ * @author Attila Kovacs and G. Kaplan
  *
  * @sa solsys-calceph.c, solsys-cspice.c, solsys3.c, orbital.c
  */

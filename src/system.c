@@ -13,7 +13,7 @@
  *  coordinate bases, and vice-versa.
  *
  * @date Created  on Mar 5, 2025
- * @author G. Kaplan and Attila Kovacs
+ * @author Attila Kovacs and G. Kaplan
  *
  * @sa frames.c, transform.c
  */

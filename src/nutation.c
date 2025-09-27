@@ -3,7 +3,7 @@
  *
  *  SuperNOVAS implementations for the IAU2000 nutation series calculations, with varying
  *  trade-offs between computational cost and precision. It provides support for both the
- *  IAU 2000A, a truncated version with ~1 mas precision in the cureent epoch, and a
+ *  IAU 2000A, a truncated version with ~1 mas precision in the current epoch, and a
  *  NOVAS-specific reduced precision series with intermediate accuracy.
  *
  *  Based on the NOVAS C Edition, Version 3.1:
@@ -14,7 +14,7 @@
  *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">
  *  http://www.usno.navy.mil/USNO/astronomical-applications</a>
  *
- * @author G. Kaplan and A. Kovacs
+ * @author Attila Kovacs and G. Kaplan
  *
  * @sa equinox.c, earth.c, frames.c
  */

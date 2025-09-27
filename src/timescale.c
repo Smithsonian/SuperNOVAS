@@ -4,7 +4,7 @@
  *  Functions to define and use different astronomical timescales and to convert among them.
  *
  * @date Created  on Jun 24, 2024
- * @author Attila Kovacs
+ * @author Attila Kovacs and G. Kaplan
  * @since 1.1
  *
  * @sa calendar.c, frames.c, observer.c

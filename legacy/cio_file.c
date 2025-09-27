@@ -1,6 +1,5 @@
 /**
  * @file
- * @author G. Kaplan and A. Kovacs
  *
  *  SuperNOVAS tool to Produces binary data file of RA values for CIO. The resulting binary file
  *  is platform-dependent. As of SuperNOVAS version 1.1, one may use the ASCII file directly with
@@ -14,7 +13,9 @@
  *   <a href="http://www.usno.navy.mil/USNO/astronomical-applications">
  *   http://www.usno.navy.mil/USNO/astronomical-applications</a>
  *
- *  @sa set_cio_locator_file()
+ * @author G. Kaplan and Attila Kovacs
+ *
+ * @sa set_cio_locator_file()
  */
 
 #include <stdio.h>

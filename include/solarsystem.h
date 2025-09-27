@@ -36,7 +36,7 @@
  *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">
  *  http://www.usno.navy.mil/USNO/astronomical-applications</a>
  *
- * @author G. Kaplan and A. Kovacs
+ * @author Attila Kovacs and G. Kaplan
  *
  * @sa solsys-calceph.c, solsys-cspice.c, solsys1.c, solsys2.c, solsys3.c, solsys-ephem.c
  */

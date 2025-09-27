@@ -1,5 +1,5 @@
 /**
- * @author G. Kaplan and A. Kovacs
+ * @file
  *
  *  Dummy readeph() implementation for SuperNOVAS to use when minor planet ephemeris is
  *  unavailable, but you want the functionality to be present in name only. It's not really
@@ -19,10 +19,9 @@
  *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">
  *  http://www.usno.navy.mil/USNO/astronomical-applications</a>
  *
+ * @author G. Kaplan and Attila Kovacs
  *
- *  @sa readeph()
- *  @sa set_ephem_provider()
- *  @sa novas_ephem_provider
+ * @sa readeph(), set_ephem_provider(), novas_ephem_provider
  */
 #include <stdlib.h>
 #include <errno.h>

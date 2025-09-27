@@ -34,7 +34,7 @@
  * defined for a specific observer location and time of observation.
  *
  * @date Created  on Mar 6, 2025
- * @author G. Kaplan and Attila Kovacs
+ * @author Attila Kovacs and G. Kaplan
  *
  * @sa frames.c, observer.c, timescale.c
  */

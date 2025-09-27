@@ -13,7 +13,7 @@
  *  where &beta; = _v_<sub>rad</sub> / _c_.
  *
  * @date Created  on Mar 5, 2025
- * @author Attila Kovacs
+ * @author Attila Kovacs and G. Kaplan
  *
  * @sa target.c, frames.c
  */

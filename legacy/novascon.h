@@ -1,8 +1,6 @@
 /**
  * @file
  *
- * @author G. Kaplan and A. Kovacs
- *
  * @deprecated Use your own version for the selection of the constant you need, expressed in
  *              whatever units your application desires. We should not force you to adopt the
  *              internally used convention of NOVAS, not to mention the high chance of namespace
@@ -18,6 +16,8 @@
  *  Washington, DC<br>
  *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">
  *  http://www.usno.navy.mil/USNO/astronomical-applications</a>
+ *
+ *  @author G. Kaplan and Attila Kovacs
  */
 
 #ifndef _CONSTS_

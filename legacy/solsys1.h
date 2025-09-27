@@ -1,8 +1,4 @@
 /**
- *
- * @date Created  on Sep 24, 2025
- * @author Attila Kovacs
- *
  *  Legacy NOVAS C ephemeris provider module, using the JPL PLEPH (Fortran) library via the jplint() / jplihp()
  *  interface defined in `jplint.f`.
  */

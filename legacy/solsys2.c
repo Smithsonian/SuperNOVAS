@@ -1,9 +1,6 @@
 /**
  * @file
  *
- * @author G. Kaplan and A. Kovacs
- * @version 1.5.0
- *
  * @deprecated This old NOVAS-C interface to the Fortran PLEPH library is incomplete at best.
  *             Unless you have already written functional adapters for this interface, you are
  *             better off choosing one of the more fully-baked ways of providing ephemeris
@@ -28,6 +25,9 @@
  *  Washington, DC<br>
  *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">
  *  http://www.usno.navy.mil/USNO/astronomical-applications</a>
+ *
+ * @author G. Kaplan and Attila Kovacs
+ * @version 1.5.0
  *
  * @sa solsys-calceph.c, solsys-cspice.c, solarsystem.h
  */

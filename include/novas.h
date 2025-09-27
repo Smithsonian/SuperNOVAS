@@ -15,8 +15,8 @@
  *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">
  *  http://www.usno.navy.mil/USNO/astronomical-applications</a>
  *
- * @author G. Kaplan and A. Kovacs
- * @version 1.4.2
+ * @author G. Kaplan and Attila Kovacs
+ * @version 1.5.0
  */
 
 #ifndef _NOVAS_
