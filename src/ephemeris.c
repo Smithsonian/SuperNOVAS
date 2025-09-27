@@ -4,7 +4,8 @@
  *  Functions that allow to define or access Solar-system ephemeris data. SuperNOVAS cannot, by
  *  itself, provide accurate positions for Solar-system sources. While it has a built-in
  *  calculator (see @ref solsys3.c) for the Earth and the Sun, it is suitable for obtaining
- *  approximate positions for the Sun and Earth only, and is limited to arcmin-level accuracy.
+ *  approximate positions for the Sun and Earth only, and is limited to around 10 arcsec accuracy,
+ *  typically.
  *
  *  To do astrometry right for Solar-system sources (major planets, and minor bodies like
  *  asteroids, comets, or moons), you will have to interface SuperNOVAS with ephemeris data,

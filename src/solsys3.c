@@ -1,8 +1,14 @@
 /**
  * @file
  *
- *  SuperNOVAS plane calculator functions for the Earth and Sun only, with an orbital model
- *  based on the DE405 ephemerides by JPL.
+ *  SuperNOVAS planet calculator functions for the Earth and Sun only, with an orbital model
+ *  fotted to the DE405 ephemerides by JPL. This function is suitable for calculating the positions
+ *  of Earth and the Sun around the Solar-system Barycenter (SSB) with a typical accutacy of around
+ *  10 arcseconds within a few centuries of J2000.
+ *
+ *  It is inherently similar, at least in accuracy, to the planetary orbital models provided by @ref
+ *  planets.c, except that it can be used more widely in SuperNOVAS internally by the various
+ *  functions, which need Earth and/or Sun positions for their calculations.
  *
  *  Based on the NOVAS C Edition, Version 3.1:
  *
@@ -14,7 +20,7 @@
  *
  * @author G. Kaplan and A. Kovacs
  *
- * @sa ephemeris.c, solsys-calceph.c, solsys-cspice.c, solsys-ephem.c
+ * @sa ephemeris.c, planets.c, solsys-calceph.c, solsys-cspice.c, solsys-ephem.c
  */
 
 #include <math.h>
@@ -64,10 +70,9 @@ void enable_earth_sun_hp(int value) {
 }
 
 /**
- * Provides the position and velocity of the Earth and Sun only
- * at epoch 'jd_tdb' by evaluating a closed-form theory without reference to an
- * external file.  This function can also provide the position
- * and velocity of the Sun.
+ * Provides the position and velocity of the Earth and Sun only at epoch 'jd_tdb' by evaluating a
+ * closed-form theory without reference to an external file.  This function can also provide the
+ * position and velocity of the Sun.
  *
  * REFERENCES:
  * <ol>
@@ -254,10 +259,10 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
 }
 
 /**
- * It may provide the position and velocity of the Earth and Sun, the same as
- * solarsystem_earth_sun(), if enable_earth_sun_hp() is set to true (non-zero). Otherwise,
- * it will return with an error code of 3, indicating that high-precision calculations are
- * not provided by this implementation.
+ * It may provide the position and velocity of the Earth and Sun, the same as earth_sun_calc(),
+ * if enable_earth_sun_hp() is set to true (non-zero). Otherwise, it will return with an error
+ * code of 3, indicating that high-precision calculations are not provided by this
+ * implementation.
  *
  * NOTES:
  * <ol>
@@ -309,8 +314,8 @@ short earth_sun_calc_hp(const double jd_tdb[restrict 2], enum novas_planet body,
  * Computes equatorial spherical coordinates of Sun referred to the mean equator and equinox
  * of date.
  *
- * Quoted accuracy is 2.0 + 0.03 * T<sup>2</sup> arcsec, where T is measured in units of
- * 1000 years from J2000.0.  See reference.
+ * Quoted accuracy is 2.0 + 0.03 * T<sup>2</sup> arcsec, where T is measured in units of 1000
+ * years from J2000.0.  See reference.
  *
  * The obliquity equation is updated to equation 5.12 of the second reference.
  *

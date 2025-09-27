@@ -1,8 +1,8 @@
 /**
  * @file
  *
- *   A set of SuperNOVAS routines to make handling of astronomical timescales and conversions
- *   among them easier.
+ *  A set of SuperNOVAS routines to make handling of astronomical timescales and conversions
+ *  among them easier.
  *
  * @date Created  on Jun 24, 2024
  * @author Attila Kovacs
