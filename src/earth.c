@@ -5,6 +5,8 @@
  * @author G. Kaplan and Attila Kovacs
  *
  *  Various functions relating to Earth position and rotation.
+ *
+ *  @sa frames.c, itrf.c
  */
 
 #include <string.h>

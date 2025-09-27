@@ -36,7 +36,7 @@
  * geometric positions; rise, set, or transit times, etc. through observing frames, which are
  * defined for a specific observer location and time of observation.
  *
- * @sa frame.c, observer.c, timescale.c
+ * @sa frames.c, observer.c, timescale.c
  */
 
 /// \cond PRIVATE

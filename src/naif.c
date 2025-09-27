@@ -12,8 +12,7 @@
  *
  * @since 1.2
  *
- * @sa solsys-calceph.c
- * @sa solsys-cspice.c
+ * @sa solsys-calceph.c, solsys-cspice.c, ephemeris.c
  */
 
 #include <errno.h>

@@ -4,7 +4,47 @@
  * @date Created  on Mar 6, 2025
  * @author Attila Kovacs
  *
- *  Functions that allow to define or access user-defined plugin routines.
+ *  Functions that allow to define or access user-defined ephemeris plugin routines. SuperNOVAS
+ *  cannot by itself provide accurate positions for Solar-system sources. While it has a built-in
+ *  calculator (see @ref solsys3.c) for the Earth and the Sun, it is suitable for approximate
+ *  position calculations only, and is limited to arcmin-level accuracy.
+ *
+ *  To do astrometry right for Solar-system sources (major planets, and minor bodies like
+ *  asteroids, comets, or moons), you will have to interface SuperNOVAS with ephemeris data,
+ *  through a library or service. For example, NASA JPL provides short and long-term ephemeris
+ *  data for all known Solar-system sources.
+ *
+ *  Besides providing accurate astrometric positions for Solar-system sources, planetary ephemeris
+ *  data are also necessary for high-precision position calculations for sidereal
+ *  (non-Solar-system) sources if one is to account for gravitational deflections around the
+ *  major planets as light traverses the Solar-system on its way to the observer.
+ *
+ *  You may download various data files (SPICE kernels) made available by NASA from the
+ *  [JPL NAIF](https://naif.jpl.nasa.gov/naif/data.html) site or from the
+ *  [JPL Horizons](https://ssd.jpl.nasa.gov/horizons/) system, and them
+ *  access them via appropriate other C libraries, such as JPL's own
+ *  [NAIF CSPICE Toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html), or the more modern
+ *  [CALCEPH](https://calceph.imcce.fr/) library by IMCCE. SuperNOVAS provides interfaces to both
+ *  (see @ref solsys-cspice.c and @ref solsys-calceph.c). Using these plugins makes it trivial to
+ *  incorporate ephemeris data into SuperNOVAS.
+ *
+ *  Alternatively, you might use some other library or your own code to access ephemeris data,
+ *  e.g. by interfacing directly to the [JPL Horizons](https://ssd.jpl.nasa.gov/horizons/) system,
+ *  or to the [IAU Minor Planet Center (MPC)](https://www.minorplanetcenter.net/iau/mpc.html). You
+ *  can always write your own `novas_ephem_provider` function and activate it for SuperNOVAS with
+ *  `set_ephem_provider()`, and also configure it to use for planets with:
+ *
+ *  ```c
+ *    set_planet_provider(planet_ephem_provider);
+ *    set_planet_provider_hp(planet_ephem_provider_hp);
+ *  ```
+ *
+ *  (Alternatively, you might define separate low and high-precision ephemeris provider functions
+ *  for the major planets by writing your own `novas_ephem_provider` and `novas_ephem_provider_hp`
+ *  interface functions, respectively, and activating these with `set_ephem_provider()` and
+ *  `set_ephem_provider_hp()`.)
+ *
+ *  @sa solsys-calceph.c, solsys-cspice.c, solsys3.c, orbital.c
  */
 
 #include <string.h>

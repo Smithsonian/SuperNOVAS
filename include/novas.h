@@ -1956,7 +1956,7 @@ int make_ephem_object(const char *name, long num, object *body);
 int set_cio_locator_file(const char *restrict filename);
 #endif
 
-// in plugin.c
+// in ephemeris.c
 int set_nutation_lp_provider(novas_nutation_provider func);
 
 // in place.c
@@ -2280,7 +2280,7 @@ int novas_print_hms(double hours, enum novas_separator_type sep, int decimals, c
 
 int novas_print_dms(double degrees, enum novas_separator_type sep, int decimals, char *restrict buf, int len);
 
-// in plugin.c
+// in ephemeris.c
 novas_nutation_provider get_nutation_lp_provider();
 
 

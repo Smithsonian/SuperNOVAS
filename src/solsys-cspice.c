@@ -53,8 +53,7 @@
  *  <li>the Smithsonian/cspice-sharedlib repository: https://github.com/Smithsonian/cspice-sharedlib</li>
  *  </ol>
  *
- * @sa solarsystem.h
- * @sa solsys-calceph.c
+ * @sa solsys-calceph.c, ephemeris.c, orbital.c
  */
 
 #include <string.h>

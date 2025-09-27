@@ -4,7 +4,9 @@
  * @date Created  on Mar 6, 2025
  * @author G. Kaplan and Attila Kovacs
  *
- *  Functions to handle the CIO location and basis.
+ *  Functions to handle the CIO location and CIRS orientation.
+ *
+ *  @sa equinox.c
  */
 
 #include <stdio.h>

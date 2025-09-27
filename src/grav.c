@@ -6,6 +6,8 @@
  *
  *  Various functions to deal with gravitational effects of the major Solar-system bodies on
  *  the astrometry.
+ *
+ *  @sa solsys-calceph.c, solsys-cspice.c, ephemeris.c
  */
 
 #include <string.h>

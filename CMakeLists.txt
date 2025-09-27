@@ -123,10 +123,10 @@ set(SUPERNOVAS_CORE_SOURCES
     src/refract.c
     src/naif.c
     src/parse.c
-    src/plugin.c
     src/util.c
     src/planets.c
     src/itrf.c
+    src/ephemeris.c
     src/solsys3.c
     src/solsys-ephem.c
 )

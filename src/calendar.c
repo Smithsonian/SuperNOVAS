@@ -5,6 +5,8 @@
  * @author Attila Kovacs and G. Kaplan
  *
  *  Various functions to convert between calendar dates and Julian days.
+ *
+ *  @sa timescale.c
  */
 
 #include <errno.h>

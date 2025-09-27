@@ -5,6 +5,8 @@
  * @author Attila Kovacs
  *
  *  Various functions to parse string values for SuperNOVAS.
+ *
+ *  @sa target.c, observer.c, timescale.c
  */
 
 #include <math.h>

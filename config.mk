@@ -177,8 +177,8 @@ endif
 SOURCES = $(SRC)/target.c $(SRC)/observer.c $(SRC)/earth.c $(SRC)/equinox.c $(SRC)/system.c \
           $(SRC)/transform.c $(SRC)/cio.c $(SRC)/orbital.c $(SRC)/spectral.c $(SRC)/grav.c \
           $(SRC)/nutation.c $(SRC)/timescale.c $(SRC)/frames.c $(SRC)/place.c $(SRC)/calendar.c  \
-          $(SRC)/refract.c $(SRC)/naif.c $(SRC)/parse.c $(SRC)/plugin.c $(SRC)/util.c \
-          $(SRC)/planets.c $(SRC)/itrf.c $(SRC)/solsys3.c $(SRC)/solsys-ephem.c
+          $(SRC)/refract.c $(SRC)/naif.c $(SRC)/parse.c $(SRC)/util.c $(SRC)/planets.c \
+          $(SRC)/itrf.c $(SRC)/ephemeris.c $(SRC)/solsys3.c $(SRC)/solsys-ephem.c
 
 # Generate a list of object (obj/*.o) files from the input sources
 OBJECTS := $(subst $(SRC),$(OBJ),$(SOURCES))

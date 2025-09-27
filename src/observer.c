@@ -29,7 +29,7 @@
  * observation. Observing frames allow efficient and precise position calculations from an
  * observer's point-of-view.
  *
- * @sa timescale.c, frame.c, system.c
+ * @sa timescale.c, frame.c, system.c, itrf.c
  */
 
 #include <string.h>

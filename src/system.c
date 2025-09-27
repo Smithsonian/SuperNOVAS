@@ -14,6 +14,8 @@
  *  vertical position angle or VPA), for converting between horizontal and equatorial offsets,
  *  and various functions for converting equatorial vectors to a line-of-sight, or _u_, _v_, _w_
  *  coordinate bases, and vice-versa.
+ *
+ *  @sa frames.c, transform.c
  */
 
 #include <string.h>

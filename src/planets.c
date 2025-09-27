@@ -12,7 +12,7 @@
  *  provider, as as the CALCEPH or CSPICE plugin interface modules, or custom ephemeris provider
  *  functions.
  *
- *  @sa solsys-calceph.c, solsys-cspice.c, plugin.c
+ *  @sa solsys-calceph.c, solsys-cspice.c, ephemeris.c
  */
 
 #include <math.h>

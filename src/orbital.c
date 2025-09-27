@@ -49,6 +49,7 @@
  *  the native coordinate system in which the orbital is defined.
  *
  *  @sa novas_orbital, make_orbital_object()
+ *  @sa ephemeris.c
  */
 
 #include <errno.h>

@@ -12,6 +12,8 @@
  *  <ol>
  *  <li>ITRS Conventions Chapter 4, see https://iers-conventions.obspm.fr/content/chapter4/icc4.pdf</li>
  *  </ol>
+ *
+ *  @sa observer.c
  */
 
 #include <stdlib.h>

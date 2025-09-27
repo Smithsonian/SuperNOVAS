@@ -1614,11 +1614,12 @@ better idea of what exactly did not go to plan (and where). The debug messages c
 `NOVAS_DEBUG_EXTRA` (otherwise we'll ignore that we skipped the almost always negligible deflection due to planets):
 
 ```
-  ERROR! earth_sun_calc: invalid or unsupported planet number: 5 [=> 2]
+  ERROR! earth_sun_calc: invalid or unsupported planet number: 6 [=> 2]
        @ earth_sun_calc_hp [=> 2]
-       @ solarsystem_hp [=> 2]
        @ ephemeris:planet [=> 12]
-       @ grav_def:Jupiter [=> 12]
+       @ light_time2 [=> 22]
+       @ obs_planets [=> 12]
+       @ grav_def [=> 12]
 ```
 
 

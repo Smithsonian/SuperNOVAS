@@ -7,9 +7,7 @@
  * @date Created  on Jan 29, 2024
  * @author Attila Kovacs
  *
- * @sa solarsystem.h
- * @sa solsys-calceph.c
- * @sa solsys-cspice.c
+ * @sa ephemeris.c, solsys-calceph.c, solsys-cspice.c, orbital.c
  */
 
 #include <errno.h>

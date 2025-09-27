@@ -5,6 +5,8 @@
  * @author G. Kaplan and Attila Kovacs
  *
  *  Various functions for calculating the equator and equinox of date, and related quatities.
+ *
+ *  @sa cio.c, earth.c, frames.c, nutation.c
  */
 
 #include <string.h>

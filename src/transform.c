@@ -6,6 +6,8 @@
  *
  *  Various functions to transform rectangular equatorial vectors (positions or velocities)
  *  between different equatorial coordinate systems.
+ *
+ *  @sa frames.c, system.c
  */
 
 #include <string.h>

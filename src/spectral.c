@@ -14,6 +14,8 @@
  *  (1 - &beta;)),
  *
  *  where &beta; = _v_<sub>rad</sub> / _c_.
+ *
+ *  @sa target.c, frames.c
  */
 
 #include <errno.h>
