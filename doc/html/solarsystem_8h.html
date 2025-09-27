@@ -724,19 +724,9 @@ This implementation will always propulate the output position and velocity vecto
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if the 'orbit' or 'body' pointer is NULL or the name is too long.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="orbital_8c.html#a4510a3235a693f122899983901211c30" title="Calculates a rectangular equatorial position and velocity vector for the given orbital elements for t...">novas_orbit_posvel()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="target_8c.html#a4c7846be95299769f4d0377bf127bcf5" title="Sets a celestial object to be a major planet, or the Sun, Moon, Solar-system Barycenter,...">make_planet()</a>, <a class="el" href="target_8c.html#aa22303f98df2d63edf6d8452ff3a43b2" title="Sets a celestial object to be a Solar-system ephemeris body.">make_ephem_object()</a>, <a class="el" href="target_8c.html#ab9b7a622486f2904615ceed1ba94cd8f" title="Populates and object data structure with the data for a catalog source.">make_cat_object()</a>, <a class="el" href="target_8c.html#ae579a49d84696a913fd0d9f348bb5b11" title="Populates a celestial object data structure with the ICRS astrometric parameters for a redhifted cata...">make_redshifted_object()</a> </dd>
 <dd>
-<a class="el" href="target_8c.html#a4c7846be95299769f4d0377bf127bcf5" title="Sets a celestial object to be a major planet, or the Sun, Moon, Solar-system Barycenter,...">make_planet()</a> </dd>
-<dd>
-<a class="el" href="target_8c.html#aa22303f98df2d63edf6d8452ff3a43b2" title="Sets a celestial object to be a Solar-system ephemeris body.">make_ephem_object()</a> </dd>
-<dd>
-<a class="el" href="target_8c.html#ab9b7a622486f2904615ceed1ba94cd8f" title="Populates and object data structure with the data for a catalog source.">make_cat_object()</a> </dd>
-<dd>
-<a class="el" href="target_8c.html#ae579a49d84696a913fd0d9f348bb5b11" title="Populates a celestial object data structure with the ICRS astrometric parameters for a redhifted cata...">make_redshifted_object()</a> </dd>
-<dd>
-<a class="el" href="target_8c.html#a8f832afe92680a11c3489aaa224ac2e2" title="Enables or disables case-sensitive processing of the object name.">novas_case_sensitive()</a> </dd>
-<dd>
-<a class="el" href="frames_8c.html#adc72577f99a7b076b23e0e44ddbca838" title="Sets up a observing frame for a specific observer location, time of observation, and accuracy require...">novas_make_frame()</a></dd></dl>
+<a class="el" href="target_8c.html#a8f832afe92680a11c3489aaa224ac2e2" title="Enables or disables case-sensitive processing of the object name.">novas_case_sensitive()</a>, <a class="el" href="orbital_8c.html#a4510a3235a693f122899983901211c30" title="Calculates a rectangular equatorial position and velocity vector for the given orbital elements for t...">novas_orbit_posvel()</a>, <a class="el" href="frames_8c.html#adc72577f99a7b076b23e0e44ddbca838" title="Sets up a observing frame for a specific observer location, time of observation, and accuracy require...">novas_make_frame()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
@@ -957,9 +947,7 @@ Chapront-Touze, M, and Chapront, J. 1983, Astronomy and Astrophysics (ISSN 0004-
 <dl class="section return"><dt>Returns</dt><dd>[AU] Distance from the Sun, or NAN if not a Solar-system source.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="target_8c.html#a763f9a9dd2edb4645a5db05184ca7495" title="Returns the typical incident Solar power on a Solar-system body at the time of observation.">novas_solar_power()</a> </dd>
-<dd>
-<a class="el" href="frames_8c.html#ac780bd907a12957995d36ad916dd4ec1" title="Returns the Solar illumination fraction of a source, assuming a spherical geometry for the observed b...">novas_solar_illum()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="target_8c.html#a763f9a9dd2edb4645a5db05184ca7495" title="Returns the typical incident Solar power on a Solar-system body at the time of observation.">novas_solar_power()</a>, <a class="el" href="frames_8c.html#ac780bd907a12957995d36ad916dd4ec1" title="Returns the Solar illumination fraction of a source, assuming a spherical geometry for the observed b...">novas_solar_illum()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="ephemeris_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a>, <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa4f9ab9cec85498c41f90c33794d032e5">NOVAS_CATALOG_OBJECT</a>, <a class="el" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27bea13c0711a025b9aebd4186ab9127cbd7b">NOVAS_HELIOCENTER</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, and <a class="el" href="util_8c.html#a0f41cefb8c872973b07e936b5026d143">novas_vlen()</a>.</p>
 

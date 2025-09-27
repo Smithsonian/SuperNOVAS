@@ -93,7 +93,7 @@ even better.
 ### Related links
 
  - [NOVAS](https://aa.usno.navy.mil/software/novas_info) home page at the US Naval Observatory.
- - [CALCEPH C library](https://calceph.imcce.fr/docs/4.0.0/html/c/index.html) for integrating Solar-system ephemerides
+ - [CALCEPH C library](https://calceph.imcce.fr) for integrating Solar-system ephemerides
    from JPL and/or in INPOP 2.0/3.0 format.
  - [NAIF SPICE toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html) for integrating Solar-system ephemerides
    from JPL.
@@ -321,7 +321,7 @@ The __SuperNOVAS__ CMake build supports the following options (in addition to th
    installed.
 
 For example, to build __SuperNOVAS__ as shared libraries with 
-[CALCEPH](https://calceph.imcce.fr/docs/4.0.0/html/c/index.html) integration for ephemeris support:
+[CALCEPH](https://calceph.imcce.fr) integration for ephemeris support:
 
 ```bash
   $ cmake -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DENABLE_CALCEPH=ON
@@ -1104,7 +1104,7 @@ code:
  // Then use them as your generic SuperNOVAS ephemeris provider
  int status = novas_use_calceph(eph);
  if(status < 0) {
-   // Ooops something went wrong...
+   // Oops something went wrong...
  }
   
  // -----------------------------------------------------------------------
@@ -1113,7 +1113,7 @@ code:
  t_calcephbin *pleph = calceph_open(...);
  status = novas_use_calceph_planets(pleph);
  if(status < 0) {
-   // Ooops something went wrong...
+   // Oops something went wrong...
  }
 ```
 
@@ -1478,7 +1478,7 @@ E.g.,
  // Parse an ISO timestamp into a Julian day (w/o returning the tail).
  double jd = novas_parse_iso_date("2025-02-16T19:35:21Z", NULL);
  if(isnan(jd)) {
-   // Ooops could not parse date.
+   // Oops could not parse date.
    ...
  }
    
@@ -1543,7 +1543,7 @@ E.g.,
  // Then parse the 'TAI' timescale marker, after the date/time specification
  scale = novas_timescale_for_string(pos);
  if(scale < 0) {
-   // Ooops, not a valid timescale marker. Perhaps assume UTC...
+   // Oops, not a valid timescale marker. Perhaps assume UTC...
    scale = NOVAS_UTC;
  }
 

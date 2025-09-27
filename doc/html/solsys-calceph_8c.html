@@ -134,7 +134,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="comment">// Then use them as your generic SuperNOVAS ephemeris provider</span></div>
 <div class="line"><span class="keywordtype">int</span> status = <a class="code hl_function" href="#a35fc86a939602ec910dbdfde180d7f31">novas_use_calceph</a>(eph);</div>
 <div class="line"><span class="keywordflow">if</span>(status &lt; 0) {</div>
-<div class="line">  <span class="comment">// Ooops something went wrong...</span></div>
+<div class="line">  <span class="comment">// Oops something went wrong...</span></div>
 <div class="line">}</div>
 <div class="ttc" id="anovas-calceph_8h_html"><div class="ttname"><a href="novas-calceph_8h.html">novas-calceph.h</a></div><div class="ttdoc">SuperNOVAS functions interfacing with the CALCEPH C library.</div></div>
 <div class="ttc" id="anovas_8h_html"><div class="ttname"><a href="novas_8h.html">novas.h</a></div><div class="ttdoc">SuperNOVAS types, definitions, and function prototypes.</div></div>
@@ -143,13 +143,13 @@ Functions</h2></td></tr>
 <div class="fragment"><div class="line">t_calcephbin *pleph = calceph_open(...);</div>
 <div class="line">status = <a class="code hl_function" href="#ab86ec03898e658c86c671a8b6399e331">novas_use_calceph_planets</a>(pleph);</div>
 <div class="line"><span class="keywordflow">if</span>(status &lt; 0) {</div>
-<div class="line">  <span class="comment">// Ooops something went wrong...</span></div>
+<div class="line">  <span class="comment">// Oops something went wrong...</span></div>
 <div class="line">}</div>
 <div class="ttc" id="asolsys-calceph_8c_html_ab86ec03898e658c86c671a8b6399e331"><div class="ttname"><a href="#ab86ec03898e658c86c671a8b6399e331">novas_use_calceph_planets</a></div><div class="ttdeci">int novas_use_calceph_planets(t_calcephbin *eph)</div><div class="ttdoc">Sets the CALCEPH C library and the specified ephemeris data as the ephemeris provider for the major p...</div><div class="ttdef"><b>Definition</b> solsys-calceph.c:441</div></div>
 </div><!-- fragment --><p>By default the CALCEPH plugin will use NAIF ID numbers for the lookup (for planets the NOVAS IDs will be mapped to NAIF IDs automatically). You can enable name-based lookup by setting the <a class="el" href="structobject.html">object</a> number to -1 (e.g. in <code><a class="el" href="target_8c.html#aa22303f98df2d63edf6d8452ff3a43b2" title="Sets a celestial object to be a Solar-system ephemeris body.">make_ephem_object()</a></code>), or else switch to using CALCEPH IDs by calling <code>novas_calceph_use_ids(NOVAS_ID_CALCEPH)</code>.</p>
 <p>REFERENCES: </p><ol>
 <li>
-CALCEPH is at <a href="https://calceph.imcce.fr/docs/4.0.0/html/c/">https://calceph.imcce.fr/docs/4.0.0/html/c/</a> </li>
+CALCEPH is at <a href="https://calceph.imcce.fr">https://calceph.imcce.fr</a> </li>
 <li>
 CALCEPH source code is at <a href="https://gitlab.obspm.fr/imcce_calceph/calceph">https://gitlab.obspm.fr/imcce_calceph/calceph</a> </li>
 </ol>
