@@ -152,7 +152,7 @@ Functions</h2></td></tr>
 <div class="line">novas_use_cspice();</div>
 <div class="ttc" id="anovas-cspice_8h_html"><div class="ttname"><a href="novas-cspice_8h.html">novas-cspice.h</a></div></div>
 <div class="ttc" id="anovas_8h_html"><div class="ttname"><a href="novas_8h.html">novas.h</a></div></div>
-<div class="ttc" id="asolsys-cspice_8c_html_ae02d26964099f56c375dc78172ad135b"><div class="ttname"><a href="#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel</a></div><div class="ttdeci">int cspice_add_kernel(const char *filename)</div><div class="ttdoc">Adds a SPICE kernel to the currently managed open kernels.</div><div class="ttdef"><b>Definition</b> solsys-cspice.c:157</div></div>
+<div class="ttc" id="asolsys-cspice_8c_html_ae02d26964099f56c375dc78172ad135b"><div class="ttname"><a href="#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel</a></div><div class="ttdeci">int cspice_add_kernel(const char *filename)</div><div class="ttdoc">Adds a SPICE kernel to the currently managed open kernels.</div><div class="ttdef"><b>Definition</b> solsys-cspice.c:156</div></div>
 </div><!-- fragment --><p>The CSPICE plugin will use the ID numbers stored in the <a class="el" href="structobject.html">object</a> structure. For planets, it will automatically translate NOVAS planet IDs to NAIF IDs, while for other Solar-system bodies, you should set the NAIF ID when defining the object via <code><a class="el" href="target_8c.html#aa22303f98df2d63edf6d8452ff3a43b2" title="Sets a celestial object to be a Solar-system ephemeris body.">make_ephem_object()</a></code>. If the ID is set to -1, then name-based lookup will be used instead.</p>
 <p>REFERENCES: </p><ol>
 <li>
@@ -160,9 +160,7 @@ The NAIF CSPICE Toolkit: <a href="https://naif.jpl.nasa.gov/naif/toolkit.html">h
 <li>
 the Smithsonian/cspice-sharedlib repository: <a href="https://github.com/Smithsonian/cspice-sharedlib">https://github.com/Smithsonian/cspice-sharedlib</a> </li>
 </ol>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="solarsystem_8h.html">solarsystem.h</a> </dd>
-<dd>
-<a class="el" href="solsys-calceph_8c.html">solsys-calceph.c</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="solsys-calceph_8c.html">solsys-calceph.c</a>, <a class="el" href="ephemeris_8c.html">ephemeris.c</a>, <a class="el" href="orbital_8c.html">orbital.c</a> </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="ae02d26964099f56c375dc78172ad135b" name="ae02d26964099f56c375dc78172ad135b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae02d26964099f56c375dc78172ad135b">&#9670;&#160;</a></span>cspice_add_kernel()</h2>
@@ -280,9 +278,9 @@ the Smithsonian/cspice-sharedlib repository: <a href="https://github.com/Smithso
 <dl class="section since"><dt>Since</dt><dd>1.2</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#a943549e395b19f6a91064e3d6fa1c577" title="Sets CSPICE as the ephemeris provider for the major planets (and Sun, Moon, SSB......">novas_use_cspice_planets()</a>, <a class="el" href="#a9b44218bca5fce1e9e5103494c15dde4" title="Sets CSPICE as the default ephemeris provider for all types of Solar-system objects (both NOVAS_PLANE...">novas_use_cspice()</a>, <a class="el" href="#ae02d26964099f56c375dc78172ad135b" title="Adds a SPICE kernel to the currently managed open kernels.">cspice_add_kernel()</a> </dd>
 <dd>
-<a class="el" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030" title="Sets the function to use for obtaining position / velocity information for minor planets,...">set_ephem_provider()</a> </dd></dl>
+<a class="el" href="ephemeris_8c.html#a6097083c438a8d1872c2e00a66360030" title="Sets the function to use for obtaining position / velocity information for minor planets,...">set_ephem_provider()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a>.</p>
+<p class="reference">References <a class="el" href="ephemeris_8c.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a>.</p>
 
 </div>
 </div>
@@ -308,9 +306,9 @@ the Smithsonian/cspice-sharedlib repository: <a href="https://github.com/Smithso
 <dl class="section since"><dt>Since</dt><dd>1.2</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#afb078e1df9b5b08999d24e68d7b4ecdc" title="Sets a ephemeris provider for NOVAS_EPHEM_OBJECT types using the NAIF CSPICE library.">novas_use_cspice_ephem()</a>, <a class="el" href="#a9b44218bca5fce1e9e5103494c15dde4" title="Sets CSPICE as the default ephemeris provider for all types of Solar-system objects (both NOVAS_PLANE...">novas_use_cspice()</a>, <a class="el" href="#ae02d26964099f56c375dc78172ad135b" title="Adds a SPICE kernel to the currently managed open kernels.">cspice_add_kernel()</a> </dd>
 <dd>
-<a class="el" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973" title="Set a custom function to use for regular precision (see NOVAS_REDUCED_ACCURACY) ephemeris calculation...">set_planet_provider()</a>, <a class="el" href="plugin_8c.html#a418f45a11ce7f92ba0ef817558415640" title="Set a custom function to use for high precision (see NOVAS_FULL_ACCURACY) ephemeris calculations inst...">set_planet_provider_hp()</a> </dd></dl>
+<a class="el" href="ephemeris_8c.html#a9904c454bc7148b42d0f927b82ea3973" title="Set a custom function to use for regular precision (see NOVAS_REDUCED_ACCURACY) ephemeris calculation...">set_planet_provider()</a>, <a class="el" href="ephemeris_8c.html#a418f45a11ce7f92ba0ef817558415640" title="Set a custom function to use for high precision (see NOVAS_FULL_ACCURACY) ephemeris calculations inst...">set_planet_provider_hp()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a>, and <a class="el" href="plugin_8c.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a>.</p>
+<p class="reference">References <a class="el" href="ephemeris_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a>, and <a class="el" href="ephemeris_8c.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a>.</p>
 
 </div>
 </div>

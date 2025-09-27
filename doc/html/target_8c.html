@@ -199,7 +199,7 @@ Functions</h2></td></tr>
 </ul>
 <p>By default SuperNOVAS treats object names as case insensitive (for historical reasons), and will use capitalized versions of the names supplied by the user. You can enable case-sensitive name processing with <code><a class="el" href="#a8f832afe92680a11c3489aaa224ac2e2" title="Enables or disables case-sensitive processing of the object name.">novas_case_sensitive()</a></code> if needed.</p>
 <p>Once an <a class="el" href="structobject.html">object</a> is defined, you may calculate astrometric properties, such as apparent or geometric positions; rise, set, or transit times, etc. through observing frames, which are defined for a specific observer location and time of observation.</p>
-<dl class="section see"><dt>See also</dt><dd>frame.c, <a class="el" href="observer_8c.html">observer.c</a>, <a class="el" href="timescale_8c.html">timescale.c</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html">frames.c</a>, <a class="el" href="observer_8c.html">observer.c</a>, <a class="el" href="timescale_8c.html">timescale.c</a> </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="aa040bcfe8bee7d8e1307800f48efddd7" name="aa040bcfe8bee7d8e1307800f48efddd7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa040bcfe8bee7d8e1307800f48efddd7">&#9670;&#160;</a></span>make_cat_entry()</h2>
@@ -436,7 +436,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if the 'body' pointer is NULL or the name is too long.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030" title="Sets the function to use for obtaining position / velocity information for minor planets,...">set_ephem_provider()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="ephemeris_8c.html#a6097083c438a8d1872c2e00a66360030" title="Sets the function to use for obtaining position / velocity information for minor planets,...">set_ephem_provider()</a> </dd>
 <dd>
 <a class="el" href="#a4c7846be95299769f4d0377bf127bcf5" title="Sets a celestial object to be a major planet, or the Sun, Moon, Solar-system Barycenter,...">make_planet()</a> </dd>
 <dd>
@@ -880,7 +880,7 @@ novas_set_cat_info() </dd>
 <dd>
 <a class="el" href="frames_8c.html#ac780bd907a12957995d36ad916dd4ec1" title="Returns the Solar illumination fraction of a source, assuming a spherical geometry for the observed b...">novas_solar_illum()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="plugin_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a>, <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa4f9ab9cec85498c41f90c33794d032e5">NOVAS_CATALOG_OBJECT</a>, <a class="el" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27bea13c0711a025b9aebd4186ab9127cbd7b">NOVAS_HELIOCENTER</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, and <a class="el" href="util_8c.html#a0f41cefb8c872973b07e936b5026d143">novas_vlen()</a>.</p>
+<p class="reference">References <a class="el" href="ephemeris_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a>, <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa4f9ab9cec85498c41f90c33794d032e5">NOVAS_CATALOG_OBJECT</a>, <a class="el" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27bea13c0711a025b9aebd4186ab9127cbd7b">NOVAS_HELIOCENTER</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, and <a class="el" href="util_8c.html#a0f41cefb8c872973b07e936b5026d143">novas_vlen()</a>.</p>
 
 </div>
 </div>

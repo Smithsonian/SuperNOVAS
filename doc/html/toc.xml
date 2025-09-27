@@ -1002,6 +1002,17 @@
           <topic label="terra" href="earth_8c.html#adc81730affa75f5facc8c6bd280c83c9"/>
           <topic label="wobble" href="earth_8c.html#aead87744eeb3029ce7d5ffb1801ee652"/>
         </topic>
+        <topic label="ephemeris.c" href="ephemeris_8c.html">
+          <topic label="ephemeris" href="ephemeris_8c.html#a713982e1f2bae0a72b39d03007f00d23"/>
+          <topic label="get_ephem_provider" href="ephemeris_8c.html#aa6fad38297a49ba78a6bd49cedf889b1"/>
+          <topic label="get_nutation_lp_provider" href="ephemeris_8c.html#a416a96426a0b3c52c1d5fc6452357366"/>
+          <topic label="get_planet_provider" href="ephemeris_8c.html#a0f0a786b5614a788c02b37a462eae2d2"/>
+          <topic label="get_planet_provider_hp" href="ephemeris_8c.html#ae45badb450c1ca73920d982e12346c5b"/>
+          <topic label="set_ephem_provider" href="ephemeris_8c.html#a6097083c438a8d1872c2e00a66360030"/>
+          <topic label="set_nutation_lp_provider" href="ephemeris_8c.html#a694288eb631d6a69ecf313b7b5b4a677"/>
+          <topic label="set_planet_provider" href="ephemeris_8c.html#a9904c454bc7148b42d0f927b82ea3973"/>
+          <topic label="set_planet_provider_hp" href="ephemeris_8c.html#a418f45a11ce7f92ba0ef817558415640"/>
+        </topic>
         <topic label="equinox.c" href="equinox_8c.html">
           <topic label="accum_prec" href="equinox_8c.html#ad1de5b481e41cf193c199bd0dc5084bd"/>
           <topic label="cel_pole" href="equinox_8c.html#a8937180de2ee1545d19b8fc840f35fe2"/>
@@ -1139,17 +1150,6 @@
           <topic label="novas_moon_phase" href="planets_8c.html#a2dbdafd6b07f079815ae52d00e142861"/>
           <topic label="novas_next_moon_phase" href="planets_8c.html#ad0bd6e212af549309b0fcb792ed8cb79"/>
           <topic label="planet_lon" href="planets_8c.html#aacc6a0daf29b8bdc18f46647a94694d3"/>
-        </topic>
-        <topic label="plugin.c" href="plugin_8c.html">
-          <topic label="ephemeris" href="plugin_8c.html#a713982e1f2bae0a72b39d03007f00d23"/>
-          <topic label="get_ephem_provider" href="plugin_8c.html#aa6fad38297a49ba78a6bd49cedf889b1"/>
-          <topic label="get_nutation_lp_provider" href="plugin_8c.html#a416a96426a0b3c52c1d5fc6452357366"/>
-          <topic label="get_planet_provider" href="plugin_8c.html#a0f0a786b5614a788c02b37a462eae2d2"/>
-          <topic label="get_planet_provider_hp" href="plugin_8c.html#ae45badb450c1ca73920d982e12346c5b"/>
-          <topic label="set_ephem_provider" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030"/>
-          <topic label="set_nutation_lp_provider" href="plugin_8c.html#a694288eb631d6a69ecf313b7b5b4a677"/>
-          <topic label="set_planet_provider" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973"/>
-          <topic label="set_planet_provider_hp" href="plugin_8c.html#a418f45a11ce7f92ba0ef817558415640"/>
         </topic>
         <topic label="refract.c" href="refract_8c.html">
           <topic label="NOVAS_DEFAULT_WAVELENGTH" href="refract_8c.html#a4f7dee9d4c9db4cf201af8383c72d4db"/>

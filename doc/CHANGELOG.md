@@ -70,16 +70,16 @@ Upcoming feature release, expected around 1 November 2025.
    simpler to change the reference ellipsoid or the ITRF realization of an `on_surface` data structure, respectively.
 
  - #249: Option to exclude deprecated API from `novas.h` definitions for your application. Simply compile your 
-   application with `-D_EXCLUDE_DEPRECATED` or else define `EXCLUDE_DEPRECATED` in your source __before_ including
+   application with `-D_EXCLUDE_DEPRECATED` or else define `EXCLUDE_DEPRECATED` in your source _before_ including
    `novas.h`. 
 
 ### Removed
 
  - #250: No longer including `CIO_RA.TXT` (now unused) in the distribution.
  
- - #252: Some build configuration options have been removed, such as the GNU make `BUILTIN_SOLSYS1`, `BUILTIN_SOLSYS2`,
-   `BUILTIN_SOLSYS3`, `BUILTIN_SOLSYS_EPHEM`, `DEFAULT_SOLSYS`, and `DEFAULT_READEPH` configuration options, or the
-   CMake `BUILD_SOLSYS1` / `BUILD_SOLSYS2` options.
+ - #252: Some build configuration options have been removed, such as the GNU make `BUILTIN_SOLSYS1`, 
+   `BUILTIN_SOLSYS2`, `BUILTIN_SOLSYS3`, `BUILTIN_SOLSYS_EPHEM`, `DEFAULT_SOLSYS`, and `DEFAULT_READEPH` configuration 
+   options, or the CMake `BUILD_SOLSYS1` / `BUILD_SOLSYS2` options.
 
 ### Changed
 
@@ -123,17 +123,18 @@ Upcoming feature release, expected around 1 November 2025.
  - #242: README edits and collapsible sections, as well as Github style highlighting of notes, warnings etc.
 
  - #250: `cio_array()` is changed to calculate CIO locations vs GCRS on the fly. With the change SuperNOVAS does not 
-   in any way use a CIO locator data file any more for any purpose. The change also ensures consistency with the 
-   implemented standards, such as the precession-nutation model.
+   use a CIO locator data file any more, for any purpose. The change also ensures complete internal consistency with 
+   the implemented standards, such as the precession-nutation model.
    
  - #251: Added further CI checks via Github Actions.
 
  - #252: Overhauled how legacy `solarsystem()` / `solarsystem_hp()` and `readeph()` functions can be added to the 
    build if needed, e.g. via externally provided sources at build time. If a `solarsystem()` / `solarsystem_hp()` 
    module is not explicitly defined for the build, `solsys3.c` will provide a default implementation for these.
+   (No more undefined symbols that need to be resolved at runtime.)
 
- - Both CMake and GNU make now install only the headers for the components that were included in the build. E.g. 
-   `novas-calceph.h` is installed only if the library is built with the CALCEPH support option enabled.
+ - Both CMake and GNU make now install only the headers for the components that were built. E.g. `novas-calceph.h` is 
+   installed only if the library is built with the CALCEPH support option enabled.
  
  - Fully revised API and user documentation.
 
@@ -141,7 +142,7 @@ Upcoming feature release, expected around 1 November 2025.
 
  - #208: Deprecated `cio_array()` and `cio_location()`. Going forward, SuperNOVAS no longer uses the CIO locator data 
    files (`CIO_RA.TXT` or `cio_ra.bin`) internally, and so `cio_location()` becomes redundant with `cio_ra()` and also 
-   `ira_equinox()` (which returns the negative of the same value).
+   with `ira_equinox()` (which returns the negative of the same value).
 
  - #209: Deprecated `sidereal_time()`. It is messy and one of its arguments (`erot`) is now unused. Instead, you 
    should use `novas_gmst()` or `novas_gast()` to get the same results simpler.

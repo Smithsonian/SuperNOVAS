@@ -173,9 +173,9 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"novas_8h.html#a035047336b16951b8b850066e74210a9",
-"novas_8h.html#a9b926427954233b94ebd6925d86f9f81",
-"observer_8c.html#aa423a88cd3f434642fc89d47390184f4",
+"novas-cspice_8h.html#a38e3b3155cad3b3822fbc3e553060ab1",
+"novas_8h.html#a8f832afe92680a11c3489aaa224ac2e2",
+"observer_8c.html#a0fc8f315f8606e09571ab49efb13baca",
 "structon__surface.html#a987616dbcfdfc936af3e5874ef5a41e7"
 ];
 
