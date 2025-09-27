@@ -136,6 +136,9 @@ Upcoming feature release, expected around 1 November 2025.
  - Both CMake and GNU make now install only the headers for the components that were built. E.g. `novas-calceph.h` is 
    installed only if the library is built with the CALCEPH support option enabled.
  
+ - Reanmed `equinox.c` to `equator.c`, since the functions therein concern the equator of date more than the equinox 
+   of date specifically.
+ 
  - Fully revised API and user documentation.
 
 ### Deprecated

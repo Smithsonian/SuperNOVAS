@@ -892,8 +892,7 @@ enum novas_reference_plane {
 };
 
 /**
- * Fundamental Delaunay arguments of the Sun and Moon, from Simon section 3.4(b.3),
- * precession = 5028.8200 arcsec/cy)
+ * Fundamental Delaunay arguments of the Sun and Moon, from Simon section 3.4(b.3).
  *
  * @since 1.0
  * @author Attila Kovacs
@@ -1754,8 +1753,6 @@ short mean_star(double jd_tt, double tra, double tdec, enum novas_accuracy accur
 short place(double jd_tt, const object *restrict source, const observer *restrict location, double ut1_to_tt,
         enum novas_reference_system coord_sys, enum novas_accuracy accuracy, sky_pos *restrict output);
 
-short ephemeris(const double *restrict jd_tdb, const object *restrict body, enum novas_origin origin,
-        enum novas_accuracy accuracy, double *restrict pos, double *restrict vel);
 
 // in coords.c
 int equ2gal(double ra, double dec, double *restrict glon, double *restrict glat);
@@ -1821,7 +1818,7 @@ int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *restrict mobl, d
 short cel_pole(double jd_tt, enum novas_pole_offset_type type, double dpole1, double dpole2);
 #endif
 
-// in equinox.c
+// in equator.c
 #ifndef _EXCLUDE_DEPRECATED
 /// \cond PRIVATE
 double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy);

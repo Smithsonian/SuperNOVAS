@@ -13,14 +13,15 @@
  *
  * - __Method 1__ is the more direct method and involves calculating the position of the Celestial
  *   Intermediate Pole (CIP) of date in GCRS, using a harmonic series containing some 2825
- *   lunisolar and planetary terms (Tables
+ *   lunisolar and planetary terms (IERS Conventions 2010, Tables
  *   [5.2a](https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2a.txt) and
  *   [5.2b](https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2b.txt)).
  *
  * - __Method 2__ is more roundabout, transforming GCRS to J2000 first, then using the IAU 2006
  *   (P03) precession-nutation model to calculate True-of-Date coordinates, which are then
  *   transformed to CIRS by a simple rotation with the CIO's position relative to the true-equinox
- *   of date. The IAU2006 nutation series uses 2414 lunisolar and planetary terms (Tables
+ *   of date. The IAU2006 nutation series uses 2414 lunisolar and planetary terms (IERS Conventions
+ *   2010, Tables
  *   [5.3a](https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.3a.txt) and
  *   [5.3b](https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.3b.txt)).
  *
@@ -38,7 +39,7 @@
  * @date Created  on Mar 6, 2025
  * @author G. Kaplan and Attila Kovacs
  *
- * @sa equinox.c
+ * @sa equator.c
  */
 
 #include <stdio.h>
@@ -340,8 +341,7 @@ double novas_cio_gcrs_ra(double jd_tdb) {
  *
  * Given an input TDB Julian date and the number of data points desired, this function returns
  * a set of Julian dates and corresponding values of the GCRS right ascension of the celestial
- * intermediate origin (CIO).  The range of dates is centered (at least approximately) on the
- * requested date.  The function obtains the data from an external data file.
+ * intermediate origin (CIO).  The range of dates is centered on the requested date.
  *
  * NOTES:
  * <ol>
@@ -385,6 +385,9 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *restrict cio) {
 
   if(n_pts < 2)
     return novas_error(3, ERANGE, fn, "n_pts=%ld is out of bounds [2:*]", n_pts);
+
+  // Center to starting date
+  jd_tdb -= 0.5 * n_pts * CIO_ARRAY_STEP;
 
   for(i = 0; i < n_pts; i++) {
     ra_of_cio *p = &cio[i];

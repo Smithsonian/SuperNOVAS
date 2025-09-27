@@ -108,7 +108,7 @@ set(SUPERNOVAS_CORE_SOURCES
     src/target.c
     src/observer.c
     src/earth.c
-    src/equinox.c
+    src/equator.c
     src/system.c
     src/transform.c
     src/cio.c

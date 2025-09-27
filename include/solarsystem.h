@@ -329,6 +329,10 @@ short planet_ephem_provider(double jd_tdb, enum novas_planet body, enum novas_or
 short planet_ephem_provider_hp(const double jd_tdb[restrict 2], enum novas_planet body, enum novas_origin origin,
         double *restrict position, double *restrict velocity);
 
+short ephemeris(const double *restrict jd_tdb, const object *restrict body, enum novas_origin origin,
+        enum novas_accuracy accuracy, double *restrict pos, double *restrict vel);
+
+
 
 // Added in v1.2 --------------------------------->
 

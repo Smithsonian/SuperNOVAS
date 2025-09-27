@@ -16,7 +16,7 @@
  *
  * @author Attila Kovacs and G. Kaplan
  *
- * @sa equinox.c, earth.c, frames.c
+ * @sa equator.c, earth.c, frames.c
  */
 
 #include <stdint.h>

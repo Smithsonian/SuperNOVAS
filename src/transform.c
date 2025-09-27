@@ -4,6 +4,10 @@
  * Various functions to transform rectangular equatorial vectors (positions or velocities)
  * between different equatorial coordinate systems. The implementations follow the latest standard
  * for high-precision astrometry as described the IAU 2000 / IAU 2006 and IERS 2010 conventions.
+ * See Figure 1 below for an overview of the various coordinate reference systems, and the
+ * functions, which can be used to tansform position and/or velocoty vectors among them,
+ *
+ * ![Figure 1. Reference systems and transformations](resources/SuperNOVAS-systems.png)
  *
  * The same transformations are also available for the new frame-based approach via a
  * `novas_transform`, often with significantly higher computational efficiency.
@@ -13,14 +17,15 @@
  *
  * - __Method 1__ is the more direct method and involves calculating the position of the Celestial
  *   Intermediate Pole (CIP) of date in GCRS, using a harmonic series containing some 2825
- *   lunisolar and planetary terms (Tables
+ *   lunisolar and planetary terms (IERS Conventions 2010, Tables
  *   [5.2a](https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2a.txt) and
  *   [5.2b](https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2b.txt)).
  *
  * - __Method 2__ is more roundabout, transforming GCRS to J2000 first, then using the IAU 2006
  *   (P03) precession-nutation model to calculate True-of-Date coordinates, which are then
  *   transformed to CIRS by a simple rotation with the CIO's position relative to the true-equinox
- *   of date. The IAU2006 nutation series uses 2414 lunisolar and planetary terms (Tables
+ *   of date. The IAU2006 nutation series uses 2414 lunisolar and planetary terms (IERS
+ *   Conventions 2010, Tables
  *   [5.3a](https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.3a.txt) and
  *   [5.3b](https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.3b.txt)).
  *
