@@ -132,14 +132,14 @@ Functions</h2></td></tr>
 <li><b>Method 2</b> is more roundabout, transforming GCRS to J2000 first, then using the IAU 2006 (P03) precession-nutation model to calculate True-of-Date coordinates, which are then transformed to CIRS by a simple rotation with the CIO's position relative to the true-equinox of date. The IAU2006 nutation series uses 2414 lunisolar and planetary terms (Tables <a href="https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.3a.txt">5.3a</a> and <a href="https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.3b.txt">5.3b</a>).</li>
 </ul>
 <p>The two methods are equivalent both in terms of accuracy, down to the &mu;as level, and in terms of computational cost. Neither is 'superior' to the other in any measurable way. In SuperNOVAS we choose to follow Method 2, since its implementation is more readily given with the existing framework of related functions.</p>
-<dl class="section date"><dt>Date</dt><dd>Created on Mar 6, 2025 </dd></dl>
-<dl class="section author"><dt>Author</dt><dd>G. Kaplan and Attila Kovacs</dd></dl>
 <p>REFERENCES: </p><ol>
 <li>
 IERS Conventions 2010, Chapter 5, especially Section 5.9 </li>
 <li>
 Capitaine, N. et al. (2003), Astronomy And Astrophysics 412, pp. 567-586. </li>
 </ol>
+<dl class="section date"><dt>Date</dt><dd>Created on Mar 6, 2025 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>G. Kaplan and Attila Kovacs</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="equinox_8c.html" title="Various functions for calculating the equator and equinox of date, and related quatities.">equinox.c</a> </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="afc894b55420495a727a90d3d85188ef4" name="afc894b55420495a727a90d3d85188ef4"></a>
