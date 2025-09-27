@@ -1,10 +1,10 @@
 /**
  * @file
  *
+ *  SuperNOVAS functions interfacing with the NAIF CSPICE Toolkit.
+ *
  * @date Created  on Nov 12, 2024
  * @author Attila Kovacs
- *
- *   SuperNOVAS functions interfacing with the NAIF CSPICE Toolkit
  */
 
 #ifndef NOVAS_CSPICE_H_

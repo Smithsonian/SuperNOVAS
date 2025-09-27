@@ -1,10 +1,10 @@
 /**
  * @file
  *
+ *  SuperNOVAS functions interfacing with the CALCEPH C library.
+ *
  * @date Created  on Nov 12, 2024
  * @author Attila Kovacs
- *
- *   SuperNOVAS functions interfacing with the CALCEPH C library.
  */
 
 #ifndef NOVAS_CALCEPH_H_

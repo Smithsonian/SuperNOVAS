@@ -17,7 +17,7 @@
  *  expressed. Often it is ICRS / GCRS, or True of Date (TOD), but occasionally something else.
  *
  *  __observer location__: If the observer is not one of the call parameters than a fictitious
- *  observer located at the geocenter is assumed (e.g. for `astro_star(), `astro_planet()` or
+ *  observer located at the geocenter is assumed (e.g. for `astro_star()`, `astro_planet()` or
  *  `place_icrs()`).
  *
  *  __position type__: The positions calculated can be geometric or apparent. Both include

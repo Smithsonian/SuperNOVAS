@@ -1,8 +1,6 @@
 /**
  * @file
  *
- * @author G. Kaplan and A. Kovacs
- *
  *  SuperNOVAS prototypes for the IAU2000 nutation series calculations, with varying trade-offs
  *  between computational cost and precision. It provides support for both the IAU 2000A and
  *  IAU 2000B series as well as a NOVAS-specific truncated low-precision version we call NU2000K.
@@ -14,6 +12,8 @@
  *  Washington, DC<br>
  *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">
  *  http://www.usno.navy.mil/USNO/astronomical-applications</a>
+ *
+ * @author G. Kaplan and A. Kovacs
  */
 
 #ifndef _NUTATION_

@@ -1,8 +1,7 @@
 /**
  * @file
  *
- * @author G. Kaplan and A. Kovacs
- * @version 1.4.2
+ *  SuperNOVAS types, definitions, and function prototypes.
  *
  *  SuperNOVAS astrometry software based on the Naval Observatory Vector Astrometry Software (NOVAS).
  *  It has been modified to fix outstanding issues, make it easier to use, and provide a ton of new
@@ -15,6 +14,9 @@
  *  Washington, DC<br>
  *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">
  *  http://www.usno.navy.mil/USNO/astronomical-applications</a>
+ *
+ * @author G. Kaplan and A. Kovacs
+ * @version 1.4.2
  */
 
 #ifndef _NOVAS_

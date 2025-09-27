@@ -1,9 +1,9 @@
 /**
  * @file
  *
- * @author G. Kaplan and A. Kovacs
+ *  SuperNOVAS Solar-system related types, definitions, and functions.
  *
- *  SuperNOVAS header for custom solar-system ephemeris position / velocity provider for major
+ *  It contains definition for custom solar-system ephemeris position / velocity provider for major
  *  planets plus the Sun, Moon, and the Solar-system barycenter (and as of v1.2 also the
  *  Earth-Moon Barycenter and the barycenter of the Pluto system).
  *
@@ -36,7 +36,9 @@
  *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">
  *  http://www.usno.navy.mil/USNO/astronomical-applications</a>
  *
- *  @sa solsys-calceph.c, solsys-cspice.c, solsys1.c, solsys2.c, solsys3.c, solsys-ephem.c
+ * @author G. Kaplan and A. Kovacs
+ *
+ * @sa solsys-calceph.c, solsys-cspice.c, solsys1.c, solsys2.c, solsys3.c, solsys-ephem.c
  */
 
 #ifndef _SOLSYS_
