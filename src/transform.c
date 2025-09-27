@@ -1,13 +1,44 @@
 /**
  * @file
  *
- *  Various functions to transform rectangular equatorial vectors (positions or velocities)
- *  between different equatorial coordinate systems.
+ * Various functions to transform rectangular equatorial vectors (positions or velocities)
+ * between different equatorial coordinate systems. The implementations follow the latest standard
+ * for high-precision astrometry as described the IAU 2000 / IAU 2006 and IERS 2010 conventions.
+ *
+ * The same transformations are also available for the new frame-based approach via a
+ * `novas_transform`, often with significantly higher computational efficiency.
+ *
+ * For the conversion between GCRS and CIRS, the IERS Conventions 2010, Chapter 5 (Section 5.9)
+ * describes two equivalent methods:
+ *
+ * - __Method 1__ is the more direct method and involves calculating the position of the Celestial
+ *   Intermediate Pole (CIP) of date in GCRS, using a harmonic series containing some 2825
+ *   lunisolar and planetary terms (Tables
+ *   [5.2a](https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2a.txt) and
+ *   [5.2b](https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2b.txt)).
+ *
+ * - __Method 2__ is more roundabout, transforming GCRS to J2000 first, then using the IAU 2006
+ *   (P03) precession-nutation model to calculate True-of-Date coordinates, which are then
+ *   transformed to CIRS by a simple rotation with the CIO's position relative to the true-equinox
+ *   of date. The IAU2006 nutation series uses 2414 lunisolar and planetary terms (Tables
+ *   [5.3a](https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.3a.txt) and
+ *   [5.3b](https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.3b.txt)).
+ *
+ * The two methods are equivalent both in terms of accuracy, down to the &mu;as level, and in
+ * terms of computational cost. Neither is 'superior' to the other in any measurable way. In
+ * SuperNOVAS we choose to follow Method 2, since its implementation is more readily given with
+ * the existing framework of related functions.
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>IERS Conventions 2010, Chapter 5, especially Section 5.9</li>
+ * <li>Capitaine, N. et al. (2003), Astronomy And Astrophysics 412, pp. 567-586.</li>
+ * </ol>
  *
  * @date Created  on Mar 6, 2025
  * @author G. Kaplan and Attila Kovacs
  *
- * @sa frames.c, system.c
+ * @sa frames.c, system.c, cio.c
  */
 
 #include <string.h>
@@ -204,8 +235,8 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  * REFERENCES:
  *  <ol>
  *   <li>Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.</li>
- *   <li>Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU XXV J
- *   oint Discussion 16.</li>
+ *   <li>Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU XXV
+ *   Joint Discussion 16.</li>
  *  </ol>
  *
  * @param jd_ut1_high   [day] High-order part of UT1 Julian date.

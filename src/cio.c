@@ -29,14 +29,14 @@
  * SuperNOVAS we choose to follow Method 2, since its implementation is more readily given with
  * the existing framework of related functions.
  *
- * @date Created  on Mar 6, 2025
- * @author G. Kaplan and Attila Kovacs
- *
  * REFERENCES:
  * <ol>
  * <li>IERS Conventions 2010, Chapter 5, especially Section 5.9</li>
  * <li>Capitaine, N. et al. (2003), Astronomy And Astrophysics 412, pp. 567-586.</li>
  * </ol>
+ *
+ * @date Created  on Mar 6, 2025
+ * @author G. Kaplan and Attila Kovacs
  *
  * @sa equinox.c
  */
