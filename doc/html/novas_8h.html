@@ -4847,6 +4847,13 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
 
 <p>Transforms a rectangular equatorial (x, y, z) vector from the Celestial Intermediate Reference System (CIRS) frame at the given epoch to the ICRS / GCRS. </p>
 <p>(We treat ICRS and GCRS the same, since they only define the orientation of the equator, and not the origin. The origin is defined by the observer location separately.)</p>
+<p>This function uses Method 2 of the IERS Conventions 2010 (Chapter 5, Section 5.9), converting CIRS to TOD first via a rotation by the equation of origins, then using the IAU 2006 precession-nutation model (P03; Capitaine et al. 2003) to convert to J2000, and finally correcting for the frame bias to arrive at GCRS.</p>
+<p>REFERENCES: </p><ol>
+<li>
+IERS Conventions 2010, Chapter 5, especially Section 5.9 </li>
+<li>
+Capitaine, N. et al. (2003), Astronomy And Astrophysics 412, pp. 567-586. </li>
+</ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date that defines the output epoch. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result </td></tr>
@@ -5842,6 +5849,13 @@ Hipparcos and Tycho Catalogues, Vol. 1, Section 1.5.3. </li>
 
 <p>Transforms a rectangular equatorial (x, y, z) vector from the ICRS / GCRS to the Celestial Intermediate Reference System (CIRS) frame at the given epoch. </p>
 <p>(We treat ICRS and GCRS the same, since they only define the orientation of the equator, and not the origin. The origin is defined by the observer location separately.)</p>
+<p>This function uses Method 2 of the IERS Conventions 2010 (Chapter 5, Section 5.9), first applying the frame bias to convert GCRS to J2000, then using the IAU 2006 precession-nutation model (P03; Capitaine et al. 2003) to convert to TOD, and finally to CIRS via a rotation by the equation of origins.</p>
+<p>REFERENCES: </p><ol>
+<li>
+IERS Conventions 2010, Chapter 5, especially Section 5.9 </li>
+<li>
+Capitaine, N. et al. (2003), Astronomy And Astrophysics 412, pp. 567-586. </li>
+</ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date that defines the output epoch. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result </td></tr>
@@ -11021,8 +11035,8 @@ Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 19
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>[day] the fractional Julian day for the input calendar date, ot NAN if the calendar is invalid or the month or day components are out of range.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
-<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="calendar_8c.html#a8ed2fb55bcf86d9f1f434a2f832356a2" title="This function will compute a broken down date on the specified calendar for given the Julian day inpu...">novas_jd_to_date()</a>, <a class="el" href="timescale_8c.html#ae30e3dd8e30bdcf4e8486cfce696fb98" title="Returns the fractional Julian date of an astronomical time in the specified timescale.">novas_get_time()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="#aa8cfc18bfdf8ebd0198065c9d07e3bbaa1b6339c57b7baba0957b935fd37cc8ed">NOVAS_ASTRONOMICAL_CALENDAR</a>, <a class="el" href="#aa8cfc18bfdf8ebd0198065c9d07e3bbaa90f19bf1771802f4ad20cf14660c8322">NOVAS_GREGORIAN_CALENDAR</a>, <a class="el" href="#a509afe7095f4d597125e9bfd6d0399ad">NOVAS_JD_START_GREGORIAN</a>, and <a class="el" href="#aa8cfc18bfdf8ebd0198065c9d07e3bbaa73cfd3e5c66bdfdf63a2d792251e0d13">NOVAS_ROMAN_CALENDAR</a>.</p>
