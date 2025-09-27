@@ -382,12 +382,12 @@ If you have a legacy NOVAS C 3.1 application, it is possible that the compilatio
 includes for `stdio.h`, `stdlib.h`, `ctype.h` or `string.h`, because these headers were implicitly included with 
 `novas.h` in NOVAS C 3.1, but not in __SuperNOVAS__ (at least not by default), as a matter of best practice. If this 
 is a problem for you can 'fix' it in one of two ways: (1) Add the missing `#include` directives to your application 
-source explicitly, or if that's not an option for you, then (2) set the `-DCOMPAT=1` compiler flag when compiling your 
+source explicitly, or if that's not an option for you, then (2) set the `-DCOMPAT` compiler flag when compiling your 
 application:
 
 ```make
   myastroapp: myastroapp.c 
-  	$(CC) -o $@ $(CFLAGS) -DCOMPAT=1 $^ -lm -lsupernovas
+  	$(CC) -o $@ $(CFLAGS) -DCOMPAT $^ -lm -lsupernovas
 ```
 
 If your application uses optional planet or ephemeris calculator modules, you may need to specify the additional 

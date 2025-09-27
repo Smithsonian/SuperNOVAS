@@ -1,8 +1,8 @@
 var searchData=
 [
   ['i_0',['i',['../structnovas__orbital.html#a5659a38afd08966e6799fa0fb40a882a',1,'novas_orbital']]],
-  ['iau2000a_1',['iau2000a',['../nutation_8c.html#a280cbf02b13ca57b3d77451be06e7dbc',1,'iau2000a(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps):&#160;nutation.c'],['../nutation_8h.html#a280cbf02b13ca57b3d77451be06e7dbc',1,'iau2000a(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps):&#160;nutation.c']]],
-  ['iau2000b_2',['iau2000b',['../nutation_8c.html#a6f9cddeb8c3dd906b9b0b5941249ad0c',1,'iau2000b(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps):&#160;nutation.c'],['../nutation_8h.html#a6f9cddeb8c3dd906b9b0b5941249ad0c',1,'iau2000b(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps):&#160;nutation.c']]],
+  ['iau2000a_1',['iau2000a',['../nutation_8c.html#a280cbf02b13ca57b3d77451be06e7dbc',1,'iau2000a(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps):&#160;nutation.c'],['../novas_8h.html#a280cbf02b13ca57b3d77451be06e7dbc',1,'iau2000a(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps):&#160;nutation.c']]],
+  ['iau2000b_2',['iau2000b',['../nutation_8c.html#a6f9cddeb8c3dd906b9b0b5941249ad0c',1,'iau2000b(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps):&#160;nutation.c'],['../novas_8h.html#a6f9cddeb8c3dd906b9b0b5941249ad0c',1,'iau2000b(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps):&#160;nutation.c']]],
   ['icrs_5fto_5fj2000_3',['ICRS_TO_J2000',['../novas_8h.html#ae8b91a9b4fe4af63c7054d1eacdb996ea8557604d6604356e6620b42f78aec999',1,'novas.h']]],
   ['icrs_5fto_5fj2000_4',['icrs_to_j2000',['../structnovas__frame.html#ad28815abec2847e4ab01a17dab76f0c5',1,'novas_frame']]],
   ['ijd_5ftt_5',['ijd_tt',['../structnovas__timespec.html#ab1b769234049ec8d7cdbb22800116184',1,'novas_timespec']]],

@@ -185,9 +185,6 @@ Macros</h2></td></tr>
 <tr class="memitem:af303bf91582509624aa40c6a87eb95ac" id="r_af303bf91582509624aa40c6a87eb95ac"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af303bf91582509624aa40c6a87eb95ac">DE405_AU</a>&#160;&#160;&#160;1.4959787069098932e+11</td></tr>
 <tr class="memdesc:af303bf91582509624aa40c6a87eb95ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">[m] Astronomical unit (AU).  <br /></td></tr>
 <tr class="separator:af303bf91582509624aa40c6a87eb95ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4caf1f6e33a208827eb99df7e387d6d1" id="r_a4caf1f6e33a208827eb99df7e387d6d1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4caf1f6e33a208827eb99df7e387d6d1">DEFAULT_CIO_LOCATOR_FILE</a>&#160;&#160;&#160;NULL</td></tr>
-<tr class="memdesc:a4caf1f6e33a208827eb99df7e387d6d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Path / name of file to use for interpolating the CIO location relative to GCRS.  <br /></td></tr>
-<tr class="separator:a4caf1f6e33a208827eb99df7e387d6d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4cb74da554b236c835302480688cfaac" id="r_a4cb74da554b236c835302480688cfaac"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4cb74da554b236c835302480688cfaac">DEFAULT_GRAV_BODIES_FULL_ACCURACY</a>&#160;&#160;&#160;( <a class="el" href="#aec64bf67d5a03b2b4fb2583e5918f1de">DEFAULT_GRAV_BODIES_REDUCED_ACCURACY</a> | (1 &lt;&lt; <a class="el" href="#a219df36b21dc4476656e708d14d08045a994baf0c30caeaaee7b8b4d5a12921a3">NOVAS_JUPITER</a>) | (1 &lt;&lt; <a class="el" href="#a219df36b21dc4476656e708d14d08045a03b12ea0f93a1a1045d7bcccd613c6f2">NOVAS_SATURN</a>) )</td></tr>
 <tr class="memdesc:a4cb74da554b236c835302480688cfaac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default set of gravitating bodies to use for deflection calculations in full accuracy mode.  <br /></td></tr>
 <tr class="separator:a4cb74da554b236c835302480688cfaac"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -529,6 +526,9 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr class="memitem:a1f0e319630e7a47f17247bf51f7bf36c" id="r_a1f0e319630e7a47f17247bf51f7bf36c"><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1f0e319630e7a47f17247bf51f7bf36c">novas_nutation_provider</a>) (double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps)</td></tr>
+<tr class="memdesc:a1f0e319630e7a47f17247bf51f7bf36c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function type definition for the IAU 2000 nutation series calculation.  <br /></td></tr>
+<tr class="separator:a1f0e319630e7a47f17247bf51f7bf36c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4899a6116cfbbe17400e7ef0c8426a9" id="r_ad4899a6116cfbbe17400e7ef0c8426a9"><td class="memItemLeft" align="right" valign="top">typedef double(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad4899a6116cfbbe17400e7ef0c8426a9">RefractionModel</a>) (double jd_tt, const <a class="el" href="structon__surface.html">on_surface</a> *loc, enum <a class="el" href="#a8c77758e10b1d3dc8dbd3ab0b694e468">novas_refraction_type</a> type, double el)</td></tr>
 <tr class="memdesc:ad4899a6116cfbbe17400e7ef0c8426a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function that returns a refraction correction for a given date/time of observation at the given site on earth, and for a given astrometric source elevation.  <br /></td></tr>
 <tr class="separator:ad4899a6116cfbbe17400e7ef0c8426a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -847,7 +847,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ada5ca37110e66c8b65f623c9e26ae52e" id="r_ada5ca37110e66c8b65f623c9e26ae52e"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ada5ca37110e66c8b65f623c9e26ae52e">geo_posvel</a> (double jd_tt, double ut1_to_tt, enum <a class="el" href="#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, const <a class="el" href="structobserver.html">observer</a> *restrict obs, double *restrict pos, double *restrict vel)</td></tr>
 <tr class="memdesc:ada5ca37110e66c8b65f623c9e26ae52e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the geocentric GCRS position and velocity of an observer.  <br /></td></tr>
 <tr class="separator:ada5ca37110e66c8b65f623c9e26ae52e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a416a96426a0b3c52c1d5fc6452357366" id="r_a416a96426a0b3c52c1d5fc6452357366"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nutation_8h.html#a1f0e319630e7a47f17247bf51f7bf36c">novas_nutation_provider</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a416a96426a0b3c52c1d5fc6452357366">get_nutation_lp_provider</a> ()</td></tr>
+<tr class="memitem:a416a96426a0b3c52c1d5fc6452357366" id="r_a416a96426a0b3c52c1d5fc6452357366"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a1f0e319630e7a47f17247bf51f7bf36c">novas_nutation_provider</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a416a96426a0b3c52c1d5fc6452357366">get_nutation_lp_provider</a> ()</td></tr>
 <tr class="memdesc:a416a96426a0b3c52c1d5fc6452357366"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the function configured for low-precision IAU 2000 nutation calculations instead of the default <a class="el" href="nutation_8c.html#abd066c2857d1b1cc06d8bd51b912d841" title="Computes the forced nutation of the non-rigid Earth: Model NU2000K.">nu2000k()</a>.  <br /></td></tr>
 <tr class="separator:a416a96426a0b3c52c1d5fc6452357366"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d7470ca705efa1953e8b4beab77c6b6" id="r_a4d7470ca705efa1953e8b4beab77c6b6"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4d7470ca705efa1953e8b4beab77c6b6">get_ut1_to_tt</a> (int leap_seconds, double dut1)</td></tr>
@@ -877,6 +877,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a19f4f6c7d942dcba5ad2a4d2a60affad" id="r_a19f4f6c7d942dcba5ad2a4d2a60affad"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a19f4f6c7d942dcba5ad2a4d2a60affad">hor_to_itrs</a> (const <a class="el" href="structon__surface.html">on_surface</a> *restrict location, double az, double za, double *restrict itrs)</td></tr>
 <tr class="memdesc:a19f4f6c7d942dcba5ad2a4d2a60affad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts astrometric (unrefracted) azimuth and zenith angles at the specified observer location to a unit position vector in the Earth-fixed ITRS frame.  <br /></td></tr>
 <tr class="separator:a19f4f6c7d942dcba5ad2a4d2a60affad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a280cbf02b13ca57b3d77451be06e7dbc" id="r_a280cbf02b13ca57b3d77451be06e7dbc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a280cbf02b13ca57b3d77451be06e7dbc">iau2000a</a> (double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps)</td></tr>
+<tr class="memdesc:a280cbf02b13ca57b3d77451be06e7dbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the IAU 2000A high-precision nutation series for the specified date, to 0.1 &mu;as accuracy.  <br /></td></tr>
+<tr class="separator:a280cbf02b13ca57b3d77451be06e7dbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f9cddeb8c3dd906b9b0b5941249ad0c" id="r_a6f9cddeb8c3dd906b9b0b5941249ad0c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6f9cddeb8c3dd906b9b0b5941249ad0c">iau2000b</a> (double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps)</td></tr>
+<tr class="memdesc:a6f9cddeb8c3dd906b9b0b5941249ad0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the forced nutation of the non-rigid Earth based at reduced precision.  <br /></td></tr>
+<tr class="separator:a6f9cddeb8c3dd906b9b0b5941249ad0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea0e1028baf14d16d9de800e36a17086" id="r_aea0e1028baf14d16d9de800e36a17086"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aea0e1028baf14d16d9de800e36a17086">ira_equinox</a> (double jd_tdb, enum <a class="el" href="#ab970f5de5d5e04874cb31865459b0b4f">novas_equinox_type</a> equinox, enum <a class="el" href="#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy)</td></tr>
 <tr class="memdesc:aea0e1028baf14d16d9de800e36a17086"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the intermediate right ascension of the equinox at the input Julian date, using an analytical expression for the accumulated precession in right ascension.  <br /></td></tr>
 <tr class="separator:aea0e1028baf14d16d9de800e36a17086"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1320,6 +1326,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a1130ad2ce520e948c71f03a25a713075" id="r_a1130ad2ce520e948c71f03a25a713075"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1130ad2ce520e948c71f03a25a713075">novas_z_inv</a> (double z)</td></tr>
 <tr class="memdesc:a1130ad2ce520e948c71f03a25a713075"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the inverse of a redshift value, that is the redshift for a body moving with the same velocity as the original but in the opposite direction.  <br /></td></tr>
 <tr class="separator:a1130ad2ce520e948c71f03a25a713075"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd066c2857d1b1cc06d8bd51b912d841" id="r_abd066c2857d1b1cc06d8bd51b912d841"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abd066c2857d1b1cc06d8bd51b912d841">nu2000k</a> (double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps)</td></tr>
+<tr class="memdesc:abd066c2857d1b1cc06d8bd51b912d841"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the forced nutation of the non-rigid Earth: Model NU2000K.  <br /></td></tr>
+<tr class="separator:abd066c2857d1b1cc06d8bd51b912d841"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69df5671751c09a7575963b94ad1151e" id="r_a69df5671751c09a7575963b94ad1151e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a69df5671751c09a7575963b94ad1151e">nutation</a> (double jd_tdb, enum <a class="el" href="#ae2d3d508d68d268bec838bdc013d0ada">novas_nutation_direction</a> direction, enum <a class="el" href="#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, const double *in, double *out)</td></tr>
 <tr class="memdesc:a69df5671751c09a7575963b94ad1151e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Nutates equatorial rectangular coordinates from mean equator and equinox of epoch to true equator and equinox of epoch.  <br /></td></tr>
 <tr class="separator:a69df5671751c09a7575963b94ad1151e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1409,7 +1418,7 @@ Functions</h2></td></tr>
 <tr class="separator:afe1d4e96dd66676f5567a279e83e88d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade20b8035266dfe5b082b12248f5affa" id="r_ade20b8035266dfe5b082b12248f5affa"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ade20b8035266dfe5b082b12248f5affa">set_cio_locator_file</a> (const char *restrict filename)</td></tr>
 <tr class="separator:ade20b8035266dfe5b082b12248f5affa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a694288eb631d6a69ecf313b7b5b4a677" id="r_a694288eb631d6a69ecf313b7b5b4a677"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a694288eb631d6a69ecf313b7b5b4a677">set_nutation_lp_provider</a> (<a class="el" href="nutation_8h.html#a1f0e319630e7a47f17247bf51f7bf36c">novas_nutation_provider</a> func)</td></tr>
+<tr class="memitem:a694288eb631d6a69ecf313b7b5b4a677" id="r_a694288eb631d6a69ecf313b7b5b4a677"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a694288eb631d6a69ecf313b7b5b4a677">set_nutation_lp_provider</a> (<a class="el" href="#a1f0e319630e7a47f17247bf51f7bf36c">novas_nutation_provider</a> func)</td></tr>
 <tr class="memdesc:a694288eb631d6a69ecf313b7b5b4a677"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the function to use for low-precision IAU 2000 nutation calculations instead of the default <a class="el" href="nutation_8c.html#abd066c2857d1b1cc06d8bd51b912d841" title="Computes the forced nutation of the non-rigid Earth: Model NU2000K.">nu2000k()</a>.  <br /></td></tr>
 <tr class="separator:a694288eb631d6a69ecf313b7b5b4a677"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6eacba14d3c382d67307856a2ea290e3" id="r_a6eacba14d3c382d67307856a2ea290e3"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6eacba14d3c382d67307856a2ea290e3">sidereal_time</a> (double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum <a class="el" href="#ab970f5de5d5e04874cb31865459b0b4f">novas_equinox_type</a> gst_type, enum <a class="el" href="#a9e882d9c9055f187d3a8dc9b019f0609">novas_earth_rotation_measure</a> erot, enum <a class="el" href="#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, double *restrict gst)</td></tr>
@@ -1557,23 +1566,6 @@ Variables</h2></td></tr>
 
 <p>[m] Astronomical unit (AU). </p>
 <p>based on DE-405. (old definition) </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="#abc8f275a2d431e59a1ec9e276abaca1a" title="[m] Astronomical unit (AU).">NOVAS_AU</a> </dd></dl>
-
-</div>
-</div>
-<a id="a4caf1f6e33a208827eb99df7e387d6d1" name="a4caf1f6e33a208827eb99df7e387d6d1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4caf1f6e33a208827eb99df7e387d6d1">&#9670;&#160;</a></span>DEFAULT_CIO_LOCATOR_FILE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define DEFAULT_CIO_LOCATOR_FILE&#160;&#160;&#160;NULL</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Path / name of file to use for interpolating the CIO location relative to GCRS. </p>
-<p>As of version 1.5, a CIO locator data is not necessary. </p>
 
 </div>
 </div>
@@ -1889,11 +1881,11 @@ Variables</h2></td></tr>
 <b>Value:</b><div class="fragment"><div class="line">  { 0, <a class="code hl_enumvalue" href="#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="code hl_define" href="#addf3ffbfe4ed05288b689e861600194f">NOVAS_TIMESPEC_INIT</a>, <a class="code hl_define" href="#a8b1485a1563288c8d060d935c21e3a63">OBSERVER_INIT</a>, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, \</div>
 <div class="line">  0.0, 0.0, {0.0}, {0.0}, 0.0, 0.0, 0.0, {0.0}, {0.0}, {0.0}, {0.0}, <a class="code hl_define" href="#ad10fc7f05b49bc1ac1110817dc25834e">NOVAS_MATRIX_INIT</a>, <a class="code hl_define" href="#ad10fc7f05b49bc1ac1110817dc25834e">NOVAS_MATRIX_INIT</a>, \</div>
 <div class="line">  <a class="code hl_define" href="#ad10fc7f05b49bc1ac1110817dc25834e">NOVAS_MATRIX_INIT</a>, <a class="code hl_define" href="#ad10fc7f05b49bc1ac1110817dc25834e">NOVAS_MATRIX_INIT</a>, <a class="code hl_define" href="#a4cc558a8e366bfea3be40777ea0fcbc3">NOVAS_PLANET_BUNDLE_INIT</a> }</div>
-<div class="ttc" id="anovas_8h_html_a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660"><div class="ttname"><a href="#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a></div><div class="ttdeci">@ NOVAS_FULL_ACCURACY</div><div class="ttdoc">Use full precision calculations to micro-arcsecond accuracy.</div><div class="ttdef"><b>Definition</b> novas.h:625</div></div>
-<div class="ttc" id="anovas_8h_html_a4cc558a8e366bfea3be40777ea0fcbc3"><div class="ttname"><a href="#a4cc558a8e366bfea3be40777ea0fcbc3">NOVAS_PLANET_BUNDLE_INIT</a></div><div class="ttdeci">#define NOVAS_PLANET_BUNDLE_INIT</div><div class="ttdoc">Empty initializer for novas_planet_bundle.</div><div class="ttdef"><b>Definition</b> novas.h:1429</div></div>
-<div class="ttc" id="anovas_8h_html_a8b1485a1563288c8d060d935c21e3a63"><div class="ttname"><a href="#a8b1485a1563288c8d060d935c21e3a63">OBSERVER_INIT</a></div><div class="ttdeci">#define OBSERVER_INIT</div><div class="ttdoc">Empty initializer for observer.</div><div class="ttdef"><b>Definition</b> novas.h:1287</div></div>
-<div class="ttc" id="anovas_8h_html_ad10fc7f05b49bc1ac1110817dc25834e"><div class="ttname"><a href="#ad10fc7f05b49bc1ac1110817dc25834e">NOVAS_MATRIX_INIT</a></div><div class="ttdeci">#define NOVAS_MATRIX_INIT</div><div class="ttdoc">Empty initializer for novas_matrix.</div><div class="ttdef"><b>Definition</b> novas.h:1400</div></div>
-<div class="ttc" id="anovas_8h_html_addf3ffbfe4ed05288b689e861600194f"><div class="ttname"><a href="#addf3ffbfe4ed05288b689e861600194f">NOVAS_TIMESPEC_INIT</a></div><div class="ttdeci">#define NOVAS_TIMESPEC_INIT</div><div class="ttdoc">Empty initializer for novas_timespec.</div><div class="ttdef"><b>Definition</b> novas.h:1382</div></div>
+<div class="ttc" id="anovas_8h_html_a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660"><div class="ttname"><a href="#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a></div><div class="ttdeci">@ NOVAS_FULL_ACCURACY</div><div class="ttdoc">Use full precision calculations to micro-arcsecond accuracy.</div><div class="ttdef"><b>Definition</b> novas.h:630</div></div>
+<div class="ttc" id="anovas_8h_html_a4cc558a8e366bfea3be40777ea0fcbc3"><div class="ttname"><a href="#a4cc558a8e366bfea3be40777ea0fcbc3">NOVAS_PLANET_BUNDLE_INIT</a></div><div class="ttdeci">#define NOVAS_PLANET_BUNDLE_INIT</div><div class="ttdoc">Empty initializer for novas_planet_bundle.</div><div class="ttdef"><b>Definition</b> novas.h:1422</div></div>
+<div class="ttc" id="anovas_8h_html_a8b1485a1563288c8d060d935c21e3a63"><div class="ttname"><a href="#a8b1485a1563288c8d060d935c21e3a63">OBSERVER_INIT</a></div><div class="ttdeci">#define OBSERVER_INIT</div><div class="ttdoc">Empty initializer for observer.</div><div class="ttdef"><b>Definition</b> novas.h:1280</div></div>
+<div class="ttc" id="anovas_8h_html_ad10fc7f05b49bc1ac1110817dc25834e"><div class="ttname"><a href="#ad10fc7f05b49bc1ac1110817dc25834e">NOVAS_MATRIX_INIT</a></div><div class="ttdeci">#define NOVAS_MATRIX_INIT</div><div class="ttdoc">Empty initializer for novas_matrix.</div><div class="ttdef"><b>Definition</b> novas.h:1393</div></div>
+<div class="ttc" id="anovas_8h_html_addf3ffbfe4ed05288b689e861600194f"><div class="ttname"><a href="#addf3ffbfe4ed05288b689e861600194f">NOVAS_TIMESPEC_INIT</a></div><div class="ttdeci">#define NOVAS_TIMESPEC_INIT</div><div class="ttdoc">Empty initializer for novas_timespec.</div><div class="ttdef"><b>Definition</b> novas.h:1375</div></div>
 </div><!-- fragment -->
 <p>Empty initializer for <a class="el" href="structnovas__frame.html" title="A set of parameters that uniquely define the place and time of observation.">novas_frame</a>. </p>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
@@ -2370,9 +2362,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">{ <a class="code hl_enumvalue" href="#a1eecb357eeea0de4759e9c8d55af238fad1eeaddaa96b028742a8ba424e311aa8">NOVAS_PLANET</a>, num, name, <a class="code hl_define" href="#a0a185da3a347343e5dd21d41a598d0fa">CAT_ENTRY_INIT</a>, <a class="code hl_define" href="#a85243a6b9eee259d3fb84ee1a587e065">NOVAS_ORBIT_INIT</a> }</div>
-<div class="ttc" id="anovas_8h_html_a0a185da3a347343e5dd21d41a598d0fa"><div class="ttname"><a href="#a0a185da3a347343e5dd21d41a598d0fa">CAT_ENTRY_INIT</a></div><div class="ttdeci">#define CAT_ENTRY_INIT</div><div class="ttdoc">Initializer for a NOVAS cat_entry structure.</div><div class="ttdef"><b>Definition</b> novas.h:954</div></div>
-<div class="ttc" id="anovas_8h_html_a1eecb357eeea0de4759e9c8d55af238fad1eeaddaa96b028742a8ba424e311aa8"><div class="ttname"><a href="#a1eecb357eeea0de4759e9c8d55af238fad1eeaddaa96b028742a8ba424e311aa8">NOVAS_PLANET</a></div><div class="ttdeci">@ NOVAS_PLANET</div><div class="ttdoc">A major planet, or else the Sun, the Moon, or the Solar-System Barycenter (SSB).</div><div class="ttdef"><b>Definition</b> novas.h:328</div></div>
-<div class="ttc" id="anovas_8h_html_a85243a6b9eee259d3fb84ee1a587e065"><div class="ttname"><a href="#a85243a6b9eee259d3fb84ee1a587e065">NOVAS_ORBIT_INIT</a></div><div class="ttdeci">#define NOVAS_ORBIT_INIT</div><div class="ttdoc">Initializer for novas_orbital for heliocentric orbits using GCRS ecliptic pqrametrization.</div><div class="ttdef"><b>Definition</b> novas.h:1052</div></div>
+<div class="ttc" id="anovas_8h_html_a0a185da3a347343e5dd21d41a598d0fa"><div class="ttname"><a href="#a0a185da3a347343e5dd21d41a598d0fa">CAT_ENTRY_INIT</a></div><div class="ttdeci">#define CAT_ENTRY_INIT</div><div class="ttdoc">Initializer for a NOVAS cat_entry structure.</div><div class="ttdef"><b>Definition</b> novas.h:947</div></div>
+<div class="ttc" id="anovas_8h_html_a1eecb357eeea0de4759e9c8d55af238fad1eeaddaa96b028742a8ba424e311aa8"><div class="ttname"><a href="#a1eecb357eeea0de4759e9c8d55af238fad1eeaddaa96b028742a8ba424e311aa8">NOVAS_PLANET</a></div><div class="ttdeci">@ NOVAS_PLANET</div><div class="ttdoc">A major planet, or else the Sun, the Moon, or the Solar-System Barycenter (SSB).</div><div class="ttdef"><b>Definition</b> novas.h:333</div></div>
+<div class="ttc" id="anovas_8h_html_a85243a6b9eee259d3fb84ee1a587e065"><div class="ttname"><a href="#a85243a6b9eee259d3fb84ee1a587e065">NOVAS_ORBIT_INIT</a></div><div class="ttdeci">#define NOVAS_ORBIT_INIT</div><div class="ttdoc">Initializer for novas_orbital for heliocentric orbits using GCRS ecliptic pqrametrization.</div><div class="ttdef"><b>Definition</b> novas.h:1045</div></div>
 </div><!-- fragment -->
 <p><code>object</code> initializer macro for major planets, the Sun, Moon, and barycenters. </p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -2405,7 +2397,7 @@ Variables</h2></td></tr>
 <p>String array initializer for Major planet names, matching the enum <a class="el" href="#a219df36b21dc4476656e708d14d08045" title="Enumeration for the &#39;major planet&#39; numbers in NOVAS to use as the solar-system body number whenever t...">novas_planet</a>. </p>
 <p>E.g.</p>
 <div class="fragment"><div class="line"><span class="keyword">const</span> <span class="keywordtype">char</span> *planet_names[] = <a class="code hl_define" href="#abbd19f57e31db2ac91cbe22f9a95f390">NOVAS_PLANET_NAMES_INIT</a>;</div>
-<div class="ttc" id="anovas_8h_html_abbd19f57e31db2ac91cbe22f9a95f390"><div class="ttname"><a href="#abbd19f57e31db2ac91cbe22f9a95f390">NOVAS_PLANET_NAMES_INIT</a></div><div class="ttdeci">#define NOVAS_PLANET_NAMES_INIT</div><div class="ttdoc">String array initializer for Major planet names, matching the enum novas_planet.</div><div class="ttdef"><b>Definition</b> novas.h:396</div></div>
+<div class="ttc" id="anovas_8h_html_abbd19f57e31db2ac91cbe22f9a95f390"><div class="ttname"><a href="#abbd19f57e31db2ac91cbe22f9a95f390">NOVAS_PLANET_NAMES_INIT</a></div><div class="ttdeci">#define NOVAS_PLANET_NAMES_INIT</div><div class="ttdoc">String array initializer for Major planet names, matching the enum novas_planet.</div><div class="ttdef"><b>Definition</b> novas.h:401</div></div>
 </div><!-- fragment --><dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>enum <a class="el" href="#a219df36b21dc4476656e708d14d08045" title="Enumeration for the &#39;major planet&#39; numbers in NOVAS to use as the solar-system body number whenever t...">novas_planet</a> </dd></dl>
@@ -2434,7 +2426,7 @@ Variables</h2></td></tr>
 <p>Array initializer for mean planet radii in meters, matching the enum <a class="el" href="#a219df36b21dc4476656e708d14d08045" title="Enumeration for the &#39;major planet&#39; numbers in NOVAS to use as the solar-system body number whenever t...">novas_planet</a>. </p>
 <p>E.g.</p>
 <div class="fragment"><div class="line"><span class="keyword">const</span> <span class="keywordtype">double</span> *planet_radii[] = <a class="code hl_define" href="#ae48a8495c1ddf3960784aba5189d178e">NOVAS_PLANET_RADII_INIT</a>;</div>
-<div class="ttc" id="anovas_8h_html_ae48a8495c1ddf3960784aba5189d178e"><div class="ttname"><a href="#ae48a8495c1ddf3960784aba5189d178e">NOVAS_PLANET_RADII_INIT</a></div><div class="ttdeci">#define NOVAS_PLANET_RADII_INIT</div><div class="ttdoc">Array initializer for mean planet radii in meters, matching the enum novas_planet.</div><div class="ttdef"><b>Definition</b> novas.h:426</div></div>
+<div class="ttc" id="anovas_8h_html_ae48a8495c1ddf3960784aba5189d178e"><div class="ttname"><a href="#ae48a8495c1ddf3960784aba5189d178e">NOVAS_PLANET_RADII_INIT</a></div><div class="ttdeci">#define NOVAS_PLANET_RADII_INIT</div><div class="ttdoc">Array initializer for mean planet radii in meters, matching the enum novas_planet.</div><div class="ttdef"><b>Definition</b> novas.h:431</div></div>
 </div><!-- fragment --><p>REFERENCES: </p><ol>
 <li>
 <a href="https://orbital-mechanics.space/reference/planetary-parameters.html">https://orbital-mechanics.space/reference/planetary-parameters.html</a>, Table 3. </li>
@@ -3104,6 +3096,35 @@ IERS Conventions, Chapter 3, Table 3.1 </li>
 </div>
 </div>
 <h2 class="groupheader">Typedef Documentation</h2>
+<a id="a1f0e319630e7a47f17247bf51f7bf36c" name="a1f0e319630e7a47f17247bf51f7bf36c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f0e319630e7a47f17247bf51f7bf36c">&#9670;&#160;</a></span>novas_nutation_provider</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef int(* novas_nutation_provider) (double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Function type definition for the IAU 2000 nutation series calculation. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">jd_tt_high</td><td>[day] High-order part of the Terrestrial Time (TT) based Julian date. Typically it may be the integer part of a split date for the highest precision, or the full date for normal (reduced) precision. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">jd_tt_low</td><td>[day] Low-order part of the Terrestrial Time (TT) based Julian date. Typically it may be the fractional part of a split date for the highest precision, or 0.0 for normal (reduced) precision. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">dpsi</td><td>[rad] &delta;&psi; Nutation (luni-solar + planetary) in longitude, in radians. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">deps</td><td>[rad] &delta;&epsilon; Nutation (luni-solar + planetary) in obliquity, in radians. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 (errno should be set to indicate the type of error).</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a69df5671751c09a7575963b94ad1151e" title="Nutates equatorial rectangular coordinates from mean equator and equinox of epoch to true equator and...">nutation()</a>, <a class="el" href="#a6e9ced7b0aec544ad7b057b58f777ec4" title="Returns the IAU2000 / 2006 values for nutation in longitude and nutation in obliquity for a given TDB...">nutation_angles()</a>, <a class="el" href="#a280cbf02b13ca57b3d77451be06e7dbc" title="Computes the IAU 2000A high-precision nutation series for the specified date, to 0....">iau2000a()</a>, <a class="el" href="#a6f9cddeb8c3dd906b9b0b5941249ad0c" title="Computes the forced nutation of the non-rigid Earth based at reduced precision.">iau2000b()</a>, iau2000k()</dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
+
+</div>
+</div>
 <a id="ad4899a6116cfbbe17400e7ef0c8426a9" name="ad4899a6116cfbbe17400e7ef0c8426a9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad4899a6116cfbbe17400e7ef0c8426a9">&#9670;&#160;</a></span>RefractionModel</h2>
 
@@ -6008,7 +6029,7 @@ Capitaine, N. et al. (2003), Astronomy And Astrophysics 412, pp. 567-586. </li>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="nutation_8h.html#a1f0e319630e7a47f17247bf51f7bf36c">novas_nutation_provider</a> get_nutation_lp_provider </td>
+          <td class="memname"><a class="el" href="#a1f0e319630e7a47f17247bf51f7bf36c">novas_nutation_provider</a> get_nutation_lp_provider </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -6484,6 +6505,125 @@ Kaplan, G. et al. (1989) Astronomical Journal 97, 1197-1210, section iii f. </li
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="system_8c.html#aef3c1f8e4c443e51e65003018449768a" title="Converts a position vector in the Earth-fixed ITRS frame to astrometric (unrefracted) azimuth and zen...">itrs_to_hor()</a>, <a class="el" href="transform_8c.html#a12953f66c0f774284f0700ae785784d0" title="Rotates a position vector from the Earth-fixed ITRS frame to the dynamical CIRS frame of date (IAU 20...">itrs_to_cirs()</a>, <a class="el" href="transform_8c.html#a3f6ae564cfac3766a21e0754905e5f7c" title="Rotates a position vector from the Earth-fixed ITRS frame to the dynamical True of Date (TOD) frame o...">itrs_to_tod()</a>, <a class="el" href="refract_8c.html#ac7ed2a1a5fb5aea3063d116d3d980eeb" title="Computes atmospheric optical refraction for an observed (already refracted!) zenith distance through ...">refract()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a280cbf02b13ca57b3d77451be06e7dbc" name="a280cbf02b13ca57b3d77451be06e7dbc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a280cbf02b13ca57b3d77451be06e7dbc">&#9670;&#160;</a></span>iau2000a()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int iau2000a </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>jd_tt_high</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>jd_tt_low</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *restrict</td>          <td class="paramname"><span class="paramname"><em>dpsi</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *restrict</td>          <td class="paramname"><span class="paramname"><em>deps</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Computes the IAU 2000A high-precision nutation series for the specified date, to 0.1 &mu;as accuracy. </p>
+<p>It is rather expensive computationally.</p>
+<p>NOTES: </p><ol>
+<li>
+As of SuperNOVAS v1.4.2, this function has been modified to replace the original IAU2000A model coefficients with the IAU2006 (a.k.a. IAU2000A R06) model coefficients, to provide an updated nutation model, which is dynamically consistent with the IAU2006 (P03) precesion model of Capitaine et al. 2003. This is now the same model with respect to which the IERS Earth orinetation parameters are computed and published. </li>
+</ol>
+<p>REFERENCES: </p><ol>
+<li>
+IERS Conventions (2003), Chapter 5. </li>
+<li>
+Simon et al. (1994) Astronomy and Astrophysics 282, 663-683, esp. Sections 3.4-3.5. </li>
+<li>
+Capitaine, N. et al. (2003), Astronomy And Astrophysics 412, pp. 567-586. </li>
+<li>
+<a href="https://hpiers.obspm.fr/eop-pc/models/nutations/nut.html">https://hpiers.obspm.fr/eop-pc/models/nutations/nut.html</a> </li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">jd_tt_high</td><td>[day] High-order part of the Terrestrial Time (TT) based Julian date. Typically it may be the integer part of a split date for the highest precision, or the full date for normal (reduced) precision. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">jd_tt_low</td><td>[day] Low-order part of the Terrestrial Time (TT) based Julian date. Typically, it may be the fractional part of a split date for the highest precision, or 0.0 for normal (reduced) precision. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">dpsi</td><td>[rad] &delta;&psi; Nutation (luni-solar + planetary) in longitude. It may be NULL if not required. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">deps</td><td>[rad] &delta;&epsilon; Nutation (luni-solar + planetary) in obliquity. It may be NULL if not required. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="nutation_8c.html#a6f9cddeb8c3dd906b9b0b5941249ad0c" title="Computes the forced nutation of the non-rigid Earth based at reduced precision.">iau2000b()</a>, <a class="el" href="nutation_8c.html#abd066c2857d1b1cc06d8bd51b912d841" title="Computes the forced nutation of the non-rigid Earth: Model NU2000K.">nu2000k()</a>, <a class="el" href="nutation_8c.html#a6e9ced7b0aec544ad7b057b58f777ec4" title="Returns the IAU2000 / 2006 values for nutation in longitude and nutation in obliquity for a given TDB...">nutation_angles()</a>, <a class="el" href="equator_8c.html#a69df5671751c09a7575963b94ad1151e" title="Nutates equatorial rectangular coordinates from mean equator and equinox of epoch to true equator and...">nutation()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a6f9cddeb8c3dd906b9b0b5941249ad0c" name="a6f9cddeb8c3dd906b9b0b5941249ad0c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f9cddeb8c3dd906b9b0b5941249ad0c">&#9670;&#160;</a></span>iau2000b()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int iau2000b </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>jd_tt_high</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>jd_tt_low</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *restrict</td>          <td class="paramname"><span class="paramname"><em>dpsi</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *restrict</td>          <td class="paramname"><span class="paramname"><em>deps</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Computes the forced nutation of the non-rigid Earth based at reduced precision. </p>
+<p>It reproduces the IAU 2000A (R06) model to a precision of 1 milliarcsecond in the interval 1995-2020, while being about 15x faster than <code><a class="el" href="nutation_8c.html#a280cbf02b13ca57b3d77451be06e7dbc" title="Computes the IAU 2000A high-precision nutation series for the specified date, to 0....">iau2000a()</a></code>.</p>
+<p>NOTES </p><ol>
+<li>
+<p class="startli">Originally this was the IAU2000B series of McCarthy &amp; Luzum (2003), consistent with the original IAU2000 precession model</p>
+<p class="endli"></p>
+</li>
+<li>
+As of SuperNOVAS v1.4.2, this function has been modified to use a truncated series for the IAU2006 (a.k.a. IAU 2000A R06) nutation model, whereby terms with amplitudes larger than 100 &mu;as are omitted, resulting in 102 terms for the longitude and 57 terms the obliquity. This results in similar, or slightly better, precision than the original IAU2000B series of McCarthy &amp; Luzum (2003), and it is now dynamically consistent with the IAU2006 (P03) precession model (Capitaine et al. 2005). </li>
+</ol>
+<p>REFERENCES: </p><ol>
+<li>
+McCarthy, D. and Luzum, B. (2003). "An Abridged Model of the
+    Precession &amp;amp; Nutation of the Celestial Pole," Celestial Mechanics and Dynamical Astronomy, Volume 85, Issue 1, Jan. 2003, p. 37. (IAU 2000B) IERS Conventions (2003), Chapter 5. </li>
+<li>
+Capitaine, N. et al. (2003), Astronomy And Astrophysics 412, pp. 567-586. </li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">jd_tt_high</td><td>[day] High-order part of the Terrestrial Time (TT) based Julian date. Typically it may be the integer part of a split date for the highest precision, or the full date for normal (reduced) precision. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">jd_tt_low</td><td>[day] Low-order part of the Terrestrial Time (TT) based Julian date. Typically it may be the fractional part of a split date for the highest precision, or 0.0 for normal (reduced) precision. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">dpsi</td><td>[rad] &delta;&psi; Nutation (luni-solar + planetary) in longitude, It may be NULL if not required. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">deps</td><td>[rad] &delta;&epsilon; Nutation (luni-solar + planetary) in obliquity. It may be NULL if not required. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="nutation_8c.html#a280cbf02b13ca57b3d77451be06e7dbc" title="Computes the IAU 2000A high-precision nutation series for the specified date, to 0....">iau2000a()</a>, <a class="el" href="nutation_8c.html#abd066c2857d1b1cc06d8bd51b912d841" title="Computes the forced nutation of the non-rigid Earth: Model NU2000K.">nu2000k()</a>, <a class="el" href="nutation_8c.html#a6e9ced7b0aec544ad7b057b58f777ec4" title="Returns the IAU2000 / 2006 values for nutation in longitude and nutation in obliquity for a given TDB...">nutation_angles()</a>, <a class="el" href="ephemeris_8c.html#a694288eb631d6a69ecf313b7b5b4a677" title="Set the function to use for low-precision IAU 2000 nutation calculations instead of the default nu200...">set_nutation_lp_provider()</a>, <a class="el" href="equator_8c.html#a69df5671751c09a7575963b94ad1151e" title="Nutates equatorial rectangular coordinates from mean equator and equinox of epoch to true equator and...">nutation()</a> </dd></dl>
 
 </div>
 </div>
@@ -13757,6 +13897,69 @@ Stone, Ronald C., P.A.S.P. 108, 1051-1058, 1996.  </li>
 
 </div>
 </div>
+<a id="abd066c2857d1b1cc06d8bd51b912d841" name="abd066c2857d1b1cc06d8bd51b912d841"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd066c2857d1b1cc06d8bd51b912d841">&#9670;&#160;</a></span>nu2000k()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int nu2000k </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>jd_tt_high</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>jd_tt_low</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *restrict</td>          <td class="paramname"><span class="paramname"><em>dpsi</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *restrict</td>          <td class="paramname"><span class="paramname"><em>deps</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Computes the forced nutation of the non-rigid Earth: Model NU2000K. </p>
+<p>This model is a modified version of the original IAU 2000A, which has been truncated for speed of execution. NU2000K agrees with IAU 2000A at the 0.1 milliarcsecond level from 1700 to 2300, while being is about 5x faster than the more precise <code><a class="el" href="nutation_8c.html#a280cbf02b13ca57b3d77451be06e7dbc" title="Computes the IAU 2000A high-precision nutation series for the specified date, to 0....">iau2000a()</a></code>.</p>
+<p>NU2000K was compared to IAU 2000A over six centuries (1700-2300). The average error in d&psi; is 20 microarcseconds, with 98% of the errors &lt; 60 microarcseconds; the average error in d&epsilon;is 8 microarcseconds, with 100% of the errors &lt; 60 microarcseconds.</p>
+<p>NU2000K was developed by G. Kaplan (USNO) in March 2004</p>
+<p>NOTES: </p><ol>
+<li>
+As of SuperNOVAS v1.4.2, this function has been modified to include a rescaling of the original IAU2000 nutation compatible values to 'IAU2006' (i.e. IAU2000A R06) compatible values, according to Coppola, Seago, and Vallado (2009). The rescaling makes this model more dynamically consistent with the IAU2006 (P03) precession model of Capitaine et al. (2003).  </li>
+</ol>
+<p>REFERENCES: </p><ol>
+<li>
+IERS Conventions (2003), Chapter 5. </li>
+<li>
+Simon et al. (1994) Astronomy and Astrophysics 282, 663-683, esp. Sections 3.4-3.5. </li>
+<li>
+Capitaine, N. et al. (2003), Astronomy And Astrophysics 412, pp. 567-586. </li>
+<li>
+Coppola, V., Seago, G.H., &amp; Vallado, D.A. (2009), AAS 09-159 </li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">jd_tt_high</td><td>[day] High-order part of the Terrestrial Time (TT) based Julian date. Typically it may be the integer part of a split date for the highest precision, or the full date for normal (reduced) precision. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">jd_tt_low</td><td>[day] Low-order part of the Terrestrial Time (TT) based Julian date. Typically it may be the fractional part of a split date for the highest precision, or 0.0 for normal (reduced) precision. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">dpsi</td><td>[rad] &delta;&psi; Nutation (luni-solar + planetary) in longitude, It may be NULL if not required. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">deps</td><td>[rad] &delta;&epsilon; Nutation (luni-solar + planetary) in obliquity. It may be NULL if not required. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="nutation_8c.html#a280cbf02b13ca57b3d77451be06e7dbc" title="Computes the IAU 2000A high-precision nutation series for the specified date, to 0....">iau2000a()</a>, <a class="el" href="nutation_8c.html#a6f9cddeb8c3dd906b9b0b5941249ad0c" title="Computes the forced nutation of the non-rigid Earth based at reduced precision.">iau2000b()</a>, <a class="el" href="nutation_8c.html#a6e9ced7b0aec544ad7b057b58f777ec4" title="Returns the IAU2000 / 2006 values for nutation in longitude and nutation in obliquity for a given TDB...">nutation_angles()</a>, <a class="el" href="ephemeris_8c.html#a694288eb631d6a69ecf313b7b5b4a677" title="Set the function to use for low-precision IAU 2000 nutation calculations instead of the default nu200...">set_nutation_lp_provider()</a>, <a class="el" href="equator_8c.html#a69df5671751c09a7575963b94ad1151e" title="Nutates equatorial rectangular coordinates from mean equator and equinox of epoch to true equator and...">nutation()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="equator_8c.html#ad1de5b481e41cf193c199bd0dc5084bd">accum_prec()</a>, <a class="el" href="structnovas__delaunay__args.html#ad8657a5ec76e12f3066fb4b4eb75ace9">novas_delaunay_args::D</a>, <a class="el" href="structnovas__delaunay__args.html#ae3520ebb3ff8d6feab3e6afb47ed4040">novas_delaunay_args::F</a>, <a class="el" href="equator_8c.html#a312b5ab1a004b179d80463a07ca7da8f">fund_args()</a>, <a class="el" href="structnovas__delaunay__args.html#a59e80b8ba32c12c6d0a868f17a19ae48">novas_delaunay_args::l</a>, <a class="el" href="structnovas__delaunay__args.html#ad7a541093aca44890413459c6248db6c">novas_delaunay_args::l1</a>, <a class="el" href="#a219df36b21dc4476656e708d14d08045adc941f5a3613952d6d6102281e70e5c0">NOVAS_EARTH</a>, <a class="el" href="#a219df36b21dc4476656e708d14d08045a994baf0c30caeaaee7b8b4d5a12921a3">NOVAS_JUPITER</a>, <a class="el" href="#a219df36b21dc4476656e708d14d08045a479f3eb097c0aeb4ac7dc3ae2e6c376e">NOVAS_MARS</a>, <a class="el" href="#a219df36b21dc4476656e708d14d08045a03b12ea0f93a1a1045d7bcccd613c6f2">NOVAS_SATURN</a>, <a class="el" href="#a219df36b21dc4476656e708d14d08045a7c452cc654265f03e78801f9aead83de">NOVAS_VENUS</a>, <a class="el" href="structnovas__delaunay__args.html#a1b5bf6735b7465aec5c931281d240737">novas_delaunay_args::Omega</a>, and <a class="el" href="planets_8c.html#aacc6a0daf29b8bdc18f46647a94694d3">planet_lon()</a>.</p>
+
+</div>
+</div>
 <a id="a69df5671751c09a7575963b94ad1151e" name="a69df5671751c09a7575963b94ad1151e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a69df5671751c09a7575963b94ad1151e">&#9670;&#160;</a></span>nutation()</h2>
 
@@ -15251,7 +15454,7 @@ Bennett, G. (1982), Journal of Navigation (Royal Institute) 35, pp. 255-259. </l
         <tr>
           <td class="memname">int set_nutation_lp_provider </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="nutation_8h.html#a1f0e319630e7a47f17247bf51f7bf36c">novas_nutation_provider</a></td>          <td class="paramname"><span class="paramname"><em>func</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="#a1f0e319630e7a47f17247bf51f7bf36c">novas_nutation_provider</a></td>          <td class="paramname"><span class="paramname"><em>func</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
