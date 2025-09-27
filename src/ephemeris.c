@@ -1,10 +1,10 @@
 /**
  * @file
  *
- *  Functions that allow to define or access user-defined ephemeris plugin routines. SuperNOVAS
- *  cannot by itself provide accurate positions for Solar-system sources. While it has a built-in
- *  calculator (see @ref solsys3.c) for the Earth and the Sun, it is suitable for approximate
- *  position calculations only, and is limited to arcmin-level accuracy.
+ *  Functions that allow to define or access Solar-system ephemeris data. SuperNOVAS cannot, by
+ *  itself, provide accurate positions for Solar-system sources. While it has a built-in
+ *  calculator (see @ref solsys3.c) for the Earth and the Sun, it is suitable for obtaining
+ *  approximate positions for the Sun and Earth only, and is limited to arcmin-level accuracy.
  *
  *  To do astrometry right for Solar-system sources (major planets, and minor bodies like
  *  asteroids, comets, or moons), you will have to interface SuperNOVAS with ephemeris data,
@@ -16,14 +16,14 @@
  *  (non-Solar-system) sources if one is to account for gravitational deflections around the
  *  major planets as light traverses the Solar-system on its way to the observer.
  *
- *  You may download various data files (SPICE kernels) made available by NASA from the
+ *  You may download various ephemeris data files (SPICE kernels) made available by NASA from the
  *  [JPL NAIF](https://naif.jpl.nasa.gov/naif/data.html) site or from the
  *  [JPL Horizons](https://ssd.jpl.nasa.gov/horizons/) system, and them
- *  access them via appropriate other C libraries, such as JPL's own
+ *  access them via appropriate C libraries, such as JPL's own
  *  [NAIF CSPICE Toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html), or the more modern
  *  [CALCEPH](https://calceph.imcce.fr/) library by IMCCE. SuperNOVAS provides interfaces to both
- *  (see @ref solsys-cspice.c and @ref solsys-calceph.c). Using these plugins makes it trivial to
- *  incorporate ephemeris data into SuperNOVAS.
+ *  (see @ref solsys-cspice.c and @ref solsys-calceph.c), making it very easy to incorporate
+ *  ephemeris data into SuperNOVAS that way.
  *
  *  Alternatively, you might use some other library or your own code to access ephemeris data,
  *  e.g. by interfacing directly to the [JPL Horizons](https://ssd.jpl.nasa.gov/horizons/) system,
@@ -37,7 +37,7 @@
  *  ```
  *
  *  (Alternatively, you might define separate low and high-precision ephemeris provider functions
- *  for the major planets by writing your own `novas_ephem_provider` and `novas_ephem_provider_hp`
+ *  for the major planets ,by writing your own `novas_ephem_provider` and `novas_ephem_provider_hp`
  *  interface functions, respectively, and activating these with `set_ephem_provider()` and
  *  `set_ephem_provider_hp()`.)
  *

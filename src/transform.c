@@ -543,6 +543,17 @@ int tod_to_gcrs(double jd_tdb, enum novas_accuracy accuracy, const double *in, d
  * same, since they only define the orientation of the equator, and not the origin. The origin is
  * defined by the observer location separately.)
  *
+ * This function uses Method 2 of the IERS Conventions 2010 (Chapter 5, Section 5.9), first
+ * applying the frame bias to convert GCRS to J2000, then using the IAU 2006 precession-nutation
+ * model (P03; Capitaine et al. 2003) to convert to TOD, and finally to CIRS via a rotation by the
+ * equation of origins.
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>IERS Conventions 2010, Chapter 5, especially Section 5.9</li>
+ * <li>Capitaine, N. et al. (2003), Astronomy And Astrophysics 412, pp. 567-586.</li>
+ * </ol>
+ *
  * @param jd_tdb    [day] Barycentric Dynamical Time (TDB) based Julian date that defines the
  *                  output epoch. Typically it does not require much precision, and Julian dates
  *                  in other time measures will be unlikely to affect the result
@@ -574,6 +585,17 @@ int gcrs_to_cirs(double jd_tdb, enum novas_accuracy accuracy, const double *in, 
  * System (CIRS) frame at the given epoch to the ICRS / GCRS. (We treat ICRS and GCRS the same,
  * since they only define the orientation of the equator, and not the origin. The origin is defined
  * by the observer location separately.)
+ *
+ * This function uses Method 2 of the IERS Conventions 2010 (Chapter 5, Section 5.9), converting
+ * CIRS to TOD first via a rotation by the equation of origins, then using the IAU 2006
+ * precession-nutation model (P03; Capitaine et al. 2003) to convert to J2000, and finally
+ * correcting for the frame bias to arrive at GCRS.
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>IERS Conventions 2010, Chapter 5, especially Section 5.9</li>
+ * <li>Capitaine, N. et al. (2003), Astronomy And Astrophysics 412, pp. 567-586.</li>
+ * </ol>
  *
  * @param jd_tdb    [day] Barycentric Dynamical Time (TDB) based Julian date that defines the
  *                  output epoch. Typically it does not require much precision, and Julian dates

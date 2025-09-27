@@ -50,8 +50,8 @@
  * @return          [day] the fractional Julian day for the input calendar date, ot NAN if the
  *                  calendar is invalid or the month or day components are out of range.
  *
- * @since 1.3
  * @author Attila Kovacs
+ * @since 1.3
  *
  * @sa novas_jd_to_date(), novas_get_time()
  */

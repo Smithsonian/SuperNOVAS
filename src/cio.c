@@ -1,10 +1,42 @@
 /**
  * @file
  *
- * Functions to handle the CIO location and CIRS orientation.
+ * Functions to calculate or access the Celestial Intermediate Origin (CIO) location. The CIO is
+ * the origin of the Celestial Intermediate Reference System (CIRS), which is the IAU 2000 dynamic
+ * equatorial system of date. CIRS and the old equivalent True of Date (TOD) systems share the
+ * same dynamical equator, but differ in where the origin lies on the equator: CIO vs the true
+ * equinox of date.
+ *
+ * The IAU2000 standard for position calculations typically involves converting between GCRS and
+ * CIRS systems, and the IERS Conventions 2010, Chapter 5 describes two equivalent methods to do
+ * so.
+ *
+ * - __Method 1__ is the more direct method and involves calculating the position of the Celestial
+ *   Intermediate Pole (CIP) of date in GCRS, using a harmonic series containing some 2825
+ *   lunisolar and planetary terms (Tables
+ *   [5.2a](https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2a.txt) and
+ *   [5.2b](https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2b.txt)).
+ *
+ * - __Method 2__ is more roundabout, transforming GCRS to J2000 first, then using the IAU 2006
+ *   (P03) precession-nutation model to calculate True-of-Date coordinates, which are then
+ *   transformed to CIRS by a simple rotation with the CIO's position relative to the true-equinox
+ *   of date. The IAU2006 nutation series uses 2414 lunisolar and planetary terms (Tables
+ *   [5.3a](https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.3a.txt) and
+ *   [5.3b](https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.3b.txt)).
+ *
+ * The two methods are equivalent both in terms of accuracy, down to the &mu;as level, and in
+ * terms of computational cost. Neither is 'superior' to the other in any measurable way. In
+ * SuperNOVAS we choose to follow Method 2, since its implementation is more readily given with
+ * the existing framework of related functions.
  *
  * @date Created  on Mar 6, 2025
  * @author G. Kaplan and Attila Kovacs
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>IERS Conventions 2010, Chapter 5, especially Section 5.9</li>
+ * <li>Capitaine, N. et al. (2003), Astronomy And Astrophysics 412, pp. 567-586.</li>
+ * </ol>
  *
  * @sa equinox.c
  */
