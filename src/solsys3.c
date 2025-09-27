@@ -1,10 +1,10 @@
 /**
  * @file
  *
- *  SuperNOVAS planet calculator functions for the Earth and Sun only, with an orbital model
- *  fotted to the DE405 ephemerides by JPL. This function is suitable for calculating the positions
- *  of Earth and the Sun around the Solar-system Barycenter (SSB) with a typical accutacy of around
- *  10 arcseconds within a few centuries of J2000.
+ *  Planet calculator functions for the Earth and Sun only, with an orbital model fitted to the
+ *  DE405 ephemerides by JPL. This function is suitable for calculating the positions of Earth and
+ *  the Sun around the Solar-system Barycenter (SSB) with a typical accutacy of around 10
+ *  arcseconds within a few centuries of J2000.
  *
  *  It is inherently similar, at least in accuracy, to the planetary orbital models provided by @ref
  *  planets.c, except that it can be used more widely in SuperNOVAS internally by the various

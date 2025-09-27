@@ -1,10 +1,10 @@
 /**
  * @file
  *
- * SuperNOVAS routines for higher-level and efficient astrometric calculations using observing
- * frames. An observing frames represents an observer location at a specific astronomical time
- * (instant), which can be re-used again and again to calculate or transform positions of
- * celestial sources in a a range of astronomical coordinate systems.
+ * High-level and efficient astrometric calculations using observing frames. An observing frame
+ * represents an observer location at a specific astronomical time (instant), which can be
+ * re-used again and again to calculate or transform positions of celestial sources in a a range
+ * of astronomical coordinate systems.
  *
  * To use frames, you start with `novas_make_frame()` with an astrometric time and an observer
  * location, and optionally Earth-orientation parameters if precision below the arcsecond

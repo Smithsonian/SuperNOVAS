@@ -1,8 +1,7 @@
 /**
  * @file
  *
- * SuperNOVAS major planet ephemeris handler via the same generic ephemeris reader that is
- * configured by set_ephem_provider().
+ * Major planet ephemeris lookup via the function, which was configured by set_ephem_provider().
  *
  * @date Created  on Jan 29, 2024
  * @author Attila Kovacs

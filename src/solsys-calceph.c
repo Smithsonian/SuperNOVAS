@@ -1,7 +1,7 @@
 /**
  * @file
  *
- *  SuperNOVAS Solar-system ephemeris lookup implementation via the CALCEPH C library.
+ *  Solar-system ephemeris lookup via the CALCEPH C library.
  *
  *  This is an optional component of SuperNOVAS, which interfaces to the CALCEPH C library. As
  *  such, you may need the CALCEPH runtime libraries in an accessible location (such as in

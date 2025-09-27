@@ -12,7 +12,7 @@
  * @date Created  on Apr 27, 2025
  * @author Attila Kovacs
  *
- * @sa solsys-calceph.c, solsys-cspice.c, ephemeris.c
+ * @sa orbital.c, solsys-calceph.c, solsys-cspice.c, ephemeris.c
  */
 
 #include <math.h>

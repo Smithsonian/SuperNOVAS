@@ -1,7 +1,7 @@
 /**
  * @file
  *
- *  SuperNOVAS Solar-system ephemeris lookup implementation via the NAIF CSPICE library.
+ *  Solar-system ephemeris lookup via the NAIF CSPICE library.
  *
  *  This is an optional component of SuperNOVAS, which interfaces to the NAIF CSPICE Toolkit.
  *  As such, you may need the CSPICE runtime libraries in an accessible location (such

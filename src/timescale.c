@@ -1,8 +1,7 @@
 /**
  * @file
  *
- *  A set of SuperNOVAS routines to make handling of astronomical timescales and conversions
- *  among them easier.
+ *  Functions to define and use different astronomical timescales and to convert among them.
  *
  * @date Created  on Jun 24, 2024
  * @author Attila Kovacs
