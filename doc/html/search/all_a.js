@@ -12,5 +12,5 @@ var searchData=
   ['frames_2ec_9',['frames.c',['../frames_8c.html',1,'']]],
   ['from_5fsystem_10',['from_system',['../structnovas__transform.html#a5fe73fdfdc0f8933168a1c50df2db4ed',1,'novas_transform']]],
   ['functionality_20highlights_11',['New functionality highlights',['../index.html#autotoc_md106',1,'']]],
-  ['fund_5fargs_12',['fund_args',['../equinox_8c.html#a312b5ab1a004b179d80463a07ca7da8f',1,'fund_args(double t, novas_delaunay_args *restrict a):&#160;equinox.c'],['../novas_8h.html#a312b5ab1a004b179d80463a07ca7da8f',1,'fund_args(double t, novas_delaunay_args *restrict a):&#160;equinox.c']]]
+  ['fund_5fargs_12',['fund_args',['../equator_8c.html#a312b5ab1a004b179d80463a07ca7da8f',1,'fund_args(double t, novas_delaunay_args *restrict a):&#160;equator.c'],['../novas_8h.html#a312b5ab1a004b179d80463a07ca7da8f',1,'fund_args(double t, novas_delaunay_args *restrict a):&#160;equator.c']]]
 ];

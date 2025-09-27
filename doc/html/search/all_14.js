@@ -28,7 +28,7 @@ var searchData=
   ['positions_20for_20a_20sidereal_20source_25',['Calculating positions for a sidereal source',['../index.html#autotoc_md71',1,'']]],
   ['positions_20for_20a_20solar_20system_20source_26',['Calculating positions for a Solar-system source',['../index.html#autotoc_md80',1,'']]],
   ['precession_27',['PRECESSION',['../novas_8h.html#ace5e59ce1564bf6c61946c290bb05367a6833dbc8bfb3b8ba2cdd7a2da0b82353',1,'novas.h']]],
-  ['precession_28',['precession',['../structnovas__frame.html#ab0ba4960aa038a40165a7131684c6853',1,'novas_frame::precession'],['../equinox_8c.html#a9178358732325399f3a5e3582080ced3',1,'precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *out):&#160;equinox.c'],['../novas_8h.html#a9178358732325399f3a5e3582080ced3',1,'precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *out):&#160;equinox.c']]],
+  ['precession_28',['precession',['../structnovas__frame.html#ab0ba4960aa038a40165a7131684c6853',1,'novas_frame::precession'],['../equator_8c.html#a9178358732325399f3a5e3582080ced3',1,'precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *out):&#160;equator.c'],['../novas_8h.html#a9178358732325399f3a5e3582080ced3',1,'precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *out):&#160;equator.c']]],
   ['precise_20results_29',['Prerequisites to precise results',['../index.html#autotoc_md91',1,'']]],
   ['precision_30',['Notes on precision',['../index.html#autotoc_md90',1,'']]],
   ['prerequisites_20to_20precise_20results_31',['Prerequisites to precise results',['../index.html#autotoc_md91',1,'']]],

@@ -128,8 +128,8 @@ Functions</h2></td></tr>
 <p>The CIO is the origin of the Celestial Intermediate Reference System (CIRS), which is the IAU 2000 dynamic equatorial system of date. CIRS and the old equivalent True of Date (TOD) systems share the same dynamical equator, but differ in where the origin lies on the equator: CIO vs the true equinox of date.</p>
 <p>The IAU2000 standard for position calculations typically involves converting between GCRS and CIRS systems, and the IERS Conventions 2010, Chapter 5 describes two equivalent methods to do so.</p>
 <ul>
-<li><b>Method 1</b> is the more direct method and involves calculating the position of the Celestial Intermediate Pole (CIP) of date in GCRS, using a harmonic series containing some 2825 lunisolar and planetary terms (Tables <a href="https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2a.txt">5.2a</a> and <a href="https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2b.txt">5.2b</a>).</li>
-<li><b>Method 2</b> is more roundabout, transforming GCRS to J2000 first, then using the IAU 2006 (P03) precession-nutation model to calculate True-of-Date coordinates, which are then transformed to CIRS by a simple rotation with the CIO's position relative to the true-equinox of date. The IAU2006 nutation series uses 2414 lunisolar and planetary terms (Tables <a href="https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.3a.txt">5.3a</a> and <a href="https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.3b.txt">5.3b</a>).</li>
+<li><b>Method 1</b> is the more direct method and involves calculating the position of the Celestial Intermediate Pole (CIP) of date in GCRS, using a harmonic series containing some 2825 lunisolar and planetary terms (IERS Conventions 2010, Tables <a href="https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2a.txt">5.2a</a> and <a href="https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2b.txt">5.2b</a>).</li>
+<li><b>Method 2</b> is more roundabout, transforming GCRS to J2000 first, then using the IAU 2006 (P03) precession-nutation model to calculate True-of-Date coordinates, which are then transformed to CIRS by a simple rotation with the CIO's position relative to the true-equinox of date. The IAU2006 nutation series uses 2414 lunisolar and planetary terms (IERS Conventions 2010, Tables <a href="https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.3a.txt">5.3a</a> and <a href="https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.3b.txt">5.3b</a>).</li>
 </ul>
 <p>The two methods are equivalent both in terms of accuracy, down to the &mu;as level, and in terms of computational cost. Neither is 'superior' to the other in any measurable way. In SuperNOVAS we choose to follow Method 2, since its implementation is more readily given with the existing framework of related functions.</p>
 <p>REFERENCES: </p><ol>
@@ -140,7 +140,7 @@ Capitaine, N. et al. (2003), Astronomy And Astrophysics 412, pp. 567-586. </li>
 </ol>
 <dl class="section date"><dt>Date</dt><dd>Created on Mar 6, 2025 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>G. Kaplan and Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="equinox_8c.html" title="Various functions for calculating the equator and equinox of date, and related quatities.">equinox.c</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="equator_8c.html" title="Various functions for calculating the equator and equinox of date, and related quatities.">equator.c</a> </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="afc894b55420495a727a90d3d85188ef4" name="afc894b55420495a727a90d3d85188ef4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afc894b55420495a727a90d3d85188ef4">&#9670;&#160;</a></span>cio_array()</h2>
@@ -166,7 +166,7 @@ Capitaine, N. et al. (2003), Astronomy And Astrophysics 412, pp. 567-586. </li>
       </table>
 </div><div class="memdoc">
 <dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000004">Deprecated</a></b></dt><dd>This function is no longer used within SuperNOVAS. It is still provided, however, in order to retain 100% API compatibility with NOVAS C.</dd></dl>
-<p>Given an input TDB Julian date and the number of data points desired, this function returns a set of Julian dates and corresponding values of the GCRS right ascension of the celestial intermediate origin (CIO). The range of dates is centered (at least approximately) on the requested date. The function obtains the data from an external data file.</p>
+<p>Given an input TDB Julian date and the number of data points desired, this function returns a set of Julian dates and corresponding values of the GCRS right ascension of the celestial intermediate origin (CIO). The range of dates is centered on the requested date.</p>
 <p>NOTES: </p><ol>
 <li>
 This function has been completely re-written by A. Kovacs to provide much more efficient caching and I/O.  </li>
@@ -293,7 +293,7 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000002">Deprecated</a></b></dt><dd>This function is no longer used internally in the library. Given that the CIO is defined on the dynamical equator of date, it is not normally meaningful to provide an R.A. coordinate for it in GCRS. Instead, you might use <code><a class="el" href="#acc331c69187b3077b98280bfb57f6670" title="Computes the true right ascension of the celestial intermediate origin (CIO) vs the equinox of date o...">cio_ra()</a></code> to get the CIO location w.r.t. the equinox of date (on the same dynamical equator), or equivalently <code><a class="el" href="equinox_8c.html#aea0e1028baf14d16d9de800e36a17086" title="Compute the intermediate right ascension of the equinox at the input Julian date, using an analytical...">ira_equinox()</a></code> to return the negated value of the same.</dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000002">Deprecated</a></b></dt><dd>This function is no longer used internally in the library. Given that the CIO is defined on the dynamical equator of date, it is not normally meaningful to provide an R.A. coordinate for it in GCRS. Instead, you might use <code><a class="el" href="#acc331c69187b3077b98280bfb57f6670" title="Computes the true right ascension of the celestial intermediate origin (CIO) vs the equinox of date o...">cio_ra()</a></code> to get the CIO location w.r.t. the equinox of date (on the same dynamical equator), or equivalently <code><a class="el" href="equator_8c.html#aea0e1028baf14d16d9de800e36a17086" title="Compute the intermediate right ascension of the equinox at the input Julian date, using an analytical...">ira_equinox()</a></code> to return the negated value of the same.</dd></dl>
 <p>Returns the location of the celestial intermediate origin (CIO) for a given Julian date, as a right ascension with respect to the true equinox of date. The CIO is always located on the true equator (= intermediate equator) of date.</p>
 <p>NOTES: </p><ol>
 <li>
@@ -313,9 +313,9 @@ As of version 1.5, this function always returns the CIO location w.r.t. the true
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if one of the pointer arguments is NULL or the accuracy is invalid.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#acc331c69187b3077b98280bfb57f6670" title="Computes the true right ascension of the celestial intermediate origin (CIO) vs the equinox of date o...">cio_ra()</a>, <a class="el" href="equinox_8c.html#aea0e1028baf14d16d9de800e36a17086" title="Compute the intermediate right ascension of the equinox at the input Julian date, using an analytical...">ira_equinox()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#acc331c69187b3077b98280bfb57f6670" title="Computes the true right ascension of the celestial intermediate origin (CIO) vs the equinox of date o...">cio_ra()</a>, <a class="el" href="equator_8c.html#aea0e1028baf14d16d9de800e36a17086" title="Compute the intermediate right ascension of the equinox at the input Julian date, using an analytical...">ira_equinox()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8h.html#aee3f2f5b3807612025e2ce25d368ff2fae8c1b78646fefbd0ffdcae083b597241">CIO_VS_EQUINOX</a>, <a class="el" href="equinox_8c.html#aea0e1028baf14d16d9de800e36a17086">ira_equinox()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, and <a class="el" href="novas_8h.html#ab970f5de5d5e04874cb31865459b0b4fa1096785746d1a9bc678ea2c51fc21055">NOVAS_TRUE_EQUINOX</a>.</p>
+<p class="reference">References <a class="el" href="novas_8h.html#aee3f2f5b3807612025e2ce25d368ff2fae8c1b78646fefbd0ffdcae083b597241">CIO_VS_EQUINOX</a>, <a class="el" href="equator_8c.html#aea0e1028baf14d16d9de800e36a17086">ira_equinox()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, and <a class="el" href="novas_8h.html#ab970f5de5d5e04874cb31865459b0b4fa1096785746d1a9bc678ea2c51fc21055">NOVAS_TRUE_EQUINOX</a>.</p>
 
 </div>
 </div>
@@ -358,9 +358,9 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if the output pointer argument is NULL, 1 if 'accuracy' is invalid, 10&ndash;20: 10 + error code from <a class="el" href="#a65ffaaa2b527ed03149eadc7568f3714">cio_location()</a>, or else 20 + error from <a class="el" href="#a51bfbe9b491f50851326b2522dc2a29f">cio_basis()</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="equinox_8c.html#aea0e1028baf14d16d9de800e36a17086" title="Compute the intermediate right ascension of the equinox at the input Julian date, using an analytical...">ira_equinox()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="equator_8c.html#aea0e1028baf14d16d9de800e36a17086" title="Compute the intermediate right ascension of the equinox at the input Julian date, using an analytical...">ira_equinox()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="equinox_8c.html#aea0e1028baf14d16d9de800e36a17086">ira_equinox()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, and <a class="el" href="novas_8h.html#ab970f5de5d5e04874cb31865459b0b4fa1096785746d1a9bc678ea2c51fc21055">NOVAS_TRUE_EQUINOX</a>.</p>
+<p class="reference">References <a class="el" href="equator_8c.html#aea0e1028baf14d16d9de800e36a17086">ira_equinox()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, and <a class="el" href="novas_8h.html#ab970f5de5d5e04874cb31865459b0b4fa1096785746d1a9bc678ea2c51fc21055">NOVAS_TRUE_EQUINOX</a>.</p>
 
 </div>
 </div>

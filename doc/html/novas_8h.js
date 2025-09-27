@@ -302,7 +302,6 @@ var novas_8h =
     [ "e_tilt", "novas_8h.html#ab75165e2d69231da10c67de025ee05d8", null ],
     [ "ecl2equ", "novas_8h.html#a41ca0cfd79ad07c9e857ba02fa94928e", null ],
     [ "ecl2equ_vec", "novas_8h.html#a6fa1eada41005ac70290d0bb5df1ec26", null ],
-    [ "ephemeris", "novas_8h.html#a713982e1f2bae0a72b39d03007f00d23", null ],
     [ "equ2ecl", "novas_8h.html#a035047336b16951b8b850066e74210a9", null ],
     [ "equ2ecl_vec", "novas_8h.html#aa05ecc76c1ccc0c3445f8b642d6c5311", null ],
     [ "equ2gal", "novas_8h.html#a288b49c03bc29704c8dd5acf8baca80e", null ],

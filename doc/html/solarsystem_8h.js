@@ -11,6 +11,7 @@ var solarsystem_8h =
     [ "earth_sun_calc", "solarsystem_8h.html#a580f5949c8a29cdd7bf4787aee891f2b", null ],
     [ "earth_sun_calc_hp", "solarsystem_8h.html#a338e3436ba86dadf6bd4d7390f9940ec", null ],
     [ "enable_earth_sun_hp", "solarsystem_8h.html#a279bca0519117cee9a3bd4382f38e7ad", null ],
+    [ "ephemeris", "solarsystem_8h.html#a713982e1f2bae0a72b39d03007f00d23", null ],
     [ "get_ephem_provider", "solarsystem_8h.html#aa6fad38297a49ba78a6bd49cedf889b1", null ],
     [ "get_planet_provider", "solarsystem_8h.html#a0f0a786b5614a788c02b37a462eae2d2", null ],
     [ "get_planet_provider_hp", "solarsystem_8h.html#ae45badb450c1ca73920d982e12346c5b", null ],

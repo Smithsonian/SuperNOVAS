@@ -32,7 +32,7 @@ var searchData=
   ['mask_29',['mask',['../structnovas__planet__bundle.html#ab77cc972f3ee899689ba053015472ccd',1,'novas_planet_bundle']]],
   ['matrix_30',['matrix',['../structnovas__transform.html#ac528fe7349274fecff6a0c7742414308',1,'novas_transform']]],
   ['max_5fdecimals_31',['MAX_DECIMALS',['../parse_8c.html#a93d0a993c2c1e6458c1e93fbd446b417',1,'parse.c']]],
-  ['mean_5fobliq_32',['mean_obliq',['../equinox_8c.html#af182ee8cc4239f581f746aa974827d61',1,'mean_obliq(double jd_tdb):&#160;equinox.c'],['../novas_8h.html#af182ee8cc4239f581f746aa974827d61',1,'mean_obliq(double jd_tdb):&#160;equinox.c']]],
+  ['mean_5fobliq_32',['mean_obliq',['../equator_8c.html#af182ee8cc4239f581f746aa974827d61',1,'mean_obliq(double jd_tdb):&#160;equator.c'],['../novas_8h.html#af182ee8cc4239f581f746aa974827d61',1,'mean_obliq(double jd_tdb):&#160;equator.c']]],
   ['mean_5fstar_33',['mean_star',['../place_8c.html#aaf51bf000e993807101a34adf423d36b',1,'mean_star(double jd_tt, double tra, double tdec, enum novas_accuracy accuracy, double *restrict ira, double *restrict idec):&#160;place.c'],['../novas_8h.html#aaf51bf000e993807101a34adf423d36b',1,'mean_star(double jd_tt, double tra, double tdec, enum novas_accuracy accuracy, double *restrict ira, double *restrict idec):&#160;place.c']]],
   ['mobl_34',['mobl',['../structnovas__frame.html#adcbb032bae5aa01bff2501f40527943e',1,'novas_frame']]],
   ['mod_5fto_5fgcrs_35',['mod_to_gcrs',['../transform_8c.html#ad9cc07f0e6af9339096e15a440b113e5',1,'mod_to_gcrs(double jd_tdb, const double *in, double *out):&#160;transform.c'],['../novas_8h.html#ad9cc07f0e6af9339096e15a440b113e5',1,'mod_to_gcrs(double jd_tdb, const double *in, double *out):&#160;transform.c']]],

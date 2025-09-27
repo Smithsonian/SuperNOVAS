@@ -701,7 +701,6 @@
           <topic label="e_tilt" href="novas_8h.html#ab75165e2d69231da10c67de025ee05d8"/>
           <topic label="ecl2equ" href="novas_8h.html#a41ca0cfd79ad07c9e857ba02fa94928e"/>
           <topic label="ecl2equ_vec" href="novas_8h.html#a6fa1eada41005ac70290d0bb5df1ec26"/>
-          <topic label="ephemeris" href="novas_8h.html#a713982e1f2bae0a72b39d03007f00d23"/>
           <topic label="equ2ecl" href="novas_8h.html#a035047336b16951b8b850066e74210a9"/>
           <topic label="equ2ecl_vec" href="novas_8h.html#aa05ecc76c1ccc0c3445f8b642d6c5311"/>
           <topic label="equ2gal" href="novas_8h.html#a288b49c03bc29704c8dd5acf8baca80e"/>
@@ -940,6 +939,7 @@
           <topic label="earth_sun_calc" href="solarsystem_8h.html#a580f5949c8a29cdd7bf4787aee891f2b"/>
           <topic label="earth_sun_calc_hp" href="solarsystem_8h.html#a338e3436ba86dadf6bd4d7390f9940ec"/>
           <topic label="enable_earth_sun_hp" href="solarsystem_8h.html#a279bca0519117cee9a3bd4382f38e7ad"/>
+          <topic label="ephemeris" href="solarsystem_8h.html#a713982e1f2bae0a72b39d03007f00d23"/>
           <topic label="get_ephem_provider" href="solarsystem_8h.html#aa6fad38297a49ba78a6bd49cedf889b1"/>
           <topic label="get_planet_provider" href="solarsystem_8h.html#a0f0a786b5614a788c02b37a462eae2d2"/>
           <topic label="get_planet_provider_hp" href="solarsystem_8h.html#ae45badb450c1ca73920d982e12346c5b"/>
@@ -1013,15 +1013,15 @@
           <topic label="set_planet_provider" href="ephemeris_8c.html#a9904c454bc7148b42d0f927b82ea3973"/>
           <topic label="set_planet_provider_hp" href="ephemeris_8c.html#a418f45a11ce7f92ba0ef817558415640"/>
         </topic>
-        <topic label="equinox.c" href="equinox_8c.html">
-          <topic label="accum_prec" href="equinox_8c.html#ad1de5b481e41cf193c199bd0dc5084bd"/>
-          <topic label="cel_pole" href="equinox_8c.html#a8937180de2ee1545d19b8fc840f35fe2"/>
-          <topic label="e_tilt" href="equinox_8c.html#ab75165e2d69231da10c67de025ee05d8"/>
-          <topic label="fund_args" href="equinox_8c.html#a312b5ab1a004b179d80463a07ca7da8f"/>
-          <topic label="ira_equinox" href="equinox_8c.html#aea0e1028baf14d16d9de800e36a17086"/>
-          <topic label="mean_obliq" href="equinox_8c.html#af182ee8cc4239f581f746aa974827d61"/>
-          <topic label="nutation" href="equinox_8c.html#a69df5671751c09a7575963b94ad1151e"/>
-          <topic label="precession" href="equinox_8c.html#a9178358732325399f3a5e3582080ced3"/>
+        <topic label="equator.c" href="equator_8c.html">
+          <topic label="accum_prec" href="equator_8c.html#ad1de5b481e41cf193c199bd0dc5084bd"/>
+          <topic label="cel_pole" href="equator_8c.html#a8937180de2ee1545d19b8fc840f35fe2"/>
+          <topic label="e_tilt" href="equator_8c.html#ab75165e2d69231da10c67de025ee05d8"/>
+          <topic label="fund_args" href="equator_8c.html#a312b5ab1a004b179d80463a07ca7da8f"/>
+          <topic label="ira_equinox" href="equator_8c.html#aea0e1028baf14d16d9de800e36a17086"/>
+          <topic label="mean_obliq" href="equator_8c.html#af182ee8cc4239f581f746aa974827d61"/>
+          <topic label="nutation" href="equator_8c.html#a69df5671751c09a7575963b94ad1151e"/>
+          <topic label="precession" href="equator_8c.html#a9178358732325399f3a5e3582080ced3"/>
         </topic>
         <topic label="frames.c" href="frames_8c.html">
           <topic label="novas_app_to_geom" href="frames_8c.html#ab7db8026c598e8e126a4725ac3b388bf"/>

@@ -347,7 +347,7 @@ IERS Conventions 2010, Chapter 8, <a href="https://iers-conventions.obspm.fr/con
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">gmst</td><td>[h] Greenwich Mean Sidereal Time of observation, e.g. as obtained by <code><a class="el" href="#a231f535f73e846d3867dbd914054d47b" title="Returns the Greenwich Mean Sidereal Time (GMST) for a given UT1 date, using eq.">novas_gmst()</a></code>. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">delaunay</td><td>[rad] Delaunay arguments, e.g. as returned by <code><a class="el" href="equinox_8c.html#a312b5ab1a004b179d80463a07ca7da8f" title="Compute the fundamental (a.k.a.">fund_args()</a></code>. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">delaunay</td><td>[rad] Delaunay arguments, e.g. as returned by <code><a class="el" href="equator_8c.html#a312b5ab1a004b179d80463a07ca7da8f" title="Compute the fundamental (a.k.a.">fund_args()</a></code>. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">dxp</td><td>[arcsec] x-pole correction for libration and ocean tides, or NULL if not required. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">dyp</td><td>[arcsec] y-pole corrections for libration and ocean tides, or NULL if not required. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">dut1</td><td>[s] UT1 correction for libration and ocean tides, or NULL if not required. </td></tr>
@@ -414,7 +414,7 @@ IERS Conventions 2010, Chapter 8, <a href="https://iers-conventions.obspm.fr/con
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#a3fe699281044873f4137344b28884cea" title="Calculate corrections to the Earth orientation parameters (EOP) due to short term (diurnal and semidi...">novas_diurnal_eop()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="equinox_8c.html#a312b5ab1a004b179d80463a07ca7da8f">fund_args()</a>, <a class="el" href="#a3fe699281044873f4137344b28884cea">novas_diurnal_eop()</a>, <a class="el" href="novas_8h.html#a31bf4a08940bfa3e97ae6a1abee80422">NOVAS_JD_J2000</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, and <a class="el" href="timescale_8c.html#aaf53fcad3fade814381cef3d06779a8c">novas_time_gst()</a>.</p>
+<p class="reference">References <a class="el" href="equator_8c.html#a312b5ab1a004b179d80463a07ca7da8f">fund_args()</a>, <a class="el" href="#a3fe699281044873f4137344b28884cea">novas_diurnal_eop()</a>, <a class="el" href="novas_8h.html#a31bf4a08940bfa3e97ae6a1abee80422">NOVAS_JD_J2000</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, and <a class="el" href="timescale_8c.html#aaf53fcad3fade814381cef3d06779a8c">novas_time_gst()</a>.</p>
 
 </div>
 </div>
@@ -462,7 +462,7 @@ IERS Conventions 2010, Chapter 5, Tablea 5.1a and 5.1b, see <a href="https://ier
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">gmst</td><td>[h] Greenwich Mean Sidereal Time of observation, e.g. as obtained by <code><a class="el" href="#a231f535f73e846d3867dbd914054d47b" title="Returns the Greenwich Mean Sidereal Time (GMST) for a given UT1 date, using eq.">novas_gmst()</a></code>. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">delaunay</td><td>[rad] Delaunay arguments, e.g. as returned by <code><a class="el" href="equinox_8c.html#a312b5ab1a004b179d80463a07ca7da8f" title="Compute the fundamental (a.k.a.">fund_args()</a></code>. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">delaunay</td><td>[rad] Delaunay arguments, e.g. as returned by <code><a class="el" href="equator_8c.html#a312b5ab1a004b179d80463a07ca7da8f" title="Compute the fundamental (a.k.a.">fund_args()</a></code>. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">dxp</td><td>[arcsec] x-pole correction due to librations, or NULL if not required. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">dyp</td><td>[arcsec] y-pole correction due to librations, or NULL if not required. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">dut1</td><td>[s] UT1 correction due to librations, or NULL if not required. </td></tr>
@@ -520,7 +520,7 @@ IERS Conventions 2010, Chapter 8, Tables 8.2a, 8.2b, 8.3a, and 8.3b, see <a href
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">gmst</td><td>[h] Greenwich Mean Sidereal Time of observation, e.g. as obtained by <code><a class="el" href="#a231f535f73e846d3867dbd914054d47b" title="Returns the Greenwich Mean Sidereal Time (GMST) for a given UT1 date, using eq.">novas_gmst()</a></code>. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">delaunay</td><td>[rad] Delaunay arguments, e.g. as returned by <code><a class="el" href="equinox_8c.html#a312b5ab1a004b179d80463a07ca7da8f" title="Compute the fundamental (a.k.a.">fund_args()</a></code>. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">delaunay</td><td>[rad] Delaunay arguments, e.g. as returned by <code><a class="el" href="equator_8c.html#a312b5ab1a004b179d80463a07ca7da8f" title="Compute the fundamental (a.k.a.">fund_args()</a></code>. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">dxp</td><td>[arcsec] x-pole correction due to ocean tides, or NULL if not required. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">dyp</td><td>[arcsec] y-pole correction due to ocean tides, or NULL if not required. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">dut1</td><td>[s] UT1 correction due to ocean tides, or NULL if not required. </td></tr>
@@ -580,7 +580,7 @@ IERS Conventions 2010, Chapter 5, Eq. 5.30 and Table 5.2e, see at <a href="https
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#a231f535f73e846d3867dbd914054d47b" title="Returns the Greenwich Mean Sidereal Time (GMST) for a given UT1 date, using eq.">novas_gmst()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="equinox_8c.html#ab75165e2d69231da10c67de025ee05d8">e_tilt()</a>, and <a class="el" href="#a231f535f73e846d3867dbd914054d47b">novas_gmst()</a>.</p>
+<p class="reference">References <a class="el" href="equator_8c.html#ab75165e2d69231da10c67de025ee05d8">e_tilt()</a>, and <a class="el" href="#a231f535f73e846d3867dbd914054d47b">novas_gmst()</a>.</p>
 
 </div>
 </div>
@@ -804,7 +804,7 @@ Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
 <li>
 You may obtain Earth orientation parameters from the IERS site and Bulletins. For sub-mas accuracy you should augment the (interpolated) published values for diurnal and semi-diurnal librations and the effect of ocean tides, e.g. by using <code><a class="el" href="#a3fe699281044873f4137344b28884cea" title="Calculate corrections to the Earth orientation parameters (EOP) due to short term (diurnal and semidi...">novas_diurnal_eop()</a></code> or <code><a class="el" href="#a087d587e90b4e2138c0dba12d727696e" title="Calculate corrections to the Earth orientation parameters (EOP) due to short term (diurnal and semidi...">novas_diurnal_eop_at_time()</a></code>.  </li>
 <li>
-Generally, this function should not be called if global pole offsets were set via <code><a class="el" href="equinox_8c.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole()</a></code> and then used via <code><a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c" title="Computes the apparent direction of a celestial object at a specified time and in a specified coordina...">place()</a></code> or one of its variants to calculate Earth orientation corrected (TOD or CIRS) apparent coordinates. In such cases, calling <code><a class="el" href="#aead87744eeb3029ce7d5ffb1801ee652" title="Corrects a vector in the ITRS (rotating Earth-fixed system) for polar motion, and also corrects the l...">wobble()</a></code> would apply duplicate corrections. It is generally best to forgo using <code><a class="el" href="equinox_8c.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole()</a></code> going forward, and instead apply Earth orinetation corrections with <code><a class="el" href="#aead87744eeb3029ce7d5ffb1801ee652" title="Corrects a vector in the ITRS (rotating Earth-fixed system) for polar motion, and also corrects the l...">wobble()</a></code> only when converting vectors between the Earth-fixed ITRS and TIRS frames.  </li>
+Generally, this function should not be called if global pole offsets were set via <code><a class="el" href="equator_8c.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole()</a></code> and then used via <code><a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c" title="Computes the apparent direction of a celestial object at a specified time and in a specified coordina...">place()</a></code> or one of its variants to calculate Earth orientation corrected (TOD or CIRS) apparent coordinates. In such cases, calling <code><a class="el" href="#aead87744eeb3029ce7d5ffb1801ee652" title="Corrects a vector in the ITRS (rotating Earth-fixed system) for polar motion, and also corrects the l...">wobble()</a></code> would apply duplicate corrections. It is generally best to forgo using <code><a class="el" href="equator_8c.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole()</a></code> going forward, and instead apply Earth orinetation corrections with <code><a class="el" href="#aead87744eeb3029ce7d5ffb1801ee652" title="Corrects a vector in the ITRS (rotating Earth-fixed system) for polar motion, and also corrects the l...">wobble()</a></code> only when converting vectors between the Earth-fixed ITRS and TIRS frames.  </li>
 <li>
 The Earth orientation parameters xp, yp should be provided in the same ITRF realization as the observer location for an Earth-based observer. You can use <code><a class="el" href="itrf_8c.html#a3c8c9b8f709d1e5a7aa3a915f8fafcbb" title="Transforms Earth orientation parameters (xp, yp, dUT1) from one ITRF realization to another.">novas_itrf_transform_eop()</a></code> to convert the EOP values as necessary.  </li>
 </ol>

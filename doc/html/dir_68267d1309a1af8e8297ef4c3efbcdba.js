@@ -4,7 +4,7 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
     [ "cio.c", "cio_8c.html", "cio_8c" ],
     [ "earth.c", "earth_8c.html", "earth_8c" ],
     [ "ephemeris.c", "ephemeris_8c.html", "ephemeris_8c" ],
-    [ "equinox.c", "equinox_8c.html", "equinox_8c" ],
+    [ "equator.c", "equator_8c.html", "equator_8c" ],
     [ "frames.c", "frames_8c.html", "frames_8c" ],
     [ "grav.c", "grav_8c.html", "grav_8c" ],
     [ "itrf.c", "itrf_8c.html", "itrf_8c" ],
