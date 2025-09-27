@@ -13,6 +13,9 @@ otherwise provide the same function as in NOVAS C. Here is a summary of the cont
    `NOVAS_` prepended, such as `C` &rarr; `NOVAS_C`). However, if your existing NOVAS C application relied on the 
    definitions of `novascon.h`, the header and source are provided for you to compile and link against if need be.
    
+ - `nutation.h` -- These definitions are now part of `novas.h`, but they are made available here spearately also for
+   any application, which may have referenced these definitions directly.
+   
  - `readeph0.c` -- A dummy implementation for the NOVAS C `readeph()` function. There is really no reason why you 
    should ever need this, since it does not do anything useful, but since it was offered by the NOVAS C distribution, 
    we offer it also.

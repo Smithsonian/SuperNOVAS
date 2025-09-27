@@ -48,6 +48,7 @@
  *
  * @date Created  on Mar 6, 2025
  * @author Attila Kovacs
+ * @since 1.2
  *
  * @sa novas_orbital, make_orbital_object()
  * @sa ephemeris.c

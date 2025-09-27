@@ -27,9 +27,15 @@
 #include <stdint.h>
 #include <time.h>
 
+/// \cond PRIVATE
+#if __STDC_VERSION__ < 199901L
+#  define restrict                        ///< No 'restrict' keyword prior to C99
+#endif
+/// \endcond
+
 /// Definition of &pi; in case it's not defined in math.h
 #ifndef M_PI
-#    define M_PI 3.14159265358979323846
+#  define M_PI 3.14159265358979323846
 #endif
 
 // The upstream NOVAS library had a set of include statements that really were not necessary
@@ -48,10 +54,10 @@
 // application code, which may have defined their own constants or variables by the same name.
 //
 // For these reasons, we removed the unneeded '#include' directives by default. If you need them
-// for compiling your code, which may have relied on these, you can add '-DCOMPAT=1' to the
+// for compiling your code, which may have relied on these, you can add '-DCOMPAT' to the
 // compiler options
 //
-#if COMPAT
+#ifdef COMPAT
 #  include <stdio.h>
 #  include <ctype.h>
 #  include <string.h>
@@ -59,7 +65,6 @@
 #  include <novascon.h>
 #endif
 
-#include <nutation.h>
 
 /// API major version
 #define SUPERNOVAS_MAJOR_VERSION  1
@@ -275,7 +280,7 @@
 /// @sa novas_refract_wavelength()
 #define NOVAS_DEFAULT_WAVELENGTH      0.55
 
-#if !COMPAT
+#ifndef COMPAT
 // If we are not in the strict compatibility mode, where constants are defined
 // as variables in novascon.h (with implementation in novascon.c), then define
 // them here
@@ -801,18 +806,6 @@ enum novas_cio_location_type {
   /// The location of the CIO relative to the true equinox in the dynamical frame
   CIO_VS_EQUINOX
 };
-#endif
-
-#ifndef DEFAULT_CIO_LOCATOR_FILE
-#  if COMPAT
-/// Path / name of file to use for interpolating the CIO location relative to GCRS.
-/// A binary file can be generated with the `cio_file.c` tool using the `CIO_RA.TXT` as the input.
-#    define DEFAULT_CIO_LOCATOR_FILE      "cio_ra.bin"
-#  else
-/// Path / name of file to use for interpolating the CIO location relative to GCRS.
-/// As of version 1.5, a CIO locator data is not necessary.
-#    define DEFAULT_CIO_LOCATOR_FILE      NULL
-#  endif
 #endif
 
 /**
@@ -1707,6 +1700,42 @@ enum novas_reference_ellipsoid {
   NOVAS_IERS_1989_ELLIPSOID,  ///< IERS (1989) reference ellipsoid, formerly used by the IERS conventions (but not for ITRS, which uses the GRS80 model).
   NOVAS_IERS_2003_ELLIPSOID   ///< IERS (2003) reference ellipsoid, used by the IERS conventions (but not for ITRS, which uses the GRS80 model).
 };
+
+/// \cond _PRIVATE
+#ifndef _NUTATION_
+#define _NUTATION_
+/// \endcond
+
+/**
+ * Function type definition for the IAU 2000 nutation series calculation.
+ *
+ * @param jd_tt_high  [day] High-order part of the Terrestrial Time (TT) based Julian date. Typically
+ *                    it may be the integer part of a split date for the highest precision, or the
+ *                    full date for normal (reduced) precision.
+ * @param jd_tt_low   [day] Low-order part of the Terrestrial Time (TT) based Julian date. Typically
+ *                    it may be the fractional part of a split date for the highest precision, or 0.0
+ *                    for normal (reduced) precision.
+ * @param[out] dpsi   [rad] &delta;&psi; Nutation (luni-solar + planetary) in longitude, in radians.
+ * @param[out] deps   [rad] &delta;&epsilon; Nutation (luni-solar + planetary) in obliquity, in radians.
+ * @return            0 if successful, or else -1 (errno should be set to indicate the type of error).
+ *
+ * @sa nutation(), nutation_angles(), iau2000a(), iau2000b(), iau2000k()
+ *
+ * @author Attila Kovacs
+ * @since 1.0
+ */
+typedef int (*novas_nutation_provider)(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps);
+
+// in nutation.c
+int iau2000a(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps);
+
+int iau2000b(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps);
+
+int nu2000k(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps);
+
+/// \cond _PRIVATE
+#endif /* _NUTATION_ */
+/// \endcond
 
 // in place.c
 short app_star(double jd_tt, const cat_entry *restrict star, enum novas_accuracy accuracy,

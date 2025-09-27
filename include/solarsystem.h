@@ -1,51 +1,56 @@
 /**
  * @file
  *
- *  SuperNOVAS Solar-system related types, definitions, and functions.
+ * SuperNOVAS Solar-system related types, definitions, and functions (included in @ref novas.h).
  *
- *  It contains definition for custom solar-system ephemeris position / velocity provider for major
- *  planets plus the Sun, Moon, and the Solar-system barycenter (and as of v1.2 also the
- *  Earth-Moon Barycenter and the barycenter of the Pluto system).
+ * Solar-system objects come in multiple varieties from the perspective of SuperNOVAS:
  *
- *  The source files `solsys-calceph.c` and `solsys-cspice.c` provide implementations that
- *  interface with the CALCEPH C library and the NAIF CSPICE Toolkit, respectively. CSPICE is
- *  the canocical library for handling JPL (SPK) ephemeris data, while CALCEPH is a more
- *  modern tool, which allows handling most types of JPL ephemerides, as well INPOP 2.0/3.0
- *  format data files.
+ *  1. Major planets, plus the Sun, Moon, Solar-system Barucenter (SSB), and since v1.2 also
+ *     the Earth-Moon Barycenter (EMB), and the Pluto system barycenter.
  *
- *  The source files solsys1.c, solsys2.c, solsys3.c and solsys-ephem.c provide various legacy
- *  implementations that users may use (some require additional sources, or user-specific
- *  implementations).
+ *  2. Ephemeris objects, which historically have been all sources other than the major planets
+ *     above. NOVAS treated these apart from the major planets, and so we follow.
  *
- *  If the standard implementations are compiled with the SOLSYS_SOURCE option set (see
- *  `config.mk`), then the library is compiled with the specified `solarsystem()` /
- *  `solarsystem_hp()` implementations as the default planer provider. Similarly, the
- *  `READEPH_SOURCE` option may define a legacy `readeph()` implementation for other
- *  (non-planetary) ephemeris data at build time.
+ *  3. Keplerian orbital elements (since v1.2), which can be used as an alternative to
+ *     ephemerides. With short term projections, using up-to-date orbital elements, such as
+ *     published by the IAU Minor Planet Center, one may calculate positions for asteroids,
+ *     comets, and near-Earth objects (NEOs) with similar accuracy as with ephemerides. However,
+ *     long-term application, orbital elements are typically much less accurate.
  *
- *  Regardless if what the default ephemeris providers are, users may set their custom choice
- *  of major planet ephemeris handler at runtime via the `set_planet_provider()` and/or
- *  `set_planet_provider_hp(`) functions, or define custom handlers for all other types of
- *  Solar-system objects (i.e. `NOVAS_EPHEM_OBJECT` types) via `set_ephem_provider()`.
+ * Accordingly, this header defines various functions for the above types of Solar-system objects.
  *
- *  Based on the NOVAS C Edition, Version 3.1:
+ * High-precision calculations of Solar-system sources typically require access to precise
+ * ephemeris data. Users may configure SuperNOVAS with different ephemeris provider functions for
+ * the major planets and other ephemeris object, respectively (see `novas_planet_provider`,
+ * `novas_planet_provider_hp`, and `novas_ephem_provider` types). These providers may be selected
+ * and changed at runtime, including custom user supplied implementations. One may also select a
+ * default provider at build time, if needded, for better legacy support for old NOVAS C
+ * applications without runtime selection (our default is to rely on the self-contained @ref
+ * solsys3.c, which calculates approximate positions for the Earth and Sun only). We however
+ * recommend you stick to runtime configuration only, if possible.
  *
- *  U. S. Naval Observatory<br>
- *  Astronomical Applications Dept.<br>
- *  Washington, DC<br>
- *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">
- *  http://www.usno.navy.mil/USNO/astronomical-applications</a>
+ * Besides the high-precision position and velocity calculations, you can do a lot more with
+ * Solar-system sources also. For example, you can calculate the Moon's phase, or the angle
+ * between an observed source and the Sun or Moon (often a consideration in deciding whether to
+ * observe a source), or calculate the solar illumination fraction for planets (especially the
+ * inner ones), or the typical incident solar power on the illuminated side. And, even without a
+ * high-precison ephemeris provider, you may still calculate the position of the major planets
+ * with arcminute level accuracy also.
  *
  * @author Attila Kovacs and G. Kaplan
- *
- * @sa solsys-calceph.c, solsys-cspice.c, solsys1.c, solsys2.c, solsys3.c, solsys-ephem.c
  */
 
 #ifndef _SOLSYS_
 #define _SOLSYS_
 
+/// \cond PRIVATE
+#if __STDC_VERSION__ < 199901L
+#  define restrict                        ///< No 'restrict' keyword prior to C99
+#endif
+/// \endcond
+
 /**
- * Solar-system body IDs to use as object.number with NOVAS_EPHEM_OBJECT types. JPL ephemerides
+ * Solar-system body IDs to use as object.number with @ref NOVAS_EPHEM_OBJECT types. JPL ephemerides
  * use <a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/req/naif_ids.html">NAIF IDs</a>
  * to identify objects in the Solar-system, which is thus the most widely adopted convention for
  * numbering Solar-system bodies. But other numbering systems also exists, for example the
@@ -64,10 +69,11 @@ enum novas_id_type {
 /**
  * Number of different Solar-system body ID types enumerated
  *
- * @sa enum novas_id_type
- *
+ * @hideinitializer
  * @author Attila Kovacs
  * @since 1.2
+ *
+ * @sa enum novas_id_type
  */
 #define NOVAS_ID_TYPES      (NOVAS_ID_CALCEPH + 1)
 
