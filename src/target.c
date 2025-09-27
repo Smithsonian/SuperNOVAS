@@ -97,7 +97,7 @@ static int is_case_sensitive = 0; ///< (boolean) whether object names are case-s
  * @author Attila Kovacs
  *
  * @sa novas_set_ssb_vel(), novas_set_lsr_vel(), novas_set_redshift(), novas_set_proper_motion(),
- *     novas_set_parallax(), novas_set_distance(), novas_set_cat_info(), novas_make_cat_entry()
+ *     novas_set_parallax(), novas_set_distance(), novas_set_catalog(), novas_make_cat_entry()
  * @sa novas_str_hours(), novas_str_degrees()
  */
 int novas_init_cat_entry(cat_entry *restrict source, const char *restrict name, double ra, double dec) {
@@ -140,7 +140,7 @@ int novas_init_cat_entry(cat_entry *restrict source, const char *restrict name, 
  * @sa novas_init_cat_entry()
  */
 int novas_set_catalog(cat_entry *restrict source, const char *restrict catalog, long num) {
-  static const char *fn =  "novas_set_cat_info";
+  static const char *fn =  "novas_set_catalog";
 
   if(!source)
     return novas_error(-1, EINVAL, fn, "NULL input 'source'");
@@ -168,9 +168,7 @@ int novas_set_catalog(cat_entry *restrict source, const char *restrict catalog, 
  * @since 1.5
  * @author Attila Kovacs
  *
- * @sa novas_set_lsr_vel()
- * @sa novas_set_redshift()
- * @sa novas_init_cat_entry()
+ * @sa novas_set_lsr_vel(), novas_set_redshift(), novas_init_cat_entry()
  */
 int novas_set_ssb_vel(cat_entry *source, double v_kms) {
   const char *fn = "novas_set_ssb_vel";
@@ -197,10 +195,7 @@ int novas_set_ssb_vel(cat_entry *source, double v_kms) {
  * @since 1.5
  * @author Attila Kovacs
  *
- * @sa novas_set_ssb_vel()
- * @sa novas_lsr_to_ssb_vel()
- * @sa novas_set_redshift()
- * @sa novas_init_cat_entry()
+ * @sa novas_set_ssb_vel(), novas_lsr_to_ssb_vel(), novas_set_redshift(), novas_init_cat_entry()
  */
 int novas_set_lsr_vel(cat_entry *source, double epoch, double v_kms) {
   const char *fn = "novas_set_lsr_vel";
@@ -224,8 +219,7 @@ int novas_set_lsr_vel(cat_entry *source, double epoch, double v_kms) {
  * @since 1.5
  * @author Attila Kovacs
  *
- * @sa novas_set_ssb_vel()
- * @sa novas_init_cat_entry()
+ * @sa novas_set_ssb_vel(), novas_init_cat_entry()
  */
 int novas_set_redshift(cat_entry *source, double z) {
   double v = novas_z2v(z);
@@ -248,9 +242,7 @@ int novas_set_redshift(cat_entry *source, double z) {
  * @since 1.5
  * @author Attila Kovacs
  *
- * @sa novas_set_parallax()
- * @sa novas_set_distance()
- * @sa novas_init_cat_entry()
+ * @sa novas_set_parallax(), novas_set_distance(), novas_init_cat_entry()
  */
 int novas_set_proper_motion(cat_entry *source, double pm_ra, double pm_dec) {
   if(!source)
@@ -271,8 +263,7 @@ int novas_set_proper_motion(cat_entry *source, double pm_ra, double pm_dec) {
  * @since 1.5
  * @author Attila Kovacs
  *
- * @sa novas_set_distance()
- * @sa novas_init_cat_entry()
+ * @sa novas_set_distance(), novas_init_cat_entry()
  */
 int novas_set_parallax(cat_entry *source, double mas) {
   if(!source)
@@ -292,8 +283,7 @@ int novas_set_parallax(cat_entry *source, double mas) {
  * @since 1.5
  * @author Attila Kovacs
  *
- * @sa novas_set_distance()
- * @sa novas_init_cat_entry()
+ * @sa novas_set_distance(), novas_init_cat_entry()
  */
 int novas_set_distance(cat_entry *source, double parsecs) {
   prop_error("novas_set_lsr_vel", novas_set_parallax(source, 1000.0 / parsecs), 0);
@@ -330,11 +320,8 @@ int novas_set_distance(cat_entry *source, double parsecs) {
  * @return            0 if successful, or -1 if the output argument is NULL, 1 if the 'star_name'
  *                    is too long or 2 if the 'catalog' name is too long.
  *
- * @sa novas_init_cat_entry()
- * @sa novas_lsr_to_ssb_vel()
- * @sa make_redshifted_cat_entry()
- * @sa make_cat_object_sys()
- * @sa transform_cat()
+ * @sa novas_init_cat_entry(), make_redshifted_cat_entry(), make_cat_object_sys()
+ * @sa novas_lsr_to_ssb_vel(), transform_cat()
  */
 short make_cat_entry(const char *restrict name, const char *restrict catalog, long cat_num, double ra, double dec, double pm_ra, double pm_dec,
         double parallax, double rad_vel, cat_entry *source) {
@@ -398,13 +385,10 @@ void novas_case_sensitive(int value) {
  *                      NOVAS_CATALOG_OBJECT and 'star' is NULL, or else 1 if 'type' is
  *                      invalid, 2 if 'number' is out of legal range or 5 if 'name' is too long.
  *
- * @sa novas_case_sensitive()
- * @sa make_cat_object()
- * @sa make_redshifted_object()
- * @sa make_planet()
- * @sa make_ephem_object()
- * @sa make_orbital_object()
- * @sa novas_make_frame()
+ *
+ * @sa make_cat_object(), make_redshifted_object(), make_planet(), make_ephem_object(),
+ *     make_orbital_object()
+ * @sa novas_case_sensitive(), novas_make_frame()
  */
 short make_object(enum novas_object_type type, long number, const char *name, const cat_entry *star, object *source) {
   static const char *fn = "make_object";
@@ -458,12 +442,8 @@ short make_object(enum novas_object_type type, long number, const char *name, co
  * @param[out] planet   Pointer to structure to populate.
  * @return              0 if successful, or else -1 if the 'planet' pointer is NULL.
  *
- * @sa make_ephem_object()
- * @sa make_orbital_object()
- * @sa make_cat_object()
- * @sa make_redshifted_object()
- * @sa novas_case_sensitive()
- * @sa novas_make_frame()
+ * @sa make_ephem_object(), make_orbital_object(), make_cat_object(), make_redshifted_object()
+ * @sa novas_case_sensitive(), novas_make_frame()
  *
  * @since 1.0
  * @author Attila Kovacs
@@ -491,14 +471,9 @@ int make_planet(enum novas_planet num, object *restrict planet) {
  * @return              0 if successful, or -1 if either argument is NULL, or else 5 if 'name' is
  *                      too long.
  *
- * @sa make_cat_object_sys()
- * @sa novas_init_cat_entry()
- * @sa make_redshifted_object()
- * @sa make_planet()
- * @sa make_ephem_object()
- * @sa make_orbital_object()
- * @sa novas_case_sensitive()
- * @sa novas_make_frame()
+ * @sa make_cat_object_sys(), make_redshifted_object(), make_planet(), make_ephem_object(),
+ *     make_orbital_object()
+ * @sa novas_init_cat_entry(), novas_case_sensitive(), novas_make_frame()
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -543,15 +518,8 @@ static int cat_to_icrs(cat_entry *restrict star, const char *restrict system) {
  * @return              0 if successful, or -1 if any argument is NULL or if the input 'system' is
  *                      invalid, or else 5 if 'name' is too long.
  *
- * @sa make_cat_object()
- * @sa make_redshifted_object_sys()
- * @sa novas_case_sensitive()
- * @sa novas_epoch()
- * @sa novas_make_frame()
- * @sa NOVAS_SYSTEM_ICRS
- * @sa NOVAS_SYSTEM_HIP
- * @sa NOVAS_SYSTEM_J2000
- * @sa NOVAS_SYSTEM_B1950
+ * @sa make_cat_object(), make_redshifted_object_sys(), novas_case_sensitive(), novas_make_frame()
+ * @sa novas_epoch(), NOVAS_SYSTEM_ICRS, NOVAS_SYSTEM_HIP, NOVAS_SYSTEM_J2000, NOVAS_SYSTEM_B1950
  *
  * @since 1.3
  * @author Attila Kovacs
@@ -586,8 +554,7 @@ int make_cat_object_sys(const cat_entry *star, const char *restrict system, obje
  *                    pointer is NULL.
  *
  * @sa make_redshifted_object_sys()
- * @sa novas_set_cat_info()
- * @sa novas_v2z()
+ * @sa novas_set_catalog(), novas_v2z()
  *
  * @since 1.2
  * @author Attila Kovacs
@@ -696,13 +663,9 @@ int make_redshifted_object_sys(const char *name, double ra, double dec, const ch
  *                      is too long.
  *
  *
- * @sa set_ephem_provider()
- * @sa make_planet()
- * @sa make_orbital_object()
- * @sa make_cat_object()
- * @sa make_redshifted_object()
- * @sa novas_case_sensitive()
- * @sa novas_make_frame()
+ *
+ * @sa make_planet(), make_orbital_object(), make_cat_object(), make_redshifted_object()
+ * @sa set_ephem_provider(), novas_case_sensitive(), novas_make_frame()
  *
  * @since 1.0
  * @author Attila Kovacs
@@ -724,14 +687,8 @@ int make_ephem_object(const char *name, long num, object *body) {
  * @return              0 if successful, or else -1 if the 'orbit' or 'body' pointer is NULL or
  *                      the name is too long.
  *
- *
- * @sa novas_orbit_posvel()
- * @sa make_planet()
- * @sa make_ephem_object()
- * @sa make_cat_object()
- * @sa make_redshifted_object()
- * @sa novas_case_sensitive()
- * @sa novas_make_frame()
+ * @sa make_planet(), make_ephem_object(), make_cat_object(), make_redshifted_object()
+ * @sa novas_case_sensitive(), novas_orbit_posvel(), novas_make_frame()
  *
  * @since 1.2
  * @author Attila Kovacs
@@ -772,8 +729,7 @@ int make_orbital_object(const char *name, long num, const novas_orbital *orbit, 
  * @return             0 if successful, or -1 if the star argument is NULL or the output vectors
  *                     are the same pointer.
  *
- * @sa make_cat_entry()
- * @sa novas_init_cat_entry()
+ * @sa make_cat_entry(), novas_init_cat_entry()
  */
 int starvectors(const cat_entry *restrict star, double *restrict pos, double *restrict motion) {
   static const char *fn = "starvectors";
@@ -899,12 +855,8 @@ enum novas_planet novas_planet_for_name(const char *restrict name) {
  * @return            0 if successful, -1 if either vector argument is NULL or if the 'option' is
  *                    invalid, or else 2 if 'out_id' is too long.
  *
- * @sa transform_hip()
- * @sa make_cat_entry()
- * @sa novas_epoch()
- * @sa NOVAS_JD_J2000
- * @sa NOVAS_JD_B1950
- * @sa NOVAS_JD_HIP
+ * @sa transform_hip(), make_object_sys(), novas_set_catalog()
+ * @sa novas_epoch(), NOVAS_JD_J2000, NOVAS_JD_B1950, NOVAS_JD_HIP
  */
 short transform_cat(enum novas_transform_type option, double jd_tt_in, const cat_entry *in, double jd_tt_out, const char *out_id,
         cat_entry *out) {
@@ -1051,8 +1003,7 @@ short transform_cat(enum novas_transform_type option, double jd_tt_in, const cat
  *
  * @return            0 if successful, or -1 if either of the input pointer arguments is NULL.
  *
- * @sa make_cat_entry()
- * @sa NOVAS_JD_HIP
+ * @sa make_cat_entry(), NOVAS_JD_HIP
  */
 int transform_hip(const cat_entry *hipparcos, cat_entry *hip_2000) {
   static const char *fn = "transform_hip";
@@ -1118,8 +1069,7 @@ int proper_motion(double jd_tdb_in, const double *pos, const double *restrict ve
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_solar_power()
- * @sa novas_solar_illum()
+ * @sa novas_solar_power(), novas_solar_illum()
  */
 double novas_helio_dist(double jd_tdb, const object *restrict source, double *restrict rate) {
   static const char *fn = "novas_helio_dist";

@@ -23,7 +23,7 @@
  *    // Then use them as your generic SuperNOVAS ephemeris provider
  *    int status = novas_use_calceph(eph);
  *    if(status < 0) {
- *      // Ooops something went wrong...
+ *      // Oops something went wrong...
  *    }
  *  ```
  *
@@ -34,7 +34,7 @@
  *    t_calcephbin *pleph = calceph_open(...);
  *    status = novas_use_calceph_planets(pleph);
  *    if(status < 0) {
- *      // Ooops something went wrong...
+ *      // Oops something went wrong...
  *    }
  *  ```
  *
@@ -45,7 +45,7 @@
  *
  * REFERENCES:
  * <ol>
- *  <li>CALCEPH is at https://calceph.imcce.fr/docs/4.0.0/html/c/</li>
+ *  <li>CALCEPH is at https://calceph.imcce.fr</li>
  *  <li>CALCEPH source code is at https://gitlab.obspm.fr/imcce_calceph/calceph</li>
  * </ol>
  *
@@ -166,7 +166,7 @@ int novas_calceph_use_ids(enum novas_id_type idtype) {
  *
  * REFERENCES:
  * <ol>
- *  <li>The CALCEPH C library; https://calceph.imcce.fr/docs/4.0.0/html/c/index.html</li>
+ *  <li>The CALCEPH C library; https://calceph.imcce.fr</li>
  *  <li>Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
  *  Subroutines"; USNO internal document dated 20 Oct 1988;
  *  revised 15 Mar 1990.</li>
@@ -264,7 +264,7 @@ static short planet_calceph_hp(const double jd_tdb[restrict 2], enum novas_plane
  *
  * REFERENCES:
  * <ol>
- *  <li>The CALCEPH C library; https://calceph.imcce.fr/docs/4.0.0/html/c/index.html</li>
+ *  <li>The CALCEPH C library; https://calceph.imcce.fr</li>
  *  <li>Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
  *  Subroutines"; USNO internal document dated 20 Oct 1988;
  *  revised 15 Mar 1990.</li>
