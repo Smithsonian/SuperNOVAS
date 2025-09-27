@@ -105,6 +105,9 @@ $(function(){initNavTree('place_8c.html',''); initResizable(true); });
   <div class="headertitle"><div class="title">place.c File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Various convenience variants of the NOVAS C <code><a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c" title="Computes the apparent direction of a celestial object at a specified time and in a specified coordina...">place()</a></code> function.  
+<a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -224,9 +227,8 @@ Functions</h2></td></tr>
 <tr class="separator:aaf187624a93349391518f9d6bb3051e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><dl class="section date"><dt>Date</dt><dd>Created on Mar 5, 2025 </dd></dl>
-<dl class="section author"><dt>Author</dt><dd>Attila Kovacs and G. Kaplan</dd></dl>
-<p>Various convenience variants of the NOVAS C <code><a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c" title="Computes the apparent direction of a celestial object at a specified time and in a specified coordina...">place()</a></code> function. Using <code><a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c" title="Computes the apparent direction of a celestial object at a specified time and in a specified coordina...">place()</a></code> or one of its variants is disfavored in SuperNOVAS. Instead, the new frame-based approach is recommended, via <code><a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f" title="Calculates an apparent location on sky for the source.">novas_sky_pos()</a></code> (for apparent positions, including aberration and gravitational deflection) or `novas_geom_posvel() (for geometric positions).</p>
+<div class="textblock"><p>Various convenience variants of the NOVAS C <code><a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c" title="Computes the apparent direction of a celestial object at a specified time and in a specified coordina...">place()</a></code> function. </p>
+<p>Using <code><a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c" title="Computes the apparent direction of a celestial object at a specified time and in a specified coordina...">place()</a></code> or one of its variants is disfavored in SuperNOVAS. Instead, the new frame-based approach is recommended, via <code><a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f" title="Calculates an apparent location on sky for the source.">novas_sky_pos()</a></code> (for apparent positions, including aberration and gravitational deflection) or `novas_geom_posvel() (for geometric positions).</p>
 <p>Some of the functions here have been deprecated also, since the new frame-based approach, introduced in v1.2, offers more versatile and transparent ways of calculating the same quantities.</p>
 <p>Nevertheless, if you insist on using these older methods, here's a primer on the ways the <code><a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c" title="Computes the apparent direction of a celestial object at a specified time and in a specified coordina...">place()</a></code> variants differ from one-another:</p>
 <p><b>reference system</b>: The coordinate reference system in which the output position is expressed. Often it is ICRS / GCRS, or True of Date (TOD), but occasionally something else.</p>
@@ -264,7 +266,9 @@ Functions</h2></td></tr>
 <li>Calculate geometric positions using <code><a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7" title="Calculates the geometric position and velocity vectors, relative to the observer, for a source in the...">novas_geom_posvel()</a></code>, or apparent positions using <code><a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f" title="Calculates an apparent location on sky for the source.">novas_sky_pos()</a></code>. Set the reference system as one of the call parameters, e.g. <code>NOVAS_ICRS</code> for ICRS, <code>NOVAS_TOD</code> for TOD etc.</li>
 <li>If needed convert between position 3-vectors and RA/Dec coordinates using <code><a class="el" href="util_8c.html#a84f672dc1c37e3af374198f29cbcfba9" title="Converts an vector in equatorial rectangular coordinates to equatorial spherical coordinates.">vector2radec()</a></code> / <code><a class="el" href="util_8c.html#ae104afd1bc638def9bdbce1801e5054a" title="Converts equatorial spherical coordinates to a vector (equatorial rectangular coordinates).">radec2vector()</a></code> as necessary.</li>
 </ol>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="target_8c.html">target.c</a>, <a class="el" href="observer_8c.html">observer.c</a>, <a class="el" href="timescale_8c.html">timescale.c</a>, <a class="el" href="frames_8c.html">frames.c</a>, <a class="el" href="ephemeris_8c.html">ephemeris.c</a> </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>Created on Mar 5, 2025 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs and G. Kaplan</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="target_8c.html" title="This module contains functions that define an observing target, or which are target related.">target.c</a>, <a class="el" href="observer_8c.html" title="This module provides a set of functions that define an astronomical observer location,...">observer.c</a>, <a class="el" href="timescale_8c.html" title="A set of SuperNOVAS routines to make handling of astronomical timescales and conversions among them e...">timescale.c</a>, <a class="el" href="frames_8c.html" title="SuperNOVAS routines for higher-level and efficient astrometric calculations using observing frames.">frames.c</a>, <a class="el" href="ephemeris_8c.html" title="Functions that allow to define or access user-defined ephemeris plugin routines.">ephemeris.c</a> </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="ac28dd9a362982cfce150751001a96a8a" name="ac28dd9a362982cfce150751001a96a8a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac28dd9a362982cfce150751001a96a8a">&#9670;&#160;</a></span>app_planet()</h2>

@@ -105,6 +105,9 @@ $(function(){initNavTree('orbital_8c.html',''); initResizable(true); });
   <div class="headertitle"><div class="title">orbital.c File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Function relating to the use of Keplerian orbital elements.  
+<a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -119,9 +122,8 @@ Functions</h2></td></tr>
 <tr class="separator:a706ecf8998b78e48051d2876efc6e01c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><dl class="section date"><dt>Date</dt><dd>Created on Mar 6, 2025 </dd></dl>
-<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<p>Function relating to the use of Keplerian orbital elements. For example, the IAU Minor Planet Center publishes up-to-date Keplerial orbital elements for all asteroids, comets, and Near-Earth Objects (NEOs) regularly. On short timescales these can provide accurate positions for such objects, that are as good as, or comparable to, the ephemeris data provided by NASA JPL.</p>
+<div class="textblock"><p>Function relating to the use of Keplerian orbital elements. </p>
+<p>For example, the IAU Minor Planet Center publishes up-to-date Keplerial orbital elements for all asteroids, comets, and Near-Earth Objects (NEOs) regularly. On short timescales these can provide accurate positions for such objects, that are as good as, or comparable to, the ephemeris data provided by NASA JPL.</p>
 <p>For newly discovered objects, the MPC orbital elements may be the only source, or the most accurate source, of position information.</p>
 <p>To use Keplerian orbital elements with <b>SuperNOVAS</b>, simply define the orbital parameters in a <code><a class="el" href="structnovas__orbital.html" title="Keplerian orbital elements for NOVAS_ORBITAL_OBJECT type.">novas_orbital</a></code> structure. By default heliocentric orbits are assumed, but you may also define orbitals around other bodies, such as a major planet, by defining the body (or barycenter) that is at the center of the orbital, and the orientation of the orbital system (w.r.t. the ecliptic or equator of date) with <code><a class="el" href="#a706ecf8998b78e48051d2876efc6e01c" title="Sets the orientation of an orbital system using the RA and DEC coordinates of the pole of the Laplace...">novas_set_orbsys_pole()</a></code>. E.g.:</p>
 <div class="fragment"><div class="line"><a class="code hl_struct" href="structnovas__orbital.html">novas_orbital</a> orb = <a class="code hl_define" href="novas_8h.html#a85243a6b9eee259d3fb84ee1a587e065">NOVAS_ORBIT_INIT</a>;</div>
@@ -137,7 +139,7 @@ Functions</h2></td></tr>
 <div class="ttc" id="anovas_8h_html_a7ba038ea34eb901ccfb8f785708c651ea5bf6e497c776a4a8168b23db062e8a10"><div class="ttname"><a href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea5bf6e497c776a4a8168b23db062e8a10">NOVAS_ICRS</a></div><div class="ttdeci">@ NOVAS_ICRS</div><div class="ttdoc">International Celestial Reference system.</div><div class="ttdef"><b>Definition</b> novas.h:541</div></div>
 <div class="ttc" id="anovas_8h_html_a85243a6b9eee259d3fb84ee1a587e065"><div class="ttname"><a href="novas_8h.html#a85243a6b9eee259d3fb84ee1a587e065">NOVAS_ORBIT_INIT</a></div><div class="ttdeci">#define NOVAS_ORBIT_INIT</div><div class="ttdoc">Initializer for novas_orbital for heliocentric orbits using GCRS ecliptic pqrametrization.</div><div class="ttdef"><b>Definition</b> novas.h:1051</div></div>
 <div class="ttc" id="anovas_8h_html_a8f05bb45f646e41b78bbe79175114d57"><div class="ttname"><a href="novas_8h.html#a8f05bb45f646e41b78bbe79175114d57">NOVAS_JUPITER_INIT</a></div><div class="ttdeci">#define NOVAS_JUPITER_INIT</div><div class="ttdoc">object initializer for the planet Jupiter</div><div class="ttdef"><b>Definition</b> novas.h:1138</div></div>
-<div class="ttc" id="aorbital_8c_html_a706ecf8998b78e48051d2876efc6e01c"><div class="ttname"><a href="#a706ecf8998b78e48051d2876efc6e01c">novas_set_orbsys_pole</a></div><div class="ttdeci">int novas_set_orbsys_pole(enum novas_reference_system type, double ra, double dec, novas_orbital_system *restrict sys)</div><div class="ttdoc">Sets the orientation of an orbital system using the RA and DEC coordinates of the pole of the Laplace...</div><div class="ttdef"><b>Definition</b> orbital.c:405</div></div>
+<div class="ttc" id="aorbital_8c_html_a706ecf8998b78e48051d2876efc6e01c"><div class="ttname"><a href="#a706ecf8998b78e48051d2876efc6e01c">novas_set_orbsys_pole</a></div><div class="ttdeci">int novas_set_orbsys_pole(enum novas_reference_system type, double ra, double dec, novas_orbital_system *restrict sys)</div><div class="ttdoc">Sets the orientation of an orbital system using the RA and DEC coordinates of the pole of the Laplace...</div><div class="ttdef"><b>Definition</b> orbital.c:406</div></div>
 <div class="ttc" id="astructnovas__orbital__system_html_ac3165061a779934bfe04da14ad5555d0"><div class="ttname"><a href="structnovas__orbital__system.html#ac3165061a779934bfe04da14ad5555d0">novas_orbital_system::center</a></div><div class="ttdeci">enum novas_planet center</div><div class="ttdoc">major planet or barycenter at the center of the orbit.</div><div class="ttdef"><b>Definition</b> novas.h:978</div></div>
 <div class="ttc" id="astructnovas__orbital_html"><div class="ttname"><a href="structnovas__orbital.html">novas_orbital</a></div><div class="ttdoc">Keplerian orbital elements for NOVAS_ORBITAL_OBJECT type.</div><div class="ttdef"><b>Definition</b> novas.h:1028</div></div>
 <div class="ttc" id="astructnovas__orbital_html_a1031d0e0a97a340abfe0a6ab9e831045"><div class="ttname"><a href="structnovas__orbital.html#a1031d0e0a97a340abfe0a6ab9e831045">novas_orbital::a</a></div><div class="ttdeci">double a</div><div class="ttdoc">[AU] semi-major axis</div><div class="ttdef"><b>Definition</b> novas.h:1031</div></div>
@@ -150,9 +152,11 @@ Functions</h2></td></tr>
 <div class="line"><a class="code hl_function" href="target_8c.html#a3c5e215babeeba078ca7b3e9be42e555">make_orbital_object</a>(<span class="stringliteral">&quot;Callisto&quot;</span>, 504, &amp;orb, &amp;source);</div>
 <div class="ttc" id="atarget_8c_html_a3c5e215babeeba078ca7b3e9be42e555"><div class="ttname"><a href="target_8c.html#a3c5e215babeeba078ca7b3e9be42e555">make_orbital_object</a></div><div class="ttdeci">int make_orbital_object(const char *name, long num, const novas_orbital *orbit, object *body)</div><div class="ttdoc">Sets a celestial object to be a Solar-system orbital body.</div><div class="ttdef"><b>Definition</b> target.c:739</div></div>
 </div><!-- fragment --><p>Or, you can calculate geometric orbital positions and velocities directly via <code><a class="el" href="#a4510a3235a693f122899983901211c30" title="Calculates a rectangular equatorial position and velocity vector for the given orbital elements for t...">novas_orbit_posvel()</a></code>, while <code><a class="el" href="#a6b88d2403a3051ab32229244cf98d7ab" title="Calculates a rectangular equatorial position and velocity vector for the given orbital elements for t...">novas_orbit_native_posvel()</a></code> will do the same, but in the native coordinate system in which the orbital is defined.</p>
+<dl class="section date"><dt>Date</dt><dd>Created on Mar 6, 2025 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structnovas__orbital.html" title="Keplerian orbital elements for NOVAS_ORBITAL_OBJECT type.">novas_orbital</a>, <a class="el" href="target_8c.html#a3c5e215babeeba078ca7b3e9be42e555" title="Sets a celestial object to be a Solar-system orbital body.">make_orbital_object()</a> </dd>
 <dd>
-<a class="el" href="ephemeris_8c.html">ephemeris.c</a> </dd></dl>
+<a class="el" href="ephemeris_8c.html" title="Functions that allow to define or access user-defined ephemeris plugin routines.">ephemeris.c</a> </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a6b88d2403a3051ab32229244cf98d7ab" name="a6b88d2403a3051ab32229244cf98d7ab"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6b88d2403a3051ab32229244cf98d7ab">&#9670;&#160;</a></span>novas_orbit_native_posvel()</h2>

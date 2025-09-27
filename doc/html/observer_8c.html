@@ -105,6 +105,9 @@ $(function(){initNavTree('observer_8c.html',''); initResizable(true); });
   <div class="headertitle"><div class="title">observer.c File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>This module provides a set of functions that define an astronomical observer location, or ones that relate to observer location.  
+<a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -170,9 +173,7 @@ Functions</h2></td></tr>
 <tr class="separator:a0e4e5ff7c37e6521ca75ae62aaf4050e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><dl class="section date"><dt>Date</dt><dd>Created on Mar 6, 2025 </dd></dl>
-<dl class="section author"><dt>Author</dt><dd>Attila Kovacs and G. Kaplan</dd></dl>
-<p>This module provides a set of functions that define an astronomical observer location, or ones that relate to observer location.</p>
+<div class="textblock"><p>This module provides a set of functions that define an astronomical observer location, or ones that relate to observer location. </p>
 <p>The following type of observer locations are supported:</p>
 <ol type="1">
 <li>Geodetic Earth-based observer locations: a. ground-based observer sites:<ul>
@@ -186,7 +187,9 @@ Functions</h2></td></tr>
 <li>Solar-system locations via <code><a class="el" href="#a9c3f1a1bc3fd9ac6d211806913d2d529" title="Populates an &#39;observer&#39; data structure, for an observer situated on a near-Earth spacecraft,...">make_solar_system_observer()</a></code>, specifying a momentary barycentric (that is w.r.t. the SSB) position and velocity vector.</li>
 </ol>
 <p>Once an observer is defined, it maybe used to set up an observing frame for a specific time of observation. Observing frames allow efficient and precise position calculations from an observer's point-of-view.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html">timescale.c</a>, frame.c, <a class="el" href="system_8c.html">system.c</a>, <a class="el" href="itrf_8c.html">itrf.c</a> </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>Created on Mar 6, 2025 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs and G. Kaplan</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html" title="A set of SuperNOVAS routines to make handling of astronomical timescales and conversions among them e...">timescale.c</a>, frame.c, <a class="el" href="system_8c.html" title="Various transformations between different coordinate systems used in astronomy, such as equatorial,...">system.c</a>, <a class="el" href="itrf_8c.html" title="Transformations of station coordinates, velocities, and Earth orinetation parameters (EOP) between va...">itrf.c</a> </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a033f1bf4b01e0e21a0e05e13c19c02f6" name="a033f1bf4b01e0e21a0e05e13c19c02f6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a033f1bf4b01e0e21a0e05e13c19c02f6">&#9670;&#160;</a></span>aberration()</h2>

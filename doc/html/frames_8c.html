@@ -105,6 +105,9 @@ $(function(){initNavTree('frames_8c.html',''); initResizable(true); });
   <div class="headertitle"><div class="title">frames.c File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>SuperNOVAS routines for higher-level and efficient astrometric calculations using observing frames.  
+<a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -179,10 +182,8 @@ Functions</h2></td></tr>
 <tr class="separator:ad04f1ebd7b2d39e5258b152fec231001"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><dl class="section date"><dt>Date</dt><dd>Created on Jun 23, 2024 </dd></dl>
-<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
-<dl class="section since"><dt>Since</dt><dd>1.1</dd></dl>
-<p>SuperNOVAS routines for higher-level and efficient astrometric calculations using observing frames. An observing frames represents an observer location at a specific astronomical time (instant), which can be re-used again and again to calculate or transform positions of celestial sources in a a range of astronomical coordinate systems.</p>
+<div class="textblock"><p>SuperNOVAS routines for higher-level and efficient astrometric calculations using observing frames. </p>
+<p>An observing frames represents an observer location at a specific astronomical time (instant), which can be re-used again and again to calculate or transform positions of celestial sources in a a range of astronomical coordinate systems.</p>
 <p>To use frames, you start with <code><a class="el" href="#adc72577f99a7b076b23e0e44ddbca838" title="Sets up a observing frame for a specific observer location, time of observation, and accuracy require...">novas_make_frame()</a></code> with an astrometric time and an observer location, and optionally Earth-orientation parameters if precision below the arcsecond level is needed. E.g.:</p>
 <div class="fragment"><div class="line"><a class="code hl_struct" href="structobserver.html">observer</a> obs;         <span class="comment">// observer location</span></div>
 <div class="line"><a class="code hl_struct" href="structnovas__timespec.html">novas_timespec</a> time;  <span class="comment">// astrometric time</span></div>
@@ -240,7 +241,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="comment">// UTC-based Julian date when source rises above 20 degrees given a refraction model.</span></div>
 <div class="line"><span class="keywordtype">double</span> jd_rise = <a class="code hl_function" href="#aaf38f64304fa0b00c9c56cead62043f3">novas_rises_above</a>(20.0, &amp;source, &amp;frame, <a class="code hl_function" href="refract_8c.html#ab04bff3b97c132e358e11c3a5b7a3081">novas_standard_refraction</a>);</div>
 <div class="ttc" id="aframes_8c_html_aaf38f64304fa0b00c9c56cead62043f3"><div class="ttname"><a href="#aaf38f64304fa0b00c9c56cead62043f3">novas_rises_above</a></div><div class="ttdeci">double novas_rises_above(double el, const object *restrict source, const novas_frame *restrict frame, RefractionModel ref_model)</div><div class="ttdoc">Returns the UTC date at which a distant source appears to rise above the specified elevation angle.</div><div class="ttdef"><b>Definition</b> frames.c:1654</div></div>
-<div class="ttc" id="arefract_8c_html_ab04bff3b97c132e358e11c3a5b7a3081"><div class="ttname"><a href="refract_8c.html#ab04bff3b97c132e358e11c3a5b7a3081">novas_standard_refraction</a></div><div class="ttdeci">double novas_standard_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el)</div><div class="ttdoc">Returns an optical refraction correction for a standard atmosphere.</div><div class="ttdef"><b>Definition</b> refract.c:259</div></div>
+<div class="ttc" id="arefract_8c_html_ab04bff3b97c132e358e11c3a5b7a3081"><div class="ttname"><a href="refract_8c.html#ab04bff3b97c132e358e11c3a5b7a3081">novas_standard_refraction</a></div><div class="ttdeci">double novas_standard_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el)</div><div class="ttdoc">Returns an optical refraction correction for a standard atmosphere.</div><div class="ttdef"><b>Definition</b> refract.c:258</div></div>
 </div><!-- fragment --><p>Or, you might simply want to know how far your source is from the Sun or Moon (or another source) on the sky:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">object</span> source = ...;   <span class="comment">// observed source</span></div>
 <div class="line"> </div>
@@ -248,7 +249,10 @@ Functions</h2></td></tr>
 <div class="line"><span class="keywordtype">double</span> angle_deg = <a class="code hl_function" href="#a2d1ef3bc6d99aa473511e45c6e0481e9">novas_sun_angle</a>(&amp;source, &amp;frame);</div>
 <div class="ttc" id="aframes_8c_html_a2d1ef3bc6d99aa473511e45c6e0481e9"><div class="ttname"><a href="#a2d1ef3bc6d99aa473511e45c6e0481e9">novas_sun_angle</a></div><div class="ttdeci">double novas_sun_angle(const object *restrict source, const novas_frame *restrict frame)</div><div class="ttdoc">Returns the apparent angular distance of a source from the Sun from the observer&#39;s point of view.</div><div class="ttdef"><b>Definition</b> frames.c:1823</div></div>
 </div><!-- fragment --><p>These are just some of the common use-case scenarios. There is even more possibilities with frames...</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html">timescale.c</a>, <a class="el" href="observer_8c.html">observer.c</a>, <a class="el" href="target_8c.html">target.c</a>, <a class="el" href="ephemeris_8c.html">ephemeris.c</a> </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>Created on Jun 23, 2024 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.1</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html" title="A set of SuperNOVAS routines to make handling of astronomical timescales and conversions among them e...">timescale.c</a>, <a class="el" href="observer_8c.html" title="This module provides a set of functions that define an astronomical observer location,...">observer.c</a>, <a class="el" href="target_8c.html" title="This module contains functions that define an observing target, or which are target related.">target.c</a>, <a class="el" href="ephemeris_8c.html" title="Functions that allow to define or access user-defined ephemeris plugin routines.">ephemeris.c</a> </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="ab7db8026c598e8e126a4725ac3b388bf" name="ab7db8026c598e8e126a4725ac3b388bf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab7db8026c598e8e126a4725ac3b388bf">&#9670;&#160;</a></span>novas_app_to_geom()</h2>

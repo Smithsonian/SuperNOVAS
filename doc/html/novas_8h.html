@@ -3793,7 +3793,7 @@ IERS Conventions, Chapter 3, Table 3.1 </li>
 <dl class="section since"><dt>Since</dt><dd>1.1</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#af4a1a5180905a7d8f76aeafe3f9a8ebb" title="Sets an astronomical time to the fractional Julian Date value, defined in the specified timescale.">novas_set_time()</a>, <a class="el" href="#ae30e3dd8e30bdcf4e8486cfce696fb98" title="Returns the fractional Julian date of an astronomical time in the specified timescale.">novas_get_time()</a>, <a class="el" href="#abdcc8e194d79787838d1ffc064449932" title="Returns the Terrestrial Time (TT) based time difference (t1 - t2) in days between two astronomical ti...">novas_diff_time()</a>, <a class="el" href="#a9061a46b13dfca669c327283f7357586" title="Returns the instantaneous incremental rate at which the observer&#39;s clock (i.e.">novas_clock_skew()</a>, <a class="el" href="#a7505fe27b163e97b60bcf4406eadffa7" title="The number of asronomical time scales supported.">NOVAS_TIMESCALES</a> </dd>
 <dd>
-<a class="el" href="timescale_8c.html">timescale.c</a> </dd></dl>
+<a class="el" href="timescale_8c.html" title="A set of SuperNOVAS routines to make handling of astronomical timescales and conversions among them e...">timescale.c</a> </dd></dl>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aa642c4ccc7195dc62fd0dc56567ebd0ba8301aa6dff381beba373826e137c88c4" name="aa642c4ccc7195dc62fd0dc56567ebd0ba8301aa6dff381beba373826e137c88c4"></a>NOVAS_TCB&#160;</td><td class="fielddoc"><p>Barycentric Coordinate Time (TCB) </p>
 </td></tr>
@@ -10797,7 +10797,7 @@ B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO
 <div class="line"> </div>
 <div class="line"><span class="comment">// Convert ITRF88 coordinates to ITRF2000</span></div>
 <div class="line"><a class="code hl_function" href="itrf_8c.html#afd98ed01148f1291018809d77785527f">novas_itrf_transform</a>(1988, from_coords, from_rates, 2000, ...);</div>
-<div class="ttc" id="aitrf_8c_html_afd98ed01148f1291018809d77785527f"><div class="ttname"><a href="itrf_8c.html#afd98ed01148f1291018809d77785527f">novas_itrf_transform</a></div><div class="ttdeci">int novas_itrf_transform(int from_year, const double *restrict from_coords, const double *restrict from_rates, int to_year, double *to_coords, double *to_rates)</div><div class="ttdoc">Converts ITRF coordinates between different realizations of the ITRF coordinate system.</div><div class="ttdef"><b>Definition</b> itrf.c:225</div></div>
+<div class="ttc" id="aitrf_8c_html_afd98ed01148f1291018809d77785527f"><div class="ttname"><a href="itrf_8c.html#afd98ed01148f1291018809d77785527f">novas_itrf_transform</a></div><div class="ttdeci">int novas_itrf_transform(int from_year, const double *restrict from_coords, const double *restrict from_rates, int to_year, double *to_coords, double *to_rates)</div><div class="ttdoc">Converts ITRF coordinates between different realizations of the ITRF coordinate system.</div><div class="ttdef"><b>Definition</b> itrf.c:226</div></div>
 </div><!-- fragment --><p>or equivalently, after the transformation to ITRF2000, as:</p>
 <div class="fragment"><div class="line"><span class="comment">// Convert ITRF88 coordinates to ITRF2000</span></div>
 <div class="line"><a class="code hl_function" href="itrf_8c.html#afd98ed01148f1291018809d77785527f">novas_itrf_transform</a>(1988, from_coords, from_rates, 2000, to_coords, to_rates);</div>
