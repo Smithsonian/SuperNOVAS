@@ -1,6 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"structon__surface.html#ac155e35fdeebafc89723a51520fb9fe6":[5,0,14,3],
 "structon__surface.html#aee1c5d07ac79c5c036195858afe33405":[5,0,14,4],
 "structra__of__cio.html":[5,0,15],
 "structra__of__cio.html#a0aefc536698706b7f8a15f23168c3486":[5,0,15,0],

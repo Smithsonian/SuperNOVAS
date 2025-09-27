@@ -421,8 +421,6 @@
           <topic label="BARYC" href="novas_8h.html#a0c92a54a656043a455ea8ae0ace6c57e"/>
           <topic label="CAT_ENTRY_INIT" href="novas_8h.html#a0a185da3a347343e5dd21d41a598d0fa"/>
           <topic label="DE405_AU" href="novas_8h.html#af303bf91582509624aa40c6a87eb95ac"/>
-          <topic label="DEFAULT_GRAV_BODIES_FULL_ACCURACY" href="novas_8h.html#a4cb74da554b236c835302480688cfaac"/>
-          <topic label="DEFAULT_GRAV_BODIES_REDUCED_ACCURACY" href="novas_8h.html#aec64bf67d5a03b2b4fb2583e5918f1de"/>
           <topic label="DEG2RAD" href="novas_8h.html#af7e8592d0a634bd3642e9fd508ea8022"/>
           <topic label="HELIOC" href="novas_8h.html#a5414c24d23ad004a73ec69b1aad9f3e2"/>
           <topic label="IN_SPACE_INIT" href="novas_8h.html#a406038a5cbe32b7e0e7233f6145e4cf5"/>
@@ -434,7 +432,6 @@
           <topic label="NOVAS_AU_SEC" href="novas_8h.html#a610c7260c1879f89913bf7a5549b4649"/>
           <topic label="NOVAS_C" href="novas_8h.html#a5fb4713ad9802152e40a83bf3c1ee242"/>
           <topic label="NOVAS_C_AU_PER_DAY" href="novas_8h.html#a7c474aa996c5ccc0c03b1006ea5b30e1"/>
-          <topic label="NOVAS_CIO_CACHE_SIZE" href="novas_8h.html#ab7f2aaab5b9fe0be5d77d4cccc3745a9"/>
           <topic label="NOVAS_DAY" href="novas_8h.html#a0b0c2c5ccc61c8740de2e2ac277cd836"/>
           <topic label="NOVAS_DEFAULT_WAVELENGTH" href="novas_8h.html#a4f7dee9d4c9db4cf201af8383c72d4db"/>
           <topic label="NOVAS_DEGREE" href="novas_8h.html#a6d9698dbaf6260d7fe8a531a0e96d2a8"/>
@@ -479,18 +476,13 @@
           <topic label="NOVAS_ORIGIN_TYPES" href="novas_8h.html#aab57b6b4c8c96ed32414fe3964813e5f"/>
           <topic label="NOVAS_PARSEC" href="novas_8h.html#a0408e0c92b505e9914753930ea3f047f"/>
           <topic label="NOVAS_PLANET_BUNDLE_INIT" href="novas_8h.html#a4cc558a8e366bfea3be40777ea0fcbc3"/>
-          <topic label="NOVAS_PLANET_GRAV_Z_INIT" href="novas_8h.html#a0ae90838b446c7d4c1d3386ec8857410"/>
           <topic label="NOVAS_PLANET_INIT" href="novas_8h.html#ad34a88c2c04b624f8f85fc86e7935967"/>
-          <topic label="NOVAS_PLANET_NAMES_INIT" href="novas_8h.html#abbd19f57e31db2ac91cbe22f9a95f390"/>
-          <topic label="NOVAS_PLANET_RADII_INIT" href="novas_8h.html#ae48a8495c1ddf3960784aba5189d178e"/>
           <topic label="NOVAS_PLANETS" href="novas_8h.html#a1853540eae9f8699b6aaff9c0b518e08"/>
           <topic label="NOVAS_PLUTO_BARYCENTER_INIT" href="novas_8h.html#aead51c753fb72d7c603298c654795ea1"/>
           <topic label="NOVAS_PLUTO_INIT" href="novas_8h.html#a451602e14e6a5512d0e969e4d9878c34"/>
           <topic label="NOVAS_REFERENCE_SYSTEMS" href="novas_8h.html#ae55994629ca97e634b1bb97aafb3f49b"/>
           <topic label="NOVAS_REFRACTION_MODELS" href="novas_8h.html#a1932e30210aa533136e5848089adf492"/>
-          <topic label="NOVAS_RMASS_INIT" href="novas_8h.html#a5ddc7a011476a8cffaec1866beaa0095"/>
           <topic label="NOVAS_SATURN_INIT" href="novas_8h.html#a2cd97d849a1f16d6b85b8d2976f56472"/>
-          <topic label="NOVAS_SOLAR_CONSTANT" href="novas_8h.html#a5e72489b5d24fa737d04cb9ec303b71e"/>
           <topic label="NOVAS_SOLAR_RADIUS" href="novas_8h.html#ae548ecdfc646914084936acb32e9c993"/>
           <topic label="NOVAS_SSB_INIT" href="novas_8h.html#aebdfbe27bf764b69018291054ad9130d"/>
           <topic label="NOVAS_SUN_INIT" href="novas_8h.html#a6afeda74c9df859ae6504eebfee01092"/>
@@ -921,11 +913,16 @@
           <topic label="virtual_planet" href="novas_8h.html#a0dc172d82eec79f78c2d218c1a7b9cbe"/>
           <topic label="virtual_star" href="novas_8h.html#aaf187624a93349391518f9d6bb3051e5"/>
           <topic label="wobble" href="novas_8h.html#aead87744eeb3029ce7d5ffb1801ee652"/>
-          <topic label="grav_bodies_full_accuracy" href="novas_8h.html#a18647d39520d1a15a137661f698cb12a"/>
-          <topic label="grav_bodies_reduced_accuracy" href="novas_8h.html#a03a4df8961a0cd05f89aca478d2dcd24"/>
         </topic>
         <topic label="solarsystem.h" href="solarsystem_8h.html">
+          <topic label="DEFAULT_GRAV_BODIES_FULL_ACCURACY" href="solarsystem_8h.html#a4cb74da554b236c835302480688cfaac"/>
+          <topic label="DEFAULT_GRAV_BODIES_REDUCED_ACCURACY" href="solarsystem_8h.html#aec64bf67d5a03b2b4fb2583e5918f1de"/>
           <topic label="NOVAS_ID_TYPES" href="solarsystem_8h.html#a9a736e59fc9bfdc92b7245aa37d529ee"/>
+          <topic label="NOVAS_PLANET_GRAV_Z_INIT" href="solarsystem_8h.html#a0ae90838b446c7d4c1d3386ec8857410"/>
+          <topic label="NOVAS_PLANET_NAMES_INIT" href="solarsystem_8h.html#abbd19f57e31db2ac91cbe22f9a95f390"/>
+          <topic label="NOVAS_PLANET_RADII_INIT" href="solarsystem_8h.html#ae48a8495c1ddf3960784aba5189d178e"/>
+          <topic label="NOVAS_RMASS_INIT" href="solarsystem_8h.html#a5ddc7a011476a8cffaec1866beaa0095"/>
+          <topic label="NOVAS_SOLAR_CONSTANT" href="solarsystem_8h.html#a5e72489b5d24fa737d04cb9ec303b71e"/>
           <topic label="novas_ephem_provider" href="solarsystem_8h.html#aebb3d71006e8d93de242df61510374ad"/>
           <topic label="novas_planet_provider" href="solarsystem_8h.html#aae2b06af367d7b0a70a8b89c258b00b0"/>
           <topic label="novas_planet_provider_hp" href="solarsystem_8h.html#ae8d7c10a8b9e69b1f0654ef4038482fd"/>
@@ -967,6 +964,8 @@
           <topic label="set_planet_provider_hp" href="solarsystem_8h.html#a418f45a11ce7f92ba0ef817558415640"/>
           <topic label="solarsystem" href="solarsystem_8h.html#a37c25dbc2683dc9e3b1d187e13f68330"/>
           <topic label="solarsystem_hp" href="solarsystem_8h.html#a17846f3fafcce208dbbca1384e3a7fb0"/>
+          <topic label="grav_bodies_full_accuracy" href="solarsystem_8h.html#a18647d39520d1a15a137661f698cb12a"/>
+          <topic label="grav_bodies_reduced_accuracy" href="solarsystem_8h.html#a03a4df8961a0cd05f89aca478d2dcd24"/>
         </topic>
       </topic>
       <topic label="src" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">

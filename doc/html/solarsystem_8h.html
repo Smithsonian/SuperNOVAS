@@ -104,7 +104,8 @@ $(function(){initNavTree('solarsystem_8h.html',''); initResizable(true); });
 <a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">solarsystem.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -114,9 +115,30 @@ $(function(){initNavTree('solarsystem_8h.html',''); initResizable(true); });
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
+<tr class="memitem:a4cb74da554b236c835302480688cfaac" id="r_a4cb74da554b236c835302480688cfaac"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4cb74da554b236c835302480688cfaac">DEFAULT_GRAV_BODIES_FULL_ACCURACY</a>&#160;&#160;&#160;( <a class="el" href="#aec64bf67d5a03b2b4fb2583e5918f1de">DEFAULT_GRAV_BODIES_REDUCED_ACCURACY</a> | (1 &lt;&lt; <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a994baf0c30caeaaee7b8b4d5a12921a3">NOVAS_JUPITER</a>) | (1 &lt;&lt; <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a03b12ea0f93a1a1045d7bcccd613c6f2">NOVAS_SATURN</a>) )</td></tr>
+<tr class="memdesc:a4cb74da554b236c835302480688cfaac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default set of gravitating bodies to use for deflection calculations in full accuracy mode.  <br /></td></tr>
+<tr class="separator:a4cb74da554b236c835302480688cfaac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec64bf67d5a03b2b4fb2583e5918f1de" id="r_aec64bf67d5a03b2b4fb2583e5918f1de"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aec64bf67d5a03b2b4fb2583e5918f1de">DEFAULT_GRAV_BODIES_REDUCED_ACCURACY</a>&#160;&#160;&#160;( (1 &lt;&lt; <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a170e1c704bd29c8d46f66d4d9a03d9c2">NOVAS_SUN</a>) )</td></tr>
+<tr class="memdesc:aec64bf67d5a03b2b4fb2583e5918f1de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default set of gravitating bodies to use for deflection calculations in reduced accuracy mode.  <br /></td></tr>
+<tr class="separator:aec64bf67d5a03b2b4fb2583e5918f1de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a736e59fc9bfdc92b7245aa37d529ee" id="r_a9a736e59fc9bfdc92b7245aa37d529ee"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9a736e59fc9bfdc92b7245aa37d529ee">NOVAS_ID_TYPES</a></td></tr>
 <tr class="memdesc:a9a736e59fc9bfdc92b7245aa37d529ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of different Solar-system body ID types enumerated.  <br /></td></tr>
 <tr class="separator:a9a736e59fc9bfdc92b7245aa37d529ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ae90838b446c7d4c1d3386ec8857410" id="r_a0ae90838b446c7d4c1d3386ec8857410"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0ae90838b446c7d4c1d3386ec8857410">NOVAS_PLANET_GRAV_Z_INIT</a></td></tr>
+<tr class="memdesc:a0ae90838b446c7d4c1d3386ec8857410"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gravitational redshifts for major planets (and Moon and Sun) for light emitted at surface and detected at a large distance away.  <br /></td></tr>
+<tr class="separator:a0ae90838b446c7d4c1d3386ec8857410"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbd19f57e31db2ac91cbe22f9a95f390" id="r_abbd19f57e31db2ac91cbe22f9a95f390"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abbd19f57e31db2ac91cbe22f9a95f390">NOVAS_PLANET_NAMES_INIT</a></td></tr>
+<tr class="memdesc:abbd19f57e31db2ac91cbe22f9a95f390"><td class="mdescLeft">&#160;</td><td class="mdescRight">String array initializer for Major planet names, matching the enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045" title="Enumeration for the &#39;major planet&#39; numbers in NOVAS to use as the solar-system body number whenever t...">novas_planet</a>.  <br /></td></tr>
+<tr class="separator:abbd19f57e31db2ac91cbe22f9a95f390"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae48a8495c1ddf3960784aba5189d178e" id="r_ae48a8495c1ddf3960784aba5189d178e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae48a8495c1ddf3960784aba5189d178e">NOVAS_PLANET_RADII_INIT</a></td></tr>
+<tr class="memdesc:ae48a8495c1ddf3960784aba5189d178e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array initializer for mean planet radii in meters, matching the enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045" title="Enumeration for the &#39;major planet&#39; numbers in NOVAS to use as the solar-system body number whenever t...">novas_planet</a>.  <br /></td></tr>
+<tr class="separator:ae48a8495c1ddf3960784aba5189d178e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ddc7a011476a8cffaec1866beaa0095" id="r_a5ddc7a011476a8cffaec1866beaa0095"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5ddc7a011476a8cffaec1866beaa0095">NOVAS_RMASS_INIT</a></td></tr>
+<tr class="memdesc:a5ddc7a011476a8cffaec1866beaa0095"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reciprocal masses of solar system bodies, from DE-405 (Sun mass / body mass).  <br /></td></tr>
+<tr class="separator:a5ddc7a011476a8cffaec1866beaa0095"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e72489b5d24fa737d04cb9ec303b71e" id="r_a5e72489b5d24fa737d04cb9ec303b71e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5e72489b5d24fa737d04cb9ec303b71e">NOVAS_SOLAR_CONSTANT</a>&#160;&#160;&#160;1367.0</td></tr>
+<tr class="memdesc:a5e72489b5d24fa737d04cb9ec303b71e"><td class="mdescLeft">&#160;</td><td class="mdescRight">[W/m<sup>2</sup>] The Solar Constant i.e., typical incident Solar power on Earth.  <br /></td></tr>
+<tr class="separator:a5e72489b5d24fa737d04cb9ec303b71e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -239,12 +261,21 @@ Functions</h2></td></tr>
 <tr class="separator:a37c25dbc2683dc9e3b1d187e13f68330"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17846f3fafcce208dbbca1384e3a7fb0" id="r_a17846f3fafcce208dbbca1384e3a7fb0"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a17846f3fafcce208dbbca1384e3a7fb0">solarsystem_hp</a> (const double jd_tdb[restrict 2], short body, short origin, double *restrict position, double *restrict velocity)</td></tr>
 <tr class="separator:a17846f3fafcce208dbbca1384e3a7fb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a18647d39520d1a15a137661f698cb12a" id="r_a18647d39520d1a15a137661f698cb12a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a18647d39520d1a15a137661f698cb12a">grav_bodies_full_accuracy</a></td></tr>
+<tr class="memdesc:a18647d39520d1a15a137661f698cb12a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current set of gravitating bodies to use for deflection calculations in full accuracy mode.  <br /></td></tr>
+<tr class="separator:a18647d39520d1a15a137661f698cb12a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03a4df8961a0cd05f89aca478d2dcd24" id="r_a03a4df8961a0cd05f89aca478d2dcd24"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a03a4df8961a0cd05f89aca478d2dcd24">grav_bodies_reduced_accuracy</a></td></tr>
+<tr class="memdesc:a03a4df8961a0cd05f89aca478d2dcd24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current set of gravitating bodies to use for deflection calculations in reduced accuracy mode.  <br /></td></tr>
+<tr class="separator:a03a4df8961a0cd05f89aca478d2dcd24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>SuperNOVAS Solar-system related types, definitions, and functions (included in <a class="el" href="novas_8h.html">novas.h</a>). </p>
 <p>Solar-system objects come in multiple varieties from the perspective of SuperNOVAS:</p>
 <ol type="1">
-<li>Major planets, plus the Sun, Moon, Solar-system Barucenter (SSB), and since v1.2 also the Earth-Moon Barycenter (EMB), and the Pluto system barycenter.</li>
+<li>Major planets, plus the Sun, Moon, Solar-system Barycenter (SSB), and since v1.2 also the Earth-Moon Barycenter (EMB), and the Pluto system barycenter.</li>
 <li>Ephemeris objects, which historically have been all sources other than the major planets above. NOVAS treated these apart from the major planets, and so we follow.</li>
 <li>Keplerian orbital elements (since v1.2), which can be used as an alternative to ephemerides. With short term projections, using up-to-date orbital elements, such as published by the IAU Minor Planet Center, one may calculate positions for asteroids, comets, and near-Earth objects (NEOs) with similar accuracy as with ephemerides. However, long-term application, orbital elements are typically much less accurate.</li>
 </ol>
@@ -253,6 +284,45 @@ Functions</h2></td></tr>
 <p>Besides the high-precision position and velocity calculations, you can do a lot more with Solar-system sources also. For example, you can calculate the Moon's phase, or the angle between an observed source and the Sun or Moon (often a consideration in deciding whether to observe a source), or calculate the solar illumination fraction for planets (especially the inner ones), or the typical incident solar power on the illuminated side. And, even without a high-precison ephemeris provider, you may still calculate the position of the major planets with arcminute level accuracy also.</p>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs and G. Kaplan </dd></dl>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a4cb74da554b236c835302480688cfaac" name="a4cb74da554b236c835302480688cfaac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4cb74da554b236c835302480688cfaac">&#9670;&#160;</a></span>DEFAULT_GRAV_BODIES_FULL_ACCURACY</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DEFAULT_GRAV_BODIES_FULL_ACCURACY&#160;&#160;&#160;( <a class="el" href="#aec64bf67d5a03b2b4fb2583e5918f1de">DEFAULT_GRAV_BODIES_REDUCED_ACCURACY</a> | (1 &lt;&lt; <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a994baf0c30caeaaee7b8b4d5a12921a3">NOVAS_JUPITER</a>) | (1 &lt;&lt; <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a03b12ea0f93a1a1045d7bcccd613c6f2">NOVAS_SATURN</a>) )</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Default set of gravitating bodies to use for deflection calculations in full accuracy mode. </p>
+<dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a18647d39520d1a15a137661f698cb12a" title="Current set of gravitating bodies to use for deflection calculations in full accuracy mode.">grav_bodies_full_accuracy</a>, <a class="el" href="grav_8c.html#ae36bc31e1dad8a68f94f7a6414f0519f" title="(primarily for internal use) Computes the total gravitational deflection of light for the observed ob...">grav_planets()</a>, <a class="el" href="grav_8c.html#a1b107a24b9fadc79cc5df8c6f5505d16" title="(primarily for internal use) Computes the gravitationally undeflected position of an observed source ...">grav_undo_planets()</a> </dd></dl>
+
+</div>
+</div>
+<a id="aec64bf67d5a03b2b4fb2583e5918f1de" name="aec64bf67d5a03b2b4fb2583e5918f1de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec64bf67d5a03b2b4fb2583e5918f1de">&#9670;&#160;</a></span>DEFAULT_GRAV_BODIES_REDUCED_ACCURACY</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DEFAULT_GRAV_BODIES_REDUCED_ACCURACY&#160;&#160;&#160;( (1 &lt;&lt; <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a170e1c704bd29c8d46f66d4d9a03d9c2">NOVAS_SUN</a>) )</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Default set of gravitating bodies to use for deflection calculations in reduced accuracy mode. </p>
+<p>(only apply gravitational deflection for the Sun.)</p>
+<dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a03a4df8961a0cd05f89aca478d2dcd24" title="Current set of gravitating bodies to use for deflection calculations in reduced accuracy mode.">grav_bodies_reduced_accuracy</a>, <a class="el" href="grav_8c.html#ae36bc31e1dad8a68f94f7a6414f0519f" title="(primarily for internal use) Computes the total gravitational deflection of light for the observed ob...">grav_planets()</a>, <a class="el" href="grav_8c.html#a1b107a24b9fadc79cc5df8c6f5505d16" title="(primarily for internal use) Computes the gravitationally undeflected position of an observed source ...">grav_undo_planets()</a> </dd></dl>
+
+</div>
+</div>
 <a id="a9a736e59fc9bfdc92b7245aa37d529ee" name="a9a736e59fc9bfdc92b7245aa37d529ee"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9a736e59fc9bfdc92b7245aa37d529ee">&#9670;&#160;</a></span>NOVAS_ID_TYPES</h2>
 
@@ -269,6 +339,135 @@ Functions</h2></td></tr>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>enum <a class="el" href="#ac42df1db80fbcb6f7a72de80d9f9c531" title="Solar-system body IDs to use as object.number with NOVAS_EPHEM_OBJECT types.">novas_id_type</a> </dd></dl>
+
+</div>
+</div>
+<a id="a0ae90838b446c7d4c1d3386ec8857410" name="a0ae90838b446c7d4c1d3386ec8857410"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ae90838b446c7d4c1d3386ec8857410">&#9670;&#160;</a></span>NOVAS_PLANET_GRAV_Z_INIT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define NOVAS_PLANET_GRAV_Z_INIT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gravitational redshifts for major planets (and Moon and Sun) for light emitted at surface and detected at a large distance away. </p>
+<p>Barycenters are not considered, and for Pluto the redshift for the Pluto system is assumed for distant observers.</p>
+<dl class="section see"><dt>See also</dt><dd>enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045" title="Enumeration for the &#39;major planet&#39; numbers in NOVAS to use as the solar-system body number whenever t...">novas_planet</a> </dd>
+<dd>
+<a class="el" href="novas_8h.html#a1853540eae9f8699b6aaff9c0b518e08" title="The number of major planets defined in NOVAS.">NOVAS_PLANETS</a></dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.1.1 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+
+</div>
+</div>
+<a id="abbd19f57e31db2ac91cbe22f9a95f390" name="abbd19f57e31db2ac91cbe22f9a95f390"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbd19f57e31db2ac91cbe22f9a95f390">&#9670;&#160;</a></span>NOVAS_PLANET_NAMES_INIT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define NOVAS_PLANET_NAMES_INIT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>String array initializer for Major planet names, matching the enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045" title="Enumeration for the &#39;major planet&#39; numbers in NOVAS to use as the solar-system body number whenever t...">novas_planet</a>. </p>
+<p>E.g.</p>
+<div class="fragment"><div class="line"><span class="keyword">const</span> <span class="keywordtype">char</span> *planet_names[] = <a class="code hl_define" href="#abbd19f57e31db2ac91cbe22f9a95f390">NOVAS_PLANET_NAMES_INIT</a>;</div>
+<div class="ttc" id="asolarsystem_8h_html_abbd19f57e31db2ac91cbe22f9a95f390"><div class="ttname"><a href="#abbd19f57e31db2ac91cbe22f9a95f390">NOVAS_PLANET_NAMES_INIT</a></div><div class="ttdeci">#define NOVAS_PLANET_NAMES_INIT</div><div class="ttdoc">String array initializer for Major planet names, matching the enum novas_planet.</div><div class="ttdef"><b>Definition</b> solarsystem.h:73</div></div>
+</div><!-- fragment --><dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045" title="Enumeration for the &#39;major planet&#39; numbers in NOVAS to use as the solar-system body number whenever t...">novas_planet</a> </dd></dl>
+
+</div>
+</div>
+<a id="ae48a8495c1ddf3960784aba5189d178e" name="ae48a8495c1ddf3960784aba5189d178e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae48a8495c1ddf3960784aba5189d178e">&#9670;&#160;</a></span>NOVAS_PLANET_RADII_INIT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define NOVAS_PLANET_RADII_INIT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Array initializer for mean planet radii in meters, matching the enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045" title="Enumeration for the &#39;major planet&#39; numbers in NOVAS to use as the solar-system body number whenever t...">novas_planet</a>. </p>
+<p>E.g.</p>
+<div class="fragment"><div class="line"><span class="keyword">const</span> <span class="keywordtype">double</span> *planet_radii[] = <a class="code hl_define" href="#ae48a8495c1ddf3960784aba5189d178e">NOVAS_PLANET_RADII_INIT</a>;</div>
+<div class="ttc" id="asolarsystem_8h_html_ae48a8495c1ddf3960784aba5189d178e"><div class="ttname"><a href="#ae48a8495c1ddf3960784aba5189d178e">NOVAS_PLANET_RADII_INIT</a></div><div class="ttdeci">#define NOVAS_PLANET_RADII_INIT</div><div class="ttdoc">Array initializer for mean planet radii in meters, matching the enum novas_planet.</div><div class="ttdef"><b>Definition</b> solarsystem.h:103</div></div>
+</div><!-- fragment --><p>REFERENCES: </p><ol>
+<li>
+<a href="https://orbital-mechanics.space/reference/planetary-parameters.html">https://orbital-mechanics.space/reference/planetary-parameters.html</a>, Table 3. </li>
+<li>
+B. A. Archinal, et al., Report of the IAU Working Group on Cartographic Coordinates and Rotational Elements:<ol type="1">
+<li>Celestial Mechanics and Dynamical Astronomy, 130(3):22, March 2018. doi:10.1007/s10569-017-9805-5.</li>
+</ol>
+</li>
+<li>
+B. A. Archinal, et al., Report of the IAU Working Group on Cartographic Coordinates and Rotational Elements:<ol type="1">
+<li>Celestial Mechanics and Dynamical Astronomy, 130(3):22, March 2018. doi:10.1007/s10569-017-9805-5. </li>
+</ol>
+</li>
+</ol>
+<dl class="section since"><dt>Since</dt><dd>1.5 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045" title="Enumeration for the &#39;major planet&#39; numbers in NOVAS to use as the solar-system body number whenever t...">novas_planet</a>, <a class="el" href="#abbd19f57e31db2ac91cbe22f9a95f390" title="String array initializer for Major planet names, matching the enum novas_planet.">NOVAS_PLANET_NAMES_INIT</a>, <a class="el" href="#a5ddc7a011476a8cffaec1866beaa0095" title="Reciprocal masses of solar system bodies, from DE-405 (Sun mass / body mass).">NOVAS_RMASS_INIT</a> </dd></dl>
+
+</div>
+</div>
+<a id="a5ddc7a011476a8cffaec1866beaa0095" name="a5ddc7a011476a8cffaec1866beaa0095"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ddc7a011476a8cffaec1866beaa0095">&#9670;&#160;</a></span>NOVAS_RMASS_INIT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define NOVAS_RMASS_INIT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reciprocal masses of solar system bodies, from DE-405 (Sun mass / body mass). </p>
+<p>[0]: Earth/Moon barycenter (legacy from NOVAS C), MASS[1] = Mercury, ...,</p>
+<p>Barycentric reciprocal masses (index 12, 13) are not set.</p>
+<p>NOTES: </p><ol>
+<li>
+The values have been updated to used DE440 data (Park et al. 2021) in 1.4. </li>
+</ol>
+<p>REFERENCES: </p><ol>
+<li>
+Ryan S. Park et al 2021 AJ 161 105, DOI 10.3847/1538-3881/abd414 </li>
+<li>
+IERS Conventions, Chapter 3, Table 3.1 </li>
+</ol>
+<dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045" title="Enumeration for the &#39;major planet&#39; numbers in NOVAS to use as the solar-system body number whenever t...">novas_planet</a>, <a class="el" href="#abbd19f57e31db2ac91cbe22f9a95f390" title="String array initializer for Major planet names, matching the enum novas_planet.">NOVAS_PLANET_NAMES_INIT</a>, NOVAS_PLANET_RAII_INIT, NOVAS_PLANETS_GRAV_Z_INIT </dd></dl>
+
+</div>
+</div>
+<a id="a5e72489b5d24fa737d04cb9ec303b71e" name="a5e72489b5d24fa737d04cb9ec303b71e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e72489b5d24fa737d04cb9ec303b71e">&#9670;&#160;</a></span>NOVAS_SOLAR_CONSTANT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define NOVAS_SOLAR_CONSTANT&#160;&#160;&#160;1367.0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>[W/m<sup>2</sup>] The Solar Constant i.e., typical incident Solar power on Earth. </p>
+<p>The value of 1367 Wm<sup>−2</sup> was adopted by the World Radiation Center (Gueymard, 2004). </p><dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a763f9a9dd2edb4645a5db05184ca7495" title="Returns the typical incident Solar power on a Solar-system body at the time of observation.">novas_solar_power()</a> </dd></dl>
 
 </div>
 </div>
@@ -1348,7 +1547,7 @@ E.M. Standish and J.G. Williams 1992. </li>
 <dl class="section since"><dt>Since</dt><dd>1.2</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="target_8c.html#a4c7846be95299769f4d0377bf127bcf5" title="Sets a celestial object to be a major planet, or the Sun, Moon, Solar-system Barycenter,...">make_planet()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8h.html#abbd19f57e31db2ac91cbe22f9a95f390">NOVAS_PLANET_NAMES_INIT</a>, <a class="el" href="novas_8h.html#a1853540eae9f8699b6aaff9c0b518e08">NOVAS_PLANETS</a>, and <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045aaeb39686d0e998c9188b47c31ee9c6b5">NOVAS_SSB</a>.</p>
+<p class="reference">References <a class="el" href="#abbd19f57e31db2ac91cbe22f9a95f390">NOVAS_PLANET_NAMES_INIT</a>, <a class="el" href="novas_8h.html#a1853540eae9f8699b6aaff9c0b518e08">NOVAS_PLANETS</a>, and <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045aaeb39686d0e998c9188b47c31ee9c6b5">NOVAS_SSB</a>.</p>
 
 </div>
 </div>
@@ -1474,7 +1673,7 @@ You should not expect much precision from the long-range orbital approximations 
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html#ac780bd907a12957995d36ad916dd4ec1" title="Returns the Solar illumination fraction of a source, assuming a spherical geometry for the observed b...">novas_solar_illum()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="target_8c.html#af4fa5359b8b0167a2780baff17b164a5">novas_helio_dist()</a>, and <a class="el" href="novas_8h.html#a5e72489b5d24fa737d04cb9ec303b71e">NOVAS_SOLAR_CONSTANT</a>.</p>
+<p class="reference">References <a class="el" href="target_8c.html#af4fa5359b8b0167a2780baff17b164a5">novas_helio_dist()</a>, and <a class="el" href="#a5e72489b5d24fa737d04cb9ec303b71e">NOVAS_SOLAR_CONSTANT</a>.</p>
 
 </div>
 </div>
@@ -1686,7 +1885,7 @@ You should not expect much precision from the long-range orbital approximations 
 <dd>
 <a class="el" href="#a17846f3fafcce208dbbca1384e3a7fb0">solarsystem_hp()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="ephemeris_8c.html#aa6fad38297a49ba78a6bd49cedf889b1">get_ephem_provider()</a>, <a class="el" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27beade504a1c5ccf790ce9d8ad52797bb94c">NOVAS_BARYCENTER</a>, <a class="el" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27bea13c0711a025b9aebd4186ab9127cbd7b">NOVAS_HELIOCENTER</a>, <a class="el" href="novas_8h.html#abbd19f57e31db2ac91cbe22f9a95f390">NOVAS_PLANET_NAMES_INIT</a>, <a class="el" href="novas_8h.html#a1853540eae9f8699b6aaff9c0b518e08">NOVAS_PLANETS</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045aaeb39686d0e998c9188b47c31ee9c6b5">NOVAS_SSB</a>, and <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a170e1c704bd29c8d46f66d4d9a03d9c2">NOVAS_SUN</a>.</p>
+<p class="reference">References <a class="el" href="ephemeris_8c.html#aa6fad38297a49ba78a6bd49cedf889b1">get_ephem_provider()</a>, <a class="el" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27beade504a1c5ccf790ce9d8ad52797bb94c">NOVAS_BARYCENTER</a>, <a class="el" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27bea13c0711a025b9aebd4186ab9127cbd7b">NOVAS_HELIOCENTER</a>, <a class="el" href="#abbd19f57e31db2ac91cbe22f9a95f390">NOVAS_PLANET_NAMES_INIT</a>, <a class="el" href="novas_8h.html#a1853540eae9f8699b6aaff9c0b518e08">NOVAS_PLANETS</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045aaeb39686d0e998c9188b47c31ee9c6b5">NOVAS_SSB</a>, and <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a170e1c704bd29c8d46f66d4d9a03d9c2">NOVAS_SUN</a>.</p>
 
 </div>
 </div>
@@ -1718,7 +1917,7 @@ You should not expect much precision from the long-range orbital approximations 
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000026">Deprecated</a></b></dt><dd>This old ephemeris reader is prone to memory leaks, and lacks some useful functionality. Users are strongly encouraged to use the new <code><a class="el" href="#aebb3d71006e8d93de242df61510374ad" title="Function to obtain ephemeris data for minor planets, which are not handled by the solarsystem() type ...">novas_ephem_provider</a></code> / <code>novas_set_ephem_provider()</code> instead, for dynamically configured implementations at runtime. This prototype is provided only to extend support for legacy NOVAS applications only, where an inplementation had to be linked always.</dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000025">Deprecated</a></b></dt><dd>This old ephemeris reader is prone to memory leaks, and lacks some useful functionality. Users are strongly encouraged to use the new <code><a class="el" href="#aebb3d71006e8d93de242df61510374ad" title="Function to obtain ephemeris data for minor planets, which are not handled by the solarsystem() type ...">novas_ephem_provider</a></code> / <code>novas_set_ephem_provider()</code> instead, for dynamically configured implementations at runtime. This prototype is provided only to extend support for legacy NOVAS applications only, where an inplementation had to be linked always.</dd></dl>
 <p>Legacy NOVAS C function to handle position and velocity calculations for Solar-system sources, beyond the major planets. This function can be defined by an external module, as per the NOVAS C way, provided you compile SuperNOVAS with the <code>READPH_SOURCE</code> option set to specify the source(s) that implement it (in <code>config.mk</code> or the environment). If <code>READEPH_SOURCE</code> in not defined during the build of SuperNOVAS, then this function will not be used by <b>SuperNOVAS</b>, nor will be implemented by it.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1858,7 +2057,7 @@ You should not expect much precision from the long-range orbital approximations 
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000027">Deprecated</a></b></dt><dd>(<em>legacy function</em>) Use <code><a class="el" href="#a9904c454bc7148b42d0f927b82ea3973" title="Set a custom function to use for regular precision (see NOVAS_REDUCED_ACCURACY) ephemeris calculation...">set_planet_provider()</a></code> instead to specify what function should be used to calculate ephemeris positions for major planets.</dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000026">Deprecated</a></b></dt><dd>(<em>legacy function</em>) Use <code><a class="el" href="#a9904c454bc7148b42d0f927b82ea3973" title="Set a custom function to use for regular precision (see NOVAS_REDUCED_ACCURACY) ephemeris calculation...">set_planet_provider()</a></code> instead to specify what function should be used to calculate ephemeris positions for major planets.</dd></dl>
 <p>Legacy NOVAS C function for obtaining planet position / velocity data. This function can be defined by external modules, as per the NOVAS C way, provided you compile SuperNOVAS with the <code>SOLSYS_SOURCE</code> option set to specify the source(s) that implement it (in <code>config.mk</code> or the environment). If <code>SOLSYS_SOURCE</code> in not defined during the build of SuperNOVAS, then this function will be provided by the currently configured <code><a class="el" href="#aae2b06af367d7b0a70a8b89c258b00b0" title="Provides the position and velocity of major planets (as well as the Sun, Moon, Solar-system Barycente...">novas_planet_provider</a></code> function, such as <code><a class="el" href="#a580f5949c8a29cdd7bf4787aee891f2b" title="Provides the position and velocity of the Earth and Sun only at epoch &#39;jd_tdb&#39; by evaluating a closed...">earth_sun_calc()</a></code> if not configured otherwise.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1910,7 +2109,7 @@ You should not expect much precision from the long-range orbital approximations 
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000028">Deprecated</a></b></dt><dd>(<em>legacy function</em>) Use <code><a class="el" href="#a418f45a11ce7f92ba0ef817558415640" title="Set a custom function to use for high precision (see NOVAS_FULL_ACCURACY) ephemeris calculations inst...">set_planet_provider_hp()</a></code> instead to specify what function should be used to calculate high-precision ephemeris positions for major planets.</dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000027">Deprecated</a></b></dt><dd>(<em>legacy function</em>) Use <code><a class="el" href="#a418f45a11ce7f92ba0ef817558415640" title="Set a custom function to use for high precision (see NOVAS_FULL_ACCURACY) ephemeris calculations inst...">set_planet_provider_hp()</a></code> instead to specify what function should be used to calculate high-precision ephemeris positions for major planets.</dd></dl>
 <p>Legacy NOVAS C function for obtaining high-precision planet position / velocity data. This function can be defined by external modules, as per the NOVAS C way, provided you compile SuperNOVAS with the <code>SOLSYS_SOURCE</code> option set to specify the source(s) that implement it (in <code>config.mk</code> or the environment). If <code>SOLSYS_SOURCE</code> in not defined during the build of SuperNOVAS, then this function will be provided by the currently configured <code><a class="el" href="#ae8d7c10a8b9e69b1f0654ef4038482fd" title="Provides the position and velocity of major planets (as well as the Sun, Moon, Solar-system Barycente...">novas_planet_provider_hp</a></code> function, such as <code><a class="el" href="#a580f5949c8a29cdd7bf4787aee891f2b" title="Provides the position and velocity of the Earth and Sun only at epoch &#39;jd_tdb&#39; by evaluating a closed...">earth_sun_calc()</a>_hp</code> if not configured otherwise.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1926,6 +2125,65 @@ You should not expect much precision from the long-range orbital approximations 
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a>, <a class="el" href="#a418f45a11ce7f92ba0ef817558415640" title="Set a custom function to use for high precision (see NOVAS_FULL_ACCURACY) ephemeris calculations inst...">set_planet_provider_hp()</a>, <a class="el" href="#a713982e1f2bae0a72b39d03007f00d23" title="Retrieves the position and velocity of a solar system body using the currently configured plugins tha...">ephemeris()</a> </dd>
 <dd>
 <a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f" title="Calculates an apparent location on sky for the source.">novas_sky_pos()</a>, <a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7" title="Calculates the geometric position and velocity vectors, relative to the observer, for a source in the...">novas_geom_posvel()</a>, <a class="el" href="grav_8c.html#ae36bc31e1dad8a68f94f7a6414f0519f" title="(primarily for internal use) Computes the total gravitational deflection of light for the observed ob...">grav_planets()</a>, <a class="el" href="grav_8c.html#a1b107a24b9fadc79cc5df8c6f5505d16" title="(primarily for internal use) Computes the gravitationally undeflected position of an observed source ...">grav_undo_planets()</a> </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="a18647d39520d1a15a137661f698cb12a" name="a18647d39520d1a15a137661f698cb12a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18647d39520d1a15a137661f698cb12a">&#9670;&#160;</a></span>grav_bodies_full_accuracy</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int grav_bodies_full_accuracy</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel extern">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Current set of gravitating bodies to use for deflection calculations in full accuracy mode. </p>
+<p>Each bit signifies whether a given body is to be accounted for as a gravitating body that bends light, such as the bit <code>(1 &lt;&lt; NOVAS_JUPITER)</code> indicates whether or not Jupiter is considered as a deflecting body. You should also be sure that you provide ephemeris data for bodies that are designated for the deflection calculation.</p>
+<dl class="section since"><dt>Since</dt><dd>1.1</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="grav_8c.html#a48f90ac20950507fad9b880a7f7f2383" title="(primarily for internal use) Computes the total gravitational deflection of light for the observed ob...">grav_def()</a>, <a class="el" href="grav_8c.html#ae36bc31e1dad8a68f94f7a6414f0519f" title="(primarily for internal use) Computes the total gravitational deflection of light for the observed ob...">grav_planets()</a>, <a class="el" href="#a4cb74da554b236c835302480688cfaac" title="Default set of gravitating bodies to use for deflection calculations in full accuracy mode.">DEFAULT_GRAV_BODIES_FULL_ACCURACY</a> </dd>
+<dd>
+set_ephem_provider_hp() </dd></dl>
+
+</div>
+</div>
+<a id="a03a4df8961a0cd05f89aca478d2dcd24" name="a03a4df8961a0cd05f89aca478d2dcd24"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a03a4df8961a0cd05f89aca478d2dcd24">&#9670;&#160;</a></span>grav_bodies_reduced_accuracy</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int grav_bodies_reduced_accuracy</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel extern">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Current set of gravitating bodies to use for deflection calculations in reduced accuracy mode. </p>
+<p>Each bit signifies whether a given body is to be accounted for as a gravitating body that bends light, such as the bit <code>(1 &lt;&lt; NOVAS_JUPITER)</code> indicates whether or not Jupiter is considered as a deflecting body. You should also be sure that you provide ephemeris data for bodies that are designated for the deflection calculation.</p>
+<dl class="section since"><dt>Since</dt><dd>1.1</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="grav_8c.html#a48f90ac20950507fad9b880a7f7f2383" title="(primarily for internal use) Computes the total gravitational deflection of light for the observed ob...">grav_def()</a>, <a class="el" href="grav_8c.html#ae36bc31e1dad8a68f94f7a6414f0519f" title="(primarily for internal use) Computes the total gravitational deflection of light for the observed ob...">grav_planets()</a>, <a class="el" href="#aec64bf67d5a03b2b4fb2583e5918f1de" title="Default set of gravitating bodies to use for deflection calculations in reduced accuracy mode.">DEFAULT_GRAV_BODIES_REDUCED_ACCURACY</a> </dd>
+<dd>
+<a class="el" href="#a6097083c438a8d1872c2e00a66360030" title="Sets the function to use for obtaining position / velocity information for minor planets,...">set_ephem_provider()</a> </dd></dl>
 
 </div>
 </div>

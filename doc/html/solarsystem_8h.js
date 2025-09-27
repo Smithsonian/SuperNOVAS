@@ -1,6 +1,13 @@
 var solarsystem_8h =
 [
+    [ "DEFAULT_GRAV_BODIES_FULL_ACCURACY", "solarsystem_8h.html#a4cb74da554b236c835302480688cfaac", null ],
+    [ "DEFAULT_GRAV_BODIES_REDUCED_ACCURACY", "solarsystem_8h.html#aec64bf67d5a03b2b4fb2583e5918f1de", null ],
     [ "NOVAS_ID_TYPES", "solarsystem_8h.html#a9a736e59fc9bfdc92b7245aa37d529ee", null ],
+    [ "NOVAS_PLANET_GRAV_Z_INIT", "solarsystem_8h.html#a0ae90838b446c7d4c1d3386ec8857410", null ],
+    [ "NOVAS_PLANET_NAMES_INIT", "solarsystem_8h.html#abbd19f57e31db2ac91cbe22f9a95f390", null ],
+    [ "NOVAS_PLANET_RADII_INIT", "solarsystem_8h.html#ae48a8495c1ddf3960784aba5189d178e", null ],
+    [ "NOVAS_RMASS_INIT", "solarsystem_8h.html#a5ddc7a011476a8cffaec1866beaa0095", null ],
+    [ "NOVAS_SOLAR_CONSTANT", "solarsystem_8h.html#a5e72489b5d24fa737d04cb9ec303b71e", null ],
     [ "novas_ephem_provider", "solarsystem_8h.html#aebb3d71006e8d93de242df61510374ad", null ],
     [ "novas_planet_provider", "solarsystem_8h.html#aae2b06af367d7b0a70a8b89c258b00b0", null ],
     [ "novas_planet_provider_hp", "solarsystem_8h.html#ae8d7c10a8b9e69b1f0654ef4038482fd", null ],
@@ -41,5 +48,7 @@ var solarsystem_8h =
     [ "set_planet_provider", "solarsystem_8h.html#a9904c454bc7148b42d0f927b82ea3973", null ],
     [ "set_planet_provider_hp", "solarsystem_8h.html#a418f45a11ce7f92ba0ef817558415640", null ],
     [ "solarsystem", "solarsystem_8h.html#a37c25dbc2683dc9e3b1d187e13f68330", null ],
-    [ "solarsystem_hp", "solarsystem_8h.html#a17846f3fafcce208dbbca1384e3a7fb0", null ]
+    [ "solarsystem_hp", "solarsystem_8h.html#a17846f3fafcce208dbbca1384e3a7fb0", null ],
+    [ "grav_bodies_full_accuracy", "solarsystem_8h.html#a18647d39520d1a15a137661f698cb12a", null ],
+    [ "grav_bodies_reduced_accuracy", "solarsystem_8h.html#a03a4df8961a0cd05f89aca478d2dcd24", null ]
 ];
