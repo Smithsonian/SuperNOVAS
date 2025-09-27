@@ -249,7 +249,7 @@ install(TARGETS ${INSTALL_TARGETS}
 # ------------------------------------------------------------------------
 # Install Development component
 
-install(FILES include/novas.h include/nutation.h include/solarsystem.h
+install(FILES include/novas.h include/solarsystem.h
     COMPONENT Development
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
