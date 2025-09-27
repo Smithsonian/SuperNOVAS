@@ -1,9 +1,6 @@
 /**
  * @file
  *
- * @date Created  on Mar 6, 2025
- * @author Attila Kovacs
- *
  *  Function relating to the use of Keplerian orbital elements. For example, the IAU Minor Planet
  *  Center publishes up-to-date Keplerial orbital elements for all asteroids, comets, and
  *  Near-Earth Objects (NEOs) regularly. On short timescales these can provide accurate positions
@@ -48,8 +45,12 @@
  *  `novas_orbit_posvel()`, while `novas_orbit_native_posvel()` will do the same, but in
  *  the native coordinate system in which the orbital is defined.
  *
- *  @sa novas_orbital, make_orbital_object()
- *  @sa ephemeris.c
+ *
+ * @date Created  on Mar 6, 2025
+ * @author Attila Kovacs
+ *
+ * @sa novas_orbital, make_orbital_object()
+ * @sa ephemeris.c
  */
 
 #include <errno.h>

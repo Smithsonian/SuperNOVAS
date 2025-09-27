@@ -1,10 +1,6 @@
 /**
  * @file
  *
- * @date Created  on Jun 23, 2024
- * @author Attila Kovacs
- * @since 1.1
- *
  * SuperNOVAS routines for higher-level and efficient astrometric calculations using observing
  * frames. An observing frames represents an observer location at a specific astronomical time
  * (instant), which can be re-used again and again to calculate or transform positions of
@@ -93,6 +89,10 @@
  *
  * These are just some of the common use-case scenarios. There is even more possibilities with
  * frames...
+ *
+ * @date Created  on Jun 23, 2024
+ * @author Attila Kovacs
+ * @since 1.1
  *
  * @sa timescale.c, observer.c, target.c, ephemeris.c
  */

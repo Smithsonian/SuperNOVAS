@@ -1,9 +1,6 @@
 /**
  * @file
  *
- * @date Created  on Mar 6, 2025
- * @author G. Kaplan and Attila Kovacs
- *
  *  This module contains functions that define an observing target, or which are target related.
  *  In general, the @ref object data structure contains information on the astronomical target of
  *  observation. Depending on the type of astronomical source, you might use different functions
@@ -35,6 +32,9 @@
  * Once an @ref object is defined, you may calculate astrometric properties, such as apparent or
  * geometric positions; rise, set, or transit times, etc. through observing frames, which are
  * defined for a specific observer location and time of observation.
+ *
+ * @date Created  on Mar 6, 2025
+ * @author G. Kaplan and Attila Kovacs
  *
  * @sa frames.c, observer.c, timescale.c
  */

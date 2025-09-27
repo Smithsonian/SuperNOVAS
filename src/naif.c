@@ -1,15 +1,14 @@
 /**
  * @file
  *
- * @date Created  on Nov 6, 2024
- * @author Attila Kovacs
- *
  *  Solar system ID mappings between NOVAS and NASA's Navigation and Ancillary Information
  *  Facility (NAIF), which is used by the JPL ephemeris systems. The two differ for the numbering
  *  convention for major planets, the Sun, Moon, Solar-System Barycenter (SSB) and the Earth-Moon
  *  Barycenter (EMB). NOVAS does not have predefined IDs beyond this set (and no defined ID for
  *  EMB), thus for all other objects we'll assume and use NOVAS IDs that match NAIF.
  *
+ * @date Created  on Nov 6, 2024
+ * @author Attila Kovacs
  * @since 1.2
  *
  * @sa solsys-calceph.c, solsys-cspice.c, ephemeris.c

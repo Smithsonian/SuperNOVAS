@@ -1,12 +1,12 @@
 /**
  * @file
  *
+ *  Various functions to parse string values for SuperNOVAS.
+ *
  * @date Created  on Mar 2, 2025
  * @author Attila Kovacs
  *
- *  Various functions to parse string values for SuperNOVAS.
- *
- *  @sa target.c, observer.c, timescale.c
+ * @sa target.c, observer.c, timescale.c
  */
 
 #include <math.h>

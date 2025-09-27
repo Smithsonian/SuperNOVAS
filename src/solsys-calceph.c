@@ -1,9 +1,6 @@
 /**
  * @file
  *
- * @author A. Kovacs
- * @since 1.2
- *
  *  SuperNOVAS Solar-system ephemeris lookup implementation via the CALCEPH C library.
  *
  *  This is an optional component of SuperNOVAS, which interfaces to the CALCEPH C library. As
@@ -51,6 +48,9 @@
  *  <li>CALCEPH is at https://calceph.imcce.fr/docs/4.0.0/html/c/</li>
  *  <li>CALCEPH source code is at https://gitlab.obspm.fr/imcce_calceph/calceph</li>
  * </ol>
+ *
+ * @author Attila Kovacs
+ * @since 1.2
  *
  * @sa solsys-cspice.c, ephemeris.c, orbital.c
  */

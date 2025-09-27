@@ -1,9 +1,6 @@
 /**
  * @file
  *
- * @date Created  on Mar 5, 2025
- * @author G. Kaplan and Attila Kovacs
- *
  *  Various transformations between different coordinate systems used in astronomy, such as
  *  equatorial, ecliptic, Galactic, or local horizontal coordinate systems.
  *
@@ -15,7 +12,10 @@
  *  and various functions for converting equatorial vectors to a line-of-sight, or _u_, _v_, _w_
  *  coordinate bases, and vice-versa.
  *
- *  @sa frames.c, transform.c
+ * @date Created  on Mar 5, 2025
+ * @author G. Kaplan and Attila Kovacs
+ *
+ * @sa frames.c, transform.c
  */
 
 #include <string.h>

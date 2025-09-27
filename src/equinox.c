@@ -1,12 +1,12 @@
 /**
  * @file
  *
+ * Various functions for calculating the equator and equinox of date, and related quatities.
+ *
  * @date Created  on Mar 6, 2025
  * @author G. Kaplan and Attila Kovacs
  *
- *  Various functions for calculating the equator and equinox of date, and related quatities.
- *
- *  @sa cio.c, earth.c, frames.c, nutation.c
+ * @sa cio.c, earth.c, frames.c, nutation.c
  */
 
 #include <string.h>

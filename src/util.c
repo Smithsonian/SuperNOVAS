@@ -1,10 +1,10 @@
 /**
  * @file
  *
+ *  Various commonly used routines used throughout the SuperNOVAS library.
+ *
  * @date Created  on Mar 6, 2025
  * @author G. Kaplan and A. Kovacs
- *
- *  Various commonly used routines used throughout the SuperNOVAS library.
  */
 
 #include <stdarg.h>

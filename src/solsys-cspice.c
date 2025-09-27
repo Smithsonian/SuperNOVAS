@@ -1,9 +1,6 @@
 /**
  * @file
  *
- * @author A. Kovacs
- * @since 1.2
- *
  *  SuperNOVAS Solar-system ephemeris lookup implementation via the NAIF CSPICE library.
  *
  *  This is an optional component of SuperNOVAS, which interfaces to the NAIF CSPICE Toolkit.
@@ -52,6 +49,9 @@
  *  <li>The NAIF CSPICE Toolkit: https://naif.jpl.nasa.gov/naif/toolkit.html</li>
  *  <li>the Smithsonian/cspice-sharedlib repository: https://github.com/Smithsonian/cspice-sharedlib</li>
  *  </ol>
+ *
+ * @author Attila Kovacs
+ * @since 1.2
  *
  * @sa solsys-calceph.c, ephemeris.c, orbital.c
  */

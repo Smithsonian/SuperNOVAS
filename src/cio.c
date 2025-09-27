@@ -1,12 +1,12 @@
 /**
  * @file
  *
+ * Functions to handle the CIO location and CIRS orientation.
+ *
  * @date Created  on Mar 6, 2025
  * @author G. Kaplan and Attila Kovacs
  *
- *  Functions to handle the CIO location and CIRS orientation.
- *
- *  @sa equinox.c
+ * @sa equinox.c
  */
 
 #include <stdio.h>

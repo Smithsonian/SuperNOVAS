@@ -1,12 +1,11 @@
 /**
  * @file
  *
+ * Various functions to convert between calendar dates and Julian days.
+ *
  * @date Created  on Mar 6, 2025
  * @author Attila Kovacs and G. Kaplan
- *
- *  Various functions to convert between calendar dates and Julian days.
- *
- *  @sa timescale.c
+ * @sa timescale.c
  */
 
 #include <errno.h>

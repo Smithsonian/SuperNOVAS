@@ -1,14 +1,13 @@
 /**
  * @file
  *
- * @date Created  on Jun 27, 2024
- * @author Attila Kovacs and G. Kaplan
- *
  *  A collection of refraction models and utilities to use with novas_app_to_hor() or
  *  novas_hor_to_app().
  *
- * @sa novas_app_to_hor()
- * @sa novas_hor_to_app().
+ * @date Created  on Jun 27, 2024
+ * @author Attila Kovacs and G. Kaplan
+ *
+ * @sa novas_app_to_hor(), novas_hor_to_app()
  */
 
 #include <stdio.h>

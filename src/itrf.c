@@ -1,9 +1,6 @@
 /**
  * @file
  *
- * @date Created  on Aug 26, 2025
- * @author Attila Kovacs
- *
  *  Transformations of station coordinates, velocities, and Earth orinetation parameters (EOP)
  *  between various ITRF realizations, and conversion between Cartesian (x, y, z) and geodetic
  *  (longitude, latitude, altitude) coordinates w.r.t. the reference ellipsoid.
@@ -13,7 +10,11 @@
  *  <li>ITRS Conventions Chapter 4, see https://iers-conventions.obspm.fr/content/chapter4/icc4.pdf</li>
  *  </ol>
  *
- *  @sa observer.c
+ * @date Created  on Aug 26, 2025
+ * @author Attila Kovacs
+ * @since 1.5
+ *
+ * @sa observer.c
  */
 
 #include <stdlib.h>

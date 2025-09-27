@@ -1,12 +1,12 @@
 /**
  * @file
  *
+ * Various functions relating to Earth position and rotation.
+ *
  * @date Created  on Mar 6, 2025
  * @author G. Kaplan and Attila Kovacs
  *
- *  Various functions relating to Earth position and rotation.
- *
- *  @sa frames.c, itrf.c
+ * @sa frames.c, itrf.c
  */
 
 #include <string.h>

@@ -1,9 +1,6 @@
 /**
  * @file
  *
- * @date Created  on Apr 27, 2025
- * @author Attila Kovacs
- *
  *  Calculate approximate positions and velocities for the major planets, Sun, Moon, Earth-Moon
  *  Barycenter (EMB), and the Solar-system Barycenter (SSB), mainly by using Keplerian orbital
  *  elements.
@@ -12,7 +9,10 @@
  *  provider, as as the CALCEPH or CSPICE plugin interface modules, or custom ephemeris provider
  *  functions.
  *
- *  @sa solsys-calceph.c, solsys-cspice.c, ephemeris.c
+ * @date Created  on Apr 27, 2025
+ * @author Attila Kovacs
+ *
+ * @sa solsys-calceph.c, solsys-cspice.c, ephemeris.c
  */
 
 #include <math.h>

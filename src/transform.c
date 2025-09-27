@@ -1,13 +1,13 @@
 /**
  * @file
  *
- * @date Created  on Mar 6, 2025
- * @author G. Kaplan and Attila Kovacs
- *
  *  Various functions to transform rectangular equatorial vectors (positions or velocities)
  *  between different equatorial coordinate systems.
  *
- *  @sa frames.c, system.c
+ * @date Created  on Mar 6, 2025
+ * @author G. Kaplan and Attila Kovacs
+ *
+ * @sa frames.c, system.c
  */
 
 #include <string.h>

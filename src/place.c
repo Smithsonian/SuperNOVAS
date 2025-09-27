@@ -1,9 +1,6 @@
 /**
  * @file
  *
- * @date Created  on Mar 5, 2025
- * @author Attila Kovacs and G. Kaplan
- *
  *  Various convenience variants of the NOVAS C `place()` function. Using `place()` or one of its
  *  variants is disfavored in SuperNOVAS. Instead, the new frame-based approach is recommended,
  *  via `novas_sky_pos()` (for apparent positions, including aberration and gravitational
@@ -73,7 +70,10 @@
  *  4. If needed convert between position 3-vectors and RA/Dec coordinates using
  *  `vector2radec()` / `radec2vector()` as necessary.
  *
- *  @sa target.c, observer.c, timescale.c, frames.c, ephemeris.c
+ * @date Created  on Mar 5, 2025
+ * @author Attila Kovacs and G. Kaplan
+ *
+ * @sa target.c, observer.c, timescale.c, frames.c, ephemeris.c
  */
 
 #include <string.h>

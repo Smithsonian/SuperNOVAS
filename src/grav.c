@@ -1,13 +1,13 @@
 /**
  * @file
  *
+ * Various functions to deal with gravitational effects of the major Solar-system bodies on
+ * the astrometry.
+ *
  * @date Created  on Mar 6, 2025
  * @author Attila Kovacs and G. Kaplan
  *
- *  Various functions to deal with gravitational effects of the major Solar-system bodies on
- *  the astrometry.
- *
- *  @sa solsys-calceph.c, solsys-cspice.c, ephemeris.c
+ * @sa solsys-calceph.c, solsys-cspice.c, ephemeris.c
  */
 
 #include <string.h>

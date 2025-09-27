@@ -1,9 +1,6 @@
 /**
  * @file
  *
- * @date Created  on Mar 6, 2025
- * @author Attila Kovacs and G. Kaplan
- *
  *  This module provides a set of functions that define an astronomical observer location, or ones
  *  that relate to observer location.
  *
@@ -28,6 +25,9 @@
  * Once an observer is defined, it maybe used to set up an observing frame for a specific time of
  * observation. Observing frames allow efficient and precise position calculations from an
  * observer's point-of-view.
+ *
+ * @date Created  on Mar 6, 2025
+ * @author Attila Kovacs and G. Kaplan
  *
  * @sa timescale.c, frame.c, system.c, itrf.c
  */

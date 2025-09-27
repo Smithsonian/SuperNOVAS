@@ -1,9 +1,6 @@
 /**
  * @file
  *
- * @date Created  on Mar 6, 2025
- * @author Attila Kovacs
- *
  *  Functions that allow to define or access user-defined ephemeris plugin routines. SuperNOVAS
  *  cannot by itself provide accurate positions for Solar-system sources. While it has a built-in
  *  calculator (see @ref solsys3.c) for the Earth and the Sun, it is suitable for approximate
@@ -44,7 +41,10 @@
  *  interface functions, respectively, and activating these with `set_ephem_provider()` and
  *  `set_ephem_provider_hp()`.)
  *
- *  @sa solsys-calceph.c, solsys-cspice.c, solsys3.c, orbital.c
+ * @date Created  on Mar 6, 2025
+ * @author Attila Kovacs
+ *
+ * @sa solsys-calceph.c, solsys-cspice.c, solsys3.c, orbital.c
  */
 
 #include <string.h>

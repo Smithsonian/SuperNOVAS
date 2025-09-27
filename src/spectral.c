@@ -1,9 +1,6 @@
 /**
  * @file
  *
- * @date Created  on Mar 5, 2025
- * @author Attila Kovacs
- *
  *  Various spectral / velocity related functions. __SuperNOVAS__ velocities are always calculated
  *  with relativistic corrections for motion (both source and observer) and gravitational effects
  *  (both at the source and at the observer), so they represent spectroscopically accurate values.
@@ -15,7 +12,10 @@
  *
  *  where &beta; = _v_<sub>rad</sub> / _c_.
  *
- *  @sa target.c, frames.c
+ * @date Created  on Mar 5, 2025
+ * @author Attila Kovacs
+ *
+ * @sa target.c, frames.c
  */
 
 #include <errno.h>

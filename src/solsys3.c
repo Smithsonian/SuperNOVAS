@@ -1,8 +1,6 @@
 /**
  * @file
  *
- * @author G. Kaplan and A. Kovacs
- *
  *  SuperNOVAS plane calculator functions for the Earth and Sun only, with an orbital model
  *  based on the DE405 ephemerides by JPL.
  *
@@ -14,7 +12,9 @@
  *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">
  *  http://www.usno.navy.mil/USNO/astronomical-applications</a>
  *
- *  @sa ephemeris.c, solsys-calceph.c, solsys-cspice.c, solsys-ephem.c
+ * @author G. Kaplan and A. Kovacs
+ *
+ * @sa ephemeris.c, solsys-calceph.c, solsys-cspice.c, solsys-ephem.c
  */
 
 #include <math.h>
