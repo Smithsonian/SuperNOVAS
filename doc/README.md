@@ -1792,8 +1792,10 @@ Below is a non-exhaustive overview new features added by __SuperNOVAS__ on top o
    of libration and ocean tides. Such corrections are necessary to include if needing or using ITRS / TIRS 
    coordinates with accuracy below the milliarcsecond (mas) level.
    
- - Conversion between geodetic (longitude, latitude, altitude) and geocentric Cartesian (x, y, z) site coordinates
-   using the reference ellipsoid of choice (e.g. GRS80 or WGS84).
+ - New functions to simplify the handling ground-based observing locations (GPS vs ITRF vs Cartesian locations), 
+   including setting default weather values, at least until actual values are specified if needed, and conversion 
+   between geodetic (longitude, latitude, altitude) and geocentric Cartesian (x, y, z) site coordinates using the 
+   reference ellipsoid of choice (e.g. GRS80 or WGS84).
    
  - Transformations of site coordinates and Earth orientation parameters between different ITRF realizations (e.g.
    ITRF2000 snd ITRF2014).
@@ -1801,11 +1803,8 @@ Below is a non-exhaustive overview new features added by __SuperNOVAS__ on top o
  - Functions to calculate the rate at which an observer's clock ticks differently from a standard astronomical
    timescale, due to the gravitational potential around the observer and the observer's movement.
    
- - New functions to simplify the handling ground-based observing locations (GPS vs ITRF vs Cartesian locations), 
-   including setting default weather values, at least until actual values are specified if needed.
- 
  - No longer using a CIO vs GCRS locator data file in any way, thus eliminating an annoying external soft 
-   dependency. The elimination has absolutely zero effect on backward compatibility and functionality.
+   dependency. This change has absolutely zero effect on backward compatibility and functionality.
    
  - GNU `make` build support for Mac OS X and FreeBSD (co-authored with Kiran Shila).
  
