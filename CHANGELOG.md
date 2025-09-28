@@ -136,10 +136,18 @@ Upcoming feature release, expected around 1 November 2025.
  - Both CMake and GNU make now install only the headers for the components that were built. E.g. `novas-calceph.h` is 
    installed only if the library is built with the CALCEPH support option enabled.
  
- - Reanmed `equinox.c` to `equator.c`, since the functions therein concern the equator of date more than the equinox 
+ - Renamed `equinox.c` to `equator.c`, since the functions therein concern the equator of date more than the equinox 
    of date specifically.
+   
+ - Moved `nutation.h` to `legacy/`. Its functions are now integral to `novas.h` instead. It is unlikely that any one 
+   would use it as a separate header, and not via `novas.h`. But, in case someone does want it, they can find it it 
+   the installation folder of the `supernovas` documentation, under the `legacy/` folder.
+   
+ - Moved a few functions around among the source modules to make the organization more consistent. It also helps when
+   browsing the HTML documentation topically by source modules.
  
- - Fully revised API and user documentation.
+ - Fully revised API and user documentation. The HTML API docs now have automatic brief descriptions when listed
+   (except for the deprecated entitites, which do not).
 
 ### Deprecated
 

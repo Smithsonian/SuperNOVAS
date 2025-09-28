@@ -362,8 +362,11 @@ the `Runtime` component:
 ```bash
   $ cmake --install build --component Runtime --prefix /usr/local
 ```
-
 </details>
+
+> [!TIP]
+> On Windows, you probably want to add the `-DCMAKE_C_COMPILER=gcc -G "MinGW Makefiles"` options to `cmake`, to build
+> with MinGW.
 
 -----------------------------------------------------------------------------
 

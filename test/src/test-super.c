@@ -11,7 +11,6 @@
 #include <math.h>
 #include <string.h>
 #include <time.h>
-#include <unistd.h>
 #include <libgen.h>
 
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
