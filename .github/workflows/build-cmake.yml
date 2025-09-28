@@ -29,25 +29,20 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        include:
-          - os: ubuntu-latest
-            cc: gcc
-            opt:
-          - os: macos-latest
-            cc: clang
-            opt:
-          - os: windows-latest
-            cc: gcc
-            opt: -G "MinGW Makefiles"
 
     steps:
       - uses: actions/checkout@v5
 
       - name: Configure CMake (Unix)
-        run: cmake -B build -DCMAKE_C_COMPILER=${{ matrix.cc }} ${{ matrix.opt }} -DBUILD_SHARED_LIBS=ON -DBUILD_EXAMPLES=ON -DBUILD_BENCHMARK=ON
+        run: cmake -B build -DBUILD_SHARED_LIBS=ON -DBUILD_EXAMPLES=ON -DBUILD_BENCHMARK=ON
 
-      - name: Build
-        run: cmake --build build
+      - name: Build (Unix)
+        if: runner.os != 'Windows'
+        run: cmake --build build 
+
+      - name: Build (Windows)
+        if: runner.os == 'Windows'
+        run: cmake --build build --config Release 
 
       - name: Install
         run: cmake --install build --prefix install
@@ -63,6 +58,7 @@ jobs:
         run: |
           echo Installation contents:
           dir install
+    
 
   build-freebsd:
     runs-on: ubuntu-latest

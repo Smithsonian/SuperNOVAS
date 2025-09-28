@@ -11,17 +11,18 @@
  */
 
 /// \cond PRIVATE
-#define _GNU_SOURCE                 ///< for strcasecmp()
+#if __STDC_VERSION__ < 201112L
+#  define _POSIX_C_SOURCE 199309    ///< struct timespec
+#endif
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
 /// \endcond
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
 #include <errno.h>
 #include <math.h>
-
+#include <time.h>
 
 #include "novas.h"
 
@@ -77,11 +78,6 @@ static const double iM[] = NOVAS_RMASS_INIT;       ///< [1/M<sub>sun</sub>]
 static const double R[] = NOVAS_PLANET_RADII_INIT; ///< [m]
 
 /// \endcond
-
-#if __Lynx__ && __powerpc__
-// strcasecmp() / strncasecmp() are not defined on PowerPC / LynxOS 3.1
-extern int strcasecmp(const char *s1, const char *s2);
-#endif
 
 
 /**
@@ -819,7 +815,7 @@ double novas_diff_tcg(const novas_timespec *t1, const novas_timespec *t2) {
  * since 0 UTC, 1 Jan 1970 (the start of the UNIX era). Specifying time this way supports
  * precisions to the nanoseconds level by construct. Specifying UNIX time in split seconds and
  * nanoseconds is a common way CLIB handles precision time, e.g. with `struct timespec` and
- * functions like `clock_gettime()` (see `time.h`).
+ * functions like `clock_gettime()` or the C11 `timespec_get` (see `time.h`).
  *
  * @param unix_time   [s] UNIX time (UTC) seconds
  * @param nanos       [ns] UTC sub-second component
@@ -862,6 +858,13 @@ int novas_set_unix_time(time_t unix_time, long nanos, int leap, double dut1, nov
  * system clock is. You should generally make sure the sytem clock is synchronized to a time reference
  * e.g. via ntp, preferably to a local time reference.
  *
+ * NOTE:
+ *
+ * <ol>
+ * <li>For C11 or later, this function uses the C11 standard `timespec_get()` function, which is
+ * portable. For older C standard, the POSIX only `clock_gettime()` function is used.</li>
+ * </ol>
+ *
  * @param leap        [s] Leap seconds, e.g. as published by IERS Bulletin C.
  * @param dut1        [s] UT1-UTC time difference, e.g. as published in IERS Bulletin A, and
  *                    possibly corrected for diurnal and semi-diurnal variations, e.g.
@@ -880,7 +883,13 @@ int novas_set_unix_time(time_t unix_time, long nanos, int leap, double dut1, nov
  */
 int novas_set_current_time(int leap, double dut1, novas_timespec *restrict time) {
   struct timespec t = {};
+
+#if __STDC_VERSION__ >= 201112L || defined(_MSC_VER)
+  timespec_get(&t, TIME_UTC);
+#else
   clock_gettime(CLOCK_REALTIME, &t);
+#endif
+
   prop_error("novas_set_current_time", novas_set_unix_time(t.tv_sec, t.tv_nsec, leap, dut1, time), 0);
   return 0;
 }
@@ -1203,57 +1212,6 @@ int novas_print_timescale(enum novas_timescale scale, char *restrict buf) {
   *buf = '\0';
 
   return novas_error(-1, EINVAL, fn, "invalid timescale: %d", scale);
-}
-
-/**
- * Returns the timescale constant for a string that denotes the timescale in with a standard
- * abbreviation (case insensitive). The following values are recognised: "UTC", "UT", "UT0",
- * "UT1", "GMT", "TAI", "GPS", "TT", "ET", "TCG", "TCB", and "TDB".
- *
- * @param str     String specifying an astronomical timescale
- * @return        The SuperNOVAS timescale constant (&lt;=0), or else -1 if the string was NULL,
- *                empty, or could not be matched to a timescale value (errno will be set to EINVAL
- *                also).
- *
- * @since 1.3
- * @author Attila Kovacs
- *
- * @sa novas_parse_timescale(), novas_set_str_time(), novas_print_timescale()
- */
-enum novas_timescale novas_timescale_for_string(const char *restrict str) {
-  static const char *fn = "novas_str_timescale";
-
-  if(!str)
-    return novas_error(-1, EINVAL, fn, "input string is NULL");
-
-  if(!str[0])
-    return novas_error(-1, EINVAL, fn, "input string is empty");
-
-  if(strcasecmp("UTC", str) == 0 || strcasecmp("UT", str) == 0 || strcasecmp("UT0", str) == 0 || strcasecmp("GMT", str) == 0)
-    return NOVAS_UTC;
-
-  if(strcasecmp("UT1", str) == 0)
-    return NOVAS_UT1;
-
-  if(strcasecmp("TAI", str) == 0)
-    return NOVAS_TAI;
-
-  if(strcasecmp("GPS", str) == 0)
-    return NOVAS_GPS;
-
-  if(strcasecmp("TT", str) == 0 || strcasecmp("ET", str) == 0)
-    return NOVAS_TT;
-
-  if(strcasecmp("TCG", str) == 0)
-    return NOVAS_TCG;
-
-  if(strcasecmp("TCB", str) == 0)
-    return NOVAS_TCB;
-
-  if(strcasecmp("TDB", str) == 0)
-    return NOVAS_TDB;
-
-  return novas_error(-1, EINVAL, fn, "unknown timescale: %s", str);
 }
 
 /**

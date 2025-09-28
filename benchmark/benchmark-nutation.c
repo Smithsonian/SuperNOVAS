@@ -26,12 +26,16 @@
 #define  LEAP_SECONDS     37        ///< [s] current leap seconds from IERS Bulletin C
 #define  DUT1             0.114     ///< [s] current UT1 - UTC time difference from IERS Bulletin A
 
+static void timestamp(novas_timespec *t) {
+  novas_set_current_time(LEAP_SECONDS, DUT1, t);
+}
+
 
 int main() {              // observer location
   // Other variables we need ----------------------------------------------->
   int i, N = 30000;
   double tjd = 2460683.132905, dx, dy;
-  struct timespec unix_time, end;
+  novas_timespec start, end;
 
   // -------------------------------------------------------------------------
   // Start benchmarks...
@@ -39,27 +43,24 @@ int main() {              // observer location
 
   // -------------------------------------------------------------------------
   // Benchmark reduced accuracy, place(), same time
-  clock_gettime(CLOCK_REALTIME, &unix_time);
+  timestamp(&start);
   for(i = 0; i < N; i++) iau2000a(tjd + i * 0.01, 0.0, &dx, &dy);
-  clock_gettime(CLOCK_REALTIME, &end);
-  printf(" - iau2000a:   %12.1f nutations/sec\n",
-          N / (end.tv_sec - unix_time.tv_sec + 1e-9 * (end.tv_nsec - unix_time.tv_nsec)));
+  timestamp(&end);
+  printf(" - iau2000a:   %12.1f nutations/sec\n", N / novas_diff_time(&end, &start));
 
   // -------------------------------------------------------------------------
   // Benchmark reduced accuracy, place(), different times()
-  clock_gettime(CLOCK_REALTIME, &unix_time);
+  timestamp(&start);
   for(i = 0; i < N; i++)   for(i = 0; i < N; i++) iau2000b(tjd + i * 0.01, 0.0, &dx, &dy);
-  clock_gettime(CLOCK_REALTIME, &end);
-  printf(" - iau2000b:   %12.1f positions/sec\n",
-          N / (end.tv_sec - unix_time.tv_sec + 1e-9 * (end.tv_nsec - unix_time.tv_nsec)));
+  timestamp(&end);
+  printf(" - iau2000b:   %12.1f positions/sec\n", N / novas_diff_time(&end, &start));
 
   // -------------------------------------------------------------------------
   // Benchmark reduced accuracy, place(), different times()
-  clock_gettime(CLOCK_REALTIME, &unix_time);
+  timestamp(&start);
   for(i = 0; i < N; i++)   for(i = 0; i < N; i++) nu2000k(tjd + i * 0.01, 0.0, &dx, &dy);
-  clock_gettime(CLOCK_REALTIME, &end);
-  printf(" - nu2000k:    %12.1f positions/sec\n",
-          N / (end.tv_sec - unix_time.tv_sec + 1e-9 * (end.tv_nsec - unix_time.tv_nsec)));
+  timestamp(&end);
+  printf(" - nu2000k:    %12.1f positions/sec\n", N / novas_diff_time(&end, &start));
 
   return 0;
 }

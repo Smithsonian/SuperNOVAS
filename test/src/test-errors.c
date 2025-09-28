@@ -244,7 +244,6 @@ static int test_refract() {
 }
 
 static int test_refract_astro() {
-  extern int novas_inv_max_iter;
   on_surface surf = ON_SURFACE_INIT;
   int n = 0;
 
@@ -252,26 +251,25 @@ static int test_refract_astro() {
   if(check_nan("refract_astro:model:-1", refract_astro(&surf, -1, 30.0))) n++;
   if(check_nan("refract_astro:model:hi", refract_astro(&surf, NOVAS_REFRACTION_MODELS, 30.0))) n++;
 
-  novas_inv_max_iter = 0;
+  novas_set_max_iter(0);
   if(check_nan("refract_astro:converge", refract_astro(&surf, NOVAS_STANDARD_ATMOSPHERE, 85.0))) n++;
   else if(check("refract_astro:converge:errno", ECANCELED, errno)) n++;
 
-  novas_inv_max_iter = 100;
+  novas_set_max_iter(NOVAS_DEFAULT_MAX_ITER);
 
   return n;
 }
 
 static int test_inv_refract() {
-  extern int novas_inv_max_iter;
   on_surface surf = ON_SURFACE_INIT;
   int n = 0;
 
   if(check_nan("inv_refract:loc", novas_inv_refract(novas_optical_refraction, NOVAS_JD_J2000, NULL, NOVAS_REFRACT_OBSERVED, 5.0))) n++;;
 
-  novas_inv_max_iter = 0;
+  novas_set_max_iter(0);
   if(check_nan("inv_refract:converge", novas_inv_refract(novas_optical_refraction, NOVAS_JD_J2000, &surf, NOVAS_REFRACT_OBSERVED, 5.0))) n++;
   else if(check("inv_refract:converge:errno", ECANCELED, errno)) n++;
-  novas_inv_max_iter = 100;
+  novas_set_max_iter(NOVAS_DEFAULT_MAX_ITER);
 
   return n;
 }
@@ -599,17 +597,16 @@ static int test_radec_planet() {
 }
 
 static int test_mean_star() {
-  extern int novas_inv_max_iter;
   double x, y;
   int n = 0;
 
   if(check("mean_star:ira", -1, mean_star(0.0, 0.0, 0.0, NOVAS_FULL_ACCURACY, NULL, &y))) n++;
   if(check("mean_star:idec", -1, mean_star(0.0, 0.0, 0.0, NOVAS_FULL_ACCURACY, &x, NULL))) n++;
 
-  novas_inv_max_iter = 0;
+  novas_set_max_iter(0);
   if(check("mean_star:converge", 1, mean_star(NOVAS_JD_J2000, 0.0, 0.0, NOVAS_REDUCED_ACCURACY, &x, &y))) n++;
   else if(check("mean_star:converge:errno", ECANCELED, errno)) n++;
-  novas_inv_max_iter = 100;
+  novas_set_max_iter(NOVAS_DEFAULT_MAX_ITER);
 
   return n;
 }
@@ -861,7 +858,6 @@ static int test_geo_posvel() {
 }
 
 static int test_light_time2() {
-  extern int novas_inv_max_iter;
   object o;
   double pos[3] = {1.0}, p[3], v[3], t;
   int n = 0;
@@ -872,10 +868,10 @@ static int test_light_time2() {
   if(check("light_time2:object", -1, light_time2(0.0, NULL, pos, 0.0, NOVAS_FULL_ACCURACY, p, v, &t))) n++;
   if(check("light_time2:pos", -1, light_time2(0.0, &o, NULL, 0.0, NOVAS_FULL_ACCURACY, p, v, &t))) n++;
 
-  novas_inv_max_iter = 0;
+  novas_set_max_iter(0);
   if(check("light_time2:converge", 1, light_time2(0.0, &o, pos, 0.0, NOVAS_FULL_ACCURACY, p, v, &t))) n++;
   else if(check("light_time2:converge:errno", ECANCELED, errno)) n++;
-  novas_inv_max_iter = 100;
+  novas_set_max_iter(NOVAS_DEFAULT_MAX_ITER);
 
   return n;
 }
@@ -1128,7 +1124,6 @@ static int test_grav_planets() {
 }
 
 static int test_grav_undo_planets() {
-  extern int novas_inv_max_iter;
   novas_planet_bundle planets = NOVAS_PLANET_BUNDLE_INIT;
   double p[3] = {2.0}, po[3] = {0.0, 1.0}, out[3] = {0.0};
   int n = 0;
@@ -1139,10 +1134,10 @@ static int test_grav_undo_planets() {
   if(check("grav_undo_planets:pos_src", -1, grav_undo_planets(p, po, &planets, NULL))) n++;
 
   planets.mask = 1 << NOVAS_SUN;
-  novas_inv_max_iter = 0;
+  novas_set_max_iter(0);
   if(check("grav_undo_planets:converge", -1, grav_undo_planets(p, po, &planets, out))) n++;
   else if(check("grav_undo_planets:converge:errno", ECANCELED, errno)) n++;
-  novas_inv_max_iter = 100;
+  novas_set_max_iter(NOVAS_DEFAULT_MAX_ITER);
 
   return n;
 }
@@ -1445,7 +1440,6 @@ static int test_sky_pos() {
 }
 
 static int test_app_to_geom() {
-  extern int novas_inv_max_iter;
   novas_timespec ts = NOVAS_TIMESPEC_INIT;
   observer obs = OBSERVER_INIT;
   novas_frame frame = NOVAS_FRAME_INIT;
@@ -1459,10 +1453,10 @@ static int test_app_to_geom() {
   if(check("app_to_geom:frame:init", -1, novas_app_to_geom(&frame, NOVAS_ICRS, 1.0, 2.0, 10.0, pos))) n++;
 
   novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame);
-  novas_inv_max_iter = 0;
+  novas_set_max_iter(0);
   if(check("app_to_geom:frame:converge", -1, novas_app_to_geom(&frame, NOVAS_ICRS, 1.0, 2.0, 10.0, pos))) n++;
   else if(check("app_to_geom:frame:converge:errno", ECANCELED, errno)) n++;
-  novas_inv_max_iter = 100;
+  novas_set_max_iter(NOVAS_DEFAULT_MAX_ITER);
 
   if(check("app_to_geom:pos", -1, novas_app_to_geom(&frame, NOVAS_ICRS, 1.0, 2.0, 10.0, NULL))) n++;
   if(check("app_to_geom:sys:-1", -1, novas_app_to_geom(&frame, -1, 1.0, 2.0, 10.0, pos))) n++;
@@ -1704,7 +1698,7 @@ static int test_make_orbital_object() {
 static int test_orbit_posvel() {
   int n = 0;
   double pos[3] = {0.0}, vel[3] = {0.0};
-  int saved = novas_inv_max_iter;
+
   novas_orbital orbit = NOVAS_ORBIT_INIT;
 
   orbit.a = 1.0;
@@ -1716,10 +1710,10 @@ static int test_orbit_posvel() {
 
   if(check("set_obsys_pole:orbit:converge", 0, novas_orbit_posvel(0.0, &orbit, NOVAS_REDUCED_ACCURACY, pos, vel))) n++;
 
-  novas_inv_max_iter = 0;
+  novas_set_max_iter(0);
   if(check("set_obsys_pole:orbit:converge", -1, novas_orbit_posvel(0.0, &orbit, NOVAS_REDUCED_ACCURACY, pos, vel))) n++;
   else if(check("set_obsys_pole:orbit:converge:errno", ECANCELED, errno)) n++;
-  novas_inv_max_iter = saved;
+  novas_set_max_iter(NOVAS_DEFAULT_MAX_ITER);
 
   orbit.system.type = -1;
   if(check("set_obsys_pole:orbit:type:-1", -1, novas_orbit_posvel(0.0, &orbit, NOVAS_REDUCED_ACCURACY, pos, vel))) n++;
@@ -1876,7 +1870,6 @@ static int test_rise_set() {
   novas_timespec time = NOVAS_TIMESPEC_INIT;
   observer obs = OBSERVER_INIT;
   novas_frame frame = NOVAS_FRAME_INIT;
-  int save = novas_inv_max_iter;
 
   if(check_nan("rise_set:rises_above:frame:null", novas_rises_above(0.0, &sun, NULL, NULL))) n++;
   if(check_nan("rise_set:rises_above:frame:init", novas_rises_above(0.0, &sun, &frame, NULL))) n++;
@@ -1899,10 +1892,10 @@ static int test_rise_set() {
   if(check_nan("rise_set:rises_above:source:null", novas_rises_above(31.0, &sun, &frame, NULL))) n++;
   if(check_nan("rise_set:sets_below:source:null", novas_sets_below(31.0, &sun, &frame, NULL))) n++;
 
-  novas_inv_max_iter = 0;
+  novas_set_max_iter(0);
   if(check_nan("rise_set:rises_above:noconv", novas_rises_above(0.0, &sun, &frame, NULL))) n++;
   if(check_nan("rise_set:sets_below:noconv", novas_rises_above(0.0, &sun, &frame, NULL))) n++;
-  novas_inv_max_iter = save;
+  novas_set_max_iter(NOVAS_DEFAULT_MAX_ITER);
 
   return n;
 }
@@ -2298,10 +2291,9 @@ static int test_approx_sky_pos() {
 static int test_moon_phase() {
   int n = 0;
 
-  int saved = novas_inv_max_iter;
-  novas_inv_max_iter = 0;
+  novas_set_max_iter(0);
   if(check_nan("moon_phase:conv", novas_moon_phase(NOVAS_JD_J2000))) n++;
-  novas_inv_max_iter = saved;
+  novas_set_max_iter(NOVAS_DEFAULT_MAX_ITER);
   return n;
 }
 
@@ -2311,10 +2303,9 @@ static int test_next_moon_phase() {
   if(check_nan("next_moon_phase:time:lo", novas_next_moon_phase(0.0, NOVAS_JD_J2000 - 31.0 * JULIAN_CENTURY_DAYS))) n++;
   if(check_nan("next_moon_phase:time:hi", novas_next_moon_phase(0.0, NOVAS_JD_J2000 + 31.0 * JULIAN_CENTURY_DAYS))) n++;
 
-  int saved = novas_inv_max_iter;
-  novas_inv_max_iter = 0;
+  novas_set_max_iter(0);
   if(check_nan("next_moon_phase:conv", novas_next_moon_phase(0.0, NOVAS_JD_J2000))) n++;
-  novas_inv_max_iter = saved;
+  novas_set_max_iter(NOVAS_DEFAULT_MAX_ITER);
   return n;
 }
 

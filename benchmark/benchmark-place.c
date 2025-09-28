@@ -5,7 +5,9 @@
  * @author Attila Kovacs
  */
 
-#define _POSIX_C_SOURCE 199309L   ///< for clock_gettime()
+#if __STDC_VERSION__ < 201112L
+#  define _POSIX_C_SOURCE 199309      ///< struct timespec
+#endif
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,6 +21,11 @@
 #define  DUT1             0.114     ///< [s] current UT1 - UTC time difference from IERS Bulletin A
 #define  POLAR_DX         230.0     ///< [mas] Earth polar offset x, e.g. from IERS Bulletin A.
 #define  POLAR_DY         -62.0     ///< [mas] Earth polar offset y, e.g. from IERS Bulletin A.
+
+
+static void timestamp(novas_timespec *t) {
+  novas_set_current_time(LEAP_SECONDS, DUT1, t);
+}
 
 static void calc_pos(const cat_entry *star, const novas_frame *frame) {
   object source = NOVAS_OBJECT_INIT;
@@ -53,7 +60,7 @@ int main(int argc, const char *argv[]) {
 
 
   // Intermediate variables we'll use -------------------------------------->
-  struct timespec unix_time, end;   // Standard precision UNIX time structure
+  novas_timespec start, end;        // timestamps for execution time
 
 
   // Other variables we need ----------------------------------------------->
@@ -137,39 +144,39 @@ int main(int argc, const char *argv[]) {
 
   // -------------------------------------------------------------------------
   // Benchmark reduced accuracy, same frame
-  clock_gettime(CLOCK_REALTIME, &unix_time);
+  timestamp(&start);
   for(i = 0; i < N; i++) calc_pos(&stars[i], &obs_frame);
-  clock_gettime(CLOCK_REALTIME, &end);
+  timestamp(&end);
   printf(" - novas_sky_pos(), same frame, red. acc.:        %12.1f positions/sec\n",
-          N / (end.tv_sec - unix_time.tv_sec + 1e-9 * (end.tv_nsec - unix_time.tv_nsec)));
+          N / novas_diff_time(&end, &start));
 
   // -------------------------------------------------------------------------
   // Benchmark full accuracy, same frame
   obs_frame.accuracy = NOVAS_FULL_ACCURACY;
-  clock_gettime(CLOCK_REALTIME, &unix_time);
+  timestamp(&start);
   for(i = 0; i < N; i++) calc_pos(&stars[i], &obs_frame);
-  clock_gettime(CLOCK_REALTIME, &end);
+  timestamp(&end);
   printf(" - novas_sky_pos(), same frame, full acc.:        %12.1f positions/sec\n",
-          N / (end.tv_sec - unix_time.tv_sec + 1e-9 * (end.tv_nsec - unix_time.tv_nsec)));
+          N / novas_diff_time(&end, &start));
 
 
 
   // -------------------------------------------------------------------------
   // Benchmark place() reduced accuracy, same frame
-  clock_gettime(CLOCK_REALTIME, &unix_time);
+  timestamp(&start);
   for(i = 0; i < N; i++) calc_place(&stars[i], &obs_frame);
-  clock_gettime(CLOCK_REALTIME, &end);
+  timestamp(&end);
   printf(" - place(), same frame, red. acc.:                %12.1f positions/sec\n",
-          N / (end.tv_sec - unix_time.tv_sec + 1e-9 * (end.tv_nsec - unix_time.tv_nsec)));
+          N / novas_diff_time(&end, &start));
 
   // -------------------------------------------------------------------------
   // Benchmark place() full accuracy, same frame
   obs_frame.accuracy = NOVAS_FULL_ACCURACY;
-  clock_gettime(CLOCK_REALTIME, &unix_time);
+  timestamp(&start);
   for(i = 0; i < N; i++) calc_place(&stars[i], &obs_frame);
-  clock_gettime(CLOCK_REALTIME, &end);
+  timestamp(&end);
   printf(" - place(), same frame, full acc.:                %12.1f positions/sec\n",
-          N / (end.tv_sec - unix_time.tv_sec + 1e-9 * (end.tv_nsec - unix_time.tv_nsec)));
+          N / novas_diff_time(&end, &start));
 
 
   // individual frames are expected to be significantly slower, so
@@ -178,53 +185,53 @@ int main(int argc, const char *argv[]) {
 
   // -------------------------------------------------------------------------
   // Benchmark reduced accuracy, individual fames
-  clock_gettime(CLOCK_REALTIME, &unix_time);
+  timestamp(&start);
   for(i = 0; i < N; i++) {
-    novas_set_unix_time(unix_time.tv_sec + i, unix_time.tv_nsec, LEAP_SECONDS, DUT1, &obs_time);
+    novas_set_time(NOVAS_TT, novas_get_time(&start, NOVAS_TT) + i, LEAP_SECONDS, DUT1, &obs_time);
     novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &obs_time, POLAR_DX, POLAR_DY, &obs_frame);
     calc_pos(&stars[i], &obs_frame);
   }
-  clock_gettime(CLOCK_REALTIME, &end);
+  timestamp(&end);
   printf(" - novas_sky_pos, individual, red. acc.:          %12.1f positions/sec\n",
-          N / (end.tv_sec - unix_time.tv_sec + 1e-9 * (end.tv_nsec - unix_time.tv_nsec)));
+          N / novas_diff_time(&end, &start));
 
   // -------------------------------------------------------------------------
   // Benchmark full accuracy, individual frames
-  clock_gettime(CLOCK_REALTIME, &unix_time);
+  timestamp(&start);
   for(i = 0; i < N; i++) {
-    novas_set_unix_time(unix_time.tv_sec + i, unix_time.tv_nsec, LEAP_SECONDS, DUT1, &obs_time);
+    novas_set_time(NOVAS_TT, novas_get_time(&start, NOVAS_TT) + i, LEAP_SECONDS, DUT1, &obs_time);
     novas_make_frame(NOVAS_FULL_ACCURACY, &obs, &obs_time, POLAR_DX, POLAR_DY, &obs_frame);
     calc_pos(&stars[i], &obs_frame);
   }
-  clock_gettime(CLOCK_REALTIME, &end);
+  timestamp(&end);
   printf(" - novas_sky_pos, individual, full acc.:          %12.1f positions/sec\n",
-          N / (end.tv_sec - unix_time.tv_sec + 1e-9 * (end.tv_nsec - unix_time.tv_nsec)));
+          N / novas_diff_time(&end, &start));
 
 
 
   // -------------------------------------------------------------------------
   // Benchmark place() reduced accuracy, individual frames
   obs_frame.accuracy = NOVAS_REDUCED_ACCURACY;
-  clock_gettime(CLOCK_REALTIME, &unix_time);
+  timestamp(&start);
   for(i = 0; i < N; i++) {
     obs_frame.time.ijd_tt += (i % 2) ? 1 : -1;  // alternate dates.
     calc_place(&stars[i], &obs_frame);
   }
-  clock_gettime(CLOCK_REALTIME, &end);
+  timestamp(&end);
   printf(" - place(), individual, red. acc.:                %12.1f positions/sec\n",
-          N / (end.tv_sec - unix_time.tv_sec + 1e-9 * (end.tv_nsec - unix_time.tv_nsec)));
+          N / novas_diff_time(&end, &start));
 
   // -------------------------------------------------------------------------
   // Benchmark place full accuracy, individual frames
   obs_frame.accuracy = NOVAS_FULL_ACCURACY;
-  clock_gettime(CLOCK_REALTIME, &unix_time);
+  timestamp(&start);
   for(i = 0; i < N; i++) {
     obs_frame.time.ijd_tt += (i % 2) ? 1 : -1;
     calc_place(&stars[i], &obs_frame);
   }
-  clock_gettime(CLOCK_REALTIME, &end);
+  timestamp(&end);
   printf(" - place(), individual, full acc.:                %12.1f positions/sec\n",
-          N / (end.tv_sec - unix_time.tv_sec + 1e-9 * (end.tv_nsec - unix_time.tv_nsec)));
+          N / novas_diff_time(&end, &start));
 
 
   return 0;

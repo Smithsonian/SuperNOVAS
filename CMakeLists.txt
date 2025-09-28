@@ -68,12 +68,10 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Windows-specific settings
 if(WIN32)
+    message("Configuring for Windows...")
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
     add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
 endif()
-
-# Preprocessor definitions
-set(SUPERNOVAS_COMPILE_DEFINITIONS "")
 
 # Check for math library
 check_library_exists(m sin "" HAVE_LIBM)
@@ -155,8 +153,6 @@ target_include_directories(supernovas PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
-
-target_compile_definitions(supernovas PRIVATE ${SUPERNOVAS_COMPILE_DEFINITIONS})
 
 # Link with math libs as necessary
 target_link_libraries(supernovas PRIVATE $<$<BOOL:${HAVE_LIBM}>:m>)
