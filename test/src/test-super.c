@@ -3,7 +3,11 @@
  * @author Attila Kovacs
  */
 
-#define _GNU_SOURCE               ///< for strcasecmp()
+
+#if __STDC_VERSION__ < 201112L
+#  define _POSIX_C_SOURCE 199309    ///< struct timespec
+#endif
+#define _GNU_SOURCE                 ///< for strcasecmp()
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,10 +15,18 @@
 #include <math.h>
 #include <string.h>
 #include <time.h>
-#include <libgen.h>
 
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
+
+#if __Lynx__ && __powerpc__
+// strcasecmp() / strncasecmp() are not defined on PowerPC / LynxOS 3.1
+extern int strcasecmp(const char *s1, const char *s2);
+extern int strncasecmp(const char *s1, const char *s2, size_t n);
+#elif defined(_MSC_VER)
+#  define strcasecmp _stricmp                       /// MSVC equivalent
+#  define strncasecmp _strnicmp                     /// MSVC equivalent
+#endif
 
 #define J2000   NOVAS_JD_J2000
 
@@ -2076,7 +2088,7 @@ static int test_unix_time() {
 
   if(!is_ok("unix_time:set", novas_set_unix_time(sec, nanos, 37, 0.11, &t))) return 1;
   if(!is_ok("unix_time:check:sec", novas_get_unix_time(&t, &nsec) != sec)) {
-    printf("!!! sec: %ld  %ld\n", (long) novas_get_unix_time(&t, &nsec), sec);
+    printf("!!! sec: %lld  %lld\n", (long long) novas_get_unix_time(&t, &nsec), (long long) sec);
     return 1;
   }
   if(!is_ok("sunix_time:check:nsec", labs(nsec - nanos) > 0)) {
@@ -2085,7 +2097,7 @@ static int test_unix_time() {
   }
 
   if(!is_ok("unix_time:check2:sec", novas_get_unix_time(&t, NULL) != sec)) {
-    printf("!!! sec: %ld  %ld\n", (long) novas_get_unix_time(&t, NULL), (long) sec);
+    printf("!!! sec: %lld  %lld\n", (long long) novas_get_unix_time(&t, NULL), (long long) sec);
     return 1;
   }
 
@@ -2093,7 +2105,7 @@ static int test_unix_time() {
   nanos += 500000000;
   if(!is_ok("unix_time:incr", novas_set_unix_time(sec, nanos, 37, 0.11, &t))) return 1;
   if(!is_ok("unix_time:offset:check:incr:sec", novas_get_unix_time(&t, &nsec) != sec)) {
-    printf("!!! sec: %ld  %ld\n", (long) novas_get_unix_time(&t, &nsec), (long) sec);
+    printf("!!! sec: %lld  %lld\n", (long long) novas_get_unix_time(&t, &nsec), (long long) sec);
     return 1;
   }
   if(!is_ok("unix_time:offset:check:incr:nsec", labs(nsec - nanos) > 0)) {
@@ -2104,7 +2116,7 @@ static int test_unix_time() {
   sec = -86400;
   if(!is_ok("unix_time:neg", novas_set_unix_time(sec, nanos, 0, 0.11, &t))) return 1;
   if(!is_ok("unix_time:neg:check:sec", novas_get_unix_time(&t, &nsec) != sec)) {
-    printf("!!! sec: %ld  %ld\n", (long) novas_get_unix_time(&t, &nsec), (long) sec);
+    printf("!!! sec: %lld  %lld\n", (long long) novas_get_unix_time(&t, &nsec), (long long) sec);
     return 1;
   }
   if(!is_ok("unix_time:neg:check:nsec", labs(nsec - nanos) > 0)) {
@@ -2128,7 +2140,12 @@ static int test_set_current_time() {
   struct timespec now = {};
   novas_timespec t1 = {}, t2 = {};
 
+#if __STDC_VERSION__ >= 201112L || defined(_MSC_VER)
+  timespec_get(&now, TIME_UTC);
+#else
   clock_gettime(CLOCK_REALTIME, &now);
+#endif
+
   novas_set_current_time(37, 0.014, &t1);
 
   novas_set_unix_time(now.tv_sec, now.tv_nsec, 37, 0.014, &t2);
@@ -3797,9 +3814,9 @@ static int test_print_hms() {
 
   double h = novas_parse_hms("12:34:56.999999", NULL);
 
-  sprintf(snan, "%f", (0.0 / 0.0));
+  sprintf(snan, "%f", NAN);
 
-  if(!is_ok("print_hms:nan", novas_print_hms(0.0 / 0.0, NOVAS_SEP_COLONS, 3, buf, sizeof(buf)) < 0)) n++;
+  if(!is_ok("print_hms:nan", novas_print_hms(NAN, NOVAS_SEP_COLONS, 3, buf, sizeof(buf)) < 0)) n++;
   if(!is_ok("print_hms:nan:check", strcmp(buf, snan))) n++;
 
 
@@ -3841,9 +3858,9 @@ static int test_print_dms() {
 
   double deg = novas_parse_dms("120:34:56.999999", NULL);
 
-  sprintf(snan, "%f", (0.0 / 0.0));
+  sprintf(snan, "%f", NAN);
 
-  if(!is_ok("print_dms:nan", novas_print_dms(0.0 / 0.0, NOVAS_SEP_COLONS, 3, buf, sizeof(buf)) < 0)) n++;
+  if(!is_ok("print_dms:nan", novas_print_dms(NAN, NOVAS_SEP_COLONS, 3, buf, sizeof(buf)) < 0)) n++;
   if(!is_ok("print_dms:nan:check", strcmp(buf, snan))) n++;
 
   if(!is_ok("print_dms:colons", novas_print_dms(deg, NOVAS_SEP_COLONS, 3, buf, sizeof(buf)) < 0)) n++;

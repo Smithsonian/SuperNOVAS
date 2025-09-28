@@ -239,7 +239,8 @@ static int set_frame_tie(novas_frame *frame) {
   static const double ax = ETA0;
   static const double ay = -XI0;
   static const double az = -DA0;
-  static const double X = ax * ax, Y = ay * ay, Z = az * az;
+
+  static const double X = ETA0 * ETA0, Y = XI0 * XI0, Z = DA0 * DA0;
 
   novas_matrix *T = &frame->icrs_to_j2000;
 

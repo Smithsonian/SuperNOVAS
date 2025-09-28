@@ -9,15 +9,18 @@
  * @sa target.c, observer.c, timescale.c
  */
 
+/// \cond PRIVATE
+#define _GNU_SOURCE               ///< For strdup()
+#define __NOVAS_INTERNAL_API__    ///< Use definitions meant for internal use by SuperNOVAS only
+/// \endcond
+
 #include <math.h>
 #include <errno.h>
 #include <string.h>
-#include <strings.h>              // strcasecmp() / strncasecmp()
 #include <ctype.h>
-
-/// \cond PRIVATE
-#define __NOVAS_INTERNAL_API__    ///< Use definitions meant for internal use by SuperNOVAS only
-/// \endcond
+#ifndef _MSC_VER
+#  include <strings.h>            // strcasecmp() / strncasecmp() -- POSIX.1-2001 / 4.4BSD
+#endif
 
 #include "novas.h"
 
@@ -33,6 +36,9 @@
 // strcasecmp() / strncasecmp() are not defined on PowerPC / LynxOS 3.1
 extern int strcasecmp(const char *s1, const char *s2);
 extern int strncasecmp(const char *s1, const char *s2, size_t n);
+#elif defined(_MSC_VER)
+#  define strcasecmp _stricmp                       /// MSVC equivalent
+#  define strncasecmp _strnicmp                     /// MSVC equivalent
 #endif
 
 /**
@@ -1145,5 +1151,56 @@ enum novas_timescale novas_parse_timescale(const char *restrict str, char **rest
     *tail += n;
 
   return scale;
+}
+
+/**
+ * Returns the timescale constant for a string that denotes the timescale in with a standard
+ * abbreviation (case insensitive). The following values are recognised: "UTC", "UT", "UT0",
+ * "UT1", "GMT", "TAI", "GPS", "TT", "ET", "TCG", "TCB", and "TDB".
+ *
+ * @param str     String specifying an astronomical timescale
+ * @return        The SuperNOVAS timescale constant (&lt;=0), or else -1 if the string was NULL,
+ *                empty, or could not be matched to a timescale value (errno will be set to EINVAL
+ *                also).
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_parse_timescale(), novas_set_str_time(), novas_print_timescale()
+ */
+enum novas_timescale novas_timescale_for_string(const char *restrict str) {
+  static const char *fn = "novas_str_timescale";
+
+  if(!str)
+    return novas_error(-1, EINVAL, fn, "input string is NULL");
+
+  if(!str[0])
+    return novas_error(-1, EINVAL, fn, "input string is empty");
+
+  if(strcasecmp("UTC", str) == 0 || strcasecmp("UT", str) == 0 || strcasecmp("UT0", str) == 0 || strcasecmp("GMT", str) == 0)
+    return NOVAS_UTC;
+
+  if(strcasecmp("UT1", str) == 0)
+    return NOVAS_UT1;
+
+  if(strcasecmp("TAI", str) == 0)
+    return NOVAS_TAI;
+
+  if(strcasecmp("GPS", str) == 0)
+    return NOVAS_GPS;
+
+  if(strcasecmp("TT", str) == 0 || strcasecmp("ET", str) == 0)
+    return NOVAS_TT;
+
+  if(strcasecmp("TCG", str) == 0)
+    return NOVAS_TCG;
+
+  if(strcasecmp("TCB", str) == 0)
+    return NOVAS_TCB;
+
+  if(strcasecmp("TDB", str) == 0)
+    return NOVAS_TDB;
+
+  return novas_error(-1, EINVAL, fn, "unknown timescale: %s", str);
 }
 

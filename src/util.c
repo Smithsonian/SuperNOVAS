@@ -259,6 +259,18 @@ void novas_tiny_rotate(const double *in, double ax, double ay, double az, double
   out[2] = z - 0.5 * (A[0] + A[1]) * z - ay * x + ax * y;
 }
 
+/**
+ * Sets the maximum number of iterations allowed for convergent inverese calculations.
+ *
+ * @param n   Maximum number of iterations allowed.
+ *
+ * @since 1.5
+ * @author Attila Kovacs
+ */
+void novas_set_max_iter(int n) {
+  novas_inv_max_iter = n;
+}
+
 /// \endcond PROTECTED
 
 // ===========================================================================
@@ -770,3 +782,5 @@ int novas_print_dms(double degrees, enum novas_separator_type sep, int decimals,
 
   return strlen(buf);
 }
+
+

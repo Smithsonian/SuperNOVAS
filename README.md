@@ -346,13 +346,25 @@ For example, to build __SuperNOVAS__ as shared libraries with
 If a `CMAKE_BUILD_TYPE` is not set, the build will only use the `CFLAGS` (if any) that were set in the environment.
 This is ideal for those who want to have full control of the compiler flags used in the build. Specifying
 `Release` or `Debug` will append a particular set of appropriate compiler options which are suited for the given 
-build type.
+build type. (If you want to use the MinGW compiler on Windows, you'll want to set 
+`-DCMAKE_C_COMPILER=gcc -G "MinGW Makefiles"` options also.)
 
 After a successful build, you can install the `Runtime` (libraries), and `Development` (headers, CMake config, and 
 `pkg-config`) components, e.g. under `/usr/local`, as:
 
 ```bash
   $ cmake --build build
+```
+
+Or, on Windows (Microsoft Visual C) you will want:
+
+```bash
+  $ cmake --build build --config Release
+```
+
+After the build, you can install the __SuperNOVAS__ files in the location of choice (e.g. `/usr/local`): 
+
+```bash
   $ cmake --install build --prefix /usr/local 
 ```
 
@@ -363,10 +375,6 @@ the `Runtime` component:
   $ cmake --install build --component Runtime --prefix /usr/local
 ```
 </details>
-
-> [!TIP]
-> On Windows, you probably want to add the `-DCMAKE_C_COMPILER=gcc -G "MinGW Makefiles"` options to `cmake`, to build
-> with MinGW.
 
 -----------------------------------------------------------------------------
 

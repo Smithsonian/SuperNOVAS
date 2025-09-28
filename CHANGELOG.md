@@ -72,6 +72,9 @@ Upcoming feature release, expected around 1 November 2025.
  - #249: Option to exclude deprecated API from `novas.h` definitions for your application. Simply compile your 
    application with `-D_EXCLUDE_DEPRECATED` or else define `EXCLUDE_DEPRECATED` in your source _before_ including
    `novas.h`. 
+   
+ - #255: More platform-independent code, by eliminating some UNIX specific calls. Windows builds with the Microsoft 
+   Visual C compiler are now possible also (with CMake). 
 
 ### Removed
 

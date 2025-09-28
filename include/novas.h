@@ -2348,6 +2348,13 @@ int novas_set_default_weather(on_surface *site);
 
 #endif /* _CONSTS_ */
 
+/**
+ * Default value for the maximum number of iterations allowed for inverse calculations.
+ * @since 1.5
+ * @sa novas_set_max_iter()
+ */
+#define NOVAS_DEFAULT_MAX_ITER    100
+
 // On some older platform NAN may not be defined, so define it here if need be
 #  ifndef NAN
 #    define NAN               (0.0/0.0)
@@ -2422,7 +2429,14 @@ int polar_dxdy_to_dpsideps(double jd_tt, double dx, double dy, double *restrict 
 int novas_frame_is_initialized(const novas_frame *frame);
 double novas_gmst_prec(double jd_tdb);
 double novas_cio_gcrs_ra(double jd_tdb);
+void novas_set_max_iter(int n);
 
+
+/**
+ * Deprecated.
+ * @deprecated Use novas_set_max_iter() instead
+ * @sa novas_set_max_iter()
+ */
 extern int novas_inv_max_iter;
 
 #endif /* __NOVAS_INTERNAL_API__ */

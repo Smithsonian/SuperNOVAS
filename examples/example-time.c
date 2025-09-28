@@ -13,7 +13,9 @@
  *  ```
  */
 
-#define _POSIX_C_SOURCE 199309L   ///< for clock_gettime()
+#if __STDC_VERSION__ < 201112L
+#  define _POSIX_C_SOURCE 199309      ///< struct timespec
+#endif
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -95,7 +97,12 @@ int main() {
   // 1.d. UNIX time
 
   // We'll set unix_time to current time, but it could be a UNIX timestamp...
+
+#if __STDC_VERSION__ >= 201112L || defined(_MSC_VER)
+  timespec_get(&unix_time, TIME_UTC);
+#else
   clock_gettime(CLOCK_REALTIME, &unix_time);
+#endif
 
   // Use the UNIX time (seconds + nanoseconds) to define astrometric time
   novas_set_unix_time(unix_time.tv_sec, unix_time.tv_nsec, LEAP_SECONDS, DUT1, &time3);
