@@ -69,13 +69,6 @@ Upcoming feature release, expected around 1 November 2025.
  - #246: New `novas_geodetic_transform_site()` and `novas_itrf_transform_site()` convenience functions to make it 
    simpler to change the reference ellipsoid or the ITRF realization of an `on_surface` data structure, respectively.
 
- - #249: Option to exclude deprecated API from `novas.h` definitions for your application. Simply compile your 
-   application with `-D_EXCLUDE_DEPRECATED` or else define `EXCLUDE_DEPRECATED` in your source _before_ including
-   `novas.h`. 
-   
- - #255: More platform-independent code, by eliminating some UNIX specific calls. Windows builds with the Microsoft 
-   Visual C compiler are now possible also (with CMake). 
-
 ### Removed
 
  - #250: No longer including `CIO_RA.TXT` (now unused) in the distribution.
@@ -125,6 +118,10 @@ Upcoming feature release, expected around 1 November 2025.
 
  - #242: README edits and collapsible sections, as well as Github style highlighting of notes, warnings etc.
 
+ - #249: Option to exclude deprecated API from `novas.h` definitions for your application. Simply compile your 
+   application with `-D_EXCLUDE_DEPRECATED` or else define `EXCLUDE_DEPRECATED` in your source _before_ including
+   `novas.h`. 
+   
  - #250: `cio_array()` is changed to calculate CIO locations vs GCRS on the fly. With the change SuperNOVAS does not 
    use a CIO locator data file any more, for any purpose. The change also ensures complete internal consistency with 
    the implemented standards, such as the precession-nutation model.
@@ -136,15 +133,14 @@ Upcoming feature release, expected around 1 November 2025.
    module is not explicitly defined for the build, `solsys3.c` will provide a default implementation for these.
    (No more undefined symbols that need to be resolved at runtime.)
 
+ - #255: More platform-independent code, by eliminating some UNIX specific calls. Windows builds with the Microsoft 
+   Visual C compiler are now possible also (with CMake). 
+
  - Both CMake and GNU make now install only the headers for the components that were built. E.g. `novas-calceph.h` is 
    installed only if the library is built with the CALCEPH support option enabled.
  
  - Renamed `equinox.c` to `equator.c`, since the functions therein concern the equator of date more than the equinox 
    of date specifically.
-   
- - Moved `nutation.h` to `legacy/`. Its functions are now integral to `novas.h` instead. It is unlikely that any one 
-   would use it as a separate header, and not via `novas.h`. But, in case someone does want it, they can find it it 
-   the installation folder of the `supernovas` documentation, under the `legacy/` folder.
    
  - Moved a few functions around among the source modules to make the organization more consistent. It also helps when
    browsing the HTML documentation topically by source modules.
@@ -188,6 +184,9 @@ Upcoming feature release, expected around 1 November 2025.
    stay away from this NOVAS C legacy module, and instead opt for one the built-in CALCEPH and/or CSPICE plugins
    to allow accessing a wider variety, and more up-to-date, ephemeris data -- with a lot more flexibility also.
 
+ - Moved `nutation.h` to `legacy/`. Its functions are now integral to `novas.h` instead. It is unlikely that any one 
+   would use it as a separate header, and not via `novas.h`. But, in case someone does want it, they can find it it 
+   the installation folder of the `supernovas` documentation, under the `legacy/` folder.
  
 ## [1.4.2] - 2025-08-25
 
