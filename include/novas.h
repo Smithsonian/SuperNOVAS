@@ -179,7 +179,7 @@
 
 /// [m] A parsec in meters.
 /// @since 1.5
-#define NOVAS_PARSEC              ( NOVAS_AU / ARCSEC )
+#define NOVAS_PARSEC              ( NOVAS_AU / NOVAS_ARCSEC )
 
 /// [m<sup>3</sup>/s<sup>2</sup>] Heliocentric gravitational constant (GM<sub>sun</sub>) from DE440,
 /// see Park et al., AJ, 161, 105 (2021)
