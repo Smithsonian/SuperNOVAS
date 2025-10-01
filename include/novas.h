@@ -134,8 +134,11 @@
 /// [s] The length of a synodic day, that is 24 hours exactly. @since 1.2
 #define NOVAS_DAY                 86400.0
 
-/// [s] The length of a tropical year (at J2000) in seconds. @since 1.5
-#define NOVAS_TROPICAL_YEAR       365.2421897
+/// [day] The length of a tropical year (at J2000) in days. @since 1.5
+#define NOVAS_TROPICAL_YEAR_DAYS  365.2421897
+
+/// [day] The length of a tropical year (at J2000) in days. @since 1.5
+#define NOVAS_JULIAN_YEAR_DAYS    365.25
 
 /// [rad] A degree expressed in radians. @since 1.2
 #define NOVAS_DEGREE              (M_PI / 180.0)
@@ -175,7 +178,7 @@
 
 /// [m] A light-year in meters.
 /// @since 1.5
-#define NOVAS_LIGHT_YEAR          ( NOVAS_C * NOVAS_TROPICAL_YEAR )
+#define NOVAS_LIGHT_YEAR          ( NOVAS_C * NOVAS_TROPICAL_YEAR_DAYS * NOVAS_DAY )
 
 /// [m] A parsec in meters.
 /// @since 1.5
