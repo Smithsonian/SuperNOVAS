@@ -78,7 +78,6 @@ namespace novas {
 #endif
 
 /// \cond PRIVATE
-
 /// Multiplicative normalization for the positions returned by km to AU
 #define NORM_POS                    (NOVAS_KM / NOVAS_AU)
 

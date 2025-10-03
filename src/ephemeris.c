@@ -62,6 +62,12 @@ namespace novas {
 #  endif
 #endif
 
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+namespace novas {
+#  endif
+#endif
+
 // <---------- GLOBAL VARIABLES -------------->
 
 /// \cond PRIVATE
