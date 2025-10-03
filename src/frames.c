@@ -825,7 +825,7 @@ int novas_sky_pos(const object *restrict object, const novas_frame *restrict fra
   double d_sb, pos[3], vel[3], vpos[3];
 
   if(!object || !frame || !out)
-    return novas_error(-1, EINVAL, "NULL argument: object=%p, frame=%p, out=%p", (void *) object, frame, out);
+    return novas_error(-1, EINVAL, fn, "NULL argument: object=%p, frame=%p, out=%p", (void *) object, frame, out);
 
   if(!novas_frame_is_initialized(frame))
     return novas_error(-1, EINVAL, fn, "frame at %p not initialized", frame);
@@ -917,7 +917,7 @@ int novas_geom_to_app(const novas_frame *restrict frame, const double *restrict 
   int i;
 
   if(!pos || !frame || !out)
-    return novas_error(-1, EINVAL, "NULL argument: pos=%p, frame=%p, out=%p", (void *) pos, frame, out);
+    return novas_error(-1, EINVAL, fn, "NULL argument: pos=%p, frame=%p, out=%p", (void *) pos, frame, out);
 
   if(!novas_frame_is_initialized(frame))
     return novas_error(-1, EINVAL, fn, "frame at %p not initialized", frame);
