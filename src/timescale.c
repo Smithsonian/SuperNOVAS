@@ -26,6 +26,13 @@
 
 #include "novas.h"
 
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+namespace novas {
+#  endif
+#endif
+
+
 /// \cond PRIVATE
 #define DTA         (32.184 / DAY)        ///< [day] TT - TAI time difference
 #define GPS2TAI     (19.0 / DAY)          ///< [day] TAI - GPS time difference
@@ -990,7 +997,7 @@ double novas_date_scale(const char *restrict date, enum novas_timescale *restric
     return NAN;
   }
 
-  *scale = -1;
+  *scale = (enum novas_timescale) -1;
 
   if(isnan(jd))
     return novas_trace_nan(fn);
@@ -1593,3 +1600,10 @@ double novas_mean_clock_skew(const novas_frame *frame, enum novas_timescale time
   // (1 + D) * (1 - D') = 1 + D - (1 + D) D'
   return D - (1.0 + D) * tidal_clock_skew(frame);
 }
+
+
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+} // namespace novas
+#  endif
+#endif

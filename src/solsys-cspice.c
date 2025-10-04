@@ -56,17 +56,28 @@
  * @sa solsys-calceph.c, ephemeris.c, orbital.c
  */
 
+#include <stdio.h>
 #include <string.h>
 #include <errno.h>
 #include <semaphore.h>
 
 /// \cond PRIVATE
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
+/// \endcond
+
 #include "novas.h"
 #include "novas-cspice.h"
 
 #include "cspice/SpiceUsr.h"
 #include "cspice/SpiceZpr.h"        // for reset_c
+
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+namespace novas {
+#  endif
+#endif
+
+/// \cond PRIVATE
 
 /// Multiplicative normalization for the positions returned by km to AU
 #define NORM_POS                    (NOVAS_KM / NOVAS_AU)
@@ -112,8 +123,8 @@ static int mutex_unlock() {
  * @return 0
  */
 static int suppress_cspice_errors() {
-  erract_c("SET", 0, "RETURN");       // Do not exit in case of CSPICE errors.
-  errprt_c("SET", 0, "NONE");         // Suppress CSPICE error messages
+  erract_c("SET", 0, (SpiceChar *) "RETURN");       // Do not exit in case of CSPICE errors.
+  errprt_c("SET", 0, (SpiceChar *) "NONE");         // Suppress CSPICE error messages
   return 0;
 }
 
@@ -555,5 +566,10 @@ int novas_use_cspice() {
   return 0;
 }
 
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+} // namespace novas
+#  endif
+#endif
 
 

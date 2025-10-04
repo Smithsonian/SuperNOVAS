@@ -61,9 +61,18 @@
 
 /// \cond PRIVATE
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
+/// \endcond
+
 #include "novas.h"
 #include "novas-calceph.h"
 
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+namespace novas {
+#  endif
+#endif
+
+/// \cond PRIVATE
 #define CALCEPH_MOON                10  ///< Moon in CALCEPH
 #define CALCEPH_SUN                 11  ///< Sun in CALCEPH
 #define CALCEPH_SSB                 12  ///< Solar-system Barycenter in CALCEPH
@@ -80,7 +89,6 @@
 
 /// Whether to force serialized (non-parallel CALCEPH queries)
 int serialized_calceph_queries;
-
 /// \endcond
 
 static int compute_flags = CALCEPH_USE_NAIFID;
@@ -461,3 +469,9 @@ int novas_use_calceph_planets(t_calcephbin *eph) {
   return 0;
 }
 
+
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+} // namespace novas
+#  endif
+#endif

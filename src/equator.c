@@ -18,6 +18,12 @@
 
 #include "novas.h"
 
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+namespace novas {
+#  endif
+#endif
+
 /// \cond PRIVATE
 
 /**
@@ -438,7 +444,7 @@ double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_ac
  */
 double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy) {
   static THREAD_LOCAL double last_tt = NAN, last_ee;
-  static THREAD_LOCAL enum novas_accuracy last_acc = -1;
+  static THREAD_LOCAL enum novas_accuracy last_acc = (enum novas_accuracy) -1;
 
   // @formatter:off
 
@@ -505,7 +511,7 @@ double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy) 
 
     // Add planet longitudes
     for(i = NOVAS_MERCURY; i <= NOVAS_EARTH; i++)  // NOTE: Coeffs beyond Earth are zero.
-      a[4 + i] = planet_lon(t, i);
+      a[4 + i] = planet_lon(t, (enum novas_planet) i);
 
     // General accumulated precession longitude
     a[13] = accum_prec(t);
@@ -814,3 +820,10 @@ int nutation(double jd_tdb, enum novas_nutation_direction direction, enum novas_
 
   return 0;
 }
+
+
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+} // namespace novas
+#  endif
+#endif

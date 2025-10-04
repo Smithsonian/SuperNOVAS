@@ -25,6 +25,12 @@
 
 #include "novas.h"
 
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+namespace novas {
+#  endif
+#endif
+
 /**
  * Returns the planetary longitude, for Mercury through Neptune, w.r.t. mean dynamical ecliptic
  * and equinox of J2000, with high order terms omitted (Simon et al. 1994, 5.8.1-5.8.8).
@@ -675,3 +681,10 @@ double novas_next_moon_phase(double phase, double jd_tdb) {
   novas_error(-1, ECANCELED, fn, "Failed to converge");
   return NAN;
 }
+
+
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+} // namespace novas
+#  endif
+#endif

@@ -10,10 +10,11 @@
  */
 
 /// \cond PRIVATE
-#define _GNU_SOURCE               ///< For strdup()
+#define _X_OPEN_SOURCE 500        ///< For strdup(), glibc >= 2.12
 #define __NOVAS_INTERNAL_API__    ///< Use definitions meant for internal use by SuperNOVAS only
 /// \endcond
 
+#include <stdio.h>
 #include <math.h>
 #include <errno.h>
 #include <string.h>
@@ -23,6 +24,12 @@
 #endif
 
 #include "novas.h"
+
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+namespace novas {
+#  endif
+#endif
 
 /// \cond PRIVATE
 #define DATE_SEP_CHARS  "-_./ \t\r\n\f"             ///< characters that may separate date components
@@ -1139,12 +1146,12 @@ enum novas_timescale novas_parse_timescale(const char *restrict str, char **rest
     *tail = (char *) str;
 
   if(!str)
-    return novas_error(-1, EINVAL, fn, "input string is NULL");
+    return (enum novas_timescale) novas_error(-1, EINVAL, fn, "input string is NULL");
 
   if(sscanf(str, "%3s%n", s, &n) == 1) {
     scale = novas_timescale_for_string(s);
     if(scale < 0)
-      return novas_trace(fn, scale, 0);
+      return (enum novas_timescale) novas_trace(fn, scale, 0);
   }
 
   if(tail)
@@ -1172,10 +1179,10 @@ enum novas_timescale novas_timescale_for_string(const char *restrict str) {
   static const char *fn = "novas_str_timescale";
 
   if(!str)
-    return novas_error(-1, EINVAL, fn, "input string is NULL");
+    return (enum novas_timescale) novas_error(-1, EINVAL, fn, "input string is NULL");
 
   if(!str[0])
-    return novas_error(-1, EINVAL, fn, "input string is empty");
+    return (enum novas_timescale) novas_error(-1, EINVAL, fn, "input string is empty");
 
   if(strcasecmp("UTC", str) == 0 || strcasecmp("UT", str) == 0 || strcasecmp("UT0", str) == 0 || strcasecmp("GMT", str) == 0)
     return NOVAS_UTC;
@@ -1201,6 +1208,12 @@ enum novas_timescale novas_timescale_for_string(const char *restrict str) {
   if(strcasecmp("TDB", str) == 0)
     return NOVAS_TDB;
 
-  return novas_error(-1, EINVAL, fn, "unknown timescale: %s", str);
+  return (enum novas_timescale) novas_error(-1, EINVAL, fn, "unknown timescale: %s", str);
 }
 
+
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+} // namespace novas
+#  endif
+#endif

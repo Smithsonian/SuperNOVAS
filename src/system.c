@@ -27,6 +27,13 @@
 
 #include "novas.h"
 
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+namespace novas {
+#  endif
+#endif
+
+
 
 /**
  * Convert ecliptic longitude and latitude to right ascension and declination.  To convert GCRS
@@ -453,7 +460,7 @@ short equ2ecl_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
     }
 
     case NOVAS_GCRS_EQUATOR: /* Input: GCRS */{
-      static THREAD_LOCAL enum novas_accuracy acc_2000 = -1;
+      static THREAD_LOCAL enum novas_accuracy acc_2000 = (enum novas_accuracy) -1;
       static THREAD_LOCAL double ob2000;
 
       frame_tie(in, ICRS_TO_J2000, pos0);
@@ -1056,3 +1063,9 @@ int novas_h2e_offset(double daz, double del, double pa, double *restrict dra, do
 int novas_e2h_offset(double dra, double ddec, double pa, double *restrict daz, double *restrict del) {
   return novas_h2e_offset(dra, ddec, pa, daz, del);
 }
+
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+} // namespace novas
+#  endif
+#endif

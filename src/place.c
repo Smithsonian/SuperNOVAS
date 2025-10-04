@@ -85,6 +85,12 @@
 
 #include "novas.h"
 
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+namespace novas {
+#  endif
+#endif
+
 /**
  * Computes the apparent direction of a celestial object at a specified time and in a specified
  * coordinate system and for a given observer location.
@@ -154,7 +160,7 @@ short place(double jd_tt, const object *restrict source, const observer *restric
         enum novas_accuracy accuracy, sky_pos *restrict output) {
   static const char *fn = "place";
 
-  static THREAD_LOCAL enum novas_accuracy acc_last = -1;
+  static THREAD_LOCAL enum novas_accuracy acc_last = (enum novas_accuracy) -1;
   static THREAD_LOCAL double tlast = NAN;
   static THREAD_LOCAL double peb[3], veb[3], psb[3];
 
@@ -377,7 +383,7 @@ short place(double jd_tt, const object *restrict source, const observer *restric
 int place_star(double jd_tt, const cat_entry *restrict star, const observer *restrict obs, double ut1_to_tt,
         enum novas_reference_system system, enum novas_accuracy accuracy, sky_pos *restrict pos) {
   static const char *fn = "place_star";
-  object source = {0};
+  object source = {};
 
   if(!star || !pos)
     return novas_error(-1, EINVAL, fn, "NULL input star=%p or output pos=%p pointer", star, pos);
@@ -844,7 +850,7 @@ short astro_planet(double jd_tt, const object *restrict ss_body, enum novas_accu
 short topo_star(double jd_tt, double ut1_to_tt, const cat_entry *restrict star, const on_surface *restrict position,
         enum novas_accuracy accuracy, double *restrict ra, double *restrict dec) {
   static const char *fn = "topo_star";
-  observer obs = {0};
+  observer obs = {};
   prop_error(fn, make_observer_at_site(position, &obs), 0);
   prop_error(fn, radec_star(jd_tt, star, &obs, ut1_to_tt, NOVAS_TOD, accuracy, ra, dec, NULL), 0);
   return 0;
@@ -894,7 +900,7 @@ short topo_star(double jd_tt, double ut1_to_tt, const cat_entry *restrict star, 
 short local_star(double jd_tt, double ut1_to_tt, const cat_entry *restrict star, const on_surface *restrict position,
         enum novas_accuracy accuracy, double *restrict ra, double *restrict dec) {
   static const char *fn = "local_star";
-  observer obs = {0};
+  observer obs = {};
   prop_error(fn, make_observer_at_site(position, &obs), 0);
   prop_error(fn, radec_star(jd_tt, star, &obs, ut1_to_tt, NOVAS_GCRS, accuracy, ra, dec, NULL), 0);
   return 0;
@@ -944,7 +950,7 @@ short local_star(double jd_tt, double ut1_to_tt, const cat_entry *restrict star,
 short topo_planet(double jd_tt, const object *restrict ss_body, double ut1_to_tt, const on_surface *restrict position,
         enum novas_accuracy accuracy, double *restrict ra, double *restrict dec, double *restrict dis) {
   static const char *fn = "topo_planet";
-  observer obs = {0};
+  observer obs = {};
   prop_error(fn, make_observer_at_site(position, &obs), 0);
   prop_error(fn, radec_planet(jd_tt, ss_body, &obs, ut1_to_tt, NOVAS_TOD, accuracy, ra, dec, dis, NULL), 0);
   return 0;
@@ -995,7 +1001,7 @@ short topo_planet(double jd_tt, const object *restrict ss_body, double ut1_to_tt
 short local_planet(double jd_tt, const object *restrict ss_body, double ut1_to_tt, const on_surface *restrict position,
         enum novas_accuracy accuracy, double *restrict ra, double *restrict dec, double *restrict dis) {
   static const char *fn = "local_planet";
-  observer obs = {0};
+  observer obs = {};
   prop_error(fn, make_observer_at_site(position, &obs), 0);
   prop_error(fn, radec_planet(jd_tt, ss_body, &obs, ut1_to_tt, NOVAS_GCRS, accuracy, ra, dec, dis, NULL), 0);
   return 0;
@@ -1270,3 +1276,10 @@ int place_j2000(double jd_tt, const object *restrict source, enum novas_accuracy
   prop_error("place_j2000", place(jd_tt, source, NULL, 0.0, NOVAS_J2000, accuracy, pos), 0);
   return 0;
 }
+
+
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+} // namespace novas
+#  endif
+#endif

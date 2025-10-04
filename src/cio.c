@@ -55,9 +55,13 @@
 #define CIO_INTERP_POINTS   6     ///< Number of points to load from CIO interpolation table at once.
 
 #define CIO_ARRAY_STEP      1.2   ///< [day] Interval between CIO vs GCRS locator lookup entries.
-
-
 /// \endcond
+
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+namespace novas {
+#  endif
+#endif
 
 /**
  * Computes the true right ascension of the celestial intermediate origin (CIO) vs the equinox of
@@ -165,7 +169,7 @@ int set_cio_locator_file(const char *restrict filename) {
 short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *restrict ra_cio, short *restrict loc_type) {
   static const char *fn = "cio_location";
 
-  static THREAD_LOCAL enum novas_accuracy acc_last = -1;
+  static THREAD_LOCAL enum novas_accuracy acc_last = (enum novas_accuracy) -1;
   static THREAD_LOCAL double t_last = NAN, ra_last = NAN;
 
   // Default return values...
@@ -239,7 +243,7 @@ short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *restrict
 short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_type, enum novas_accuracy accuracy,
         double *restrict x, double *restrict y, double *restrict z) {
   static const char *fn = "cio_basis";
-  static THREAD_LOCAL enum novas_accuracy acc_last = -1;
+  static THREAD_LOCAL enum novas_accuracy acc_last = (enum novas_accuracy) -1;
   static THREAD_LOCAL double t_last = NAN;
   static THREAD_LOCAL double xx[3], yy[3], zz[3];
 
@@ -397,3 +401,9 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *restrict cio) {
 
   return 0;
 }
+
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+} // namespace novas
+#  endif
+#endif

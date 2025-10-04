@@ -61,8 +61,6 @@
 #  include <stdio.h>
 #  include <ctype.h>
 #  include <string.h>
-
-#  include <novascon.h>
 #endif
 
 
@@ -101,14 +99,25 @@
 #define SUPERNOVAS_VERSION_STRING str_2(SUPERNOVAS_MAJOR_VERSION) "." str_2(SUPERNOVAS_MINOR_VERSION) \
                                   "." str_2(SUPERNOVAS_PATCHLEVEL) SUPERNOVAS_RELEASE_STRING
 
-#undef str_1
-#undef str_2
-
 #define NOVAS_MAJOR_VERSION       3       ///< Major version of NOVAS on which this library is based
 #define NOVAS_MINOR_VERSION       1       ///< Minor version of NOVAS on which this library is based
 
 /// The version string of the upstream NOVAS library on which this library is based.
-#define NOVAS_VERSION_STRING      #NOVAS_MAJOR_VERSION "." NOVAS_MINOR_VERSION
+#define NOVAS_VERSION_STRING      str_2(NOVAS_MAJOR_VERSION) "." str_2(NOVAS_MINOR_VERSION)
+
+#undef str_1
+#undef str_2
+
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+namespace novas {
+#  endif
+
+#if COMPAT
+#  include "novascon.h"
+#endif
+#endif
+
 
 /// [day] Julian date at J2000
 #define NOVAS_JD_J2000            2451545.0
@@ -183,6 +192,11 @@
 /// [m] A parsec in meters.
 /// @since 1.5
 #define NOVAS_PARSEC              ( NOVAS_AU / NOVAS_ARCSEC )
+
+/// [m] Default distance at which sidereal sources are assumed when not specified otherwise
+/// Historically NOVAS placed sources with no parallax at 1 Gpc distance, and so we follow.
+/// @since 1.5
+#define NOVAS_DEFAULT_DISTANCE    (1e9 * NOVAS_PARSEC)
 
 /// [m<sup>3</sup>/s<sup>2</sup>] Heliocentric gravitational constant (GM<sub>sun</sub>) from DE440,
 /// see Park et al., AJ, 161, 105 (2021)
@@ -823,7 +837,7 @@ typedef struct novas_delaunay_args {
  * as the original NOVAS C version, allowing for cross-compatible binary exchange (I/O) of
  * these structures.
  *
- * @sa novas_init_cat_entry(), novas_make_cat_entry(), novas_make_cat_object()
+ * @sa novas_init_cat_entry(), make_cat_entry(), make_cat_object()
  * @sa CAT_ENTRY_INIT
  */
 typedef struct novas_cat_entry {
@@ -871,7 +885,7 @@ typedef struct novas_cat_entry {
  * @author Attila Kovacs
  * @since 1.2
  *
- * @sa novas_orbital, novas_set_obsys_pole(), NOVAS_ORBITAL_SYSTEM_INIT
+ * @sa novas_orbital, novas_set_orbsys_pole(), NOVAS_ORBITAL_SYSTEM_INIT
  */
 typedef struct novas_orbital_system {
   enum novas_planet center;          ///< major planet or barycenter at the center of the orbit.
@@ -2297,20 +2311,13 @@ int make_xyz_site(const double *restrict xyz, on_surface *restrict site);
 
 int novas_set_default_weather(on_surface *site);
 
-
 // <================= END of SuperNOVAS API =====================>
-
-
-#include <solarsystem.h>
 
 
 // <================= SuperNOVAS internals ======================>
 
 /// \cond PRIVATE
 #ifdef __NOVAS_INTERNAL_API__
-
-#  include <stdio.h>
-#  include <math.h>
 
 #ifndef _CONSTS_
 #  define _CONSTS_
@@ -2444,5 +2451,13 @@ extern int novas_inv_max_iter;
 
 #endif /* __NOVAS_INTERNAL_API__ */
 /// \endcond
+
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+} // namespace novas
+#  endif
+#endif // __cplusplus
+
+#include <solarsystem.h>
 
 #endif /* _NOVAS_ */

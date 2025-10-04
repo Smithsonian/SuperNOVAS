@@ -49,6 +49,11 @@
 #endif
 /// \endcond
 
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+namespace novas {
+#  endif
+#endif
 
 /// [W/m<sup>2</sup>] The Solar Constant i.e., typical incident Solar power on Earth.
 /// The value of 1367 Wm<sup>−2</sup> was adopted by the World Radiation Center
@@ -578,5 +583,11 @@ double novas_next_moon_phase(double phase, double jd_tdb);
 
 #  endif /* __NOVAS_INTERNAL_API__ */
 /// \endcond
+
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+} // namespace novas
+#  endif
+#endif
 
 #endif /* _SOLSYS_ */

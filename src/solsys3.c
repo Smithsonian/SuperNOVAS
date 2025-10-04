@@ -34,6 +34,11 @@
 #define T0        NOVAS_JD_J2000
 /// \endcond
 
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+namespace novas {
+#  endif
+#endif
 
 
 
@@ -444,6 +449,9 @@ int sun_eph(double jd, double *restrict ra, double *restrict dec, double *restri
   return 0;
 }
 
-
-
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+} // namespace novas
+#  endif
+#endif
 

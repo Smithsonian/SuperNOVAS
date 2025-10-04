@@ -54,9 +54,17 @@
 /// \cond PRIVATE
 #define __NOVAS_INTERNAL_API__    ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
+/// \endcond
+
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+namespace novas {
+#  endif
+#endif
 
 // <---------- GLOBAL VARIABLES -------------->
 
+/// \cond PRIVATE
 #ifdef USER_SOLSYS
 static short solarsystem_adapter(double jd_tdb, enum novas_planet body, enum novas_origin origin,
         double *restrict position, double *restrict velocity) {
@@ -77,16 +85,15 @@ novas_planet_provider planet_call = earth_sun_calc;
 novas_planet_provider_hp planet_call_hp = earth_sun_calc_hp;
 
 short solarsystem(double jd_tdb, short body, short origin, double *restrict position, double *restrict velocity) {
-  prop_error("solarsystem", planet_call(jd_tdb, body, origin, position, velocity), 0);
+  prop_error("solarsystem", planet_call(jd_tdb, (enum novas_planet) body, (enum novas_origin) origin, position, velocity), 0);
   return 0;
 }
 
 short solarsystem_hp(const double jd_tdb[restrict 2], short body, short origin, double *restrict position, double *restrict velocity) {
-  prop_error("solarsystem_hp", planet_call_hp(jd_tdb, body, origin, position, velocity), 0);
+  prop_error("solarsystem_hp", planet_call_hp(jd_tdb, (enum novas_planet) body, (enum novas_origin) origin, position, velocity), 0);
   return 0;
 }
 #endif /* USER_SOLSYS */
-
 /// \endcond
 
 
@@ -288,9 +295,9 @@ short ephemeris(const double *restrict jd_tdb, const object *restrict body, enum
       // than 'solarsystem'.
 
       if(accuracy == NOVAS_FULL_ACCURACY)
-        error = planet_call_hp(jd_tdb, body->number, origin, pos, vel);
+        error = planet_call_hp(jd_tdb, (enum novas_planet) body->number, (enum novas_origin) origin, pos, vel);
       else
-        error = planet_call(jd_tdb[0] + jd_tdb[1], body->number, origin, pos, vel);
+        error = planet_call(jd_tdb[0] + jd_tdb[1], (enum novas_planet) body->number, (enum novas_origin) origin, pos, vel);
 
       prop_error("ephemeris:planet", error, 10);
       break;
@@ -366,3 +373,9 @@ short ephemeris(const double *restrict jd_tdb, const object *restrict body, enum
 
   return 0;
 }
+
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+} // namespace novas
+#  endif
+#endif

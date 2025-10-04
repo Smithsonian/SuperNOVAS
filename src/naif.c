@@ -22,6 +22,12 @@
 
 #include "novas.h"
 
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+namespace novas {
+#  endif
+#endif
+
 /**
  * Converts a NAIF ID to a NOVAS major planet ID. It account for the different IDs used for Sun,
  * Moon, SSB, EMB and the Pluto system. Otherwise NAIF planet barycenters are mapped to the
@@ -55,11 +61,11 @@ enum novas_planet naif_to_novas_planet(long id) {
 
   // Major planets
   if(id >= NOVAS_MERCURY && id <= NOVAS_PLUTO)
-    return id;
+    return (enum novas_planet) id;
   if(id > 100 && id < 1000) if(id % 100 == 99)
-    return (id - 99)/100;
+    return (enum novas_planet) ((id - 99) / 100);
 
-  return novas_error(-1, EINVAL, "naif_to_novas_planet", "Invalid NOVAS major planet no: %ld", id);
+  return (enum novas_planet) novas_error(-1, EINVAL, "naif_to_novas_planet", "Invalid NOVAS major planet no: %ld", id);
 }
 
 /**
@@ -138,3 +144,8 @@ long novas_to_dexxx_planet(enum novas_planet id) {
   }
 }
 
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+} // namespace novas
+#  endif
+#endif

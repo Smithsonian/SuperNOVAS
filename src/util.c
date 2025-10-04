@@ -7,6 +7,7 @@
  * @author G. Kaplan and Attila Kovacs
  */
 
+#include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
 #include <errno.h>
@@ -16,6 +17,13 @@
 /// \endcond
 
 #include "novas.h"
+
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+namespace novas {
+#  endif
+#endif
+
 
 /// \cond PRIVATE
 #define MAX_SECONDS_DECIMALS      9                 ///< Maximum decimal places for seconds in HMS/DMS formats
@@ -783,4 +791,10 @@ int novas_print_dms(double degrees, enum novas_separator_type sep, int decimals,
   return strlen(buf);
 }
 
+
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+} // namespace novas
+#  endif
+#endif
 

@@ -15,7 +15,15 @@
 /// \cond PRIVATE
 #define __NOVAS_INTERNAL_API__    ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
+/// \endcond
 
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+namespace novas {
+#  endif
+#endif
+
+/// \cond PRIVATE
 /**
  * Structure to contain terms for librational and tidal corrections to earth orientation.
  */
@@ -610,7 +618,7 @@ int wobble(double jd_tt, enum novas_wobble_direction direction, double xp, doubl
   double s1 = 0.0;
 
   if((short) direction < 0)
-    direction = 1;
+    direction = WOBBLE_TIRS_TO_ITRS;
   else if(direction >= NOVAS_WOBBLE_DIRECTIONS)
     return novas_error(-1, EINVAL, fn, "invalid direction: %d", direction);
 
@@ -837,3 +845,8 @@ int limb_angle(const double *pos_src, const double *pos_obs, double *restrict li
   return 0;
 }
 
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+} // namespace novas
+#  endif
+#endif

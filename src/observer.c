@@ -46,8 +46,13 @@
 #define ANTARCTIC_LATITUDE                (-66.55)  ///< [deg] latitude below which to use Antarctic lapse rate
 
 #define PRESSURE_SCALE_HEIGHT             9.1e3     ///< [m] Scale height of atmospheric pressure
-
 /// \endcond
+
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+namespace novas {
+#  endif
+#endif
 
 /**
  * @deprecated    It is recommended that you use one of the more specific ways of initializing
@@ -825,7 +830,7 @@ int obs_planets(double jd_tdb, enum novas_accuracy accuracy, const double *restr
   // Set up the structures of type 'object' containing the body information.
   if(!initialized) {
     for(i = 0; i < NOVAS_PLANETS; i++)
-      make_planet(i, &body[i]);
+      make_planet((enum novas_planet) i, &body[i]);
     initialized = 1;
   }
 
@@ -1043,3 +1048,10 @@ int novas_set_default_weather(on_surface *site) {
 
   return 0;
 }
+
+
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+} // namespace novas
+#  endif
+#endif

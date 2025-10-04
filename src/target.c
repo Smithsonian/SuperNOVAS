@@ -40,7 +40,7 @@
  */
 
 /// \cond PRIVATE
-#define _GNU_SOURCE               ///< for strcasecmp()
+#define _DEFAULT_SOURCE           ///< for strcasecmp()
 #define __NOVAS_INTERNAL_API__    ///< Use definitions meant for internal use by SuperNOVAS only
 /// \endcond
 
@@ -51,6 +51,13 @@
 #include <stddef.h>
 
 #include "novas.h"
+
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+namespace novas {
+#  endif
+#endif
+
 
 #if __Lynx__ && __powerpc__
 // strcasecmp() / strncasecmp() are not defined on PowerPC / LynxOS 3.1
@@ -795,14 +802,14 @@ enum novas_planet novas_planet_for_name(const char *restrict name) {
   int i;
 
   if(!name)
-    return novas_error(-1, EINVAL, fn, "Input name is NULL");
+    return (enum novas_planet) novas_error(-1, EINVAL, fn, "Input name is NULL");
 
   if(!name[0])
-    return novas_error(-1, EINVAL, fn, "Input name is empty");
+    return (enum novas_planet) novas_error(-1, EINVAL, fn, "Input name is empty");
 
   for(i = 0; i < NOVAS_PLANETS; i++)
     if(strcasecmp(name, (const char *) names[i]) == 0)
-      return i;
+      return (enum novas_planet) i;
 
   // Check for Solar System Barycenter (and variants)
   tok = strtok(strdup(name), " \t-_");
@@ -815,7 +822,7 @@ enum novas_planet novas_planet_for_name(const char *restrict name) {
     }
   }
 
-  return novas_error(-1, EINVAL, fn, "No match for name: '%s'", name);
+  return (enum novas_planet) novas_error(-1, EINVAL, fn, "No match for name: '%s'", name);
 }
 
 /**
@@ -1023,7 +1030,7 @@ int transform_hip(const cat_entry *hipparcos, cat_entry *hip_2000) {
   scratch.ra /= 15.0;
 
   // Change the epoch of the Hipparcos data from J1991.25 to J2000.0.
-  prop_error(fn, transform_cat(1, NOVAS_JD_HIP, &scratch, JD_J2000, "HP2", hip_2000), 0);
+  prop_error(fn, transform_cat(PROPER_MOTION, NOVAS_JD_HIP, &scratch, JD_J2000, "HP2", hip_2000), 0);
   return 0;
 }
 
@@ -1128,3 +1135,9 @@ double novas_solar_power(double jd_tdb, const object *restrict source) {
   double d = novas_helio_dist(jd_tdb, source, NULL);
   return NOVAS_SOLAR_CONSTANT / (d * d);
 }
+
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+} // namespace novas
+#  endif
+#endif

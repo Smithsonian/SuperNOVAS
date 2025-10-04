@@ -25,7 +25,15 @@
 /// \cond PRIVATE
 #define __NOVAS_INTERNAL_API__    ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
+/// \endcond
 
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+namespace novas {
+#  endif
+#endif
+
+/// \cond PRIVATE
 #define T0        NOVAS_JD_J2000
 
 /**
@@ -73,7 +81,7 @@ typedef struct {
  */
 int nutation_angles(double t, enum novas_accuracy accuracy, double *restrict dpsi, double *restrict deps) {
   static THREAD_LOCAL double last_t = NAN, last_dpsi, last_deps;
-  static THREAD_LOCAL enum novas_accuracy last_acc = -1;
+  static THREAD_LOCAL enum novas_accuracy last_acc = (enum novas_accuracy) -1;
 
   if(!dpsi || !deps) {
     if(dpsi)
@@ -145,7 +153,7 @@ static int iau2006_fp(double jd_tt_high, double jd_tt_low, int nA0, int nA1, int
   // ecliptic and equinox of J2000
   // (Simon et al. 1994, 5.8.1-5.8.8).
   for(i = NOVAS_MERCURY; i <= NOVAS_NEPTUNE; i++)
-    a[4 + i] = planet_lon(t, i);
+    a[4 + i] = planet_lon(t, (enum novas_planet) i);
 
   // General precession in longitude (Simon et al. 1994), equivalent
   // to 5028.8200 arcsec/cy at J2000.
@@ -411,3 +419,10 @@ int nu2000k(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *
 
   return 0;
 }
+
+
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+} // namespace novas
+#  endif
+#endif

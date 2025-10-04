@@ -109,6 +109,12 @@
 
 #include "novas.h"
 
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+namespace novas {
+#  endif
+#endif
+
 /// \cond PRIVATE
 #define XI0       (-0.0166170 * ARCSEC)         ///< Frame bias term &xi;<sub>0</sub>
 #define ETA0      (-0.0068192 * ARCSEC)         ///< Frame bias term &eta;<sub>0</sub>
@@ -824,8 +830,14 @@ int novas_sky_pos(const object *restrict object, const novas_frame *restrict fra
 
   double d_sb, pos[3], vel[3], vpos[3];
 
-  if(!object || !frame || !out)
-    return novas_error(-1, EINVAL, fn, "NULL argument: object=%p, frame=%p, out=%p", (void *) object, frame, out);
+  if(!object)
+    return novas_error(-1, EINVAL, fn, "NULL input object");
+
+  if(!frame)
+    return novas_error(-1, EINVAL, fn, "NULL input frame");
+
+  if(!out)
+    return novas_error(-1, EINVAL, fn, "NULL output sky_pos");
 
   if(!novas_frame_is_initialized(frame))
     return novas_error(-1, EINVAL, fn, "frame at %p not initialized", frame);
@@ -916,8 +928,14 @@ int novas_geom_to_app(const novas_frame *restrict frame, const double *restrict 
   double pos1[3];
   int i;
 
-  if(!pos || !frame || !out)
-    return novas_error(-1, EINVAL, fn, "NULL argument: pos=%p, frame=%p, out=%p", (void *) pos, frame, out);
+  if(!frame)
+    return novas_error(-1, EINVAL, fn, "NULL input frame");
+
+  if(!pos)
+    return novas_error(-1, EINVAL, fn, "NULL input pos");
+
+  if(!out)
+    return novas_error(-1, EINVAL, fn, "NULL output sky_pos");
 
   if(!novas_frame_is_initialized(frame))
     return novas_error(-1, EINVAL, fn, "frame at %p not initialized", frame);
@@ -2108,3 +2126,9 @@ int novas_track_pos(const novas_track *track, const novas_timespec *time, double
 
   return 0;
 }
+
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+} // namespace novas
+#  endif
+#endif

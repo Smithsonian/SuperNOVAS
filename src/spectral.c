@@ -25,6 +25,13 @@
 #include "novas.h"
 /// \endcond
 
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+namespace novas {
+#  endif
+#endif
+
+
 /// \cond PRIVATE
 double novas_add_beta(double beta1, double beta2) {
   return (beta1 + beta2) / (1 + beta1 * beta2);
@@ -242,7 +249,7 @@ static int convert_lsr_ssb_vel(const double *vLSR, int sign, double *vSSB) {
  */
 double novas_lsr_to_ssb_vel(double epoch, double ra, double dec, double vLSR) {
   double u[3] = {0.0}, v[3];
-  double jd = NOVAS_JD_J2000 + 365.25 * (epoch - 2000.0);
+  double jd = NOVAS_JD_J2000 + NOVAS_JULIAN_YEAR_DAYS * (epoch - 2000.0);
   int i;
 
   radec2vector(ra, dec, 1.0, u);
@@ -289,7 +296,7 @@ double novas_lsr_to_ssb_vel(double epoch, double ra, double dec, double vLSR) {
  */
 double novas_ssb_to_lsr_vel(double epoch, double ra, double dec, double vLSR) {
   double u[3] = {0.0}, v[3];
-  double jd = NOVAS_JD_J2000 + 365.25 * (epoch - 2000.0);
+  double jd = NOVAS_JD_J2000 + NOVAS_JULIAN_YEAR_DAYS * (epoch - 2000.0);
   int i;
 
   radec2vector(ra, dec, 1.0, u);
@@ -614,3 +621,9 @@ double rad_vel2(const object *restrict source, const double *pos_emit, const dou
   return novas_z2v(rel - 1.0);
 }
 
+
+#if __cplusplus
+#  ifdef NOVAS_NAMESPACE
+} // namespace novas
+#  endif
+#endif
