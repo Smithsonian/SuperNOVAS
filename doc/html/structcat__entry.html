@@ -102,7 +102,7 @@ $(function(){initNavTree('structcat__entry.html',''); initResizable(true); });
 <div class="header">
   <div class="summary">
 <a href="#pub-attribs">Data Fields</a>  </div>
-  <div class="headertitle"><div class="title">cat_entry Struct Reference</div></div>
+  <div class="headertitle"><div class="title">cat_entry Struct Reference<div class="ingroups"><a class="el" href="group__source.html">Astronomical object of interest</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -114,7 +114,7 @@ $(function(){initNavTree('structcat__entry.html',''); initResizable(true); });
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
 <tr class="memitem:a128c876f7e50045e1c469dbabb400c58" id="r_a128c876f7e50045e1c469dbabb400c58"><td class="memItemLeft" align="right" valign="top"><a id="a128c876f7e50045e1c469dbabb400c58" name="a128c876f7e50045e1c469dbabb400c58"></a>
-char&#160;</td><td class="memItemRight" valign="bottom"><b>catalog</b> [<a class="el" href="novas_8h.html#af32c72297e36b77bead56044d23082f7">SIZE_OF_CAT_NAME</a>]</td></tr>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>catalog</b> [<a class="el" href="group__source.html#gaf32c72297e36b77bead56044d23082f7">SIZE_OF_CAT_NAME</a>]</td></tr>
 <tr class="memdesc:a128c876f7e50045e1c469dbabb400c58"><td class="mdescLeft">&#160;</td><td class="mdescRight">catalog designator (e.g., HIP) <br /></td></tr>
 <tr class="separator:a128c876f7e50045e1c469dbabb400c58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac4ae7989694321b540abb75c30eec690" id="r_ac4ae7989694321b540abb75c30eec690"><td class="memItemLeft" align="right" valign="top"><a id="ac4ae7989694321b540abb75c30eec690" name="ac4ae7989694321b540abb75c30eec690"></a>
@@ -141,7 +141,7 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>ra</b></td></tr>
 <tr class="memdesc:aa2b5e5ca3a5df1765b49a6c6b110a36a"><td class="mdescLeft">&#160;</td><td class="mdescRight">[km/s] catalog radial velocity (w.r.t.  <br /></td></tr>
 <tr class="separator:aa2b5e5ca3a5df1765b49a6c6b110a36a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad26c9b08b1028d2a7f35c447841022b1" id="r_ad26c9b08b1028d2a7f35c447841022b1"><td class="memItemLeft" align="right" valign="top"><a id="ad26c9b08b1028d2a7f35c447841022b1" name="ad26c9b08b1028d2a7f35c447841022b1"></a>
-char&#160;</td><td class="memItemRight" valign="bottom"><b>starname</b> [<a class="el" href="novas_8h.html#a977a43db51d544f728ea8a22b4a53783">SIZE_OF_OBJ_NAME</a>]</td></tr>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>starname</b> [<a class="el" href="group__source.html#ga977a43db51d544f728ea8a22b4a53783">SIZE_OF_OBJ_NAME</a>]</td></tr>
 <tr class="memdesc:ad26c9b08b1028d2a7f35c447841022b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">name of celestial object <br /></td></tr>
 <tr class="separator:ad26c9b08b1028d2a7f35c447841022b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2cc0369c1acae73cf6f3e06f1a8ddab8" id="r_a2cc0369c1acae73cf6f3e06f1a8ddab8"><td class="memItemLeft" align="right" valign="top"><a id="a2cc0369c1acae73cf6f3e06f1a8ddab8" name="a2cc0369c1acae73cf6f3e06f1a8ddab8"></a>
@@ -152,9 +152,9 @@ long&#160;</td><td class="memItemRight" valign="bottom"><b>starnumber</b></td></
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Basic astrometric data for any sidereal object located outside the solar system. </p>
 <p>Note, that despite the slightly expanded catalog name, this has the same memory footprint as the original NOVAS C version, allowing for cross-compatible binary exchange (I/O) of these structures.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="target_8c.html#af0137aa791dd29278904e53498fb9515" title="Initializes a catalog entry, such as a star or a distant galaxy, with a name and coordinates.">novas_init_cat_entry()</a>, novas_make_cat_entry(), novas_make_cat_object() </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__source.html#gaf0137aa791dd29278904e53498fb9515" title="Initializes a catalog entry, such as a star or a distant galaxy, with a name and coordinates.">novas_init_cat_entry()</a>, <a class="el" href="group__source.html#gaa040bcfe8bee7d8e1307800f48efddd7" title="Fully populates the data structure for a catalog source, such as a star, with all parameters provided...">make_cat_entry()</a>, <a class="el" href="group__source.html#gab9b7a622486f2904615ceed1ba94cd8f" title="Populates and object data structure with the data for a catalog source.">make_cat_object()</a> </dd>
 <dd>
-<a class="el" href="novas_8h.html#a0a185da3a347343e5dd21d41a598d0fa" title="Initializer for a NOVAS cat_entry structure.">CAT_ENTRY_INIT</a> </dd></dl>
+<a class="el" href="group__source.html#ga0a185da3a347343e5dd21d41a598d0fa" title="Initializer for a NOVAS cat_entry structure.">CAT_ENTRY_INIT</a> </dd></dl>
 </div><h2 class="groupheader">Field Documentation</h2>
 <a id="aa2b5e5ca3a5df1765b49a6c6b110a36a" name="aa2b5e5ca3a5df1765b49a6c6b110a36a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa2b5e5ca3a5df1765b49a6c6b110a36a">&#9670;&#160;</a></span>radialvelocity</h2>
@@ -169,7 +169,7 @@ long&#160;</td><td class="memItemRight" valign="bottom"><b>starnumber</b></td></
 </div><div class="memdoc">
 
 <p>[km/s] catalog radial velocity (w.r.t. </p>
-<p>SSB) To specify radial velocities defined in the Local Standard of Rest (LSR) you might use <a class="el" href="target_8c.html#a4aa0c52a1d4838feb4255974486462a7" title="Sets a radial velocity for a catalog source, defined w.r.t.">novas_set_lsr_vel()</a> </p>
+<p>SSB) To specify radial velocities defined in the Local Standard of Rest (LSR) you might use <a class="el" href="group__source.html#ga4aa0c52a1d4838feb4255974486462a7" title="Sets a radial velocity for a catalog source, defined w.r.t.">novas_set_lsr_vel()</a> </p>
 
 </div>
 </div>

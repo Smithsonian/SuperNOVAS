@@ -87,7 +87,7 @@ var NAVTREE =
       [ "Release schedule", "index.html#autotoc_md109", null ]
     ] ],
     [ "Changelog", "md__2github_2workspace_2CHANGELOG.html", [
-      [ "[Unreleased]", "md__2github_2workspace_2CHANGELOG.html#autotoc_md1", [
+      [ "[1.5.0-rc6] – 2025-10-04", "md__2github_2workspace_2CHANGELOG.html#autotoc_md1", [
         [ "Fixed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md2", null ],
         [ "Added", "md__2github_2workspace_2CHANGELOG.html#autotoc_md3", null ],
         [ "Removed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md4", null ],
@@ -147,6 +147,7 @@ var NAVTREE =
     [ "Contributing to SuperNOVAS", "md__2github_2workspace_2CONTRIBUTING.html", null ],
     [ "SuperNOVAS vs. astropy", "md_SuperNOVAS__vs__astropy.html", null ],
     [ "Deprecated List", "deprecated.html", null ],
+    [ "Topics", "topics.html", "topics" ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
       [ "Data Structure Index", "classes.html", null ],
@@ -173,10 +174,9 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"novas-cspice_8h.html#a38e3b3155cad3b3822fbc3e553060ab1",
-"novas_8h.html#a918c8244e44c69f1589d9f4bf5355d16",
-"observer_8c.html#ab5fb62a9fb185632175ae622bce28dea",
-"structon__surface.html#aee1c5d07ac79c5c036195858afe33405"
+"group__observer.html#gab07d86d425d68a62e94e965dd36b7a32",
+"group__util.html#ga22e1bcf36379e0244b665c3e22d5fcba",
+"solsys-cspice_8c.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';
