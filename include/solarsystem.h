@@ -74,10 +74,11 @@ namespace novas {
  * @author Attila Kovacs
  *
  * @sa enum novas_planet
+ * @ingroup source
  */
 #define NOVAS_PLANET_NAMES_INIT { \
-  "SSB", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto", \
-  "Sun", "Moon", "EMB", "Pluto-Barycenter" }
+        "SSB", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto", \
+        "Sun", "Moon", "EMB", "Pluto-Barycenter" }
 
 /**
  * Array initializer for mean planet radii in meters, matching the enum novas_planet. E.g.
@@ -106,11 +107,11 @@ namespace novas {
  * @sa enum novas_planet, NOVAS_PLANET_NAMES_INIT, NOVAS_RMASS_INIT
  */
 #define NOVAS_PLANET_RADII_INIT { \
-  0.0, \
-  2440530.0, 6051800.0, 6378136.6, 3396190.0, 71492000.0, 60268000.0, 25559000.0, 24764000.0, 1188300.0, \
-  695700000.0, \
-  1737400.0, \
-  0.0, 0.0 \
+        0.0, \
+        2440530.0, 6051800.0, 6378136.6, 3396190.0, 71492000.0, 60268000.0, 25559000.0, 24764000.0, 1188300.0, \
+        695700000.0, \
+        1737400.0, \
+        0.0, 0.0 \
 }
 
 /**
@@ -137,11 +138,11 @@ namespace novas {
  * @sa enum novas_planet, NOVAS_PLANET_NAMES_INIT, NOVAS_PLANET_RAII_INIT, NOVAS_PLANETS_GRAV_Z_INIT
  */
 #define NOVAS_RMASS_INIT  { \
-      328900.559708565, \
-      6023657.9450387, 408523.718656268, 332946.048773067, 3098703.54671961, \
-      1047.348631244, 3497.9018007932, 22902.9507834766, 19412.2597758766, 136045556.16738, \
-      1.0, 27068702.9548773, \
-      0.0, 0.0 }
+        328900.559708565, \
+        6023657.9450387, 408523.718656268, 332946.048773067, 3098703.54671961, \
+        1047.348631244, 3497.9018007932, 22902.9507834766, 19412.2597758766, 136045556.16738, \
+        1.0, 27068702.9548773, \
+        0.0, 0.0 }
 
 /**
  * Gravitational redshifts for major planets (and Moon and Sun) for light emitted at surface
@@ -156,8 +157,8 @@ namespace novas {
  * @author Attila Kovacs
  */
 #define NOVAS_PLANET_GRAV_Z_INIT { \
-  0.0, 1.0047e-10, 5.9724e-10, 7.3050e-10, 1.4058e-10, 2.0166e-8, 7.2491e-9, 2.5420e-9, \
-  3.0893e-9, 9.1338e-12, 2.120483e-6, 3.1397e-11, 0.0, 0.0 }
+        0.0, 1.0047e-10, 5.9724e-10, 7.3050e-10, 1.4058e-10, 2.0166e-8, 7.2491e-9, 2.5420e-9, \
+        3.0893e-9, 9.1338e-12, 2.120483e-6, 3.1397e-11, 0.0, 0.0 }
 
 
 /**
@@ -171,6 +172,7 @@ namespace novas {
  *
  * @author Attila Kovacs
  * @since 1.2
+ * @ingroup source
  */
 enum novas_id_type {
   NOVAS_ID_NAIF = 0,  ///< If the ephemeris provider should use NAIF IDs
@@ -185,57 +187,62 @@ enum novas_id_type {
  * @since 1.2
  *
  * @sa enum novas_id_type
+ * @ingroup source
  */
 #define NOVAS_ID_TYPES      (NOVAS_ID_CALCEPH + 1)
 
- /**
-  * Default set of gravitating bodies to use for deflection calculations in reduced accuracy mode.
-  * (only apply gravitational deflection for the Sun.)
-  *
-  * @since 1.1
-  * @author Attila Kovacs
-  *
-  * @sa grav_bodies_reduced_accuracy, grav_planets(), grav_undo_planets()
-  */
- #define DEFAULT_GRAV_BODIES_REDUCED_ACCURACY   ( (1 << NOVAS_SUN) )
+/**
+ * Default set of gravitating bodies to use for deflection calculations in reduced accuracy mode.
+ * (only apply gravitational deflection for the Sun.)
+ *
+ * @since 1.1
+ * @author Attila Kovacs
+ *
+ * @sa grav_bodies_reduced_accuracy, grav_planets(), grav_undo_planets()
+ * @ingroup apparent
+ */
+#define DEFAULT_GRAV_BODIES_REDUCED_ACCURACY   ( (1 << NOVAS_SUN) )
 
- /**
-  * Default set of gravitating bodies to use for deflection calculations in full accuracy mode.
-  *
-  * @since 1.1
-  * @author Attila Kovacs
-  *
-  * @sa grav_bodies_full_accuracy, grav_planets(), grav_undo_planets()
-  */
- #define DEFAULT_GRAV_BODIES_FULL_ACCURACY      ( DEFAULT_GRAV_BODIES_REDUCED_ACCURACY | (1 << NOVAS_JUPITER) | (1 << NOVAS_SATURN) )
+/**
+ * Default set of gravitating bodies to use for deflection calculations in full accuracy mode.
+ *
+ * @since 1.1
+ * @author Attila Kovacs
+ *
+ * @sa grav_bodies_full_accuracy, grav_planets(), grav_undo_planets()
+ * @ingroup apparent
+ */
+#define DEFAULT_GRAV_BODIES_FULL_ACCURACY      ( DEFAULT_GRAV_BODIES_REDUCED_ACCURACY | (1 << NOVAS_JUPITER) | (1 << NOVAS_SATURN) )
 
- /**
-  * Current set of gravitating bodies to use for deflection calculations in reduced accuracy mode. Each
-  * bit signifies whether a given body is to be accounted for as a gravitating body that bends light,
-  * such as the bit `(1 << NOVAS_JUPITER)` indicates whether or not Jupiter is considered as a deflecting
-  * body. You should also be sure that you provide ephemeris data for bodies that are designated for the
-  * deflection calculation.
-  *
-  * @since 1.1
-  *
-  * @sa grav_def(), grav_planets(), DEFAULT_GRAV_BODIES_REDUCED_ACCURACY
-  * @sa set_ephem_provider()
-  */
- extern int grav_bodies_reduced_accuracy;
+/**
+ * Current set of gravitating bodies to use for deflection calculations in reduced accuracy mode. Each
+ * bit signifies whether a given body is to be accounted for as a gravitating body that bends light,
+ * such as the bit `(1 << NOVAS_JUPITER)` indicates whether or not Jupiter is considered as a deflecting
+ * body. You should also be sure that you provide ephemeris data for bodies that are designated for the
+ * deflection calculation.
+ *
+ * @since 1.1
+ *
+ * @sa grav_def(), grav_planets(), DEFAULT_GRAV_BODIES_REDUCED_ACCURACY
+ * @sa set_ephem_provider()
+ * @ingroup apparent
+ */
+extern int grav_bodies_reduced_accuracy;
 
- /**
-  * Current set of gravitating bodies to use for deflection calculations in full accuracy mode. Each
-  * bit signifies whether a given body is to be accounted for as a gravitating body that bends light,
-  * such as the bit `(1 << NOVAS_JUPITER)` indicates whether or not Jupiter is considered as a deflecting
-  * body. You should also be sure that you provide ephemeris data for bodies that are designated for the
-  * deflection calculation.
-  *
-  * @since 1.1
-  *
-  * @sa grav_def(), grav_planets(), DEFAULT_GRAV_BODIES_FULL_ACCURACY
-  * @sa set_ephem_provider_hp()
-  */
- extern int grav_bodies_full_accuracy;
+/**
+ * Current set of gravitating bodies to use for deflection calculations in full accuracy mode. Each
+ * bit signifies whether a given body is to be accounted for as a gravitating body that bends light,
+ * such as the bit `(1 << NOVAS_JUPITER)` indicates whether or not Jupiter is considered as a deflecting
+ * body. You should also be sure that you provide ephemeris data for bodies that are designated for the
+ * deflection calculation.
+ *
+ * @since 1.1
+ *
+ * @sa grav_def(), grav_planets(), DEFAULT_GRAV_BODIES_FULL_ACCURACY
+ * @sa set_ephem_provider_hp()
+ * @ingroup apparent
+ */
+extern int grav_bodies_full_accuracy;
 
 
 /**
@@ -269,6 +276,7 @@ enum novas_id_type {
  *
  * @since 1.0
  * @author Attila Kovacs
+ * @ingroup solar-system
  */
 typedef short (*novas_planet_provider)(double jd_tdb, enum novas_planet body, enum novas_origin origin,
         double *restrict position, double *restrict velocity);
@@ -306,6 +314,7 @@ typedef short (*novas_planet_provider)(double jd_tdb, enum novas_planet body, en
  * @sa make_planet(), novas_sky_pos(), novas_geom_posvel(), grav_planets(), grav_undo_planets()
  * @since 1.0
  * @author Attila Kovacs
+ * @ingroup solar-system
  */
 typedef short (*novas_planet_provider_hp)(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin,
         double *restrict position, double *restrict velocity);
@@ -352,6 +361,7 @@ typedef short (*novas_planet_provider_hp)(const double jd_tdb[2], enum novas_pla
  *
  * @since 1.0
  * @author Attila Kovacs
+ * @ingroup solar-system
  */
 typedef int (*novas_ephem_provider)(const char *name, long id, double jd_tdb_high, double jd_tdb_low,
         enum novas_origin *restrict origin, double *restrict pos, double *restrict vel);
@@ -397,12 +407,16 @@ typedef int (*novas_ephem_provider)(const char *name, long id, double jd_tdb_hig
 double *readeph(int mp, const char *restrict name, double jd_tdb, int *restrict error);
 #endif
 
+/// @ingroup solar-system
 int set_planet_provider(novas_planet_provider func);
 
+/// @ingroup solar-system
 int set_planet_provider_hp(novas_planet_provider_hp func);
 
+/// @ingroup solar-system
 int set_ephem_provider(novas_ephem_provider func);
 
+/// @ingroup solar-system
 novas_ephem_provider get_ephem_provider();
 
 #ifndef _EXCLUDE_DEPRECATED
@@ -481,21 +495,26 @@ short solarsystem(double jd_tdb, short body, short origin, double *restrict posi
 short solarsystem_hp(const double jd_tdb[restrict 2], short body, short origin, double *restrict position, double *restrict velocity);
 #endif
 
-
+/// @ingroup solar-system
 short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *restrict position,
         double *restrict velocity);
 
+/// @ingroup solar-system
 short earth_sun_calc_hp(const double jd_tdb[restrict 2], enum novas_planet body, enum novas_origin origin,
         double *restrict position, double *restrict velocity);
 
+/// @ingroup solar-system
 void enable_earth_sun_hp(int value);
 
+/// @ingroup solar-system
 short planet_ephem_provider(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *restrict position,
         double *restrict velocity);
 
+/// @ingroup solar-system
 short planet_ephem_provider_hp(const double jd_tdb[restrict 2], enum novas_planet body, enum novas_origin origin,
         double *restrict position, double *restrict velocity);
 
+/// @ingroup geometric
 short ephemeris(const double *restrict jd_tdb, const object *restrict body, enum novas_origin origin,
         enum novas_accuracy accuracy, double *restrict pos, double *restrict vel);
 
@@ -503,57 +522,79 @@ short ephemeris(const double *restrict jd_tdb, const object *restrict body, enum
 
 // Added in v1.2 --------------------------------->
 
+/// @ingroup solar-system
 novas_planet_provider get_planet_provider();
 
+/// @ingroup solar-system
 novas_planet_provider_hp get_planet_provider_hp();
 
 // in naif.c
+
+/// @ingroup source
 enum novas_planet naif_to_novas_planet(long id);
 
+/// @ingroup source
 long novas_to_naif_planet(enum novas_planet id);
 
+/// @ingroup source
 long novas_to_dexxx_planet(enum novas_planet id);
 
+/// @ingroup source
 enum novas_planet novas_planet_for_name(const char *restrict name);
 
 
 // Added in v1.3 --------------------------------->
 
 // in orbital.c
+/// @ingroup source
 int novas_set_orbsys_pole(enum novas_reference_system type, double ra, double dec, novas_orbital_system *restrict sys);
 
+/// @ingroup source
 int make_orbital_object(const char *name, long num, const novas_orbital *orbit, object *body);
 
+/// @ingroup source
 int novas_orbit_posvel(double jd_tdb, const novas_orbital *restrict orbit, enum novas_accuracy accuracy,
         double *restrict pos, double *restrict vel);
 
+/// @ingroup solar-system
 double novas_helio_dist(double jd_tdb, const object *restrict source, double *restrict rate);
 
+/// @ingroup solar-system
 double novas_solar_power(double jd_tdb, const object *restrict source);
 
+/// @ingroup apparent
 double novas_solar_illum(const object *restrict source, const novas_frame *restrict frame);
 
+/// @ingroup apparent
 double novas_sun_angle(const object *restrict source, const novas_frame *restrict frame);
 
+/// @ingroup apparent
 double novas_moon_angle(const object *restrict source, const novas_frame *restrict frame);
 
 
 // Added in v1.4 --------------------------------->
 
 // in orbit.c
+/// @ingroup geometric
 int novas_orbit_native_posvel(double jd_tdb, const novas_orbital *restrict orbit, double *restrict pos, double *restrict vel);
 
 // in planets.c
+/// @ingroup source
 int novas_make_planet_orbit(enum novas_planet id, double jd_tdb, novas_orbital *restrict orbit);
 
+/// @ingroup source
 int novas_make_moon_orbit(double jd_tdb, novas_orbital *restrict orbit);
 
+/// @ingroup geometric
 int novas_approx_heliocentric(enum novas_planet id, double jd_tdb, double *restrict pos, double *restrict vel);
 
+/// @ingroup apparent
 int novas_approx_sky_pos(enum novas_planet id, const novas_frame *restrict frame, enum novas_reference_system sys, sky_pos *restrict out);
 
+/// @ingroup apparent
 double novas_moon_phase(double jd_tdb);
 
+/// @ingroup time
 double novas_next_moon_phase(double phase, double jd_tdb);
 
 

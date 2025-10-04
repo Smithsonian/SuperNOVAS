@@ -18,10 +18,13 @@ namespace novas {
 #  endif
 #endif
 
+/// @ingroup solar-system
 int novas_use_calceph(t_calcephbin *eph);
 
+/// @ingroup solar-system
 int novas_use_calceph_planets(t_calcephbin *eph);
 
+/// @ingroup solar-system
 int novas_calceph_use_ids(enum novas_id_type idtype);
 
 #if __cplusplus
