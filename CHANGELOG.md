@@ -7,13 +7,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [Unreleased]
+## [1.5.0-rc6] -- 2025-10-04
 
 Upcoming feature release, expected around 1 November 2025.
 
 ### Fixed
 
  - `gcrs2equ()`: propagate error if converting to TOD and the `accuracy` is invalid.
+ 
+ - `NOVAS_VERSION_STRING` definition in `novas.h`.
+ 
+ - Pedantic `enum` type casting for function parameters and enums, to improve C++ compatibility.
+ 
+ - Small fixes to error tracing in `frames.c`.
 
 ### Added
 
