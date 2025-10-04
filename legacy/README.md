@@ -20,6 +20,9 @@ otherwise provide the same function as in NOVAS C. Here is a summary of the cont
    should ever need this, since it does not do anything useful, but since it was offered by the NOVAS C distribution, 
    we offer it also.
    
+ - `solarsystem.h` Legacy NOVAS C header with prototypes for `solarsystem()` / `solarsystem_hp()` functions, e.g.
+   for `solsys1.c` and `solsys2.c`.
+   
  - `solsys1.c / .h`, `eph_manager.c / .h` -- A self-contained NOVAS C `solarsystem()` / `solarsystem_hp()` 
    implementation that works directly with older JPL ephemeris data (DE200 -- DE421). If your legacy NOVAS C 
    application relies on it, you can build __SuperNOVAS__ with the `SOLSYS_SOURCE` set to these source files (e.g. 

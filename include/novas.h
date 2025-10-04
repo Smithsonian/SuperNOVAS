@@ -76,7 +76,7 @@
 #define SUPERNOVAS_PATCHLEVEL     0
 
 /// Additional release information in version, e.g. "-1", or "-rc1", or empty string "" for releases.
-#define SUPERNOVAS_RELEASE_STRING "-rc6"
+#define SUPERNOVAS_RELEASE_STRING "-devel"
 
 /// \cond PRIVATE
 
@@ -99,7 +99,7 @@
 /// The version string for this library
 /// \hideinitializer
 #define SUPERNOVAS_VERSION_STRING str_2(SUPERNOVAS_MAJOR_VERSION) "." str_2(SUPERNOVAS_MINOR_VERSION) \
-                                  "." str_2(SUPERNOVAS_PATCHLEVEL) SUPERNOVAS_RELEASE_STRING
+        "." str_2(SUPERNOVAS_PATCHLEVEL) SUPERNOVAS_RELEASE_STRING
 
 #define NOVAS_MAJOR_VERSION       3       ///< Major version of NOVAS on which this library is based
 #define NOVAS_MINOR_VERSION       1       ///< Minor version of NOVAS on which this library is based
@@ -267,6 +267,13 @@ namespace novas {
 /// @since 1.1
 #define NOVAS_SOLAR_RADIUS        696340000.0
 
+/// [W/m<sup>2</sup>] The Solar Constant i.e., typical incident Solar power on Earth.
+/// The value of 1367 Wm<sup>−2</sup> was adopted by the World Radiation Center
+/// (Gueymard, 2004).
+/// @since 1.3
+/// @sa novas_solar_power()
+#define NOVAS_SOLAR_CONSTANT      1367.0
+
 /// [m] Equatorial radius of Earth in meters from IERS Conventions (2003).
 /// @sa novas_geodetic_to_cartesian(), novas_cartesian_to_geodetic()
 /// @ingroup observer
@@ -424,9 +431,9 @@ namespace novas {
  * @ingroup util
  */
 enum novas_debug_mode {
- NOVAS_DEBUG_OFF = 0,     ///< Do not print errors and traces to the standard error (default).
- NOVAS_DEBUG_ON,          ///< Print errors and traces to the standard error.
- NOVAS_DEBUG_EXTRA        ///< Print all errors and traces to the standard error, even if they may be acceptable behavior.
+  NOVAS_DEBUG_OFF = 0,     ///< Do not print errors and traces to the standard error (default).
+  NOVAS_DEBUG_ON,          ///< Print errors and traces to the standard error.
+  NOVAS_DEBUG_EXTRA        ///< Print all errors and traces to the standard error, even if they may be acceptable behavior.
 };
 
 /**
@@ -495,6 +502,189 @@ enum novas_planet {
  * @sa enum novas_planet
  */
 #define NOVAS_PLANETS             (NOVAS_PLUTO_BARYCENTER + 1)
+
+/**
+ * String array initializer for Major planet names, matching the enum novas_planet. E.g.
+ *
+ * ```c
+ * const char *planet_names[] = NOVAS_PLANET_NAMES_INIT;
+ * ```
+ *
+ * @hideinitializer
+ * @since 1.2
+ * @author Attila Kovacs
+ *
+ * @sa enum novas_planet
+ * @ingroup source
+ */
+#define NOVAS_PLANET_NAMES_INIT { \
+        "SSB", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto", \
+        "Sun", "Moon", "EMB", "Pluto-Barycenter" }
+
+/**
+ * Array initializer for mean planet radii in meters, matching the enum novas_planet. E.g.
+ *
+ * ```c
+ * const double *planet_radii[] = NOVAS_PLANET_RADII_INIT;
+ * ```
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>https://orbital-mechanics.space/reference/planetary-parameters.html, Table 3.</li>
+ * <li>B. A. Archinal, et al.,
+ * Report of the IAU Working Group on Cartographic Coordinates and Rotational Elements:
+ * 2015. Celestial Mechanics and Dynamical Astronomy, 130(3):22, March 2018.
+ * doi:10.1007/s10569-017-9805-5.</li>
+ * <li>B. A. Archinal, et al.,
+ * Report of the IAU Working Group on Cartographic Coordinates and Rotational Elements:
+ * 2015. Celestial Mechanics and Dynamical Astronomy, 130(3):22, March 2018.
+ * doi:10.1007/s10569-017-9805-5.
+ * </ol>
+ *
+ * @hideinitializer
+ * @since 1.5
+ * @author Attila Kovacs
+ *
+ * @sa enum novas_planet, NOVAS_PLANET_NAMES_INIT, NOVAS_RMASS_INIT
+ */
+#define NOVAS_PLANET_RADII_INIT { \
+        0.0, \
+        2440530.0, 6051800.0, 6378136.6, 3396190.0, 71492000.0, 60268000.0, 25559000.0, 24764000.0, 1188300.0, \
+        695700000.0, \
+        1737400.0, \
+        0.0, 0.0 \
+}
+
+/**
+ * Reciprocal masses of solar system bodies, from DE-405 (Sun mass / body mass).
+ * [0]: Earth/Moon barycenter (legacy from NOVAS C), MASS[1] = Mercury, ...,
+ * [9]: Pluto (barycenter), [10]: Sun, [11]: Moon.
+ * Barycentric reciprocal masses (index 12, 13) are not set.
+ *
+ * NOTES:
+ * <ol>
+ * <li>The values have been updated to used DE440 data (Park et al. 2021) in 1.4.
+ * </ol>
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>Ryan S. Park et al 2021 AJ 161 105, DOI 10.3847/1538-3881/abd414</li>
+ * <li>IERS Conventions, Chapter 3, Table 3.1</li>
+ * </ol>
+ *
+ * @hideinitializer
+ * @since 1.2
+ * @author Attila Kovacs
+ *
+ * @sa enum novas_planet, NOVAS_PLANET_NAMES_INIT, NOVAS_PLANET_RAII_INIT, NOVAS_PLANETS_GRAV_Z_INIT
+ */
+#define NOVAS_RMASS_INIT  { \
+        328900.559708565, \
+        6023657.9450387, 408523.718656268, 332946.048773067, 3098703.54671961, \
+        1047.348631244, 3497.9018007932, 22902.9507834766, 19412.2597758766, 136045556.16738, \
+        1.0, 27068702.9548773, \
+        0.0, 0.0 }
+
+/**
+ * Gravitational redshifts for major planets (and Moon and Sun) for light emitted at surface
+ * and detected at a large distance away. Barycenters are not considered, and for Pluto the
+ * redshift for the Pluto system is assumed for distant observers.
+ *
+ * @sa enum novas_planet
+ * @sa NOVAS_PLANETS
+ *
+ * @hideinitializer
+ * @since 1.1.1
+ * @author Attila Kovacs
+ */
+#define NOVAS_PLANET_GRAV_Z_INIT { \
+        0.0, 1.0047e-10, 5.9724e-10, 7.3050e-10, 1.4058e-10, 2.0166e-8, 7.2491e-9, 2.5420e-9, \
+        3.0893e-9, 9.1338e-12, 2.120483e-6, 3.1397e-11, 0.0, 0.0 }
+
+
+/**
+ * Default set of gravitating bodies to use for deflection calculations in reduced accuracy mode.
+ * (only apply gravitational deflection for the Sun.)
+ *
+ * @since 1.1
+ * @author Attila Kovacs
+ *
+ * @sa grav_bodies_reduced_accuracy, grav_planets(), grav_undo_planets()
+ * @ingroup apparent
+ */
+#define DEFAULT_GRAV_BODIES_REDUCED_ACCURACY   ( (1 << NOVAS_SUN) )
+
+/**
+ * Default set of gravitating bodies to use for deflection calculations in full accuracy mode.
+ *
+ * @since 1.1
+ * @author Attila Kovacs
+ *
+ * @sa grav_bodies_full_accuracy, grav_planets(), grav_undo_planets()
+ * @ingroup apparent
+ */
+#define DEFAULT_GRAV_BODIES_FULL_ACCURACY      ( DEFAULT_GRAV_BODIES_REDUCED_ACCURACY | (1 << NOVAS_JUPITER) | (1 << NOVAS_SATURN) )
+
+/**
+ * Current set of gravitating bodies to use for deflection calculations in reduced accuracy mode. Each
+ * bit signifies whether a given body is to be accounted for as a gravitating body that bends light,
+ * such as the bit `(1 << NOVAS_JUPITER)` indicates whether or not Jupiter is considered as a deflecting
+ * body. You should also be sure that you provide ephemeris data for bodies that are designated for the
+ * deflection calculation.
+ *
+ * @since 1.1
+ *
+ * @sa grav_def(), grav_planets(), DEFAULT_GRAV_BODIES_REDUCED_ACCURACY
+ * @sa set_ephem_provider()
+ * @ingroup apparent
+ */
+extern int grav_bodies_reduced_accuracy;
+
+/**
+ * Current set of gravitating bodies to use for deflection calculations in full accuracy mode. Each
+ * bit signifies whether a given body is to be accounted for as a gravitating body that bends light,
+ * such as the bit `(1 << NOVAS_JUPITER)` indicates whether or not Jupiter is considered as a deflecting
+ * body. You should also be sure that you provide ephemeris data for bodies that are designated for the
+ * deflection calculation.
+ *
+ * @since 1.1
+ *
+ * @sa grav_def(), grav_planets(), DEFAULT_GRAV_BODIES_FULL_ACCURACY
+ * @sa set_ephem_provider_hp()
+ * @ingroup apparent
+ */
+extern int grav_bodies_full_accuracy;
+
+
+/**
+ * Solar-system body IDs to use as object.number with @ref NOVAS_EPHEM_OBJECT types. JPL ephemerides
+ * use <a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/req/naif_ids.html">NAIF IDs</a>
+ * to identify objects in the Solar-system, which is thus the most widely adopted convention for
+ * numbering Solar-system bodies. But other numbering systems also exists, for example the
+ * CALCEPH library uses its own convention for the numbering of asteroids.
+ *
+ * @sa object, NOVAS_EPHEM_OBJECT, NOVAS_ID_TYPES
+ *
+ * @author Attila Kovacs
+ * @since 1.2
+ * @ingroup source
+ */
+enum novas_id_type {
+  NOVAS_ID_NAIF = 0,  ///< If the ephemeris provider should use NAIF IDs
+  NOVAS_ID_CALCEPH    ///< If the ephemeris provider should use CALCEPH IDs
+};
+
+ /**
+  * Number of different Solar-system body ID types enumerated
+  *
+  * @hideinitializer
+  * @author Attila Kovacs
+  * @since 1.2
+  *
+  * @sa enum novas_id_type
+  * @ingroup source
+  */
+ #define NOVAS_ID_TYPES      (NOVAS_ID_CALCEPH + 1)
 
 /**
  * Types of places on and around Earth that may serve a a reference position for the observation.
@@ -970,8 +1160,8 @@ typedef struct novas_cat_entry {
   double promodec;                  ///< [mas/yr] ICRS proper motion in declination
   double parallax;                  ///< [mas] parallax
   double radialvelocity;            ///< [km/s] catalog radial velocity (w.r.t. SSB)
-                                    ///< To specify radial velocities defined in the Local Standard of Rest (LSR)
-                                    ///< you might use novas_set_lsr_vel()
+  ///< To specify radial velocities defined in the Local Standard of Rest (LSR)
+  ///< you might use novas_set_lsr_vel()
 } cat_entry;
 
 /**
@@ -1014,12 +1204,12 @@ typedef struct novas_orbital_system {
   enum novas_planet center;          ///< major planet or barycenter at the center of the orbit.
   enum novas_reference_plane plane;  ///< reference plane NOVAS_ECLIPTIC_PLANE or NOVAS_EQUATORIAL_PLANE
   enum novas_reference_system type;  ///< the coordinate reference system used for the reference plane and orbitals.
-                                     ///< It must be a system, which does not co-rotate with Earth (i.e. not ITRS or
-                                     ///< TIRS).
+  ///< It must be a system, which does not co-rotate with Earth (i.e. not ITRS or
+  ///< TIRS).
   double obl;                        ///< [rad] relative obliquity of orbital reference plane
-                                     ///<       (e.g. 90&deg; - &delta;<sub>pole</sub>)
+  ///<       (e.g. 90&deg; - &delta;<sub>pole</sub>)
   double Omega;                      ///< [rad] relative argument of ascending node of the orbital reference plane
-                                     ///<       (e.g. &alpha;<sub>pole</sub> + 90&deg;)
+  ///<       (e.g. &alpha;<sub>pole</sub> + 90&deg;)
 } novas_orbital_system;
 
 
@@ -1075,7 +1265,7 @@ typedef struct novas_orbital {
   double i;                           ///< [deg] inclination of orbit to the reference plane
   double M0;                          ///< [deg] mean anomaly at the reference time
   double n;                           ///< [deg/day] mean daily motion, i.e. (_GM_/_a_<sup>3</sup>)<sup>1/2</sup> for the central body,
-                                      ///< or 360/T, where T is orbital period in days.
+  ///< or 360/T, where T is orbital period in days.
   double apsis_period;                ///< [day] Precession period of the apsis, if known.
   double node_period;                 ///< [day] Precession period of the ascending node, if known.
 } novas_orbital;
@@ -1387,9 +1577,9 @@ typedef struct novas_sky_pos {
   double dec;       ///< [deg] apparent, topocentric, or astrometric declination (degrees)
   double dis;       ///< [AU] true (geometric, Euclidian) distance to solar system body or 0.0 for star (AU)
   double rv;        ///< [km/s] radial velocity (km/s). As of SuperNOVAS v1.3, this is always a proper
-                    ///< observer-based spectroscopic velocity measure, which relates the observed wavelength
-                    ///< to the rest wavelength as &lambda;<sub>obs</sub> = (1 + rv / c) &lambda;<sub>rest</sub>.
-                    ///< novas_ssb_to_lsr_vel(), novas_v2z()
+  ///< observer-based spectroscopic velocity measure, which relates the observed wavelength
+  ///< to the rest wavelength as &lambda;<sub>obs</sub> = (1 + rv / c) &lambda;<sub>rest</sub>.
+  ///< novas_ssb_to_lsr_vel(), novas_v2z()
 } sky_pos;
 
 /**
@@ -1601,8 +1791,8 @@ typedef struct novas_frame {
  * @ingroup frame
  */
 #define NOVAS_FRAME_INIT { 0, NOVAS_FULL_ACCURACY, NOVAS_TIMESPEC_INIT, OBSERVER_INIT, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, \
-  0.0, 0.0, {0.0}, {0.0}, 0.0, 0.0, 0.0, {0.0}, {0.0}, {0.0}, {0.0}, NOVAS_MATRIX_INIT, NOVAS_MATRIX_INIT, \
-  NOVAS_MATRIX_INIT, NOVAS_MATRIX_INIT, NOVAS_PLANET_BUNDLE_INIT }
+        0.0, 0.0, {0.0}, {0.0}, 0.0, 0.0, 0.0, {0.0}, {0.0}, {0.0}, {0.0}, NOVAS_MATRIX_INIT, NOVAS_MATRIX_INIT, \
+        NOVAS_MATRIX_INIT, NOVAS_MATRIX_INIT, NOVAS_PLANET_BUNDLE_INIT }
 
 /**
  * A transformation between two astronomical coordinate systems for the same observer
@@ -1651,24 +1841,6 @@ enum novas_refraction_type {
   NOVAS_REFRACT_ASTROMETRIC     ///< Refract astrometric elevation value
 };
 
-/**
- * A function that returns a refraction correction for a given date/time of observation at the
- * given site on earth, and for a given astrometric source elevation
- *
- * @param jd_tt     [day] Terrestrial Time (TT) based Julian data of observation
- * @param loc       Pointer to structure defining the observer's location on earth, and local weather
- * @param type      Whether the input elevation is observed or astrometric: REFRACT_OBSERVED (-1) or
- *                  REFRACT_ASTROMETRIC (0).
- * @param el        [deg] Astrometric (unrefracted) source elevation
- * @return          [arcsec] Estimated refraction, or NAN if there was an error (it should
- *                  also set errno to indicate the type of error).
- *
- * @since 1.1
- *
- * @sa novas_app_to_hor(), novas_hor_to_app()
- * @ingroup refract
- */
-typedef double (*RefractionModel)(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el);
 
 /**
  * Spherical and spectral coordinate set.
@@ -1752,9 +1924,9 @@ enum novas_date_format {
 enum novas_calendar_type {
   NOVAS_ROMAN_CALENDAR = -1,    ///< The Roman (a.k.a. Julian) calendar by Julius Caesar, introduced in -45 B.C.
   NOVAS_ASTRONOMICAL_CALENDAR,  ///< Roman (a.k.a. Julian) calendar until the Gregorian calendar reform of 1582,
-                                ///< after which it is the Gregorian calendar
+  ///< after which it is the Gregorian calendar
   NOVAS_GREGORIAN_CALENDAR      ///< The Gregorian calendar introduced on 15 October 1582, the day after 4 October
-                                ///< 1582 in the Roman (a.k.a. Julian) calendar.
+  ///< 1582 in the Roman (a.k.a. Julian) calendar.
 };
 
 /**
@@ -1814,8 +1986,190 @@ enum novas_reference_ellipsoid {
  */
 typedef int (*novas_nutation_provider)(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps);
 
-// in nutation.c
+/**
+ * Provides the position and velocity of major planets (as well as the Sun, Moon, Solar-system
+ * Barycenter, and other barycenters). This version provides positions and velocities at regular
+ * precision (see NOVAS_REDUCED_PRECISION).
+ *
+ * Since this is a function that may be provided by existing custom user implementations, we
+ * keep the original argument types for compatibility, hence 'short' instead of the more
+ * informative enums).
+ *
+ * @param jd_tdb        [day] Barycentric Dynamical Time (TDB) based Julian date
+ * @param body          Major planet number (or that for the Sun, Moon, or an appropriate
+ *                      barycenter), as defined by enum novas_planet, e.g. NOVAS_MARS
+ *                      (4), NOVAS_SUN (10) or NOVAS_SSB (0).
+ * @param origin        NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to
+ *                      return positions and velocities. (For compatibility with existing NOVAS
+ *                      C compatible user implementations, we keep the original NOVAS C argument
+ *                      type here).
+ * @param[out] position [AU] Position vector of 'body' at 'tjd'; equatorial rectangular
+ *                      coordinates in AU referred to the mean equator and equinox of J2000.0.
+ * @param[out] velocity [AU/day] Velocity vector of 'body' at 'tjd'; equatorial rectangular
+ *                      system referred to the mean equator and equinox of J2000.0, in AU/Day.
+ * @return              0 if successful, -1 if there is a required function is not provided
+ *                      (errno set to ENOSYS), 1 if the input Julian date ('tjd') is out of
+ *                      range, 2 if 'body' is invalid, or 3 if the ephemeris data cannot be
+ *                      produced for other reasons.
+ *
+ * @sa set_planet_provider(), ephemeris(), novas_solarsystem_hp_func
+ * @sa make_planet(), novas_sky_pos(), novas_geom_posvel()
+ *
+ * @since 1.0
+ * @author Attila Kovacs
+ * @ingroup solar-system
+ */
+typedef short (*novas_planet_provider)(double jd_tdb, enum novas_planet body, enum novas_origin origin,
+        double *restrict position, double *restrict velocity);
 
+
+/**
+ * Provides the position and velocity of major planets (as well as the Sun, Moon, Solar-system
+ * Barycenter, and other barycenters). This version provides positions and velocities at high
+ * precision (see NOVAS_FULL_PRECISION).
+ *
+ * Since this is a function that may be provided by existing custom user implementations, we
+ * keep the original argument types for compatibility, hence 'short' instead of the more
+ * informative enums).
+ *
+ * @param jd_tdb        [day] Barycentric Dynamical Time (TDB) based Julian date, broken into
+ *                      high and low order components, respectively. Typically, as the integer
+ *                      and fractional parts for the highest precision.
+ * @param body          Major planet number (or that for the Sun, Moon, or an appropriate
+ *                      barycenter), as defined by enum novas_planet, e.g. NOVAS_MARS
+ *                      (4), NOVAS_SUN (10) or NOVAS_SSB (0).
+ * @param origin        NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to
+ *                      return positions and velocities. (For compatibility with existing NOVAS
+ *                      C compatible user implementations, we keep the original NOVAS C argument
+ *                      type here).
+ * @param[out] position [AU] Position vector of 'body' at 'tjd'; equatorial rectangular
+ *                      coordinates in AU referred to the mean equator and equinox of J2000.0.
+ * @param[out] velocity [AU/day] Velocity vector of 'body' at 'tjd'; equatorial rectangular
+ *                      system referred to the mean equator and equinox of J2000.0, in AU/Day.
+ * @return              0 if successful, -1 if there is a required function is not provided
+ *                      (errno set to ENOSYS), 1 if the input Julian date ('tjd') is out of
+ *                      range, 2 if 'body' is invalid, or 3 if the ephemeris data cannot be
+ *                      produced for other reasons.
+ *
+ * @sa set_planet_provider_hp(), novas_solarsystem_func, ephemeris()
+ * @sa make_planet(), novas_sky_pos(), novas_geom_posvel(), grav_planets(), grav_undo_planets()
+ * @since 1.0
+ * @author Attila Kovacs
+ * @ingroup solar-system
+ */
+typedef short (*novas_planet_provider_hp)(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin,
+        double *restrict position, double *restrict velocity);
+
+
+/**
+ * Function to obtain ephemeris data for minor planets, which are not handled by the
+ * solarsystem() type calls. The library does not provide a default implementation, but users
+ * can provide their own, either as a default statically compiled readeph() implementation,
+ * or else a dynamically defined one via ephemeris_set_reader().
+ *
+ * Note, that implementations would typically use either the name or the ID argument
+ * to identify the object for which ephemeris data is requested. As such you only need
+ * to specify the one that is going to be used.
+ *
+ * @param name          The name of the solar-system body (in case the ephemeris provider
+ *                      supports lookup by name), or NULL to force ID based lookup.
+ * @param id            The ID number of the solar-system body for which the position in
+ *                      desired. (Typically a NAIF ID, or else an appropriate ID for the
+ *                      implementation -- corresponding minor planet objects should be created
+ *                      with the same type of ID.). A value of -1 can be used to force name
+ *                      based lookups (provided the implementation supports it).
+ * @param jd_tdb_high   [day] The high-order part of Barycentric Dynamical Time (TDB) based
+ *                      Julian date for which to find the position and velocity. Typically
+ *                      this may be the integer part of the Julian date for high-precision
+ *                      calculations, or else the entire Julian date for reduced precision.
+ * @param jd_tdb_low    [day] The low-order part of Barycentric Dynamical Time (TDB) based
+ *                      Julian date for which to find the position and velocity. Typically
+ *                      this may be the fractional part of the Julian date for high-precision
+ *                      calculations, or else 0.0 if the date is defined entirely by the
+ *                      high-order component for reduced precision.
+ * @param[out] origin   Set to NOVAS_BARYCENTER or NOVAS_HELIOCENTER to indicate relative to
+ *                      which the ephemeris positions/velocities are reported.
+ * @param[out] pos      [AU] position 3-vector to populate with rectangular equatorial
+ *                      coordinates in AU. It may be NULL if position is not required.
+ * @param[out] vel      [AU/day] velocity 3-vector to populate in rectangular equatorial
+ *                      coordinates in AU/day. It may be NULL if velocities are not required.
+ * @return              0 if successful, -1 if any of the pointer arguments are NULL, or some
+ *                      non-zero value if the was an error s.t. the position and velocity
+ *                      vector should not be used.
+ *
+ * @sa set_ephem_provider(), ephemeris(), NOVAS_EPHEM_OBJECT, solsys-ephem.c
+ * @sa make_ephem_object(), novas_sky_pos(), novas_geom_posvel()
+ *
+ * @since 1.0
+ * @author Attila Kovacs
+ * @ingroup solar-system
+ */
+typedef int (*novas_ephem_provider)(const char *name, long id, double jd_tdb_high, double jd_tdb_low,
+        enum novas_origin *restrict origin, double *restrict pos, double *restrict vel);
+
+
+/**
+ * A function that returns a refraction correction for a given date/time of observation at the
+ * given site on earth, and for a given astrometric source elevation
+ *
+ * @param jd_tt     [day] Terrestrial Time (TT) based Julian data of observation
+ * @param loc       Pointer to structure defining the observer's location on earth, and local weather
+ * @param type      Whether the input elevation is observed or astrometric: REFRACT_OBSERVED (-1) or
+ *                  REFRACT_ASTROMETRIC (0).
+ * @param el        [deg] Astrometric (unrefracted) source elevation
+ * @return          [arcsec] Estimated refraction, or NAN if there was an error (it should
+ *                  also set errno to indicate the type of error).
+ *
+ * @since 1.1
+ *
+ * @sa novas_app_to_hor(), novas_hor_to_app()
+ * @ingroup refract
+ */
+typedef double (*RefractionModel)(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el);
+
+
+
+#ifndef _EXCLUDE_DEPRECATED
+/**
+ * @deprecated This old ephemeris reader is prone to memory leaks, and lacks some useful
+ *             functionality. Users are strongly encouraged to use the new
+ *             `novas_ephem_provider` / `novas_set_ephem_provider()` instead, for dynamically
+ *             configured implementations at runtime. This prototype is provided only to extend
+ *             support for legacy NOVAS applications only, where an inplementation had to be
+ *             linked always.
+ *
+ * Legacy NOVAS C function to handle position and velocity calculations for Solar-system sources,
+ * beyond the major planets. This function can be defined by an external module, as per the NOVAS
+ * C way, provided you compile SuperNOVAS with the `READPH_SOURCE` option set to specify the
+ * source(s) that implement it (in `config.mk` or the environment). If `READEPH_SOURCE` in not
+ * defined during the build of SuperNOVAS, then this function will not be used by __SuperNOVAS__,
+ * nor will be implemented by it.
+ *
+ * @param mp            The ID number of the solar-system body for which the position are
+ *                      desired. An actual implementation might use this and/or the name to
+ *                      identify the object.
+ * @param name          The name of the solar-system body (usually upper-case). An actual
+ *                      implementation might use this and/or `mp` to identify the object.
+ * @param jd_tdb        [day] Barycentric Dynamical Time (TDB) based Julian date for which to
+ *                      find the position and velocity.
+ * @param[out] error    Pointer to integer to populate with the error status: 0 if successful,
+ *                      -1 if any of the pointer arguments are NULL, or some non-zero value
+ *                      if the was an error s.t. the position and velocity vector should not
+ *                      be used.
+ * @return              [AU, AU/day] A newly allocated 6-vector in rectangular equatorial
+ *                      coordinates, containing the heliocentric position coordinates in AU,
+ *                      followed by hte heliocentric velocity components in AU/day. The caller
+ *                      is responsible for calling free() on the returned value when it is no
+ *                      longer needed.
+ *
+ * @sa novas_ephem_provider
+ *
+ */
+double *readeph(int mp, const char *restrict name, double jd_tdb, int *restrict error);
+#endif
+
+
+// in nutation.c
 /// @ingroup earth
 int iau2000a(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps);
 
@@ -1828,6 +2182,11 @@ int nu2000k(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *
 /// \cond _PRIVATE
 #endif /* _NUTATION_ */
 /// \endcond
+
+// in ephemeris.c
+/// @ingroup geometric
+short ephemeris(const double *restrict jd_tdb, const object *restrict body, enum novas_origin origin,
+        enum novas_accuracy accuracy, double *restrict pos, double *restrict vel);
 
 // in place.c
 /// @ingroup apparent
@@ -2222,6 +2581,38 @@ int ecl2equ(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy
 /// @ingroup nonequatorial
 int gal2equ(double glon, double glat, double *restrict ra, double *restrict dec);
 
+// in ephemeris.c
+/// @ingroup solar-system
+int set_planet_provider(novas_planet_provider func);
+
+/// @ingroup solar-system
+int set_planet_provider_hp(novas_planet_provider_hp func);
+
+/// @ingroup solar-system
+int set_ephem_provider(novas_ephem_provider func);
+
+/// @ingroup solar-system
+novas_ephem_provider get_ephem_provider();
+
+/// @ingroup solar-system
+short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *restrict position,
+        double *restrict velocity);
+
+/// @ingroup solar-system
+short earth_sun_calc_hp(const double jd_tdb[restrict 2], enum novas_planet body, enum novas_origin origin,
+        double *restrict position, double *restrict velocity);
+
+/// @ingroup solar-system
+void enable_earth_sun_hp(int value);
+
+/// @ingroup solar-system
+short planet_ephem_provider(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *restrict position,
+        double *restrict velocity);
+
+/// @ingroup solar-system
+short planet_ephem_provider_hp(const double jd_tdb[restrict 2], enum novas_planet body, enum novas_origin origin,
+        double *restrict position, double *restrict velocity);
+
 
 
 // ---------------------- Added in 1.0.1 -------------------------
@@ -2314,7 +2705,6 @@ double novas_diff_tcg(const novas_timespec *t1, const novas_timespec *t2);
 /// @ingroup time
 int novas_offset_time(const novas_timespec *time, double seconds, novas_timespec *out);
 
-
 // in frames.c
 /// @ingroup frame
 int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const novas_timespec *time, double xp, double yp,
@@ -2359,7 +2749,6 @@ int novas_transform_vector(const double *in, const novas_transform *restrict tra
 
 /// @ingroup apparent
 int novas_transform_sky_pos(const sky_pos *in, const novas_transform *restrict transform, sky_pos *out);
-
 
 // in refract.c
 /// @ingroup refract
@@ -2419,6 +2808,25 @@ int gcrs_to_mod(double jd_tdb, const double *in, double *out);
 
 /// @ingroup equatorial
 int mod_to_gcrs(double jd_tdb, const double *in, double *out);
+
+/// @ingroup solar-system
+novas_planet_provider get_planet_provider();
+
+/// @ingroup solar-system
+novas_planet_provider_hp get_planet_provider_hp();
+
+// in naif.c
+/// @ingroup source
+enum novas_planet naif_to_novas_planet(long id);
+
+/// @ingroup source
+long novas_to_naif_planet(enum novas_planet id);
+
+/// @ingroup source
+long novas_to_dexxx_planet(enum novas_planet id);
+
+/// @ingroup source
+enum novas_planet novas_planet_for_name(const char *restrict name);
 
 
 // ---------------------- Added in 1.3.0 -------------------------
@@ -2574,6 +2982,34 @@ int novas_print_dms(double degrees, enum novas_separator_type sep, int decimals,
 /// @ingroup earth
 novas_nutation_provider get_nutation_lp_provider();
 
+// in orbital.c
+/// @ingroup source
+int novas_set_orbsys_pole(enum novas_reference_system type, double ra, double dec, novas_orbital_system *restrict sys);
+
+/// @ingroup source
+int make_orbital_object(const char *name, long num, const novas_orbital *orbit, object *body);
+
+/// @ingroup source
+int novas_orbit_posvel(double jd_tdb, const novas_orbital *restrict orbit, enum novas_accuracy accuracy,
+        double *restrict pos, double *restrict vel);
+
+// in target.c
+/// @ingroup solar-system
+double novas_helio_dist(double jd_tdb, const object *restrict source, double *restrict rate);
+
+/// @ingroup solar-system
+double novas_solar_power(double jd_tdb, const object *restrict source);
+
+/// @ingroup apparent
+double novas_solar_illum(const object *restrict source, const novas_frame *restrict frame);
+
+/// @ingroup apparent
+double novas_sun_angle(const object *restrict source, const novas_frame *restrict frame);
+
+/// @ingroup apparent
+double novas_moon_angle(const object *restrict source, const novas_frame *restrict frame);
+
+
 
 // ---------------------- Added in 1.4.0 -------------------------
 
@@ -2603,6 +3039,29 @@ int novas_day_of_week(double tjd);
 
 /// @ingroup time
 int novas_day_of_year(double tjd, enum novas_calendar_type calendar, int *restrict year);
+
+// in orbit.c
+/// @ingroup geometric
+int novas_orbit_native_posvel(double jd_tdb, const novas_orbital *restrict orbit, double *restrict pos, double *restrict vel);
+
+// in planets.c
+/// @ingroup source
+int novas_make_planet_orbit(enum novas_planet id, double jd_tdb, novas_orbital *restrict orbit);
+
+/// @ingroup source
+int novas_make_moon_orbit(double jd_tdb, novas_orbital *restrict orbit);
+
+/// @ingroup geometric
+int novas_approx_heliocentric(enum novas_planet id, double jd_tdb, double *restrict pos, double *restrict vel);
+
+/// @ingroup apparent
+int novas_approx_sky_pos(enum novas_planet id, const novas_frame *restrict frame, enum novas_reference_system sys, sky_pos *restrict out);
+
+/// @ingroup apparent
+double novas_moon_phase(double jd_tdb);
+
+/// @ingroup time
+double novas_next_moon_phase(double phase, double jd_tdb);
 
 
 // ---------------------- Added in 1.5.0 -------------------------
@@ -2712,6 +3171,8 @@ int make_xyz_site(const double *restrict xyz, on_surface *restrict site);
 /// @ingroup observer
 int novas_set_default_weather(on_surface *site);
 
+
+
 // <================= END of SuperNOVAS API =====================>
 
 
@@ -2727,7 +3188,6 @@ int novas_set_default_weather(on_surface *site);
 #  define ERAD_AU             (ERAD/AU)
 #  define C2                  (C * C)   ///< [m<sup>2</sup>/s<sup>2</sup>] Speed of light squared
 #  define EPREC               1e-12     ///< Required precision for eccentric anomaly in orbital calculation
-
 
 #  define XYZ_VECTOR_SIZE     (3 * sizeof(double))
 
@@ -2758,6 +3218,25 @@ int novas_set_default_weather(on_surface *site);
 #  define KMS                 NOVAS_KMS
 
 #endif /* _CONSTS_ */
+
+/// NAIF ID for the geocenter
+#define NAIF_EARTH      399
+
+/// NAIF ID for the Moon
+#define NAIF_MOON       301
+
+/// NAIF_ID for the Sun
+#define NAIF_SUN        10
+
+/// NAIF ID for the Solar-System Barycenter (SSB)
+#define NAIF_SSB        0
+
+/// NAIF ID for the Earth-Moon Barycenter (EMB)
+#define NAIF_EMB        3
+
+/// NAIF ID for the barycenter of the Pluto system
+#define NAIF_PLUTO_BARYCENTER   9
+
 
 /**
  * Default value for the maximum number of iterations allowed for inverse calculations.
@@ -2803,9 +3282,9 @@ int novas_error(int ret, int en, const char *restrict from, const char *restrict
  * @sa error_return()
  */
 #  define prop_error(loc, n, d) { \
-  int __ret = novas_trace(loc, n, d); \
-  if (__ret != 0) \
-    return __ret; \
+        int __ret = novas_trace(loc, n, d); \
+        if (__ret != 0) \
+        return __ret; \
 }
 
 /**
@@ -2817,10 +3296,10 @@ int novas_error(int ret, int en, const char *restrict from, const char *restrict
  * @sa trace_nan()
  */
 #  define prop_nan(loc, n) { \
-  if (n) { \
-    novas_trace_nan(loc); \
-    return NAN; \
-  } \
+        if (n) { \
+          novas_trace_nan(loc); \
+          return NAN; \
+        } \
 }
 
 double novas_norm_ang(double angle);
@@ -2858,7 +3337,5 @@ extern int novas_inv_max_iter;
 } // namespace novas
 #  endif
 #endif // __cplusplus
-
-#include <solarsystem.h>
 
 #endif /* _NOVAS_ */

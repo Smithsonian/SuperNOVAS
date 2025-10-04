@@ -178,7 +178,7 @@ endif
 install-headers:
 	@echo "installing headers to $(DESTDIR)$(includedir)"
 	install -d $(DESTDIR)$(includedir)
-	$(INSTALL_DATA) include/novas.h include/solarsystem.h $(DESTDIR)$(includedir)/
+	$(INSTALL_DATA) include/novas.h $(DESTDIR)$(includedir)/
 	@$(MAKE) install-calceph-headers
 	@$(MAKE) install-cspice-headers
 

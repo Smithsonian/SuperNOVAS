@@ -37,6 +37,7 @@
 /// \cond PRIVATE
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
+#include "solarsystem.h"
 
 #define T0        NOVAS_JD_J2000
 /// \endcond

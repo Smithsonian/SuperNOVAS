@@ -7,7 +7,7 @@
 include ../config.mk
 
 # Flags for measuring test coverage
-CFLAGS += -I../include -pg -Wall -fprofile-arcs -ftest-coverage
+CFLAGS += -I../include -I../legacy -pg -Wall -fprofile-arcs -ftest-coverage
 LDFLAGS += -fprofile-arcs -ftest-coverage -lm
 
 # cppcheck options for 'check' target. You can add additional options by

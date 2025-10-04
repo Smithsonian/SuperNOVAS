@@ -12,6 +12,7 @@
 
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
+#include "solarsystem.h"
 
 #if defined _WIN32 || defined __CYGWIN__
 #  define PATH_SEP  "\\"

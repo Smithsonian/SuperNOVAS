@@ -22,7 +22,7 @@ if(ENABLE_CSPICE)
 endif()
 
 # Look for headers in the supernovas include/ directory
-include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/legacy)
 
 # Link against binaries in the local supernovas lib/ directory
 link_directories(${CMAKE_BINARY_DIR}/lib)
