@@ -61,6 +61,8 @@
 #  include <stdio.h>
 #  include <ctype.h>
 #  include <string.h>
+
+#  include "novascon.h"
 #endif
 
 
@@ -112,11 +114,8 @@
 #  ifdef NOVAS_NAMESPACE
 namespace novas {
 #  endif
+#endif
 
-#if COMPAT
-#  include "novascon.h"
-#endif
-#endif
 
 
 /// [day] Julian date at J2000
