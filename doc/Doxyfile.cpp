@@ -991,8 +991,7 @@ WARN_LOGFILE           =
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = ../src \
-                         ../include \
+INPUT                  = ../include \
                          .. \
                          .
 
