@@ -354,17 +354,23 @@ namespace novas {
 /// @ingroup source
 #define NOVAS_SYSTEM_J2000         "J2000"
 
-/// The 4th catalog (FK4) coordinate system as a string
+/// The 4th catalog of fundamental stars (FK4) coordinate system as a string
 /// @since 1.3
 /// @sa novas_set_catalog(), make_cat_object_sys()
 /// @ingroup source
 #define NOVAS_SYSTEM_FK4           "FK4"
 
-/// The 5th catalog (FK5) coordinate system as a string
+/// The 5th catalog of fundamental stars (FK5) coordinate system as a string
 /// @since 1.3
 /// @sa novas_set_catalog(), make_cat_object_sys()
 /// @ingroup source
 #define NOVAS_SYSTEM_FK5           "FK5"
+
+/// The 6th catalog of fundamental stars (FK6) coordinate system as a string
+/// @since 1.5
+/// @sa novas_set_catalog(), make_cat_object_sys()
+/// @ingroup source
+#define NOVAS_SYSTEM_FK6           "FK6"
 
 /// The Hipparcos dataset coordinate system as a string
 /// @since 1.3

@@ -3793,16 +3793,17 @@ static int test_timestamp() {
 static int test_epoch() {
   int n = 0;
 
-  if(!is_equal("epoch:icrs", novas_epoch("ICRS"), NOVAS_JD_J2000, 1e-8)) n++;
-  if(!is_equal("epoch:icrs", novas_epoch("FK5"), NOVAS_JD_J2000, 1e-8)) n++;
-  if(!is_equal("epoch:icrs", novas_epoch("FK4"), NOVAS_JD_B1950, 1e-8)) n++;
-  if(!is_equal("epoch:icrs", novas_epoch("HIP"), NOVAS_JD_HIP, 1e-8)) n++;
-  if(!is_equal("epoch:icrs", novas_epoch("J2000"), NOVAS_JD_J2000, 1e-8)) n++;
-  if(!is_equal("epoch:icrs", novas_epoch("J2000.0"), NOVAS_JD_J2000, 1e-8)) n++;
-  if(!is_equal("epoch:icrs", novas_epoch("2000"), NOVAS_JD_J2000, 1e-8)) n++;
-  if(!is_equal("epoch:icrs", novas_epoch("B1950"), NOVAS_JD_B1950, 1e-8)) n++;
-  if(!is_equal("epoch:icrs", novas_epoch("B1950.0"), NOVAS_JD_B1950, 1e-8)) n++;
-  if(!is_equal("epoch:icrs", novas_epoch("1950"), NOVAS_JD_B1950, 1e-8)) n++;
+  if(!is_equal("epoch:ICRS", novas_epoch("ICRS"), NOVAS_JD_J2000, 1e-8)) n++;
+  if(!is_equal("epoch:FK6", novas_epoch("FK6"), NOVAS_JD_J2000, 1e-8)) n++;
+  if(!is_equal("epoch:FK5", novas_epoch("FK5"), NOVAS_JD_J2000, 1e-8)) n++;
+  if(!is_equal("epoch:FK4", novas_epoch("FK4"), NOVAS_JD_B1950, 1e-8)) n++;
+  if(!is_equal("epoch:HIP", novas_epoch("HIP"), NOVAS_JD_HIP, 1e-8)) n++;
+  if(!is_equal("epoch:J2000", novas_epoch("J2000"), NOVAS_JD_J2000, 1e-8)) n++;
+  if(!is_equal("epoch:J2000.0", novas_epoch("J2000.0"), NOVAS_JD_J2000, 1e-8)) n++;
+  if(!is_equal("epoch:2000", novas_epoch("2000"), NOVAS_JD_J2000, 1e-8)) n++;
+  if(!is_equal("epoch:B1950", novas_epoch("B1950"), NOVAS_JD_B1950, 1e-8)) n++;
+  if(!is_equal("epoch:B1950.0", novas_epoch("B1950.0"), NOVAS_JD_B1950, 1e-8)) n++;
+  if(!is_equal("epoch:1950", novas_epoch("1950"), NOVAS_JD_B1950, 1e-8)) n++;
 
   return n;
 }

@@ -55,7 +55,7 @@ extern int strncasecmp(const char *s1, const char *s2, size_t n);
  *                      "1950", "2000", or "HIP". In general, any Besselian or Julian year epoch
  *                      can be used by year (e.g. "B1933.193" or "J2022.033"), or else the fixed
  *                      values listed. If 'B' or 'J' is ommitted in front of the epoch year, then
- *                      Besselian epochs are assumed prior to 1984.0.
+ *                      Besselian epochs are assumed prior to 1984.0, and Julian epochs after.
  * @return              [day] The Julian day corresponding to the given coordinate epoch, or else
  *                      NAN if the input string is NULL or the input is not recognised as a
  *                      coordinate epoch specification (errno will be set to EINVAL).
@@ -83,6 +83,9 @@ double novas_epoch(const char *restrict system) {
   }
 
   if(strcasecmp(system, NOVAS_SYSTEM_ICRS) == 0)
+    return NOVAS_JD_J2000;
+
+  if(strcasecmp(system, NOVAS_SYSTEM_FK6) == 0)
     return NOVAS_JD_J2000;
 
   if(strcasecmp(system, NOVAS_SYSTEM_FK5) == 0)
