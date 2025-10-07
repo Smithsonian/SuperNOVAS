@@ -147,6 +147,7 @@ namespace novas {
  */
 
 
+
 /// [day] Julian date at J2000
 /// @ingroup time
 #define NOVAS_JD_J2000            2451545.0
@@ -169,6 +170,8 @@ namespace novas {
 /// @sa precession(), transform_cat()
 /// @ingroup time
 #define NOVAS_JD_HIP              2448349.0625
+
+ /// \cond C_API
 
 /// [m/s] Speed of light in meters/second is a defining physical constant.
 /// @ingroup util
@@ -323,10 +326,12 @@ namespace novas {
 /// @ingroup observer
 #define NOVAS_EARTH_FLATTENING    NOVAS_GRS80_FLATTENING
 
-
 /// [rad/s] Rotational angular velocity of Earth from IERS Conventions (2003).
 /// @ingroup earth
 #define NOVAS_EARTH_ANGVEL        7.2921150e-5
+
+/// \endcond
+
 
 /// [s] TAI - GPS time offset
 /// @ingroup time
@@ -340,6 +345,8 @@ namespace novas {
 /// The day prior to that was 4 October 1582 in the Julian Calendar.
 /// @ingroup time
 #define NOVAS_JD_START_GREGORIAN  2299160.5
+
+/// \cond C_API
 
 /// The ICRS system as a string
 /// @since 1.3
@@ -383,6 +390,8 @@ namespace novas {
 /// @ingroup source
 #define NOVAS_SYSTEM_HIP           "HIP"
 
+/// \endcond
+
 /// [&mu;m] Default wavelength, e.g. for wavelength-dependent refraction models. It is set to the
 /// median wavelength of visible light.
 /// @since 1.4
@@ -390,6 +399,7 @@ namespace novas {
 /// @ingroup refract
 #define NOVAS_DEFAULT_WAVELENGTH      0.55
 
+/// \cond C_API
 #ifndef COMPAT
 // If we are not in the strict compatibility mode, where constants are defined
 // as variables in novascon.h (with implementation in novascon.c), then define
@@ -434,6 +444,7 @@ namespace novas {
 #  define HELIOC                    NOVAS_HELIOCENTER
 
 #endif // _EXCLUDE_DEPRECATED
+/// \endcond
 
 /**
  * Settings for 'novas_debug()'
@@ -446,6 +457,8 @@ enum novas_debug_mode {
   NOVAS_DEBUG_ON,          ///< Print errors and traces to the standard error.
   NOVAS_DEBUG_EXTRA        ///< Print all errors and traces to the standard error, even if they may be acceptable behavior.
 };
+
+
 
 /**
  * The type of astronomical objects distinguied by the NOVAS library.
@@ -513,6 +526,8 @@ enum novas_planet {
  * @sa enum novas_planet
  */
 #define NOVAS_PLANETS             (NOVAS_PLUTO_BARYCENTER + 1)
+
+/// \cond C_API
 
 /**
  * String array initializer for Major planet names, matching the enum novas_planet. E.g.
@@ -612,6 +627,7 @@ enum novas_planet {
         0.0, 1.0047e-10, 5.9724e-10, 7.3050e-10, 1.4058e-10, 2.0166e-8, 7.2491e-9, 2.5420e-9, \
         3.0893e-9, 9.1338e-12, 2.120483e-6, 3.1397e-11, 0.0, 0.0 }
 
+/// \endcond
 
 /**
  * Default set of gravitating bodies to use for deflection calculations in reduced accuracy mode.
@@ -668,13 +684,15 @@ extern int grav_bodies_full_accuracy;
 
 
 /**
- * Solar-system body IDs to use as object.number with @ref NOVAS_EPHEM_OBJECT types. JPL ephemerides
+ * Solar-system body IDs to use as object.number with ephemeris source types. JPL ephemerides
  * use <a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/req/naif_ids.html">NAIF IDs</a>
  * to identify objects in the Solar-system, which is thus the most widely adopted convention for
  * numbering Solar-system bodies. But other numbering systems also exists, for example the
  * CALCEPH library uses its own convention for the numbering of asteroids.
  *
+ * @cond C_API
  * @sa object, NOVAS_EPHEM_OBJECT, NOVAS_ID_TYPES
+ * @endcond
  *
  * @author Attila Kovacs
  * @since 1.2
@@ -796,6 +814,8 @@ enum novas_reference_system {
  */
 #define NOVAS_REFERENCE_SYSTEMS   (NOVAS_ITRS + 1)
 
+/// \cond C_API
+
 /**
  * Constants that determine the type of equator to be used for the coordinate system.
  *
@@ -842,6 +862,8 @@ enum novas_dynamical_type {
   NOVAS_DYNAMICAL_CIRS
 };
 
+/// \endcond
+
 /**
  * Constants to control the precision of NOVAS nutation calculations.
  *
@@ -858,6 +880,8 @@ enum novas_accuracy {
   /// accuracy is sufficient.
   NOVAS_REDUCED_ACCURACY
 };
+
+/// \cond C_API
 
 /**
  * Constants that determine whether what model (if any) to use for implicit refraction
@@ -899,6 +923,7 @@ enum novas_refraction_model {
  * @sa enum novas_refraction_model
  */
 #define NOVAS_REFRACTION_MODELS   (NOVAS_WAVE_REFRACTION + 1)
+
 
 #ifndef _EXCLUDE_DEPRECATED
 /**
@@ -1098,13 +1123,15 @@ enum novas_nutation_direction {
   NUTATE_MEAN_TO_TRUE
 };
 
+/// \endcond
+
 /**
  * The plane in which values, such as orbital parameters are referenced.
  * @author Attila Kovacs
  * @since 1.2
  * @sa novas_orbital_system
  *
- * @ingroup solar-system
+ * @ingroup source
  */
 enum novas_reference_plane {
   NOVAS_ECLIPTIC_PLANE = 0,     ///< the plane of the ecliptic
@@ -1114,8 +1141,11 @@ enum novas_reference_plane {
 /**
  * @hideinitializer Number of entries in enum novas_reference_plane
  * @since 1.6
+ * @ingroup source
  */
 #define NOVAS_REFERENCE_PLANES (NOVAS_EQUATORIAL_PLANE + 1)
+
+/// \cond C_API
 
 /**
  * Fundamental Delaunay arguments of the Sun and Moon, from Simon section 3.4(b.3).
@@ -1145,6 +1175,8 @@ typedef struct novas_delaunay_args {
  */
 #define NOVAS_DELAUNAY_ARGS_INIT { 0.0, 0.0, 0.0, 0.0, 0.0 }
 
+/// \endcond
+
 /// Maximum bytes in object names including string termination.
 /// @sa cat_entry
 /// @ingroup source
@@ -1165,8 +1197,11 @@ typedef struct novas_delaunay_args {
  * @sa novas_init_cat_entry(), make_cat_entry(), make_cat_object()
  * @sa CAT_ENTRY_INIT
  *
+ * @cond C_API
  * @ingroup source
+ * @endcond
  */
+
 typedef struct novas_cat_entry {
   char starname[SIZE_OF_OBJ_NAME];  ///< name of celestial object
   char catalog[SIZE_OF_CAT_NAME];   ///< catalog designator (e.g., HIP)
@@ -1181,6 +1216,7 @@ typedef struct novas_cat_entry {
   ///< you might use novas_set_lsr_vel()
 } cat_entry;
 
+
 /**
  * Initializer for a NOVAS cat_entry structure.
  *
@@ -1189,7 +1225,9 @@ typedef struct novas_cat_entry {
  * @since 1.1.1
  *
  * @sa cat_entry
+ * @cond C_API
  * @ingroup source
+ * @endcond
  */
 #define CAT_ENTRY_INIT { {'\0'}, {'\0'}, 0L, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
 
@@ -1315,7 +1353,9 @@ typedef struct novas_orbital {
  * @sa novas_sky_pos(), novas_geom_posvel(), novas_rises_above(), novas_transit_time(), novas_sets_below()
  *     novas_sun_angle(), novas_moon_angle(), novas_object_sep()
  *
+ * @cond C_API
  * @ingroup source
+ * @endcond
  */
 typedef struct novas_object {
   enum novas_object_type type;    ///< NOVAS object type
@@ -1325,6 +1365,7 @@ typedef struct novas_object {
   struct novas_orbital orbit;     ///< orbital data for NOVAS_ORBITAL_OBJECT type. @since 1.2
 } object;
 
+
 /**
  * Empty object initializer.
  *
@@ -1333,10 +1374,13 @@ typedef struct novas_object {
  * @author Attila Kovacs
  *
  * @sa object
- *
+ * @cond C_API
  * @ingroup source
+ * @endcond
  */
 #define NOVAS_OBJECT_INIT { -1, 0L, {'\0'}, CAT_ENTRY_INIT, NOVAS_ORBIT_INIT }
+
+/// \cond C_API
 
 /**
  * `object` initializer macro for major planets, the Sun, Moon, and barycenters.
@@ -1478,6 +1522,8 @@ typedef struct novas_object {
  */
 #define NOVAS_PLUTO_BARYCENTER_INIT NOVAS_PLANET_INIT(NOVAS_PLUTO_BARYCENTER, "Pluto-Barycenter")
 
+/// \endcond
+
 /**
  * Data for an observer's location on the surface of the Earth, and optional local weather data for
  * refraction calculations only.
@@ -1485,7 +1531,9 @@ typedef struct novas_object {
  * @sa make_itrf_site(), make_gps_site(), make_xyz_site(), make_observer_at_site(), ON_SURFACE_INIT
  * @sa make_observer_at_site(), make_airborne_observer()
  *
+ * @cond C_API
  * @ingroup observer
+ * @endcond
  */
 typedef struct novas_on_surface {
   double latitude;      ///< [deg] geodetic (ITRS / GRS80) latitude; north positive
@@ -1496,6 +1544,8 @@ typedef struct novas_on_surface {
   double humidity;      ///< [%] Relative humidity. @since 1.1
 } on_surface;
 
+/// \cond C_API
+
 /**
  * Initializer for a NOVAS on_surface data structure.
  *
@@ -1504,7 +1554,9 @@ typedef struct novas_on_surface {
  * @author Attila Kovacs
  *
  * @sa on_surface, ON_SURFACE_LOC
+ * @cond C_API
  * @ingroup observer
+ * @endcond
  */
 #define ON_SURFACE_INIT { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
 
@@ -1520,16 +1572,22 @@ typedef struct novas_on_surface {
  * @author Attila Kovacs
  *
  * @sa on_surface, make_itrf_site(), make_gps_site(), make_xyz_site(), ON_SURFACE_INIT
+ * @cond C_API
  * @ingroup observer
+ * @endcond
  */
 #define ON_SURFACE_LOC(lon, lat, alt) { lon, lat, alt, 0.0, 0.0, 0.0 }
+
+/// \endcond
 
 /**
  * data for an observer's location on Earth orbit
  *
  * @sa make_in_space(), IN_SPACE_INIT
  * @sa make_observer_in_space()
+ * @cond C_API
  * @ingroup observer
+ * @endcond
  */
 typedef struct novas_in_space {
   double sc_pos[3];     ///< [km] geocentric (or [AU] ICRS barycentric) position vector (x, y, z)
@@ -1544,7 +1602,9 @@ typedef struct novas_in_space {
  * @author Attila Kovacs
  *
  * @sa in_space
+ * @cond C_API
  * @ingroup observer
+ * @endcond C_API
  */
 #define IN_SPACE_INIT   {{0.0}, {0.0}}
 
@@ -1555,7 +1615,9 @@ typedef struct novas_in_space {
  *     make_airborne_observer(), make_observer_at_geocenter(), make_observer_in_space(),
  *     make_solar_system_observer(), OBSERVER_INIT
  * @sa novas_make_frame()
+ * @cond C_API
  * @ingroup observer
+ * @endcond C_API
  */
 typedef struct novas_observer {
   enum novas_observer_place where;    ///< observer location type
@@ -1578,7 +1640,9 @@ typedef struct novas_observer {
  * @author Attila Kovacs
  *
  * @sa observer
+ * @cond C_API
  * @ingroup observer
+ * @endcond C_API
  */
 #define OBSERVER_INIT   { NOVAS_OBSERVER_AT_GEOCENTER, ON_SURFACE_INIT, IN_SPACE_INIT }
 
@@ -1586,7 +1650,9 @@ typedef struct novas_observer {
  * Celestial object's place on the sky; contains the output from place()
  *
  * @sa novas_sky_pos(), novas_transform_sky_pos(), SKY_POS_INIT
+ * @cond C_API
  * @ingroup apparent
+ * @endcond C_API
  */
 typedef struct novas_sky_pos {
   double r_hat[3];  ///< unit vector toward object (dimensionless)
@@ -1607,9 +1673,13 @@ typedef struct novas_sky_pos {
  * @author Attila Kovacs
  *
  * @sa sky_pos
+ * @cond C_API
  * @ingroup apparent
+ * @endcond C_API
  */
 #define SKY_POS_INIT { {0.0}, 0.0, 0.0, 0.0, 0.0 }
+
+/// \cond C_API
 
 #ifndef _EXCLUDE_DEPRECATED
 /**
@@ -1627,6 +1697,8 @@ typedef struct novas_ra_of_cio {
   double ra_cio;    ///< [arcsec] right ascension of the CIO with respect to the GCRS (arcseconds)
 } ra_of_cio;
 #endif
+
+/// \endcond
 
 /**
  * Constants to reference various astrnomical timescales used
@@ -1667,7 +1739,9 @@ enum novas_timescale {
  * @sa novas_set_time(), novas_get_time(), NOVAS_TIMESPEC_INIT, enum novas_timescale, timescale.c
  * @sa novas_make_frame()
  *
+ * @cond C_API
  * @ingroup time
+ * @endcond C_API
  */
 typedef struct novas_timespec {
   long ijd_tt;        ///< [day] Integer part of the Terrestrial Time (TT) based Julian Date
@@ -1685,9 +1759,13 @@ typedef struct novas_timespec {
  * @since 1.3
  * @sa novas_timespec
  *
+ * @cond C_API
  * @ingroup time
+ * @endcond C_API
  */
 #define NOVAS_TIMESPEC_INIT { 0, 0.0, 0.0, 0.0, 0.0 }
+
+/// \cond C_API
 
 /**
  * A 3x3 matrix for coordinate transformations
@@ -1741,6 +1819,8 @@ typedef struct novas_planet_bundle {
  */
 #define NOVAS_PLANET_BUNDLE_INIT { 0, {{0.0}}, {{0.0}} }
 
+/// \endcond
+
 /**
  * A set of parameters that uniquely define the place and time of observation. The user may
  * initialize the frame with novas_make_frame(). Once the observer frame is set up, it can be
@@ -1763,7 +1843,9 @@ typedef struct novas_planet_bundle {
  *     novas_app_to_hor(), novas_hor_to_app(), novas_rises_above(), novas_sets_below(),
  *     novas_transit_time()
  *
+ * @cond C_API
  * @ingroup frame
+ * @endcond
  */
 typedef struct novas_frame {
   uint64_t state;                     ///< An internal state for checking validity.
@@ -1797,6 +1879,8 @@ typedef struct novas_frame {
   // TODO [v2] add cirs_to_tirs
   // TODO [v2] add tirs_to_itrs
 } novas_frame;
+
+/// \cond C_API
 
 /**
  * Empty initializer for novas_frame
@@ -1858,6 +1942,7 @@ enum novas_refraction_type {
   NOVAS_REFRACT_ASTROMETRIC     ///< Refract astrometric elevation value
 };
 
+/// \endcond
 
 /**
  * Spherical and spectral coordinate set.
@@ -2145,7 +2230,7 @@ typedef int (*novas_ephem_provider)(const char *name, long id, double jd_tdb_hig
 typedef double (*RefractionModel)(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el);
 
 
-
+/// \cond C_API
 #ifndef _EXCLUDE_DEPRECATED
 /**
  * @deprecated This old ephemeris reader is prone to memory leaks, and lacks some useful
@@ -2184,8 +2269,9 @@ typedef double (*RefractionModel)(double jd_tt, const on_surface *loc, enum nova
  */
 double *readeph(int mp, const char *restrict name, double jd_tdb, int *restrict error);
 #endif
+/// \endcond
 
-
+/// \cond C_API
 // in nutation.c
 /// @ingroup earth
 int iau2000a(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps);
@@ -2474,6 +2560,7 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
 short light_time(double jd_tdb, const object *restrict body, const double *pos_obs, double tlight0, enum novas_accuracy accuracy,
         double *pos_src_obs, double *restrict tlight);
 
+/// \endcond
 
 // -------------------------------------------------------------------------------------------------------------------
 // SuperNOVAS API:
@@ -2485,13 +2572,16 @@ void novas_debug(enum novas_debug_mode mode);
 /// @ingroup util
 enum novas_debug_mode novas_get_debug_mode();
 
+/// \cond C_API
 /// @ingroup util
 double novas_norm_ang(double angle);
+/// \endcond
 
 // in target.c
 /// @ingroup source
 void novas_case_sensitive(int value);
 
+/// \cond C_API
 /// @ingroup source
 int make_planet(enum novas_planet num, object *restrict planet);
 
@@ -2502,11 +2592,13 @@ int make_ephem_object(const char *name, long num, object *body);
 #ifndef _EXCLUDE_DEPRECATED
 int set_cio_locator_file(const char *restrict filename);
 #endif
+/// \endcond
 
 // in ephemeris.c
 /// @ingroup earth
 int set_nutation_lp_provider(novas_nutation_provider func);
 
+/// \cond C_API
 // in place.c
 int place_star(double jd_tt, const cat_entry *restrict star, const observer *restrict obs, double ut1_to_tt,
         enum novas_reference_system system, enum novas_accuracy accuracy, sky_pos *restrict pos);
@@ -2598,6 +2690,8 @@ int ecl2equ(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy
 /// @ingroup nonequatorial
 int gal2equ(double glon, double glat, double *restrict ra, double *restrict dec);
 
+/// \endcond
+
 // in ephemeris.c
 /// @ingroup solar-system
 int set_planet_provider(novas_planet_provider func);
@@ -2611,6 +2705,8 @@ int set_ephem_provider(novas_ephem_provider func);
 /// @ingroup solar-system
 novas_ephem_provider get_ephem_provider();
 
+
+/// \cond C_API
 /// @ingroup solar-system
 short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *restrict position,
         double *restrict velocity);
@@ -2629,22 +2725,22 @@ short planet_ephem_provider(double jd_tdb, enum novas_planet body, enum novas_or
 /// @ingroup solar-system
 short planet_ephem_provider_hp(const double jd_tdb[restrict 2], enum novas_planet body, enum novas_origin origin,
         double *restrict position, double *restrict velocity);
-
-
+/// \endcond
 
 // ---------------------- Added in 1.0.1 -------------------------
 
-// in system.c
+/// \cond C_API
 /// @ingroup equatorial
+// in system.c
 double cirs_to_app_ra(double jd_tt, enum novas_accuracy accuracy, double ra);
 
 /// @ingroup equatorial
 double app_to_cirs_ra(double jd_tt, enum novas_accuracy accuracy, double ra);
-
-
+/// \endcond
 
 // ---------------------- Added in 1.1.0 -------------------------
 
+/// \cond C_API
 // in grav.c
 int grav_undef(double jd_tdb, enum novas_accuracy accuracy, const double *pos_app, const double *pos_obs, double *out);
 
@@ -2766,8 +2862,11 @@ int novas_transform_vector(const double *in, const novas_transform *restrict tra
 
 /// @ingroup apparent
 int novas_transform_sky_pos(const sky_pos *in, const novas_transform *restrict transform, sky_pos *out);
+/// \endcond
+
 
 // in refract.c
+
 /// @ingroup refract
 double novas_standard_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el);
 
@@ -2777,13 +2876,15 @@ double novas_optical_refraction(double jd_tt, const on_surface *loc, enum novas_
 /// @ingroup refract
 double novas_radio_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el);
 
+/// \cond C_API
 /// @ingroup refract
 double novas_inv_refract(RefractionModel model, double jd_tt, const on_surface *restrict loc, enum novas_refraction_type type, double el0);
-
+/// \endcond
 
 // ---------------------- Added in 1.2.0 -------------------------
 
 // in target.c
+/// \cond C_API
 /// @ingroup source
 int make_redshifted_cat_entry(const char *name, double ra, double dec, double z, cat_entry *source);
 
@@ -2826,6 +2927,8 @@ int gcrs_to_mod(double jd_tdb, const double *in, double *out);
 /// @ingroup equatorial
 int mod_to_gcrs(double jd_tdb, const double *in, double *out);
 
+/// \endcond
+
 /// @ingroup solar-system
 novas_planet_provider get_planet_provider();
 
@@ -2842,13 +2945,15 @@ long novas_to_naif_planet(enum novas_planet id);
 /// @ingroup source
 long novas_to_dexxx_planet(enum novas_planet id);
 
+/// \cond C_API
 /// @ingroup source
 enum novas_planet novas_planet_for_name(const char *restrict name);
-
+/// \endcond
 
 // ---------------------- Added in 1.3.0 -------------------------
 
 // in calendar.c
+/// \cond C_API
 /// @ingroup time
 int novas_jd_to_date(double tjd, enum novas_calendar_type calendar, int *restrict year, int *restrict month,
         int *restrict day, double *restrict hour);
@@ -2862,6 +2967,7 @@ double novas_lsr_to_ssb_vel(double epoch, double ra, double dec, double vLSR);
 
 /// @ingroup spectral
 double novas_ssb_to_lsr_vel(double epoch, double ra, double dec, double vLSR);
+/// \endcond
 
 // in observer.c
 /// @ingroup nonequatorial
@@ -2889,6 +2995,7 @@ int novas_xyz_to_uvw(const double *xyz, double ha, double dec, double *uvw);
 int novas_uvw_to_xyz(const double *uvw, double ha, double dec, double *xyz);
 
 // in util.c
+/// \cond C_API
 /// @ingroup apparent
 double novas_sep(double lon1, double lat1, double lon2, double lat2);
 
@@ -2901,8 +3008,10 @@ int make_cat_object_sys(const cat_entry *star, const char *restrict system, obje
 
 /// @ingroup source
 int make_redshifted_object_sys(const char *name, double ra, double dec, const char *restrict system, double z, object *source);
+/// \endcond
 
 // in parse.c
+/// @cond C_API
 /// @ingroup time
 double novas_epoch(const char *restrict system);
 
@@ -2917,6 +3026,8 @@ double novas_str_hours(const char *restrict hms);
 
 /// @ingroup util
 double novas_str_degrees(const char *restrict dms);
+/// @endcond
+
 
 /// @ingroup util
 double novas_parse_hms(const char *restrict str, char **restrict tail);
@@ -2931,6 +3042,7 @@ double novas_parse_degrees(const char *restrict str, char **restrict tail);
 double novas_parse_hours(const char *restrict str, char **restrict tail);
 
 // in frames.c
+/// @cond C_API
 /// @ingroup time
 double novas_frame_lst(const novas_frame *restrict frame);
 
@@ -2945,6 +3057,8 @@ double novas_sets_below(double el, const object *restrict source, const novas_fr
 
 /// @ingroup apparent
 double novas_object_sep(const object *source1, const object *source2, const novas_frame *restrict frame);
+/// \endcond
+
 
 /// @ingroup apparent
 int novas_equ_track(const object *restrict source, const novas_frame *restrict frame, double dt, novas_track *restrict track);
@@ -2958,6 +3072,7 @@ int novas_track_pos(const novas_track *track, const novas_timespec *time, double
         double *restrict dist, double *restrict z);
 
 // in timescale.c
+/// \cond C_API
 /// @ingroup time
 double novas_date(const char *restrict date);
 
@@ -2969,16 +3084,20 @@ double novas_parse_date(const char *restrict date, char **restrict tail);
 
 /// @ingroup util
 double novas_parse_iso_date(const char *restrict date, char **restrict tail);
+/// \endcond
+
 
 /// @ingroup util
 double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_date_format format, const char *restrict date,
         char **restrict tail);
 
+/// \cond C_API
 /// @ingroup time
 int novas_iso_timestamp(const novas_timespec *restrict time, char *restrict dst, int maxlen);
 
 /// @ingroup time
 int novas_timestamp(const novas_timespec *restrict time, enum novas_timescale scale, char *restrict dst, int maxlen);
+/// \endcond
 
 /// @ingroup time
 enum novas_timescale novas_timescale_for_string(const char *restrict str);
@@ -2989,11 +3108,13 @@ enum novas_timescale novas_parse_timescale(const char *restrict str, char **rest
 /// @ingroup time
 int novas_print_timescale(enum novas_timescale scale, char *restrict buf);
 
+/// \cond C_API
 /// @ingroup util
 int novas_print_hms(double hours, enum novas_separator_type sep, int decimals, char *restrict buf, int len);
 
 /// @ingroup util
 int novas_print_dms(double degrees, enum novas_separator_type sep, int decimals, char *restrict buf, int len);
+/// \endcond
 
 // in ephemeris.c
 /// @ingroup earth
@@ -3003,14 +3124,17 @@ novas_nutation_provider get_nutation_lp_provider();
 /// @ingroup source
 int novas_set_orbsys_pole(enum novas_reference_system type, double ra, double dec, novas_orbital_system *restrict sys);
 
+/// \cond C_API
 /// @ingroup source
 int make_orbital_object(const char *name, long num, const novas_orbital *orbit, object *body);
 
 /// @ingroup source
 int novas_orbit_posvel(double jd_tdb, const novas_orbital *restrict orbit, enum novas_accuracy accuracy,
         double *restrict pos, double *restrict vel);
+/// \endcond
 
 // in target.c
+/// \cond C_API
 /// @ingroup solar-system
 double novas_helio_dist(double jd_tdb, const object *restrict source, double *restrict rate);
 
@@ -3026,22 +3150,26 @@ double novas_sun_angle(const object *restrict source, const novas_frame *restric
 /// @ingroup apparent
 double novas_moon_angle(const object *restrict source, const novas_frame *restrict frame);
 
-
+/// \endcond
 
 // ---------------------- Added in 1.4.0 -------------------------
 
 // in timescale.c
+/// \cond C_API
 /// @ingroup earth
 double novas_time_gst(const novas_timespec *restrict time, enum novas_accuracy accuracy);
 
 /// @ingroup time
 double novas_time_lst(const novas_timespec *restrict time, double lon, enum novas_accuracy accuracy);
+/// \endcond
 
 /// @ingroup time
 double tt2tdb_fp(double jd_tt, double limit);
 
+/// \cond C_API
 /// @ingroup time
 double tt2tdb_hp(double jd_tt);
+/// \endcond
 
 // in refract.c
 /// @ingroup refract
@@ -3051,6 +3179,7 @@ int novas_refract_wavelength(double microns);
 double novas_wave_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el);
 
 // in calendar.c
+/// \cond C_API
 /// @ingroup time
 int novas_day_of_week(double tjd);
 
@@ -3073,6 +3202,8 @@ int novas_approx_heliocentric(enum novas_planet id, double jd_tdb, double *restr
 
 /// @ingroup apparent
 int novas_approx_sky_pos(enum novas_planet id, const novas_frame *restrict frame, enum novas_reference_system sys, sky_pos *restrict out);
+/// \endcond
+
 
 /// @ingroup apparent
 double novas_moon_phase(double jd_tdb);
@@ -3084,6 +3215,7 @@ double novas_next_moon_phase(double phase, double jd_tdb);
 // ---------------------- Added in 1.5.0 -------------------------
 
 // in earth.c
+/// \cond C_API
 /// @ingroup earth
 double novas_gmst(double jd_ut1, double ut1_to_tt);
 
@@ -3187,7 +3319,7 @@ int make_xyz_site(const double *restrict xyz, on_surface *restrict site);
 
 /// @ingroup observer
 int novas_set_default_weather(on_surface *site);
-
+/// \endcond
 
 
 // <================= END of SuperNOVAS API =====================>
