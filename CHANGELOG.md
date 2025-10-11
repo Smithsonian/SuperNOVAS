@@ -13,6 +13,8 @@ Upcoming feature release, expected around 1 November 2025.
 
 ### Fixed
 
+ - #259: Fix `novas_track_pos()` tracking across / near the poles.
+
  - `gcrs2equ()`: propagate error if converting to TOD and the `accuracy` is invalid.
  
  - `NOVAS_VERSION_STRING` definition in `novas.h`.
