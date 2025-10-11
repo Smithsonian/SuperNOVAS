@@ -42,7 +42,7 @@ DOXYFILE_ENCODING      = UTF-8
 # title of most generated pages and in a few other places.
 # The default value is: My Project.
 
-PROJECT_NAME           = "SuperNOVAS C API"
+PROJECT_NAME           = "SuperNOVAS C++ API"
 
 # The PROJECT_NUMBER tag can be used to enter a project or revision number. This
 # could be handy for archiving the generated documentation or if some version
@@ -583,7 +583,7 @@ EXTRACT_LOCAL_METHODS  = NO
 # are hidden.
 # The default value is: NO.
 
-EXTRACT_ANON_NSPACES   = YES
+EXTRACT_ANON_NSPACES   = NO
 
 # If this flag is set to YES, the name of an unnamed parameter in a declaration
 # will be determined by the corresponding definition. By default unnamed
@@ -615,7 +615,7 @@ HIDE_UNDOC_CLASSES     = NO
 # option has no effect if EXTRACT_ALL is enabled.
 # The default value is: YES.
 
-HIDE_UNDOC_NAMESPACES  = YES
+HIDE_UNDOC_NAMESPACES  = NO
 
 # If the HIDE_FRIEND_COMPOUNDS tag is set to YES, Doxygen will hide all friend
 # declarations. If set to NO, these declarations will be included in the
@@ -742,7 +742,7 @@ SORT_GROUP_NAMES       = NO
 # list.
 # The default value is: NO.
 
-SORT_BY_SCOPE_NAME     = NO
+SORT_BY_SCOPE_NAME     = YES
 
 # If the STRICT_PROTO_MATCHING option is enabled and Doxygen fails to do proper
 # type resolution of all parameters of a function it will reject a match between
@@ -783,7 +783,7 @@ GENERATE_DEPRECATEDLIST= YES
 # sections, marked by \if <section_label> ... \endif and \cond <section_label>
 # ... \endcond blocks.
 
-ENABLED_SECTIONS       = C_API
+ENABLED_SECTIONS       =
 
 # The MAX_INITIALIZER_LINES tag determines the maximum number of lines that the
 # initial value of a variable or macro / define can have for it to appear in the
@@ -815,7 +815,7 @@ SHOW_FILES             = YES
 # Folder Tree View (if specified).
 # The default value is: YES.
 
-SHOW_NAMESPACES        = NO
+SHOW_NAMESPACES        = YES
 
 # The FILE_VERSION_FILTER tag can be used to specify a program or script that
 # Doxygen should invoke to get the current version for each file (typically from
@@ -991,10 +991,11 @@ WARN_LOGFILE           =
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = ../src \
-                         ../include \
+INPUT                  = ../include \
                          .. \
-                         .
+                         . \
+                         ../src \
+                         ../cpp
 
 # This tag can be used to specify the character encoding of the source files
 # that Doxygen parses. Internally Doxygen uses the UTF-8 encoding. Doxygen uses
@@ -1101,8 +1102,7 @@ EXCLUDE                = ../RELEASE-HOWTO.md \
                          ../README.md \
                          ../CODE_OF_CONDUCT.md \
                          NOVAS-legacy.md \
-                         README-undecorated.md \
-                         ../include/supernovas.h
+                         README-undecorated.md
 
 # The EXCLUDE_SYMLINKS tag can be used to select whether or not files or
 # directories that are symbolic links (a Unix file system feature) are excluded
@@ -2010,7 +2010,7 @@ SEARCHDATA_FILE        = searchdata.xml
 # projects and redirect the results back to the right project.
 # This tag requires that the tag SEARCHENGINE is set to YES.
 
-EXTERNAL_SEARCH_ID     = supernovas
+EXTERNAL_SEARCH_ID     = supernovas++
 
 # The EXTRA_SEARCH_MAPPINGS tag can be used to enable searching through Doxygen
 # projects other than the one defined by this configuration file, but that are
@@ -2458,7 +2458,7 @@ ENABLE_PREPROCESSING   = YES
 # The default value is: NO.
 # This tag requires that the tag ENABLE_PREPROCESSING is set to YES.
 
-MACRO_EXPANSION        = NO
+MACRO_EXPANSION        = YES
 
 # If the EXPAND_ONLY_PREDEF and MACRO_EXPANSION tags are both set to YES then
 # the macro expansion is limited to the macros specified with the PREDEFINED and
@@ -2501,7 +2501,9 @@ INCLUDE_FILE_PATTERNS  =
 
 PREDEFINED             = BUILTIN_SOLSYS3=1 \
                          DEFAULT_SOLSYS=3 \
-                         BUILTIN_SOLSYS_EPHEM_READER=1
+                         BUILTIN_SOLSYS_EPHEM_READER=1 \
+                         NOVAS_NAMESPACE \
+                         __cplusplus=201703L
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then this
 # tag can be used to specify a list of macro names that should be expanded. The
@@ -2545,7 +2547,7 @@ TAGFILES               =
 # tag file that is based on the input files it reads. See section "Linking to
 # external documentation" for more information about the usage of tag files.
 
-GENERATE_TAGFILE       = supernovas.tag
+GENERATE_TAGFILE       = supernovas++.tag
 
 # If the ALLEXTERNALS tag is set to YES, all external classes and namespaces
 # will be listed in the class and namespace index. If set to NO, only the
