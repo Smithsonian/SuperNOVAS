@@ -3381,6 +3381,41 @@ static int test_hor_track() {
   return n;
 }
 
+static int test_track_pos() {
+  int n = 0;
+
+  novas_timespec ts;
+  novas_track t = {};
+  double lon, lat;
+
+  novas_set_time(NOVAS_TT, NOVAS_JD_J2000, 32, 0.0, &t.time);
+  t.pos.lon = 90.0;
+  t.pos.lat = 89.9;
+  t.rate.lat = 0.1;
+
+  ts = t.time;
+  ts.fjd_tt += 3.0 / NOVAS_DAY;
+
+  if(!is_ok("novas_track_pos:north", novas_track_pos(&t, &ts, &lon, &lat, NULL, NULL))) return 1;
+  if(!is_equal("novas_track_pos:north:lon", -90, lon, 1e-9)) n++;
+  if(!is_equal("novas_track_pos:north:lat", 89.8, lat, 1e-9)) n++;
+
+  if(!is_ok("novas_track_pos:north", novas_track_pos(&t, &ts, NULL, &lat, NULL, NULL))) n++;
+  if(!is_equal("novas_track_pos:north:lat", 89.8, lat, 1e-9)) n++;
+
+  t.pos.lat = -89.9;
+  t.rate.lat = -0.1;
+
+  if(!is_ok("novas_track_pos:south", novas_track_pos(&t, &ts, &lon, &lat, NULL, NULL))) n++;
+  if(!is_equal("novas_track_pos:south:lon", -90, lon, 1e-9)) n++;
+  if(!is_equal("novas_track_pos:souh:lat", -89.8, lat, 1e-9)) n++;
+
+  if(!is_ok("novas_track_pos:north", novas_track_pos(&t, &ts, NULL, &lat, NULL, NULL))) n++;
+  if(!is_equal("novas_track_pos:south:lat", -89.8, lat, 1e-9)) n++;
+
+  return n;
+}
+
 static int test_xyz_to_uvw() {
   int n = 0;
   double xyz[3] = {0.0}, uvw[3] = {0.0};
@@ -4751,6 +4786,7 @@ int main(int argc, char *argv[]) {
   if(test_transit_time()) n++;
   if(test_equ_track()) n++;
   if(test_hor_track()) n++;
+  if(test_track_pos()) n++;
   if(test_xyz_to_uvw()) n++;
   if(test_sun_moon_angle()) n++;
   if(test_unwrap_angles()) n++;

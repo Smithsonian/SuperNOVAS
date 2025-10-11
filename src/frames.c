@@ -2117,8 +2117,17 @@ int novas_track_pos(const novas_track *track, const novas_timespec *time, double
 
   if(lon)
     *lon = remainder(track->pos.lon + track->rate.lon * dt + track->accel.lon * dt2, DEG360);
-  if(lat)
-    *lat = track->pos.lat + track->rate.lat * dt + track->accel.lat * dt2;
+  if(lat) {
+    *lat = remainder(track->pos.lat + track->rate.lat * dt + track->accel.lat * dt2, DEG360);
+    if(*lat > 90.0) {
+      *lat = 180.0 - *lat;
+      if(lon) *lon = -(*lon);
+    }
+    else if(*lat < -90.0) {
+      *lat = -180.0 - *lat;
+      if(lon) *lon = -(*lon);
+    }
+  }
   if(dist)
     *dist = track->pos.dist + track->rate.dist * dt + track->accel.dist * dt2;
   if(z)
