@@ -1908,7 +1908,6 @@ int novas_equ_track(const object *restrict source, const novas_frame *restrict f
   novas_timespec time1;
   novas_frame frame1;
   sky_pos pos0 = SKY_POS_INIT, posm = SKY_POS_INIT, posp = SKY_POS_INIT;
-  double ra_cio;
   double idt2;
 
   if(dt <= 0.0) dt = NOVAS_TRACK_DELTA;
@@ -1928,9 +1927,7 @@ int novas_equ_track(const object *restrict source, const novas_frame *restrict f
 
   track->time = frame->time;
 
-  ra_cio = -ira_equinox(frame->time.ijd_tt + frame->time.fjd_tt, NOVAS_TRUE_EQUINOX, frame->accuracy);
-  prop_error(fn, novas_sky_pos(source, frame, NOVAS_CIRS, &pos0), 0);
-  pos0.ra += ra_cio;
+  prop_error(fn, novas_sky_pos(source, frame, NOVAS_TOD, &pos0), 0);
   pos0.rv = novas_v2z(pos0.rv);
 
   track->pos.lon = 15.0 * pos0.ra;
@@ -1941,14 +1938,12 @@ int novas_equ_track(const object *restrict source, const novas_frame *restrict f
   time1 = frame->time;
   time1.fjd_tt -= dt / DAY;
   prop_error(fn, novas_make_frame(frame->accuracy, &frame->observer, &time1, frame->dx, frame->dy, &frame1), 0);
-  prop_error(fn, novas_sky_pos(source, &frame1, NOVAS_CIRS, &posm), 0);
-  posm.ra += ra_cio;
+  prop_error(fn, novas_sky_pos(source, &frame1, NOVAS_TOD, &posm), 0);
   posm.rv = novas_v2z(posm.rv);
 
   time1.fjd_tt += 2.0 * dt / DAY;
   prop_error(fn, novas_make_frame(frame->accuracy, &frame->observer, &time1, frame->dx, frame->dy, &frame1), 0);
-  prop_error(fn, novas_sky_pos(source, &frame1, NOVAS_CIRS, &posp), 0);
-  posp.ra += ra_cio;
+  prop_error(fn, novas_sky_pos(source, &frame1, NOVAS_TOD, &posp), 0);
   posp.rv = novas_v2z(posp.rv);
 
   // hours -> degrees...
