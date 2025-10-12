@@ -462,6 +462,10 @@ namespace novas {
 /// @ingroup refract
 #define NOVAS_DEFAULT_WAVELENGTH      0.55
 
+/// Minimum number of bytes for a timestamp
+/// @since 1.6
+#define NOVAS_TIMESTAMP_LEN           28
+
 #ifndef COMPAT
 // If we are not in the strict compatibility mode, where constants are defined
 // as variables in novascon.h (with implementation in novascon.c), then define
@@ -3420,6 +3424,14 @@ double novas_gmst_prec(double jd_tdb);
 double novas_cio_gcrs_ra(double jd_tdb);
 void novas_set_max_iter(int n);
 
+#if __cplusplus || __STDC_VERSION__ >= 200809L
+#  ifndef _POSIX_C_SOURCE
+#    define _POSIX_C_SOURCE 200809L ///< for snprintf
+#  endif
+#  define novas_snprintf snprintf
+#else
+int novas_snprintf(char *buf, size_t len, const char *fmt, ...);
+#endif
 
 /**
  * Deprecated.
