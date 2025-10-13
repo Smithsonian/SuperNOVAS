@@ -66,12 +66,6 @@
 #include "novas.h"
 #include "novas-calceph.h"
 
-#if __cplusplus
-#  ifdef NOVAS_NAMESPACE
-namespace novas {
-#  endif
-#endif
-
 /// \cond PRIVATE
 #define CALCEPH_MOON                10  ///< Moon in CALCEPH
 #define CALCEPH_SUN                 11  ///< Sun in CALCEPH
@@ -449,10 +443,3 @@ int novas_use_calceph_planets(t_calcephbin *eph) {
 
   return 0;
 }
-
-
-#if __cplusplus
-#  ifdef NOVAS_NAMESPACE
-} // namespace novas
-#  endif
-#endif
