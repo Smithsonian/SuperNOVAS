@@ -21,6 +21,10 @@ if(ENABLE_CSPICE)
     list(APPEND TEST_PROGRAMS test-cspice)
 endif()
 
+if(ENABLE_CPP_LIBS)
+    add_subdirectory(cpp)
+endif()
+
 # Look for headers in the supernovas include/ directory
 include_directories(${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/legacy)
 
