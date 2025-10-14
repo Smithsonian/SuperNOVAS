@@ -179,7 +179,7 @@ int grav_vec(const double *pos_src, const double *pos_obs, const double *pos_bod
     const double qdote = novas_vdot(qhat, ehat);
 
     // Compute scalar factors.
-    const double fac1 = 2.0 * GS / (C * C * emag * AU * rmass);
+    const double fac1 = 2.0 * GS / (NOVAS_C2 * emag * NOVAS_AU * rmass);
     const double fac2 = 1.0 + qdote;
 
     // Construct corrected position vector 'pos2'.
@@ -432,7 +432,7 @@ int grav_planets(const double *pos_src, const double *pos_obs, const novas_plane
  * @author Attila Kovacs
  */
 double grav_redshift(double M_kg, double r_m) {
-  static const double twoGoverC2 = 2.0 * 6.6743e-11 / (C * C); // 2G/c^2 in SI units.
+  static const double twoGoverC2 = 2.0 * 6.6743e-11 / NOVAS_C2; // 2G/c^2 in SI units.
   return 1.0 / sqrt(1.0 - twoGoverC2 * M_kg / r_m) - 1.0;
 }
 

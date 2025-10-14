@@ -118,9 +118,9 @@ double novas_epoch(const char *restrict system) {
     type = year < 1984.0 ? 'B' : 'J';
 
   if(type == 'J')
-    return NOVAS_JD_J2000 + (year - 2000.0) * JULIAN_YEAR_DAYS;
+    return NOVAS_JD_J2000 + (year - 2000.0) * NOVAS_JULIAN_YEAR_DAYS;
 
-  return NOVAS_JD_B1950 + (year - 1950.0) * BESSELIAN_YEAR_DAYS;
+  return NOVAS_JD_B1950 + (year - 1950.0) * NOVAS_BESSELIAN_YEAR_DAYS;
 }
 
 /**

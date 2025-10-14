@@ -2474,12 +2474,11 @@ static int test_rad_vel2() {
 
 static int test_grav_redshift() {
   static const double G = 6.6743e-11; // G in SI units.
-  static const double c2 = C * C;
 
   double M = 2e30;  // [kg]
   double r = NOVAS_SOLAR_RADIUS;
 
-  double rs = 2 * G * M / c2;
+  double rs = 2 * G * M / NOVAS_C2;
   double zp1 = 1.0 / sqrt(1.0 - rs / r);
 
   int n = 0;
@@ -2734,7 +2733,7 @@ static int test_orbit_posvel_callisto() {
   novas_set_orbsys_pole(NOVAS_GCRS, 268.7 / 15.0, 64.8, sys);
 
   orbit.jd_tdb = NOVAS_JD_J2000;
-  orbit.a = 1882700.0 * 1e3 / AU;
+  orbit.a = 1882700.0 * 1e3 / NOVAS_AU;
   orbit.e = 0.007;
   orbit.omega = 43.8;
   orbit.M0 = 87.4;

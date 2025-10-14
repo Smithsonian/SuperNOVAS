@@ -62,6 +62,10 @@
 
 #include "novas.h"
 
+/// \cond PRIVATE
+#  define EPREC               1e-12     ///< Required precision for eccentric anomaly in orbital calculation
+/// \endcond
+
 #if __cplusplus
 #  ifdef NOVAS_NAMESPACE
 namespace novas {

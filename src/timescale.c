@@ -1303,12 +1303,12 @@ static double solar_system_potential(const novas_frame *frame, const double *pos
         double x = frame->planets.pos[i][k] + frame->obs_pos[k] - pos[k];
         d += x * x;
       }
-      d = sqrt(d) * AU;
+      d = sqrt(d) * NOVAS_AU;
     }
     else if(i == NOVAS_EARTH) {
       // We might not have an ephemeris position for Earth above, but we always have
       // an Earth-position (possibly less accurate) as part of the frame itself...
-      d = novas_vdist(pos, frame->earth_pos) * AU;
+      d = novas_vdist(pos, frame->earth_pos) * NOVAS_AU;
     }
     else if(frame->accuracy != NOVAS_REDUCED_ACCURACY) {
       novas_set_errno(EAGAIN, "solar_system_potential", "Missing position data for planet %d", i);
@@ -1323,7 +1323,7 @@ static double solar_system_potential(const novas_frame *frame, const double *pos
     V -= NOVAS_G_SUN / (d * iM[i]);
   }
 
-  return V / (C * C);
+  return V / NOVAS_C2;
 }
 
 /**
@@ -1396,12 +1396,12 @@ static double clock_skew_near_earth(const novas_frame *frame) {
   for(i = 3; --i >= 0; )
     vo[i] = novas_add_vel(frame->obs_vel[i], -frame->earth_vel[i]);
 
-  vr = novas_vlen(vo) * (AU / DAY); // geocentric motion
-  if(vr >= C)
+  vr = novas_vlen(vo) * (NOVAS_AU / DAY); // geocentric motion
+  if(vr >= NOVAS_C)
     return -1.0;
 
   z = novas_v2z(vr / KMS) / (1.0 + TC_LG); // Reference velocities from TT/TDB to TCG
-  b = novas_z2v(z) * KMS / C;
+  b = novas_z2v(z) * KMS / NOVAS_C;
 
   return kinetic_potential(b) + sqrt(1.0 - b * b) * dV;
 }
@@ -1529,7 +1529,7 @@ double novas_clock_skew(const novas_frame *frame, enum novas_timescale timescale
     }
 
     case NOVAS_TCB : {
-      double b = novas_vlen(frame->obs_vel) * (AU / DAY) / C; // geocentric motion
+      double b = novas_vlen(frame->obs_vel) * (NOVAS_AU / DAY) / NOVAS_C; // geocentric motion
       D = b >= 1.0 ? -1.0 : kinetic_potential(b) + sqrt(1.0 - b * b) * solar_system_potential(frame, frame->obs_pos);
       break;
     }

@@ -766,13 +766,13 @@ int starvectors(const cat_entry *restrict star, double *restrict pos, double *re
   if(motion) {
     // Compute Doppler factor, which accounts for change in
     // light travel time to star.
-    const double k = 1.0 / (1.0 - star->radialvelocity * NOVAS_KMS / C);
+    const double k = 1.0 / (1.0 - star->radialvelocity * NOVAS_KMS / NOVAS_C);
 
     // Convert proper motion and radial velocity to orthogonal components of
     // motion with units of AU/day.
     motion[0] = k * star->promora / (paralx * JULIAN_YEAR_DAYS);
     motion[1] = k * star->promodec / (paralx * JULIAN_YEAR_DAYS);
-    motion[2] = k * star->radialvelocity * NOVAS_KMS / (AU / DAY);
+    motion[2] = k * star->radialvelocity * NOVAS_KMS / (NOVAS_AU / DAY);
 
     // Transform motion vector to equatorial system.
     novas_los_to_xyz(motion, 15.0 * star->ra, star->dec, motion);
@@ -910,7 +910,7 @@ short transform_cat(enum novas_transform_type option, double jd_tt_in, const cat
   radec2vector(in->ra, in->dec, 1.0 / sin(paralx * MAS), pos);
 
   // Compute Doppler factor, which accounts for change in light travel time to star.
-  k = 1.0 / (1.0 - in->radialvelocity * NOVAS_KMS / C);
+  k = 1.0 / (1.0 - in->radialvelocity * NOVAS_KMS / NOVAS_C);
 
   // Convert proper motion and radial velocity to orthogonal components
   // of motion, in spherical polar system at star's original position,

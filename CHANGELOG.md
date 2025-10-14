@@ -15,6 +15,8 @@ Upcoming feature release, expected around 1 November 2025.
 
  - #259: Fix `novas_track_pos()` tracking across / near the poles.
 
+ - Fix the length of a Besselian year (used for parsing Besselian epochs).
+
  - `gcrs2equ()`: propagate error if converting to TOD and the `accuracy` is invalid.
  
  - `NOVAS_VERSION_STRING` definition in `novas.h`.

@@ -78,7 +78,7 @@ double novas_z2v(double z) {
   }
   z += 1.0;
   z *= z;
-  return (z - 1.0) / (z + 1.0) * C / NOVAS_KMS;
+  return (z - 1.0) / (z + 1.0) * NOVAS_C / NOVAS_KMS;
 }
 
 /**
@@ -99,9 +99,9 @@ double novas_z2v(double z) {
  * @sa novas_z2v(), novas_z_add()
  */
 double novas_v2z(double vel) {
-  vel *= NOVAS_KMS / C;   // [km/s] -> beta
+  vel *= NOVAS_KMS / NOVAS_C;   // [km/s] -> beta
   if(fabs(vel) > 1.0) {
-    novas_error(-1, EINVAL, "novas_v2z", "velocity exceeds speed of light v=%g km/s", vel * C / NOVAS_KMS);
+    novas_error(-1, EINVAL, "novas_v2z", "velocity exceeds speed of light v=%g km/s", vel * NOVAS_C / NOVAS_KMS);
     return NAN;
   }
   return sqrt((1.0 + vel) / (1.0 - vel)) - 1.0;
@@ -207,11 +207,11 @@ double novas_z_inv(double z) {
 }
 
 static int convert_lsr_ssb_vel(const double *vLSR, int sign, double *vSSB) {
-  static const double betaSSB[3] = { 11.1 * NOVAS_KMS / C, 12.24 * NOVAS_KMS / C, 7.25 * NOVAS_KMS / C };
+  static const double betaSSB[3] = { 11.1 * NOVAS_KMS / NOVAS_C, 12.24 * NOVAS_KMS / NOVAS_C, 7.25 * NOVAS_KMS / NOVAS_C };
   int i;
 
   for(i = 3; --i >= 0; )
-    vSSB[i] = novas_add_beta(vLSR[i] * NOVAS_KMS / C, sign * betaSSB[i]) * C / NOVAS_KMS;
+    vSSB[i] = novas_add_beta(vLSR[i] * NOVAS_KMS / NOVAS_C, sign * betaSSB[i]) * NOVAS_C / NOVAS_KMS;
 
   return 0;
 }
@@ -527,11 +527,11 @@ double rad_vel2(const object *restrict source, const double *pos_emit, const dou
   }
 
   // Compute geopotential at observer, unless observer is within Earth.
-  r = d_obs_geo * AU;
+  r = d_obs_geo * NOVAS_AU;
   phi = (r > 0.95 * NOVAS_EARTH_RADIUS) ? GE / r : 0.0;
 
   // Compute solar potential at observer unless well within the Sun
-  r = d_obs_sun * AU;
+  r = d_obs_sun * NOVAS_AU;
   phi += (r > 0.95 * NOVAS_SOLAR_RADIUS) ? GS / r : 0.0;
 
   // Compute relativistic potential at observer.
@@ -542,7 +542,7 @@ double rad_vel2(const object *restrict source, const double *pos_emit, const dou
   }
   else {
     // Lindegren & Dravins eq. (41), second factor in parentheses.
-    rel = 1.0 - phi / C2;
+    rel = 1.0 - phi / NOVAS_C2;
   }
 
   // Compute unit vector toward object (direction of emission).
@@ -563,7 +563,7 @@ double rad_vel2(const object *restrict source, const double *pos_emit, const dou
 
       // Compute radial velocity measure of sidereal source rel. barycenter
       // Including proper motion
-      beta_src = star->radialvelocity * NOVAS_KMS / C;
+      beta_src = star->radialvelocity * NOVAS_KMS / NOVAS_C;
 
       if(star->parallax > 0.0) {
         double du[3];
@@ -590,8 +590,8 @@ double rad_vel2(const object *restrict source, const double *pos_emit, const dou
     case NOVAS_EPHEM_OBJECT:
     case NOVAS_ORBITAL_OBJECT:
       // Solar potential at source (bodies strictly outside the Sun's volume)
-      if(d_src_sun * AU > NOVAS_SOLAR_RADIUS)
-        rel /= 1.0 - GS / (d_src_sun * AU) / C2;
+      if(d_src_sun * NOVAS_AU > NOVAS_SOLAR_RADIUS)
+        rel /= 1.0 - GS / (d_src_sun * NOVAS_AU) / NOVAS_C2;
 
       // Compute observed radial velocity measure of a planet rel. barycenter
       beta_src = novas_vdot(uk, vel_src) / C_AUDAY;
@@ -615,7 +615,7 @@ double rad_vel2(const object *restrict source, const double *pos_emit, const dou
   beta = novas_add_beta(beta_src, -beta_obs);
 
   // Include relativistic redhsift factor due to relative motion
-  rel *= (1.0 + beta) / sqrt(1.0 - novas_vdist2(vel_obs, vel_src) / C2);
+  rel *= (1.0 + beta) / sqrt(1.0 - novas_vdist2(vel_obs, vel_src) / NOVAS_C2);
 
   // Convert observed radial velocity measure to kilometers/second.
   return novas_z2v(rel - 1.0);

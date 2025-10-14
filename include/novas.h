@@ -184,10 +184,15 @@ namespace novas {
 /// @ingroup time
 #define NOVAS_TROPICAL_YEAR_DAYS  365.2421897
 
-/// [day] The length of a tropical year (at J2000) in days.
+/// [day] The length of a Julian year (at J2000) in days.
 /// @since 1.5
 /// @ingroup time
 #define NOVAS_JULIAN_YEAR_DAYS    365.25
+
+/// [day] The length of a Besselian year in days.
+/// @since 1.5
+/// @ingroup time
+#define NOVAS_BESSELIAN_YEAR_DAYS 365.242198781
 
 /// [rad] A degree expressed in radians.
 /// @since 1.2
@@ -234,7 +239,7 @@ namespace novas {
 #define NOVAS_AU_SEC              ( NOVAS_AU / NOVAS_C )
 
 /// [AU/day] Speed of light in units of AU/day.
-#define NOVAS_C_AU_PER_DAY        ( NOVAS_DAY / AU_SEC )
+#define NOVAS_C_AU_PER_DAY        ( NOVAS_DAY / NOVAS_AU_SEC )
 
 /// [km] Astronomical Unit (AU) in kilometers.
 #define NOVAS_AU_KM               ( 1e-3 * NOVAS_AU )
@@ -3191,32 +3196,23 @@ int novas_set_default_weather(on_surface *site);
 #  define _CONSTS_
 
 #  define HALF_PI             (0.5 * M_PI)
-#  define ERAD_AU             (ERAD/AU)
-#  define C2                  (C * C)   ///< [m<sup>2</sup>/s<sup>2</sup>] Speed of light squared
-#  define EPREC               1e-12     ///< Required precision for eccentric anomaly in orbital calculation
-
+#  define NOVAS_C2            (NOVAS_C * NOVAS_C)   ///< [m<sup>2</sup>/s<sup>2</sup>] Speed of light square
 #  define XYZ_VECTOR_SIZE     (3 * sizeof(double))
 
 // Use shorthand definitions for our constants
 #  define JD_J2000            NOVAS_JD_J2000
-#  define C                   NOVAS_C
-#  define AU_SEC              NOVAS_AU_SEC
 #  define C_AUDAY             NOVAS_C_AU_PER_DAY
-#  define AU                  NOVAS_AU
 #  define AU_KM               NOVAS_AU_KM
 #  define GS                  NOVAS_G_SUN
 #  define GE                  NOVAS_G_EARTH
-#  define ERAD                NOVAS_GRS80_RADIUS
-#  define EF                  NOVAS_GRS80_FLATTENING
-#  define ANGVEL              NOVAS_EARTH_ANGVEL
+
 
 // Various locally used physical units
 #  define DAY                 NOVAS_DAY
 #  define DAY_HOURS           24.0
 #  define DEG360              360.0
-#  define JULIAN_YEAR_DAYS    365.25
-#  define JULIAN_CENTURY_DAYS 36525.0
-#  define BESSELIAN_YEAR_DAYS 365.2568983
+#  define JULIAN_YEAR_DAYS    NOVAS_JULIAN_YEAR_DAYS
+#  define JULIAN_CENTURY_DAYS ( 100.0 * JULIAN_YEAR_DAYS )
 #  define ARCSEC              NOVAS_ARCSEC
 #  define DEGREE              NOVAS_DEGREE
 #  define HOURANGLE           NOVAS_HOURANGLE
