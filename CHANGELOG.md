@@ -14,6 +14,8 @@ Upcoming feature release, expected around 1 November 2025.
 ### Fixed
 
  - #259: Fix `novas_track_pos()` tracking across / near the poles.
+ 
+ - `NOVAS_JD_B1900` definition was MJD date instead of JD date.
 
  - Fix the length of a Besselian year (used for parsing Besselian epochs).
 
