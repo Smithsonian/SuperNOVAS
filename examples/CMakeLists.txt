@@ -19,10 +19,13 @@ if(NOT PROJECT_NAME)
     )
     
     include(GNUInstallDirs)
-    
-    # Check for math library
-    check_library_exists(m sin "" HAVE_LIBM)
+
+    find_library(LIBM m OPTIONAL)
+    if(NOT LIBM)
+        set(LIBM "")
+    endif()
 endif()
+
 
 # List of example programs to build
 set(EXAMPLE_PROGRAMS
@@ -57,7 +60,7 @@ foreach(EXAMPLE ${EXAMPLE_PROGRAMS})
         # Link against the supernovas library
         target_link_libraries(${EXAMPLE} PRIVATE
             supernovas
-            $<$<BOOL:${HAVE_LIBM}>:m>
+            ${LIBM}
         )
 
         # Special handling for CALCEPH example
