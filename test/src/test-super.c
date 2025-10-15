@@ -3,8 +3,7 @@
  * @author Attila Kovacs
  */
 
-
-#if __STDC_VERSION__ < 201112L
+#if !defined(_MSC_VER) && __STDC_VERSION__ < 201112L
 #  define _POSIX_C_SOURCE 199309    ///< struct timespec
 #endif
 #define _GNU_SOURCE                 ///< for strcasecmp()
@@ -2140,7 +2139,7 @@ static int test_set_current_time() {
   struct timespec now = {};
   novas_timespec t1 = {}, t2 = {};
 
-#if __STDC_VERSION__ >= 201112L || defined(_MSC_VER)
+#if !__ANDROID__ && (__STDC_VERSION__ >= 201112L || defined(_MSC_VER))
   timespec_get(&now, TIME_UTC);
 #else
   clock_gettime(CLOCK_REALTIME, &now);

@@ -11,7 +11,7 @@
  */
 
 /// \cond PRIVATE
-#if __STDC_VERSION__ < 201112L
+#if !defined(_MSC_VER) && __STDC_VERSION__ < 201112L
 #  define _POSIX_C_SOURCE 199309    ///< struct timespec
 #endif
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
@@ -868,7 +868,7 @@ int novas_set_unix_time(time_t unix_time, long nanos, int leap, double dut1, nov
  * NOTE:
  *
  * <ol>
- * <li>For C11 or later, this function uses the C11 standard `timespec_get()` function, which is
+ * <li>With MSC, this function uses the C11 standard `timespec_get()` function, which is
  * portable. For older C standard, the POSIX only `clock_gettime()` function is used.</li>
  * </ol>
  *
@@ -891,7 +891,7 @@ int novas_set_unix_time(time_t unix_time, long nanos, int leap, double dut1, nov
 int novas_set_current_time(int leap, double dut1, novas_timespec *restrict time) {
   struct timespec t = {};
 
-#if __STDC_VERSION__ >= 201112L || defined(_MSC_VER)
+#if !__ANDROID__ && (__STDC_VERSION__ >= 201112L || defined(_MSC_VER))
   timespec_get(&t, TIME_UTC);
 #else
   clock_gettime(CLOCK_REALTIME, &t);
