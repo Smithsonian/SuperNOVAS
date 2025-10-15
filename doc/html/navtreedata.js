@@ -87,7 +87,7 @@ var NAVTREE =
       [ "Release schedule", "index.html#autotoc_md109", null ]
     ] ],
     [ "Changelog", "md__2github_2workspace_2CHANGELOG.html", [
-      [ "[.5.0-rc7] - 2025-10-15", "md__2github_2workspace_2CHANGELOG.html#autotoc_md1", [
+      [ "[1.5.0-rc7] - 2025-10-15", "md__2github_2workspace_2CHANGELOG.html#autotoc_md1", [
         [ "Fixed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md2", null ],
         [ "Added", "md__2github_2workspace_2CHANGELOG.html#autotoc_md3", null ],
         [ "Removed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md4", null ],
