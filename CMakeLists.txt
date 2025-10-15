@@ -31,7 +31,6 @@ project(supernovas
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 include(FeatureSummary)
-include(CheckLibraryExists)
 
 # Build options
 option(BUILD_SHARED_LIBS "Build as shared libraries instead of static" OFF)
@@ -66,15 +65,22 @@ set(CMAKE_DEBUG_POSTFIX d)
 # Position Independent Code for shared libs
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-# Windows-specific settings
+
 if(WIN32)
+    # Windows-specific settings
     message("Configuring for Windows...")
+    set(LIBM "")
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
     add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
+else()
+    if (MINGW)
+        # No need to link agains math lib on MinGW
+        set(LIBM "")
+    else()
+        # Link against math libs on all other platforms
+        find_library(LIBM m)
+    endif()
 endif()
-
-# Check for math library
-check_library_exists(m sin "" HAVE_LIBM)
 
 # ----------------------------------------------------------------------------
 # Extenal plugin configuration
@@ -155,7 +161,7 @@ target_include_directories(supernovas PUBLIC
 )
 
 # Link with math libs as necessary
-target_link_libraries(supernovas PRIVATE $<$<BOOL:${HAVE_LIBM}>:m>)
+target_link_libraries(supernovas PRIVATE ${LIBM})
 
 # Compatibility alias
 add_library(novas ALIAS supernovas)
@@ -182,7 +188,7 @@ function(solsys_plugin EPHEM_LIB)
     target_link_libraries(solsys-${EPHEM_LIB} PRIVATE
         supernovas
         ${EPHEM_LIB}
-        $<$<BOOL:${HAVE_LIBM}>:m>
+        ${LIBM}
     )
 endfunction()
 

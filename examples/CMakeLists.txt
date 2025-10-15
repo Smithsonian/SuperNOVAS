@@ -20,8 +20,21 @@ if(NOT PROJECT_NAME)
     
     include(GNUInstallDirs)
     
-    # Check for math library
-    check_library_exists(m sin "" HAVE_LIBM)
+    if(WIN32)
+       # Windows-specific settings
+       message("Configuring for Windows...")
+       set(LIBM "")
+       add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
+    else()
+        if (MINGW)
+            # No need to link agains math lib on MinGW
+            set(LIBM "")
+        else()
+            # Link against math libs on all other platforms
+            find_library(LIBM m)
+        endif()
+    endif()
+
 endif()
 
 # List of example programs to build
@@ -57,7 +70,7 @@ foreach(EXAMPLE ${EXAMPLE_PROGRAMS})
         # Link against the supernovas library
         target_link_libraries(${EXAMPLE} PRIVATE
             supernovas
-            $<$<BOOL:${HAVE_LIBM}>:m>
+            ${LIBM}
         )
 
         # Special handling for CALCEPH example

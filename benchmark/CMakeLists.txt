@@ -25,7 +25,7 @@ foreach(BENCHMARK ${BENCHMARK_PROGRAMS})
         # Link against the supernovas library
         target_link_libraries(${BENCHMARK} PRIVATE
             supernovas
-            $<$<BOOL:${HAVE_LIBM}>:m>
+            ${LIBM}
         )
 
     else()

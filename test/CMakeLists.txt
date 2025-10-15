@@ -47,7 +47,7 @@ foreach(TEST ${TEST_PROGRAMS})
         # Link against the supernovas library
         target_link_libraries(${TEST} PRIVATE
             supernovas
-            $<$<BOOL:${HAVE_LIBM}>:m>
+            ${LIBM}
         )
 
         # Special handling for CALCEPH example
