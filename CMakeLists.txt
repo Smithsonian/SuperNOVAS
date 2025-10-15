@@ -69,18 +69,15 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 if(WIN32)
     # Windows-specific settings
     message("Configuring for Windows...")
-    set(LIBM "")
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
     add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
-else()
-    if (MINGW)
-        # No need to link agains math lib on MinGW
-        set(LIBM "")
-    else()
-        # Link against math libs on all other platforms
-        find_library(LIBM m)
-    endif()
 endif()
+
+find_library(LIBM m OPTIONAL)
+if(NOT LIBM)
+    set(LIBM "")
+endif()
+
 
 # ----------------------------------------------------------------------------
 # Extenal plugin configuration
