@@ -11,7 +11,7 @@ var searchData=
   ['novas_5fequatorial_5fclass_8',['novas_equatorial_class',['../novas_8h.html#a3789b2c39c26f01bb1bffe8ebc953467',1,'novas.h']]],
   ['novas_5fequinox_5ftype_9',['novas_equinox_type',['../group__earth.html#gab970f5de5d5e04874cb31865459b0b4f',1,'novas.h']]],
   ['novas_5fframetie_5fdirection_10',['novas_frametie_direction',['../group__equatorial.html#gae8b91a9b4fe4af63c7054d1eacdb996e',1,'novas.h']]],
-  ['novas_5fid_5ftype_11',['novas_id_type',['../group__source.html#gac42df1db80fbcb6f7a72de80d9f9c531',1,'solarsystem.h']]],
+  ['novas_5fid_5ftype_11',['novas_id_type',['../group__source.html#gac42df1db80fbcb6f7a72de80d9f9c531',1,'novas.h']]],
   ['novas_5fnutation_5fdirection_12',['novas_nutation_direction',['../group__nonequatorial.html#gae2d3d508d68d268bec838bdc013d0ada',1,'novas.h']]],
   ['novas_5fobject_5ftype_13',['novas_object_type',['../group__source.html#ga1eecb357eeea0de4759e9c8d55af238f',1,'novas.h']]],
   ['novas_5fobserver_5fplace_14',['novas_observer_place',['../group__observer.html#ga6140c39d1526b137f827e2091ecc36b3',1,'novas.h']]],

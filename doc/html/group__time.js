@@ -7,6 +7,7 @@ var group__time =
       [ "tt2tdb", "structnovas__timespec.html#acd6082033a111e30cda6bab81b7a32ec", null ],
       [ "ut1_to_tt", "structnovas__timespec.html#a2b381954218c16fad4ae585fb90fddbe", null ]
     ] ],
+    [ "NOVAS_BESSELIAN_YEAR_DAYS", "group__time.html#ga4d0100d73e0d474804b1d45d0f9129d2", null ],
     [ "NOVAS_DAY", "group__time.html#ga0b0c2c5ccc61c8740de2e2ac277cd836", null ],
     [ "NOVAS_GPS_TO_TAI", "group__time.html#ga6355388ff4a44836eda6eb1e97da60cd", null ],
     [ "NOVAS_JD_B1900", "group__time.html#gaf03a1f0412f23cd6edb323297646eb30", null ],

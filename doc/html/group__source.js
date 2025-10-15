@@ -64,6 +64,7 @@ var group__source =
     [ "NOVAS_SYSTEM_B1950", "group__source.html#gaaf00ed93616e93d09df832d485a0e115", null ],
     [ "NOVAS_SYSTEM_FK4", "group__source.html#gae7ab88078608cf4f4499cedcf4c0ca75", null ],
     [ "NOVAS_SYSTEM_FK5", "group__source.html#gabf795b4cd3cc6205b88508bcc77586c1", null ],
+    [ "NOVAS_SYSTEM_FK6", "group__source.html#ga66966aace37201095f852727d909c2cb", null ],
     [ "NOVAS_SYSTEM_HIP", "group__source.html#ga773bb459e1ec420cd7d93d064e70eb7f", null ],
     [ "NOVAS_SYSTEM_ICRS", "group__source.html#ga9d170036a074eff7634bdb23e54871b0", null ],
     [ "NOVAS_SYSTEM_J2000", "group__source.html#gae67fecc99f46afc9b4f12fc27b4fbe6c", null ],

@@ -7,11 +7,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [1.5.0-rc6] -- 2025-10-04
+## [.5.0-rc7] - 2025-10-15
 
 Upcoming feature release, expected around 1 November 2025.
 
 ### Fixed
+
+ - #259: Fix `novas_track_pos()` tracking across / near the poles.
+ 
+ - `NOVAS_JD_B1900` definition was MJD date instead of JD date.
+
+ - Fix the length of a Besselian year (used for parsing Besselian epochs).
 
  - `gcrs2equ()`: propagate error if converting to TOD and the `accuracy` is invalid.
  
@@ -150,6 +156,11 @@ Upcoming feature release, expected around 1 November 2025.
    
  - Moved a few functions around among the source modules to make the organization more consistent. It also helps when
    browsing the HTML documentation topically by source modules.
+ 
+ - `solarsystem.h` is moved to `legacy` with non-legacy definitions and prototypes migrated to `novas.h`. This has
+   no downstream effect as all content of `solarsystem.h` was already included in `novas.h`, and it relied on
+   definitions in `novas.h`, s.t. it could not be included prior to `novas.h` anyway. Effectively it has always been
+   an integral part of `novas.h` even if it was a separate file before.
  
  - Fully revised API and user documentation. The HTML API docs now have automatic brief descriptions when listed
    (except for the deprecated entitites, which do not).

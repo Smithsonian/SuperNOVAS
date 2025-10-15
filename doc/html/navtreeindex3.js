@@ -1,6 +1,5 @@
 var NAVTREEINDEX3 =
 {
-"solsys-cspice_8c.html":[7,0,1,17],
 "solsys-ephem_8c.html":[7,0,1,18],
 "solsys3_8c.html":[7,0,1,19],
 "solsys3_8c.html#a869ec4c9fe91668611c0cfcc6bf332cf":[7,0,1,19,3],

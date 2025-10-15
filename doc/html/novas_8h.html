@@ -105,7 +105,8 @@ $(function(){initNavTree('novas_8h.html',''); initResizable(true); });
 <a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">novas.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -186,6 +187,12 @@ Macros</h2></td></tr>
 <tr class="memitem:gaf303bf91582509624aa40c6a87eb95ac" id="r_gaf303bf91582509624aa40c6a87eb95ac"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__solar-system.html#gaf303bf91582509624aa40c6a87eb95ac">DE405_AU</a>&#160;&#160;&#160;1.4959787069098932e+11</td></tr>
 <tr class="memdesc:gaf303bf91582509624aa40c6a87eb95ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">[m] Astronomical unit (AU).  <br /></td></tr>
 <tr class="separator:gaf303bf91582509624aa40c6a87eb95ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4cb74da554b236c835302480688cfaac" id="r_ga4cb74da554b236c835302480688cfaac"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__apparent.html#ga4cb74da554b236c835302480688cfaac">DEFAULT_GRAV_BODIES_FULL_ACCURACY</a>&#160;&#160;&#160;( <a class="el" href="group__apparent.html#gaec64bf67d5a03b2b4fb2583e5918f1de">DEFAULT_GRAV_BODIES_REDUCED_ACCURACY</a> | (1 &lt;&lt; <a class="el" href="group__source.html#gga219df36b21dc4476656e708d14d08045a994baf0c30caeaaee7b8b4d5a12921a3">NOVAS_JUPITER</a>) | (1 &lt;&lt; <a class="el" href="group__source.html#gga219df36b21dc4476656e708d14d08045a03b12ea0f93a1a1045d7bcccd613c6f2">NOVAS_SATURN</a>) )</td></tr>
+<tr class="memdesc:ga4cb74da554b236c835302480688cfaac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default set of gravitating bodies to use for deflection calculations in full accuracy mode.  <br /></td></tr>
+<tr class="separator:ga4cb74da554b236c835302480688cfaac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaec64bf67d5a03b2b4fb2583e5918f1de" id="r_gaec64bf67d5a03b2b4fb2583e5918f1de"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__apparent.html#gaec64bf67d5a03b2b4fb2583e5918f1de">DEFAULT_GRAV_BODIES_REDUCED_ACCURACY</a>&#160;&#160;&#160;( (1 &lt;&lt; <a class="el" href="group__source.html#gga219df36b21dc4476656e708d14d08045a170e1c704bd29c8d46f66d4d9a03d9c2">NOVAS_SUN</a>) )</td></tr>
+<tr class="memdesc:gaec64bf67d5a03b2b4fb2583e5918f1de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default set of gravitating bodies to use for deflection calculations in reduced accuracy mode.  <br /></td></tr>
+<tr class="separator:gaec64bf67d5a03b2b4fb2583e5918f1de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7e8592d0a634bd3642e9fd508ea8022" id="r_af7e8592d0a634bd3642e9fd508ea8022"><td class="memItemLeft" align="right" valign="top"><a id="af7e8592d0a634bd3642e9fd508ea8022" name="af7e8592d0a634bd3642e9fd508ea8022"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>DEG2RAD</b>&#160;&#160;&#160;(<a class="el" href="#ae71449b1cc6e6250b91f539153a7a0d3">M_PI</a> / 180.0)</td></tr>
 <tr class="memdesc:af7e8592d0a634bd3642e9fd508ea8022"><td class="mdescLeft">&#160;</td><td class="mdescRight">[rad/deg] 1 degree in radians <br /></td></tr>
@@ -217,12 +224,15 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>NOVAS_AU_SEC</b>&#160;&#160;&#160;( <a class="el" href="group__source.html#gabc8f275a2d431e59a1ec9e276abaca1a">NOVAS_AU</a> / <a class="el" href="group__util.html#ga5fb4713ad9802152e40a83bf3c1ee242">NOVAS_C</a> )</td></tr>
 <tr class="memdesc:a610c7260c1879f89913bf7a5549b4649"><td class="mdescLeft">&#160;</td><td class="mdescRight">[s] Light-time for one astronomical unit (AU) in seconds. <br /></td></tr>
 <tr class="separator:a610c7260c1879f89913bf7a5549b4649"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4d0100d73e0d474804b1d45d0f9129d2" id="r_ga4d0100d73e0d474804b1d45d0f9129d2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__time.html#ga4d0100d73e0d474804b1d45d0f9129d2">NOVAS_BESSELIAN_YEAR_DAYS</a>&#160;&#160;&#160;365.242198781</td></tr>
+<tr class="memdesc:ga4d0100d73e0d474804b1d45d0f9129d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">[day] The length of a Besselian year in days.  <br /></td></tr>
+<tr class="separator:ga4d0100d73e0d474804b1d45d0f9129d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5fb4713ad9802152e40a83bf3c1ee242" id="r_ga5fb4713ad9802152e40a83bf3c1ee242"><td class="memItemLeft" align="right" valign="top">
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>NOVAS_C</b>&#160;&#160;&#160;299792458.0</td></tr>
 <tr class="memdesc:ga5fb4713ad9802152e40a83bf3c1ee242"><td class="mdescLeft">&#160;</td><td class="mdescRight">[m/s] Speed of light in meters/second is a defining physical constant. <br /></td></tr>
 <tr class="separator:ga5fb4713ad9802152e40a83bf3c1ee242"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c474aa996c5ccc0c03b1006ea5b30e1" id="r_a7c474aa996c5ccc0c03b1006ea5b30e1"><td class="memItemLeft" align="right" valign="top"><a id="a7c474aa996c5ccc0c03b1006ea5b30e1" name="a7c474aa996c5ccc0c03b1006ea5b30e1"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>NOVAS_C_AU_PER_DAY</b>&#160;&#160;&#160;( <a class="el" href="group__time.html#ga0b0c2c5ccc61c8740de2e2ac277cd836">NOVAS_DAY</a> / AU_SEC )</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NOVAS_C_AU_PER_DAY</b>&#160;&#160;&#160;( <a class="el" href="group__time.html#ga0b0c2c5ccc61c8740de2e2ac277cd836">NOVAS_DAY</a> / <a class="el" href="#a610c7260c1879f89913bf7a5549b4649">NOVAS_AU_SEC</a> )</td></tr>
 <tr class="memdesc:a7c474aa996c5ccc0c03b1006ea5b30e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">[AU/day] Speed of light in units of AU/day. <br /></td></tr>
 <tr class="separator:a7c474aa996c5ccc0c03b1006ea5b30e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0b0c2c5ccc61c8740de2e2ac277cd836" id="r_ga0b0c2c5ccc61c8740de2e2ac277cd836"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__time.html#ga0b0c2c5ccc61c8740de2e2ac277cd836">NOVAS_DAY</a>&#160;&#160;&#160;86400.0</td></tr>
@@ -283,6 +293,9 @@ Macros</h2></td></tr>
 <tr class="memitem:gaee2680f03d1dfa4c9fbeea2be806dbf7" id="r_gaee2680f03d1dfa4c9fbeea2be806dbf7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#gaee2680f03d1dfa4c9fbeea2be806dbf7">NOVAS_HOURANGLE</a>&#160;&#160;&#160;(<a class="el" href="#ae71449b1cc6e6250b91f539153a7a0d3">M_PI</a> / 12.0)</td></tr>
 <tr class="memdesc:gaee2680f03d1dfa4c9fbeea2be806dbf7"><td class="mdescLeft">&#160;</td><td class="mdescRight">[rad] An hour of angle expressed in radians.  <br /></td></tr>
 <tr class="separator:gaee2680f03d1dfa4c9fbeea2be806dbf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9a736e59fc9bfdc92b7245aa37d529ee" id="r_ga9a736e59fc9bfdc92b7245aa37d529ee"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__source.html#ga9a736e59fc9bfdc92b7245aa37d529ee">NOVAS_ID_TYPES</a></td></tr>
+<tr class="memdesc:ga9a736e59fc9bfdc92b7245aa37d529ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of different Solar-system body ID types enumerated.  <br /></td></tr>
+<tr class="separator:ga9a736e59fc9bfdc92b7245aa37d529ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6111d6b21ce788298259f3fc0d716fe3" id="r_ga6111d6b21ce788298259f3fc0d716fe3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__observer.html#ga6111d6b21ce788298259f3fc0d716fe3">NOVAS_IERS_EARTH_FLATTENING</a>&#160;&#160;&#160;(1.0 / 298.25642)</td></tr>
 <tr class="memdesc:ga6111d6b21ce788298259f3fc0d716fe3"><td class="mdescLeft">&#160;</td><td class="mdescRight">[m] Earth ellipsoid flattening from IERS Conventions (2003).  <br /></td></tr>
 <tr class="separator:ga6111d6b21ce788298259f3fc0d716fe3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -290,12 +303,12 @@ Macros</h2></td></tr>
 <tr class="memdesc:gaf5888a18d1c8aa269d9141fde8879148"><td class="mdescLeft">&#160;</td><td class="mdescRight">[m] Equatorial radius of Earth in meters from IERS Conventions (2003).  <br /></td></tr>
 <tr class="separator:gaf5888a18d1c8aa269d9141fde8879148"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf03a1f0412f23cd6edb323297646eb30" id="r_gaf03a1f0412f23cd6edb323297646eb30"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>NOVAS_JD_B1900</b>&#160;&#160;&#160;15019.81352</td></tr>
-<tr class="memdesc:gaf03a1f0412f23cd6edb323297646eb30"><td class="mdescLeft">&#160;</td><td class="mdescRight">[day] Julian date at B1900 <a class="el" href="group__earth.html#ga9178358732325399f3a5e3582080ced3" title="Precesses equatorial rectangular coordinates from one epoch to another using the IAU2006 (P03) preces...">precession()</a>, <a class="el" href="group__source.html#ga59caeca70d1fdd02e41ed62f20675e6c" title="Transform a star&#39;s catalog quantities for a change the coordinate system and/or the date for which th...">transform_cat()</a> <br /></td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NOVAS_JD_B1900</b>&#160;&#160;&#160;2415020.31352</td></tr>
+<tr class="memdesc:gaf03a1f0412f23cd6edb323297646eb30"><td class="mdescLeft">&#160;</td><td class="mdescRight">[day] Julian date at B1900 (NASA / NAIF SPICE definition) <a class="el" href="group__earth.html#ga9178358732325399f3a5e3582080ced3" title="Precesses equatorial rectangular coordinates from one epoch to another using the IAU2006 (P03) preces...">precession()</a>, <a class="el" href="group__source.html#ga59caeca70d1fdd02e41ed62f20675e6c" title="Transform a star&#39;s catalog quantities for a change the coordinate system and/or the date for which th...">transform_cat()</a> <br /></td></tr>
 <tr class="separator:gaf03a1f0412f23cd6edb323297646eb30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3785083ae52bbbc1e749dbedd7e5d85e" id="r_ga3785083ae52bbbc1e749dbedd7e5d85e"><td class="memItemLeft" align="right" valign="top">
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>NOVAS_JD_B1950</b>&#160;&#160;&#160;2433282.42345905</td></tr>
-<tr class="memdesc:ga3785083ae52bbbc1e749dbedd7e5d85e"><td class="mdescLeft">&#160;</td><td class="mdescRight">[day] Julian date at B1950 <a class="el" href="group__earth.html#ga9178358732325399f3a5e3582080ced3" title="Precesses equatorial rectangular coordinates from one epoch to another using the IAU2006 (P03) preces...">precession()</a>, <a class="el" href="group__source.html#ga59caeca70d1fdd02e41ed62f20675e6c" title="Transform a star&#39;s catalog quantities for a change the coordinate system and/or the date for which th...">transform_cat()</a> <br /></td></tr>
+<tr class="memdesc:ga3785083ae52bbbc1e749dbedd7e5d85e"><td class="mdescLeft">&#160;</td><td class="mdescRight">[day] Julian date at B1950 (NASA / NAIF SPICE definition) <a class="el" href="group__earth.html#ga9178358732325399f3a5e3582080ced3" title="Precesses equatorial rectangular coordinates from one epoch to another using the IAU2006 (P03) preces...">precession()</a>, <a class="el" href="group__source.html#ga59caeca70d1fdd02e41ed62f20675e6c" title="Transform a star&#39;s catalog quantities for a change the coordinate system and/or the date for which th...">transform_cat()</a> <br /></td></tr>
 <tr class="separator:ga3785083ae52bbbc1e749dbedd7e5d85e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4100ecc5d9badfa07301024baffe9ded" id="r_ga4100ecc5d9badfa07301024baffe9ded"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__time.html#ga4100ecc5d9badfa07301024baffe9ded">NOVAS_JD_HIP</a>&#160;&#160;&#160;2448349.0625</td></tr>
 <tr class="memdesc:ga4100ecc5d9badfa07301024baffe9ded"><td class="mdescLeft">&#160;</td><td class="mdescRight">[day] Julian date for J1991.25, which the Hipparcos catalog is referred to.  <br /></td></tr>
@@ -312,7 +325,7 @@ Macros</h2></td></tr>
 <tr class="memdesc:ga509afe7095f4d597125e9bfd6d0399ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">[day] The Julian day the Gregorian calendar was introduced in 15 October 1582.  <br /></td></tr>
 <tr class="separator:ga509afe7095f4d597125e9bfd6d0399ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gabb3df52add3f6fb17e5c1c6a7f428c70" id="r_gabb3df52add3f6fb17e5c1c6a7f428c70"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__time.html#gabb3df52add3f6fb17e5c1c6a7f428c70">NOVAS_JULIAN_YEAR_DAYS</a>&#160;&#160;&#160;365.25</td></tr>
-<tr class="memdesc:gabb3df52add3f6fb17e5c1c6a7f428c70"><td class="mdescLeft">&#160;</td><td class="mdescRight">[day] The length of a tropical year (at J2000) in days.  <br /></td></tr>
+<tr class="memdesc:gabb3df52add3f6fb17e5c1c6a7f428c70"><td class="mdescLeft">&#160;</td><td class="mdescRight">[day] The length of a Julian year (at J2000) in days.  <br /></td></tr>
 <tr class="separator:gabb3df52add3f6fb17e5c1c6a7f428c70"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8f05bb45f646e41b78bbe79175114d57" id="r_ga8f05bb45f646e41b78bbe79175114d57"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__source.html#ga8f05bb45f646e41b78bbe79175114d57">NOVAS_JUPITER_INIT</a></td></tr>
 <tr class="memdesc:ga8f05bb45f646e41b78bbe79175114d57"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>object</code> initializer for the planet Jupiter  <br /></td></tr>
@@ -379,9 +392,18 @@ Macros</h2></td></tr>
 <tr class="memitem:a4cc558a8e366bfea3be40777ea0fcbc3" id="r_a4cc558a8e366bfea3be40777ea0fcbc3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4cc558a8e366bfea3be40777ea0fcbc3">NOVAS_PLANET_BUNDLE_INIT</a></td></tr>
 <tr class="memdesc:a4cc558a8e366bfea3be40777ea0fcbc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Empty initializer for <a class="el" href="structnovas__planet__bundle.html" title="Position and velocity data for a set of major planets (which may include the Sun and the Moon also).">novas_planet_bundle</a>.  <br /></td></tr>
 <tr class="separator:a4cc558a8e366bfea3be40777ea0fcbc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ae90838b446c7d4c1d3386ec8857410" id="r_a0ae90838b446c7d4c1d3386ec8857410"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0ae90838b446c7d4c1d3386ec8857410">NOVAS_PLANET_GRAV_Z_INIT</a></td></tr>
+<tr class="memdesc:a0ae90838b446c7d4c1d3386ec8857410"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gravitational redshifts for major planets (and Moon and Sun) for light emitted at surface and detected at a large distance away.  <br /></td></tr>
+<tr class="separator:a0ae90838b446c7d4c1d3386ec8857410"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad34a88c2c04b624f8f85fc86e7935967" id="r_ad34a88c2c04b624f8f85fc86e7935967"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad34a88c2c04b624f8f85fc86e7935967">NOVAS_PLANET_INIT</a>(num,  name)</td></tr>
 <tr class="memdesc:ad34a88c2c04b624f8f85fc86e7935967"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>object</code> initializer macro for major planets, the Sun, Moon, and barycenters.  <br /></td></tr>
 <tr class="separator:ad34a88c2c04b624f8f85fc86e7935967"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabbd19f57e31db2ac91cbe22f9a95f390" id="r_gabbd19f57e31db2ac91cbe22f9a95f390"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__source.html#gabbd19f57e31db2ac91cbe22f9a95f390">NOVAS_PLANET_NAMES_INIT</a></td></tr>
+<tr class="memdesc:gabbd19f57e31db2ac91cbe22f9a95f390"><td class="mdescLeft">&#160;</td><td class="mdescRight">String array initializer for Major planet names, matching the enum <a class="el" href="group__source.html#ga219df36b21dc4476656e708d14d08045" title="Enumeration for the &#39;major planet&#39; numbers in NOVAS to use as the solar-system body number whenever t...">novas_planet</a>.  <br /></td></tr>
+<tr class="separator:gabbd19f57e31db2ac91cbe22f9a95f390"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae48a8495c1ddf3960784aba5189d178e" id="r_ae48a8495c1ddf3960784aba5189d178e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae48a8495c1ddf3960784aba5189d178e">NOVAS_PLANET_RADII_INIT</a></td></tr>
+<tr class="memdesc:ae48a8495c1ddf3960784aba5189d178e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array initializer for mean planet radii in meters, matching the enum <a class="el" href="group__source.html#ga219df36b21dc4476656e708d14d08045" title="Enumeration for the &#39;major planet&#39; numbers in NOVAS to use as the solar-system body number whenever t...">novas_planet</a>.  <br /></td></tr>
+<tr class="separator:ae48a8495c1ddf3960784aba5189d178e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1853540eae9f8699b6aaff9c0b518e08" id="r_a1853540eae9f8699b6aaff9c0b518e08"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1853540eae9f8699b6aaff9c0b518e08">NOVAS_PLANETS</a>&#160;&#160;&#160;(<a class="el" href="group__source.html#gga219df36b21dc4476656e708d14d08045a3503bba5abad8c20c76a6ca87dccf677">NOVAS_PLUTO_BARYCENTER</a> + 1)</td></tr>
 <tr class="memdesc:a1853540eae9f8699b6aaff9c0b518e08"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of major planets defined in NOVAS.  <br /></td></tr>
 <tr class="separator:a1853540eae9f8699b6aaff9c0b518e08"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -397,9 +419,15 @@ Macros</h2></td></tr>
 <tr class="memitem:a1932e30210aa533136e5848089adf492" id="r_a1932e30210aa533136e5848089adf492"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1932e30210aa533136e5848089adf492">NOVAS_REFRACTION_MODELS</a>&#160;&#160;&#160;(<a class="el" href="group__refract.html#ggabe97e2d459a30db9d0f67d8c60af3b81a75c80913155eddef17af869d6b0d62f6">NOVAS_WAVE_REFRACTION</a> + 1)</td></tr>
 <tr class="memdesc:a1932e30210aa533136e5848089adf492"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of built-in refraction models available in SuperNOVAS.  <br /></td></tr>
 <tr class="separator:a1932e30210aa533136e5848089adf492"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ddc7a011476a8cffaec1866beaa0095" id="r_a5ddc7a011476a8cffaec1866beaa0095"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5ddc7a011476a8cffaec1866beaa0095">NOVAS_RMASS_INIT</a></td></tr>
+<tr class="memdesc:a5ddc7a011476a8cffaec1866beaa0095"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reciprocal masses of solar system bodies, from DE-405 (Sun mass / body mass).  <br /></td></tr>
+<tr class="separator:a5ddc7a011476a8cffaec1866beaa0095"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2cd97d849a1f16d6b85b8d2976f56472" id="r_ga2cd97d849a1f16d6b85b8d2976f56472"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__source.html#ga2cd97d849a1f16d6b85b8d2976f56472">NOVAS_SATURN_INIT</a></td></tr>
 <tr class="memdesc:ga2cd97d849a1f16d6b85b8d2976f56472"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>object</code> initializer for the planet Saturn  <br /></td></tr>
 <tr class="separator:ga2cd97d849a1f16d6b85b8d2976f56472"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e72489b5d24fa737d04cb9ec303b71e" id="r_a5e72489b5d24fa737d04cb9ec303b71e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5e72489b5d24fa737d04cb9ec303b71e">NOVAS_SOLAR_CONSTANT</a>&#160;&#160;&#160;1367.0</td></tr>
+<tr class="memdesc:a5e72489b5d24fa737d04cb9ec303b71e"><td class="mdescLeft">&#160;</td><td class="mdescRight">[W/m<sup>2</sup>] The Solar Constant i.e., typical incident Solar power on Earth.  <br /></td></tr>
+<tr class="separator:a5e72489b5d24fa737d04cb9ec303b71e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae548ecdfc646914084936acb32e9c993" id="r_ae548ecdfc646914084936acb32e9c993"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae548ecdfc646914084936acb32e9c993">NOVAS_SOLAR_RADIUS</a>&#160;&#160;&#160;696340000.0</td></tr>
 <tr class="memdesc:ae548ecdfc646914084936acb32e9c993"><td class="mdescLeft">&#160;</td><td class="mdescRight">[m] Solar radius (photosphere)  <br /></td></tr>
 <tr class="separator:ae548ecdfc646914084936acb32e9c993"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -413,11 +441,14 @@ Macros</h2></td></tr>
 <tr class="memdesc:gaaf00ed93616e93d09df832d485a0e115"><td class="mdescLeft">&#160;</td><td class="mdescRight">The B1950 coordiante system as a string.  <br /></td></tr>
 <tr class="separator:gaaf00ed93616e93d09df832d485a0e115"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae7ab88078608cf4f4499cedcf4c0ca75" id="r_gae7ab88078608cf4f4499cedcf4c0ca75"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__source.html#gae7ab88078608cf4f4499cedcf4c0ca75">NOVAS_SYSTEM_FK4</a>&#160;&#160;&#160;&quot;FK4&quot;</td></tr>
-<tr class="memdesc:gae7ab88078608cf4f4499cedcf4c0ca75"><td class="mdescLeft">&#160;</td><td class="mdescRight">The 4th catalog (FK4) coordinate system as a string.  <br /></td></tr>
+<tr class="memdesc:gae7ab88078608cf4f4499cedcf4c0ca75"><td class="mdescLeft">&#160;</td><td class="mdescRight">The 4th catalog of fundamental stars (FK4) coordinate system as a string.  <br /></td></tr>
 <tr class="separator:gae7ab88078608cf4f4499cedcf4c0ca75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gabf795b4cd3cc6205b88508bcc77586c1" id="r_gabf795b4cd3cc6205b88508bcc77586c1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__source.html#gabf795b4cd3cc6205b88508bcc77586c1">NOVAS_SYSTEM_FK5</a>&#160;&#160;&#160;&quot;FK5&quot;</td></tr>
-<tr class="memdesc:gabf795b4cd3cc6205b88508bcc77586c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The 5th catalog (FK5) coordinate system as a string.  <br /></td></tr>
+<tr class="memdesc:gabf795b4cd3cc6205b88508bcc77586c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The 5th catalog of fundamental stars (FK5) coordinate system as a string.  <br /></td></tr>
 <tr class="separator:gabf795b4cd3cc6205b88508bcc77586c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga66966aace37201095f852727d909c2cb" id="r_ga66966aace37201095f852727d909c2cb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__source.html#ga66966aace37201095f852727d909c2cb">NOVAS_SYSTEM_FK6</a>&#160;&#160;&#160;&quot;FK6&quot;</td></tr>
+<tr class="memdesc:ga66966aace37201095f852727d909c2cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The 6th catalog of fundamental stars (FK6) coordinate system as a string.  <br /></td></tr>
+<tr class="separator:ga66966aace37201095f852727d909c2cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga773bb459e1ec420cd7d93d064e70eb7f" id="r_ga773bb459e1ec420cd7d93d064e70eb7f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__source.html#ga773bb459e1ec420cd7d93d064e70eb7f">NOVAS_SYSTEM_HIP</a>&#160;&#160;&#160;&quot;HIP&quot;</td></tr>
 <tr class="memdesc:ga773bb459e1ec420cd7d93d064e70eb7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Hipparcos dataset coordinate system as a string.  <br /></td></tr>
 <tr class="separator:ga773bb459e1ec420cd7d93d064e70eb7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -503,7 +534,7 @@ Macros</h2></td></tr>
 <tr class="memdesc:a9b926427954233b94ebd6925d86f9f81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integer sub version of the release. <br /></td></tr>
 <tr class="separator:a9b926427954233b94ebd6925d86f9f81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aadef42ba39811e058ee9efe2c6f7d151" id="r_aadef42ba39811e058ee9efe2c6f7d151"><td class="memItemLeft" align="right" valign="top"><a id="aadef42ba39811e058ee9efe2c6f7d151" name="aadef42ba39811e058ee9efe2c6f7d151"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SUPERNOVAS_RELEASE_STRING</b>&#160;&#160;&#160;&quot;-rc6&quot;</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SUPERNOVAS_RELEASE_STRING</b>&#160;&#160;&#160;&quot;-rc7&quot;</td></tr>
 <tr class="memdesc:aadef42ba39811e058ee9efe2c6f7d151"><td class="mdescLeft">&#160;</td><td class="mdescRight">Additional release information in version, e.g. "-1", or "-rc1", or empty string "" for releases. <br /></td></tr>
 <tr class="separator:aadef42ba39811e058ee9efe2c6f7d151"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44de9d1672290d153a1dfb0685886208" id="r_a44de9d1672290d153a1dfb0685886208"><td class="memItemLeft" align="right" valign="top"><a id="a44de9d1672290d153a1dfb0685886208" name="a44de9d1672290d153a1dfb0685886208"></a>
@@ -517,9 +548,18 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr class="memitem:gaebb3d71006e8d93de242df61510374ad" id="r_gaebb3d71006e8d93de242df61510374ad"><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__solar-system.html#gaebb3d71006e8d93de242df61510374ad">novas_ephem_provider</a>) (const char *name, long id, double jd_tdb_high, double jd_tdb_low, enum <a class="el" href="group__solar-system.html#ga208120c5fa3e12853eb37cb99d3e27be">novas_origin</a> *restrict origin, double *restrict pos, double *restrict vel)</td></tr>
+<tr class="memdesc:gaebb3d71006e8d93de242df61510374ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to obtain ephemeris data for minor planets, which are not handled by the solarsystem() type calls.  <br /></td></tr>
+<tr class="separator:gaebb3d71006e8d93de242df61510374ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1f0e319630e7a47f17247bf51f7bf36c" id="r_ga1f0e319630e7a47f17247bf51f7bf36c"><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__earth.html#ga1f0e319630e7a47f17247bf51f7bf36c">novas_nutation_provider</a>) (double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps)</td></tr>
 <tr class="memdesc:ga1f0e319630e7a47f17247bf51f7bf36c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function type definition for the IAU 2000 nutation series calculation.  <br /></td></tr>
 <tr class="separator:ga1f0e319630e7a47f17247bf51f7bf36c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaae2b06af367d7b0a70a8b89c258b00b0" id="r_gaae2b06af367d7b0a70a8b89c258b00b0"><td class="memItemLeft" align="right" valign="top">typedef short(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__solar-system.html#gaae2b06af367d7b0a70a8b89c258b00b0">novas_planet_provider</a>) (double jd_tdb, enum <a class="el" href="group__source.html#ga219df36b21dc4476656e708d14d08045">novas_planet</a> body, enum <a class="el" href="group__solar-system.html#ga208120c5fa3e12853eb37cb99d3e27be">novas_origin</a> origin, double *restrict position, double *restrict velocity)</td></tr>
+<tr class="memdesc:gaae2b06af367d7b0a70a8b89c258b00b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides the position and velocity of major planets (as well as the Sun, Moon, Solar-system Barycenter, and other barycenters).  <br /></td></tr>
+<tr class="separator:gaae2b06af367d7b0a70a8b89c258b00b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae8d7c10a8b9e69b1f0654ef4038482fd" id="r_gae8d7c10a8b9e69b1f0654ef4038482fd"><td class="memItemLeft" align="right" valign="top">typedef short(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__solar-system.html#gae8d7c10a8b9e69b1f0654ef4038482fd">novas_planet_provider_hp</a>) (const double jd_tdb[2], enum <a class="el" href="group__source.html#ga219df36b21dc4476656e708d14d08045">novas_planet</a> body, enum <a class="el" href="group__solar-system.html#ga208120c5fa3e12853eb37cb99d3e27be">novas_origin</a> origin, double *restrict position, double *restrict velocity)</td></tr>
+<tr class="memdesc:gae8d7c10a8b9e69b1f0654ef4038482fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides the position and velocity of major planets (as well as the Sun, Moon, Solar-system Barycenter, and other barycenters).  <br /></td></tr>
+<tr class="separator:gae8d7c10a8b9e69b1f0654ef4038482fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad4899a6116cfbbe17400e7ef0c8426a9" id="r_gad4899a6116cfbbe17400e7ef0c8426a9"><td class="memItemLeft" align="right" valign="top">typedef double(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__refract.html#gad4899a6116cfbbe17400e7ef0c8426a9">RefractionModel</a>) (double jd_tt, const <a class="el" href="structon__surface.html">on_surface</a> *loc, enum <a class="el" href="group__refract.html#ga8c77758e10b1d3dc8dbd3ab0b694e468">novas_refraction_type</a> type, double el)</td></tr>
 <tr class="memdesc:gad4899a6116cfbbe17400e7ef0c8426a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function that returns a refraction correction for a given date/time of observation at the given site on earth, and for a given astrometric source elevation.  <br /></td></tr>
 <tr class="separator:gad4899a6116cfbbe17400e7ef0c8426a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -583,6 +623,11 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:gae8b91a9b4fe4af63c7054d1eacdb996e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Direction constant to use for <a class="el" href="group__equatorial.html#gaa11d2253a44261370af8d0c32f0715e9" title="Transforms a vector from the dynamical reference system to the International Celestial Reference Syst...">frame_tie()</a>, to determine the direction of transformation between J2000 and ICRS coordinates.  <a href="group__equatorial.html#gae8b91a9b4fe4af63c7054d1eacdb996e">More...</a><br /></td></tr>
 <tr class="separator:gae8b91a9b4fe4af63c7054d1eacdb996e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac42df1db80fbcb6f7a72de80d9f9c531" id="r_gac42df1db80fbcb6f7a72de80d9f9c531"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__source.html#gac42df1db80fbcb6f7a72de80d9f9c531">novas_id_type</a> { <a class="el" href="group__source.html#ggac42df1db80fbcb6f7a72de80d9f9c531ab3e6efc1ad89e02f915df25265ec32db">NOVAS_ID_NAIF</a> = 0
+, <a class="el" href="group__source.html#ggac42df1db80fbcb6f7a72de80d9f9c531a074c723dfc1f03c82d52347c46ee0719">NOVAS_ID_CALCEPH</a>
+ }</td></tr>
+<tr class="memdesc:gac42df1db80fbcb6f7a72de80d9f9c531"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solar-system body IDs to use as <a class="el" href="structobject.html#a7d578acc2a3e88ef2435fe0e88d01a74" title="enum novas_planet, or minor planet ID (e.g. NAIF), or star catalog ID.">object.number</a> with <a class="el" href="group__source.html#gga1eecb357eeea0de4759e9c8d55af238fa58f22833170aee0959154d3a7be6c269">NOVAS_EPHEM_OBJECT</a> types.  <a href="group__source.html#gac42df1db80fbcb6f7a72de80d9f9c531">More...</a><br /></td></tr>
+<tr class="separator:gac42df1db80fbcb6f7a72de80d9f9c531"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae2d3d508d68d268bec838bdc013d0ada" id="r_gae2d3d508d68d268bec838bdc013d0ada"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nonequatorial.html#gae2d3d508d68d268bec838bdc013d0ada">novas_nutation_direction</a> { <a class="el" href="group__nonequatorial.html#ggae2d3d508d68d268bec838bdc013d0adaa20ce1e5229410b6286bcc98a7ce69573">NUTATE_TRUE_TO_MEAN</a> = -1
 , <a class="el" href="group__nonequatorial.html#ggae2d3d508d68d268bec838bdc013d0adaacd57b0308467899ec6304aa26dcc8f4c">NUTATE_MEAN_TO_TRUE</a>
  }</td></tr>
@@ -791,12 +836,24 @@ Functions</h2></td></tr>
 <tr class="memitem:gab75165e2d69231da10c67de025ee05d8" id="r_gab75165e2d69231da10c67de025ee05d8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__earth.html#gab75165e2d69231da10c67de025ee05d8">e_tilt</a> (double jd_tdb, enum <a class="el" href="group__frame.html#ga3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, double *restrict mobl, double *restrict tobl, double *restrict ee, double *restrict dpsi, double *restrict deps)</td></tr>
 <tr class="memdesc:gab75165e2d69231da10c67de025ee05d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">(<em>primarily for internal use</em>) Computes quantities related to the orientation of the Earth's rotation axis at the specified Julian date.  <br /></td></tr>
 <tr class="separator:gab75165e2d69231da10c67de025ee05d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga580f5949c8a29cdd7bf4787aee891f2b" id="r_ga580f5949c8a29cdd7bf4787aee891f2b"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__solar-system.html#ga580f5949c8a29cdd7bf4787aee891f2b">earth_sun_calc</a> (double jd_tdb, enum <a class="el" href="group__source.html#ga219df36b21dc4476656e708d14d08045">novas_planet</a> body, enum <a class="el" href="group__solar-system.html#ga208120c5fa3e12853eb37cb99d3e27be">novas_origin</a> origin, double *restrict position, double *restrict velocity)</td></tr>
+<tr class="memdesc:ga580f5949c8a29cdd7bf4787aee891f2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides the position and velocity of the Earth and Sun only at epoch 'jd_tdb' by evaluating a closed-form theory without reference to an external file.  <br /></td></tr>
+<tr class="separator:ga580f5949c8a29cdd7bf4787aee891f2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga338e3436ba86dadf6bd4d7390f9940ec" id="r_ga338e3436ba86dadf6bd4d7390f9940ec"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__solar-system.html#ga338e3436ba86dadf6bd4d7390f9940ec">earth_sun_calc_hp</a> (const double jd_tdb[restrict 2], enum <a class="el" href="group__source.html#ga219df36b21dc4476656e708d14d08045">novas_planet</a> body, enum <a class="el" href="group__solar-system.html#ga208120c5fa3e12853eb37cb99d3e27be">novas_origin</a> origin, double *restrict position, double *restrict velocity)</td></tr>
+<tr class="memdesc:ga338e3436ba86dadf6bd4d7390f9940ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">It may provide the position and velocity of the Earth and Sun, the same as <a class="el" href="group__solar-system.html#ga580f5949c8a29cdd7bf4787aee891f2b" title="Provides the position and velocity of the Earth and Sun only at epoch &#39;jd_tdb&#39; by evaluating a closed...">earth_sun_calc()</a>, if <a class="el" href="group__solar-system.html#ga279bca0519117cee9a3bd4382f38e7ad" title="Specify whether the high-precision call is allowed to return a low-precision result.">enable_earth_sun_hp()</a> is set to true (non-zero).  <br /></td></tr>
+<tr class="separator:ga338e3436ba86dadf6bd4d7390f9940ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga41ca0cfd79ad07c9e857ba02fa94928e" id="r_ga41ca0cfd79ad07c9e857ba02fa94928e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nonequatorial.html#ga41ca0cfd79ad07c9e857ba02fa94928e">ecl2equ</a> (double jd_tt, enum <a class="el" href="group__earth.html#ga2eff9980cb9db96ab41fb564c1b5c014">novas_equator_type</a> coord_sys, enum <a class="el" href="group__frame.html#ga3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, double elon, double elat, double *restrict ra, double *restrict dec)</td></tr>
 <tr class="memdesc:ga41ca0cfd79ad07c9e857ba02fa94928e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert ecliptic longitude and latitude to right ascension and declination.  <br /></td></tr>
 <tr class="separator:ga41ca0cfd79ad07c9e857ba02fa94928e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6fa1eada41005ac70290d0bb5df1ec26" id="r_ga6fa1eada41005ac70290d0bb5df1ec26"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nonequatorial.html#ga6fa1eada41005ac70290d0bb5df1ec26">ecl2equ_vec</a> (double jd_tt, enum <a class="el" href="group__earth.html#ga2eff9980cb9db96ab41fb564c1b5c014">novas_equator_type</a> coord_sys, enum <a class="el" href="group__frame.html#ga3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, const double *in, double *out)</td></tr>
 <tr class="memdesc:ga6fa1eada41005ac70290d0bb5df1ec26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an ecliptic position vector to an equatorial position vector.  <br /></td></tr>
 <tr class="separator:ga6fa1eada41005ac70290d0bb5df1ec26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga279bca0519117cee9a3bd4382f38e7ad" id="r_ga279bca0519117cee9a3bd4382f38e7ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__solar-system.html#ga279bca0519117cee9a3bd4382f38e7ad">enable_earth_sun_hp</a> (int value)</td></tr>
+<tr class="memdesc:ga279bca0519117cee9a3bd4382f38e7ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify whether the high-precision call is allowed to return a low-precision result.  <br /></td></tr>
+<tr class="separator:ga279bca0519117cee9a3bd4382f38e7ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga713982e1f2bae0a72b39d03007f00d23" id="r_ga713982e1f2bae0a72b39d03007f00d23"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__geometric.html#ga713982e1f2bae0a72b39d03007f00d23">ephemeris</a> (const double *restrict jd_tdb, const <a class="el" href="structobject.html">object</a> *restrict body, enum <a class="el" href="group__solar-system.html#ga208120c5fa3e12853eb37cb99d3e27be">novas_origin</a> origin, enum <a class="el" href="group__frame.html#ga3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, double *restrict pos, double *restrict vel)</td></tr>
+<tr class="memdesc:ga713982e1f2bae0a72b39d03007f00d23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the position and velocity of a solar system body using the currently configured plugins that provide them.  <br /></td></tr>
+<tr class="separator:ga713982e1f2bae0a72b39d03007f00d23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga035047336b16951b8b850066e74210a9" id="r_ga035047336b16951b8b850066e74210a9"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nonequatorial.html#ga035047336b16951b8b850066e74210a9">equ2ecl</a> (double jd_tt, enum <a class="el" href="group__earth.html#ga2eff9980cb9db96ab41fb564c1b5c014">novas_equator_type</a> coord_sys, enum <a class="el" href="group__frame.html#ga3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, double ra, double dec, double *restrict elon, double *restrict elat)</td></tr>
 <tr class="memdesc:ga035047336b16951b8b850066e74210a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert right ascension and declination to ecliptic longitude and latitude.  <br /></td></tr>
 <tr class="separator:ga035047336b16951b8b850066e74210a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -838,9 +895,18 @@ Functions</h2></td></tr>
 <tr class="memitem:gada5ca37110e66c8b65f623c9e26ae52e" id="r_gada5ca37110e66c8b65f623c9e26ae52e"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__geometric.html#gada5ca37110e66c8b65f623c9e26ae52e">geo_posvel</a> (double jd_tt, double ut1_to_tt, enum <a class="el" href="group__frame.html#ga3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, const <a class="el" href="structobserver.html">observer</a> *restrict obs, double *restrict pos, double *restrict vel)</td></tr>
 <tr class="memdesc:gada5ca37110e66c8b65f623c9e26ae52e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the geocentric GCRS position and velocity of an observer.  <br /></td></tr>
 <tr class="separator:gada5ca37110e66c8b65f623c9e26ae52e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa6fad38297a49ba78a6bd49cedf889b1" id="r_gaa6fad38297a49ba78a6bd49cedf889b1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__solar-system.html#gaebb3d71006e8d93de242df61510374ad">novas_ephem_provider</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__solar-system.html#gaa6fad38297a49ba78a6bd49cedf889b1">get_ephem_provider</a> ()</td></tr>
+<tr class="memdesc:gaa6fad38297a49ba78a6bd49cedf889b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the user-defined ephemeris accessor function.  <br /></td></tr>
+<tr class="separator:gaa6fad38297a49ba78a6bd49cedf889b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga416a96426a0b3c52c1d5fc6452357366" id="r_ga416a96426a0b3c52c1d5fc6452357366"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__earth.html#ga1f0e319630e7a47f17247bf51f7bf36c">novas_nutation_provider</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__earth.html#ga416a96426a0b3c52c1d5fc6452357366">get_nutation_lp_provider</a> ()</td></tr>
 <tr class="memdesc:ga416a96426a0b3c52c1d5fc6452357366"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the function configured for low-precision IAU 2000 nutation calculations instead of the default <a class="el" href="group__earth.html#gabd066c2857d1b1cc06d8bd51b912d841" title="Computes the forced nutation of the non-rigid Earth: Model NU2000K.">nu2000k()</a>.  <br /></td></tr>
 <tr class="separator:ga416a96426a0b3c52c1d5fc6452357366"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0f0a786b5614a788c02b37a462eae2d2" id="r_ga0f0a786b5614a788c02b37a462eae2d2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__solar-system.html#gaae2b06af367d7b0a70a8b89c258b00b0">novas_planet_provider</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__solar-system.html#ga0f0a786b5614a788c02b37a462eae2d2">get_planet_provider</a> ()</td></tr>
+<tr class="memdesc:ga0f0a786b5614a788c02b37a462eae2d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the custom (low-precision) ephemeris provider function for major planets (and Sun, Moon, SSB...), if any.  <br /></td></tr>
+<tr class="separator:ga0f0a786b5614a788c02b37a462eae2d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae45badb450c1ca73920d982e12346c5b" id="r_gae45badb450c1ca73920d982e12346c5b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__solar-system.html#gae8d7c10a8b9e69b1f0654ef4038482fd">novas_planet_provider_hp</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__solar-system.html#gae45badb450c1ca73920d982e12346c5b">get_planet_provider_hp</a> ()</td></tr>
+<tr class="memdesc:gae45badb450c1ca73920d982e12346c5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the custom high-precision ephemeris provider function for major planets (and Sun, Moon, SSB...), if any.  <br /></td></tr>
+<tr class="separator:gae45badb450c1ca73920d982e12346c5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4d7470ca705efa1953e8b4beab77c6b6" id="r_ga4d7470ca705efa1953e8b4beab77c6b6"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__time.html#ga4d7470ca705efa1953e8b4beab77c6b6">get_ut1_to_tt</a> (int leap_seconds, double dut1)</td></tr>
 <tr class="memdesc:ga4d7470ca705efa1953e8b4beab77c6b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the TT - UT1 time difference given the leap seconds and the actual UT1 - UTC time difference as measured and published by IERS.  <br /></td></tr>
 <tr class="separator:ga4d7470ca705efa1953e8b4beab77c6b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -963,6 +1029,9 @@ Functions</h2></td></tr>
 <tr class="separator:ga5eb76fc6e7be571e228d23aee3823cb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42c084465aedee75965f74e23e6571fe" id="r_a42c084465aedee75965f74e23e6571fe"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a42c084465aedee75965f74e23e6571fe">make_on_surface</a> (double latitude, double longitude, double height, double temperature, double pressure, <a class="el" href="structon__surface.html">on_surface</a> *restrict loc)</td></tr>
 <tr class="separator:a42c084465aedee75965f74e23e6571fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3c5e215babeeba078ca7b3e9be42e555" id="r_ga3c5e215babeeba078ca7b3e9be42e555"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__source.html#ga3c5e215babeeba078ca7b3e9be42e555">make_orbital_object</a> (const char *name, long num, const <a class="el" href="structnovas__orbital.html">novas_orbital</a> *orbit, <a class="el" href="structobject.html">object</a> *body)</td></tr>
+<tr class="memdesc:ga3c5e215babeeba078ca7b3e9be42e555"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a celestial object to be a Solar-system orbital body.  <br /></td></tr>
+<tr class="separator:ga3c5e215babeeba078ca7b3e9be42e555"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4c7846be95299769f4d0377bf127bcf5" id="r_ga4c7846be95299769f4d0377bf127bcf5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__source.html#ga4c7846be95299769f4d0377bf127bcf5">make_planet</a> (enum <a class="el" href="group__source.html#ga219df36b21dc4476656e708d14d08045">novas_planet</a> num, <a class="el" href="structobject.html">object</a> *restrict planet)</td></tr>
 <tr class="memdesc:ga4c7846be95299769f4d0377bf127bcf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a celestial object to be a major planet, or the Sun, Moon, Solar-system Barycenter, etc.  <br /></td></tr>
 <tr class="separator:ga4c7846be95299769f4d0377bf127bcf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -993,12 +1062,21 @@ Functions</h2></td></tr>
 <tr class="memitem:gad9cc07f0e6af9339096e15a440b113e5" id="r_gad9cc07f0e6af9339096e15a440b113e5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__equatorial.html#gad9cc07f0e6af9339096e15a440b113e5">mod_to_gcrs</a> (double jd_tdb, const double *in, double *out)</td></tr>
 <tr class="memdesc:gad9cc07f0e6af9339096e15a440b113e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms a rectangular equatorial (x, y, z) vector from Mean of Date (MOD) reference frame at the given epoch to the ICRS / GCRS.  <br /></td></tr>
 <tr class="separator:gad9cc07f0e6af9339096e15a440b113e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1c4b3f67a3b82808dd16ae43dfaf0f86" id="r_ga1c4b3f67a3b82808dd16ae43dfaf0f86"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="group__source.html#ga219df36b21dc4476656e708d14d08045">novas_planet</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__source.html#ga1c4b3f67a3b82808dd16ae43dfaf0f86">naif_to_novas_planet</a> (long id)</td></tr>
+<tr class="memdesc:ga1c4b3f67a3b82808dd16ae43dfaf0f86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a NAIF ID to a NOVAS major planet ID.  <br /></td></tr>
+<tr class="separator:ga1c4b3f67a3b82808dd16ae43dfaf0f86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab7db8026c598e8e126a4725ac3b388bf" id="r_gab7db8026c598e8e126a4725ac3b388bf"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__apparent.html#gab7db8026c598e8e126a4725ac3b388bf">novas_app_to_geom</a> (const <a class="el" href="structnovas__frame.html">novas_frame</a> *restrict frame, enum <a class="el" href="group__equatorial.html#ga7ba038ea34eb901ccfb8f785708c651e">novas_reference_system</a> sys, double ra, double dec, double dist, double *restrict geom_icrs)</td></tr>
 <tr class="memdesc:gab7db8026c598e8e126a4725ac3b388bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an observed apparent sky position of a source to an ICRS geometric position, by undoing the gravitational deflection and aberration corrections.  <br /></td></tr>
 <tr class="separator:gab7db8026c598e8e126a4725ac3b388bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3cd947f2e48d6c5cc88ad7a1bab9b8ca" id="r_ga3cd947f2e48d6c5cc88ad7a1bab9b8ca"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__apparent.html#ga3cd947f2e48d6c5cc88ad7a1bab9b8ca">novas_app_to_hor</a> (const <a class="el" href="structnovas__frame.html">novas_frame</a> *restrict frame, enum <a class="el" href="group__equatorial.html#ga7ba038ea34eb901ccfb8f785708c651e">novas_reference_system</a> sys, double ra, double dec, <a class="el" href="group__refract.html#gad4899a6116cfbbe17400e7ef0c8426a9">RefractionModel</a> ref_model, double *restrict az, double *restrict el)</td></tr>
 <tr class="memdesc:ga3cd947f2e48d6c5cc88ad7a1bab9b8ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an observed apparent position vector in the specified coordinate system to local horizontal coordinates in the specified observer frame.  <br /></td></tr>
 <tr class="separator:ga3cd947f2e48d6c5cc88ad7a1bab9b8ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9ead627eed7fabd8583f1353e89f42e7" id="r_ga9ead627eed7fabd8583f1353e89f42e7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__geometric.html#ga9ead627eed7fabd8583f1353e89f42e7">novas_approx_heliocentric</a> (enum <a class="el" href="group__source.html#ga219df36b21dc4476656e708d14d08045">novas_planet</a> id, double jd_tdb, double *restrict pos, double *restrict vel)</td></tr>
+<tr class="memdesc:ga9ead627eed7fabd8583f1353e89f42e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the approximate geometric heliocentric orbital positions and velocities for the major planets, Sun, or Earth-Moon Barycenter (EMB).  <br /></td></tr>
+<tr class="separator:ga9ead627eed7fabd8583f1353e89f42e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4cb01609f76b0ff8487817b9446a3a62" id="r_ga4cb01609f76b0ff8487817b9446a3a62"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__apparent.html#ga4cb01609f76b0ff8487817b9446a3a62">novas_approx_sky_pos</a> (enum <a class="el" href="group__source.html#ga219df36b21dc4476656e708d14d08045">novas_planet</a> id, const <a class="el" href="structnovas__frame.html">novas_frame</a> *restrict frame, enum <a class="el" href="group__equatorial.html#ga7ba038ea34eb901ccfb8f785708c651e">novas_reference_system</a> sys, <a class="el" href="structsky__pos.html">sky_pos</a> *restrict out)</td></tr>
+<tr class="memdesc:ga4cb01609f76b0ff8487817b9446a3a62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates an approximate apparent location on sky for a major planet, Sun, Moon, Earth-Moon Barycenter (EMB) &ndash; typically to arcmin level accuracy &ndash; using Keplerian orbital elements.  <br /></td></tr>
+<tr class="separator:ga4cb01609f76b0ff8487817b9446a3a62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7479134485c298faa858d73ee0513a11" id="r_ga7479134485c298faa858d73ee0513a11"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__observer.html#ga7479134485c298faa858d73ee0513a11">novas_cartesian_to_geodetic</a> (const double *restrict xyz, enum <a class="el" href="group__observer.html#ga5928ca4a09c2883b58e951a4582255b3">novas_reference_ellipsoid</a> ellipsoid, double *restrict lon, double *restrict lat, double *restrict alt)</td></tr>
 <tr class="memdesc:ga7479134485c298faa858d73ee0513a11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts geocentric Cartesian site coordinates to geodetic coordinates on the given reference ellipsoid.  <br /></td></tr>
 <tr class="separator:ga7479134485c298faa858d73ee0513a11"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1101,6 +1179,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga7977de3e3edf8120b50cbd026c155f47" id="r_ga7977de3e3edf8120b50cbd026c155f47"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nonequatorial.html#ga7977de3e3edf8120b50cbd026c155f47">novas_h2e_offset</a> (double daz, double del, double pa, double *restrict dra, double *restrict ddec)</td></tr>
 <tr class="memdesc:ga7977de3e3edf8120b50cbd026c155f47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts coordinate offsets, from the local horizontal system to local equatorial offsets.  <br /></td></tr>
 <tr class="separator:ga7977de3e3edf8120b50cbd026c155f47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf4fa5359b8b0167a2780baff17b164a5" id="r_gaf4fa5359b8b0167a2780baff17b164a5"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__solar-system.html#gaf4fa5359b8b0167a2780baff17b164a5">novas_helio_dist</a> (double jd_tdb, const <a class="el" href="structobject.html">object</a> *restrict source, double *restrict rate)</td></tr>
+<tr class="memdesc:gaf4fa5359b8b0167a2780baff17b164a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a Solar-system body's distance from the Sun, and optionally also the rate of recession.  <br /></td></tr>
+<tr class="separator:gaf4fa5359b8b0167a2780baff17b164a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga696e44a2d1c788f9f335611efd7ed958" id="r_ga696e44a2d1c788f9f335611efd7ed958"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#ga696e44a2d1c788f9f335611efd7ed958">novas_hms_hours</a> (const char *restrict hms)</td></tr>
 <tr class="memdesc:ga696e44a2d1c788f9f335611efd7ed958"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the decimal hours for a HMS string specification.  <br /></td></tr>
 <tr class="separator:ga696e44a2d1c788f9f335611efd7ed958"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1149,12 +1230,27 @@ Functions</h2></td></tr>
 <tr class="memitem:gadc72577f99a7b076b23e0e44ddbca838" id="r_gadc72577f99a7b076b23e0e44ddbca838"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__frame.html#gadc72577f99a7b076b23e0e44ddbca838">novas_make_frame</a> (enum <a class="el" href="group__frame.html#ga3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, const <a class="el" href="structobserver.html">observer</a> *obs, const <a class="el" href="structnovas__timespec.html">novas_timespec</a> *time, double xp, double yp, <a class="el" href="structnovas__frame.html">novas_frame</a> *frame)</td></tr>
 <tr class="memdesc:gadc72577f99a7b076b23e0e44ddbca838"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up a observing frame for a specific observer location, time of observation, and accuracy requirement.  <br /></td></tr>
 <tr class="separator:gadc72577f99a7b076b23e0e44ddbca838"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad6e6c7f6dc2745030e3fd4d407e982bd" id="r_gad6e6c7f6dc2745030e3fd4d407e982bd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__source.html#gad6e6c7f6dc2745030e3fd4d407e982bd">novas_make_moon_orbit</a> (double jd_tdb, <a class="el" href="structnovas__orbital.html">novas_orbital</a> *restrict orbit)</td></tr>
+<tr class="memdesc:gad6e6c7f6dc2745030e3fd4d407e982bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the current orbital elements for the Moon relative to the geocenter for the specified epoch of observation.  <br /></td></tr>
+<tr class="separator:gad6e6c7f6dc2745030e3fd4d407e982bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga63b094e813d8b752a6f3344419e80031" id="r_ga63b094e813d8b752a6f3344419e80031"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__source.html#ga63b094e813d8b752a6f3344419e80031">novas_make_planet_orbit</a> (enum <a class="el" href="group__source.html#ga219df36b21dc4476656e708d14d08045">novas_planet</a> id, double jd_tdb, <a class="el" href="structnovas__orbital.html">novas_orbital</a> *restrict orbit)</td></tr>
+<tr class="memdesc:ga63b094e813d8b752a6f3344419e80031"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get approximate current heliocentric orbital elements for the major planets.  <br /></td></tr>
+<tr class="separator:ga63b094e813d8b752a6f3344419e80031"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4d179c8573319fc25c775ce56ba055dc" id="r_ga4d179c8573319fc25c775ce56ba055dc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__frame.html#ga4d179c8573319fc25c775ce56ba055dc">novas_make_transform</a> (const <a class="el" href="structnovas__frame.html">novas_frame</a> *frame, enum <a class="el" href="group__equatorial.html#ga7ba038ea34eb901ccfb8f785708c651e">novas_reference_system</a> from_system, enum <a class="el" href="group__equatorial.html#ga7ba038ea34eb901ccfb8f785708c651e">novas_reference_system</a> to_system, <a class="el" href="structnovas__transform.html">novas_transform</a> *transform)</td></tr>
 <tr class="memdesc:ga4d179c8573319fc25c775ce56ba055dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates a transformation matrix that can be used to convert positions and velocities from one coordinate reference system to another.  <br /></td></tr>
 <tr class="separator:ga4d179c8573319fc25c775ce56ba055dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad2d5ef17b41a30ebca91e4c70e636acf" id="r_gad2d5ef17b41a30ebca91e4c70e636acf"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__time.html#gad2d5ef17b41a30ebca91e4c70e636acf">novas_mean_clock_skew</a> (const <a class="el" href="structnovas__frame.html">novas_frame</a> *frame, enum <a class="el" href="group__time.html#gaa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a> timescale)</td></tr>
 <tr class="memdesc:gad2d5ef17b41a30ebca91e4c70e636acf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the averaged incremental rate at which the observer's clock (i.e.  <br /></td></tr>
 <tr class="separator:gad2d5ef17b41a30ebca91e4c70e636acf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga121940d7f0ef41297d28fab8e6df5998" id="r_ga121940d7f0ef41297d28fab8e6df5998"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__apparent.html#ga121940d7f0ef41297d28fab8e6df5998">novas_moon_angle</a> (const <a class="el" href="structobject.html">object</a> *restrict source, const <a class="el" href="structnovas__frame.html">novas_frame</a> *restrict frame)</td></tr>
+<tr class="memdesc:ga121940d7f0ef41297d28fab8e6df5998"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the apparent angular distance of a source from the Moon from the observer's point of view.  <br /></td></tr>
+<tr class="separator:ga121940d7f0ef41297d28fab8e6df5998"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2dbdafd6b07f079815ae52d00e142861" id="r_ga2dbdafd6b07f079815ae52d00e142861"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__apparent.html#ga2dbdafd6b07f079815ae52d00e142861">novas_moon_phase</a> (double jd_tdb)</td></tr>
+<tr class="memdesc:ga2dbdafd6b07f079815ae52d00e142861"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the Moon's phase at a given time.  <br /></td></tr>
+<tr class="separator:ga2dbdafd6b07f079815ae52d00e142861"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad0bd6e212af549309b0fcb792ed8cb79" id="r_gad0bd6e212af549309b0fcb792ed8cb79"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__time.html#gad0bd6e212af549309b0fcb792ed8cb79">novas_next_moon_phase</a> (double phase, double jd_tdb)</td></tr>
+<tr class="memdesc:gad0bd6e212af549309b0fcb792ed8cb79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the date / time at which the Moon will reach the specified phase next, <em>after</em> the specified time.  <br /></td></tr>
+<tr class="separator:gad0bd6e212af549309b0fcb792ed8cb79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga85334614a0f399e0d3cbde68075d0766" id="r_ga85334614a0f399e0d3cbde68075d0766"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#ga85334614a0f399e0d3cbde68075d0766">novas_norm_ang</a> (double angle)</td></tr>
 <tr class="memdesc:ga85334614a0f399e0d3cbde68075d0766"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the normalized angle in the [0:2&pi;) range.  <br /></td></tr>
 <tr class="separator:ga85334614a0f399e0d3cbde68075d0766"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1167,6 +1263,12 @@ Functions</h2></td></tr>
 <tr class="memitem:gae4511a80a1defbb1e1fdc29c289e7de4" id="r_gae4511a80a1defbb1e1fdc29c289e7de4"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__refract.html#gae4511a80a1defbb1e1fdc29c289e7de4">novas_optical_refraction</a> (double jd_tt, const <a class="el" href="structon__surface.html">on_surface</a> *loc, enum <a class="el" href="group__refract.html#ga8c77758e10b1d3dc8dbd3ab0b694e468">novas_refraction_type</a> type, double el)</td></tr>
 <tr class="memdesc:gae4511a80a1defbb1e1fdc29c289e7de4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an optical refraction correction using the weather parameters defined for the observer location.  <br /></td></tr>
 <tr class="separator:gae4511a80a1defbb1e1fdc29c289e7de4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6b88d2403a3051ab32229244cf98d7ab" id="r_ga6b88d2403a3051ab32229244cf98d7ab"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__geometric.html#ga6b88d2403a3051ab32229244cf98d7ab">novas_orbit_native_posvel</a> (double jd_tdb, const <a class="el" href="structnovas__orbital.html">novas_orbital</a> *restrict orbit, double *restrict pos, double *restrict vel)</td></tr>
+<tr class="memdesc:ga6b88d2403a3051ab32229244cf98d7ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates a rectangular equatorial position and velocity vector for the given orbital elements for the specified time of observation, in the native coordinate system in which the orbital is defined (e.g.  <br /></td></tr>
+<tr class="separator:ga6b88d2403a3051ab32229244cf98d7ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4510a3235a693f122899983901211c30" id="r_ga4510a3235a693f122899983901211c30"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__source.html#ga4510a3235a693f122899983901211c30">novas_orbit_posvel</a> (double jd_tdb, const <a class="el" href="structnovas__orbital.html">novas_orbital</a> *restrict orbit, enum <a class="el" href="group__frame.html#ga3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, double *restrict pos, double *restrict vel)</td></tr>
+<tr class="memdesc:ga4510a3235a693f122899983901211c30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates a rectangular equatorial position and velocity vector for the given orbital elements for the specified time of observation.  <br /></td></tr>
+<tr class="separator:ga4510a3235a693f122899983901211c30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4934da85b9722ef43a5b238f3e1971e4" id="r_ga4934da85b9722ef43a5b238f3e1971e4"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#ga4934da85b9722ef43a5b238f3e1971e4">novas_parse_date</a> (const char *restrict date, char **restrict tail)</td></tr>
 <tr class="memdesc:ga4934da85b9722ef43a5b238f3e1971e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses an astronomical date/time string into a Julian date specification.  <br /></td></tr>
 <tr class="separator:ga4934da85b9722ef43a5b238f3e1971e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1191,6 +1293,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga72245b3ea6099c573278f721a4bfd3d9" id="r_ga72245b3ea6099c573278f721a4bfd3d9"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="group__time.html#gaa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#ga72245b3ea6099c573278f721a4bfd3d9">novas_parse_timescale</a> (const char *restrict str, char **restrict tail)</td></tr>
 <tr class="memdesc:ga72245b3ea6099c573278f721a4bfd3d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses the timescale from a string containing a standard abbreviation (case insensitive), and returns the updated parse position after the timescale specification (if any).  <br /></td></tr>
 <tr class="separator:ga72245b3ea6099c573278f721a4bfd3d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2cf7410aa68b980112734227b40890d6" id="r_ga2cf7410aa68b980112734227b40890d6"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="group__source.html#ga219df36b21dc4476656e708d14d08045">novas_planet</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__source.html#ga2cf7410aa68b980112734227b40890d6">novas_planet_for_name</a> (const char *restrict name)</td></tr>
+<tr class="memdesc:ga2cf7410aa68b980112734227b40890d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the NOVAS planet ID for a given name (case insensitive), or -1 if no match is found.  <br /></td></tr>
+<tr class="separator:ga2cf7410aa68b980112734227b40890d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad778a440540ed687572b78b675bebd60" id="r_gad778a440540ed687572b78b675bebd60"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#gad778a440540ed687572b78b675bebd60">novas_print_dms</a> (double degrees, enum <a class="el" href="group__util.html#gacb27ba6ec7f4ed7486f4419f8803f40e">novas_separator_type</a> sep, int decimals, char *restrict buf, int len)</td></tr>
 <tr class="memdesc:gad778a440540ed687572b78b675bebd60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints an angle in degrees as [-]ddd:mm:ss[.S...] into the specified buffer, with up to nanosecond precision.  <br /></td></tr>
 <tr class="separator:gad778a440540ed687572b78b675bebd60"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1227,6 +1332,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga4aa0c52a1d4838feb4255974486462a7" id="r_ga4aa0c52a1d4838feb4255974486462a7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__source.html#ga4aa0c52a1d4838feb4255974486462a7">novas_set_lsr_vel</a> (<a class="el" href="structcat__entry.html">cat_entry</a> *source, double epoch, double v_kms)</td></tr>
 <tr class="memdesc:ga4aa0c52a1d4838feb4255974486462a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a radial velocity for a catalog source, defined w.r.t.  <br /></td></tr>
 <tr class="separator:ga4aa0c52a1d4838feb4255974486462a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga706ecf8998b78e48051d2876efc6e01c" id="r_ga706ecf8998b78e48051d2876efc6e01c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__source.html#ga706ecf8998b78e48051d2876efc6e01c">novas_set_orbsys_pole</a> (enum <a class="el" href="group__equatorial.html#ga7ba038ea34eb901ccfb8f785708c651e">novas_reference_system</a> type, double ra, double dec, <a class="el" href="structnovas__orbital__system.html">novas_orbital_system</a> *restrict sys)</td></tr>
+<tr class="memdesc:ga706ecf8998b78e48051d2876efc6e01c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the orientation of an orbital system using the RA and DEC coordinates of the pole of the Laplace (or else equatorial) plane relative to which the orbital elements are defined.  <br /></td></tr>
+<tr class="separator:ga706ecf8998b78e48051d2876efc6e01c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga69274f4ac2631335e1e901142d31f541" id="r_ga69274f4ac2631335e1e901142d31f541"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__source.html#ga69274f4ac2631335e1e901142d31f541">novas_set_parallax</a> (<a class="el" href="structcat__entry.html">cat_entry</a> *source, double mas)</td></tr>
 <tr class="memdesc:ga69274f4ac2631335e1e901142d31f541"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the parallax (a measure of distance) for a catalog source.  <br /></td></tr>
 <tr class="separator:ga69274f4ac2631335e1e901142d31f541"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1257,6 +1365,12 @@ Functions</h2></td></tr>
 <tr class="memitem:gac365a1e015ae1f875dc5a66fd5435b2f" id="r_gac365a1e015ae1f875dc5a66fd5435b2f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__apparent.html#gac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos</a> (const <a class="el" href="structobject.html">object</a> *restrict <a class="el" href="structobject.html">object</a>, const <a class="el" href="structnovas__frame.html">novas_frame</a> *restrict frame, enum <a class="el" href="group__equatorial.html#ga7ba038ea34eb901ccfb8f785708c651e">novas_reference_system</a> sys, <a class="el" href="structsky__pos.html">sky_pos</a> *restrict out)</td></tr>
 <tr class="memdesc:gac365a1e015ae1f875dc5a66fd5435b2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates an apparent location on sky for the source.  <br /></td></tr>
 <tr class="separator:gac365a1e015ae1f875dc5a66fd5435b2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac780bd907a12957995d36ad916dd4ec1" id="r_gac780bd907a12957995d36ad916dd4ec1"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__apparent.html#gac780bd907a12957995d36ad916dd4ec1">novas_solar_illum</a> (const <a class="el" href="structobject.html">object</a> *restrict source, const <a class="el" href="structnovas__frame.html">novas_frame</a> *restrict frame)</td></tr>
+<tr class="memdesc:gac780bd907a12957995d36ad916dd4ec1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the Solar illumination fraction of a source, assuming a spherical geometry for the observed body.  <br /></td></tr>
+<tr class="separator:gac780bd907a12957995d36ad916dd4ec1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga763f9a9dd2edb4645a5db05184ca7495" id="r_ga763f9a9dd2edb4645a5db05184ca7495"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__solar-system.html#ga763f9a9dd2edb4645a5db05184ca7495">novas_solar_power</a> (double jd_tdb, const <a class="el" href="structobject.html">object</a> *restrict source)</td></tr>
+<tr class="memdesc:ga763f9a9dd2edb4645a5db05184ca7495"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the typical incident Solar power on a Solar-system body at the time of observation.  <br /></td></tr>
+<tr class="separator:ga763f9a9dd2edb4645a5db05184ca7495"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga99ed25baa029f3980924da8c8af54d1a" id="r_ga99ed25baa029f3980924da8c8af54d1a"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spectral.html#ga99ed25baa029f3980924da8c8af54d1a">novas_ssb_to_lsr_vel</a> (double epoch, double ra, double dec, double vLSR)</td></tr>
 <tr class="memdesc:ga99ed25baa029f3980924da8c8af54d1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a radial-velocity referenced to the Local Standard of Rest (LSR) for a given Solar-System Barycentric (SSB) radial velocity.  <br /></td></tr>
 <tr class="separator:ga99ed25baa029f3980924da8c8af54d1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1269,6 +1383,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga3ed26b6af870f6dbc353f651563afd4a" id="r_ga3ed26b6af870f6dbc353f651563afd4a"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#ga3ed26b6af870f6dbc353f651563afd4a">novas_str_hours</a> (const char *restrict hms)</td></tr>
 <tr class="memdesc:ga3ed26b6af870f6dbc353f651563afd4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a time or time-like angleparsed from a string that contains either a decimal hours or else a broken-down HMS representation.  <br /></td></tr>
 <tr class="separator:ga3ed26b6af870f6dbc353f651563afd4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2d1ef3bc6d99aa473511e45c6e0481e9" id="r_ga2d1ef3bc6d99aa473511e45c6e0481e9"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__apparent.html#ga2d1ef3bc6d99aa473511e45c6e0481e9">novas_sun_angle</a> (const <a class="el" href="structobject.html">object</a> *restrict source, const <a class="el" href="structnovas__frame.html">novas_frame</a> *restrict frame)</td></tr>
+<tr class="memdesc:ga2d1ef3bc6d99aa473511e45c6e0481e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the apparent angular distance of a source from the Sun from the observer's point of view.  <br /></td></tr>
+<tr class="separator:ga2d1ef3bc6d99aa473511e45c6e0481e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaaf53fcad3fade814381cef3d06779a8c" id="r_gaaf53fcad3fade814381cef3d06779a8c"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__earth.html#gaaf53fcad3fade814381cef3d06779a8c">novas_time_gst</a> (const <a class="el" href="structnovas__timespec.html">novas_timespec</a> *restrict time, enum <a class="el" href="group__frame.html#ga3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy)</td></tr>
 <tr class="memdesc:gaaf53fcad3fade814381cef3d06779a8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the Greenwich (apparent) Sidereal Time (GST/GaST) for a given astronomical time specification.  <br /></td></tr>
 <tr class="separator:gaaf53fcad3fade814381cef3d06779a8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1281,6 +1398,12 @@ Functions</h2></td></tr>
 <tr class="memitem:gac8e83c48005d5aabb3e7bbf8d9f8ed81" id="r_gac8e83c48005d5aabb3e7bbf8d9f8ed81"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__time.html#gac8e83c48005d5aabb3e7bbf8d9f8ed81">novas_timestamp</a> (const <a class="el" href="structnovas__timespec.html">novas_timespec</a> *restrict time, enum <a class="el" href="group__time.html#gaa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a> scale, char *restrict dst, int maxlen)</td></tr>
 <tr class="memdesc:gac8e83c48005d5aabb3e7bbf8d9f8ed81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints an astronomical timestamp to millisecond precision in the specified timescale to the specified string buffer.  <br /></td></tr>
 <tr class="separator:gac8e83c48005d5aabb3e7bbf8d9f8ed81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac3eb54acf22dc155879163de89c6865e" id="r_gac3eb54acf22dc155879163de89c6865e"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__source.html#gac3eb54acf22dc155879163de89c6865e">novas_to_dexxx_planet</a> (enum <a class="el" href="group__source.html#ga219df36b21dc4476656e708d14d08045">novas_planet</a> id)</td></tr>
+<tr class="memdesc:gac3eb54acf22dc155879163de89c6865e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a NOVAS Solar-system body ID to a NAIF Solar-system body ID for DExxx ephemeris files.  <br /></td></tr>
+<tr class="separator:gac3eb54acf22dc155879163de89c6865e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab51ac9bdf7736e1c1582e0981046daf3" id="r_gab51ac9bdf7736e1c1582e0981046daf3"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__source.html#gab51ac9bdf7736e1c1582e0981046daf3">novas_to_naif_planet</a> (enum <a class="el" href="group__source.html#ga219df36b21dc4476656e708d14d08045">novas_planet</a> id)</td></tr>
+<tr class="memdesc:gab51ac9bdf7736e1c1582e0981046daf3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a NOVAS Solar-system body ID to a NAIF Solar-system body ID.  <br /></td></tr>
+<tr class="separator:gab51ac9bdf7736e1c1582e0981046daf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga225a2e33684d2c1fe769e5aa718a182a" id="r_ga225a2e33684d2c1fe769e5aa718a182a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__apparent.html#ga225a2e33684d2c1fe769e5aa718a182a">novas_track_pos</a> (const <a class="el" href="structnovas__track.html">novas_track</a> *track, const <a class="el" href="structnovas__timespec.html">novas_timespec</a> *time, double *restrict lon, double *restrict lat, double *restrict dist, double *restrict z)</td></tr>
 <tr class="memdesc:ga225a2e33684d2c1fe769e5aa718a182a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates a projected position, distance, and redshift for a source, given its near-term trajectory on sky, in the system for which the track was calculated.  <br /></td></tr>
 <tr class="separator:ga225a2e33684d2c1fe769e5aa718a182a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1374,6 +1497,12 @@ Functions</h2></td></tr>
  <b>position_type</b>: apparent <br  />
   <br /></td></tr>
 <tr class="separator:gab6908b0eee06b4a44242fba1fd9d506c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9d0f54c0ab00827768e61a353488b0ee" id="r_ga9d0f54c0ab00827768e61a353488b0ee"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__solar-system.html#ga9d0f54c0ab00827768e61a353488b0ee">planet_ephem_provider</a> (double jd_tdb, enum <a class="el" href="group__source.html#ga219df36b21dc4476656e708d14d08045">novas_planet</a> body, enum <a class="el" href="group__solar-system.html#ga208120c5fa3e12853eb37cb99d3e27be">novas_origin</a> origin, double *restrict position, double *restrict velocity)</td></tr>
+<tr class="memdesc:ga9d0f54c0ab00827768e61a353488b0ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Major planet ephemeris data via the same generic ephemeris provider that is configured by <a class="el" href="group__solar-system.html#ga6097083c438a8d1872c2e00a66360030" title="Sets the function to use for obtaining position / velocity information for minor planets,...">set_ephem_provider()</a> prior to calling this routine.  <br /></td></tr>
+<tr class="separator:ga9d0f54c0ab00827768e61a353488b0ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga93d0f96d81f3c52e05163643bd23eb7d" id="r_ga93d0f96d81f3c52e05163643bd23eb7d"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__solar-system.html#ga93d0f96d81f3c52e05163643bd23eb7d">planet_ephem_provider_hp</a> (const double jd_tdb[restrict 2], enum <a class="el" href="group__source.html#ga219df36b21dc4476656e708d14d08045">novas_planet</a> body, enum <a class="el" href="group__solar-system.html#ga208120c5fa3e12853eb37cb99d3e27be">novas_origin</a> origin, double *restrict position, double *restrict velocity)</td></tr>
+<tr class="memdesc:ga93d0f96d81f3c52e05163643bd23eb7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Major planet ephemeris data via the same generic ephemeris provider that is configured by <a class="el" href="group__solar-system.html#ga6097083c438a8d1872c2e00a66360030" title="Sets the function to use for obtaining position / velocity information for minor planets,...">set_ephem_provider()</a> prior to calling this routine.  <br /></td></tr>
+<tr class="separator:ga93d0f96d81f3c52e05163643bd23eb7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aacc6a0daf29b8bdc18f46647a94694d3" id="r_aacc6a0daf29b8bdc18f46647a94694d3"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aacc6a0daf29b8bdc18f46647a94694d3">planet_lon</a> (double t, enum <a class="el" href="group__source.html#ga219df36b21dc4476656e708d14d08045">novas_planet</a> planet)</td></tr>
 <tr class="memdesc:aacc6a0daf29b8bdc18f46647a94694d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the planetary longitude, for Mercury through Neptune, w.r.t.  <br /></td></tr>
 <tr class="separator:aacc6a0daf29b8bdc18f46647a94694d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1398,6 +1527,8 @@ Functions</h2></td></tr>
 <tr class="memitem:a0f307c2a37d594a68e99c5c8af6d50c9" id="r_a0f307c2a37d594a68e99c5c8af6d50c9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0f307c2a37d594a68e99c5c8af6d50c9">radec_star</a> (double jd_tt, const <a class="el" href="structcat__entry.html">cat_entry</a> *restrict star, const <a class="el" href="structobserver.html">observer</a> *restrict obs, double ut1_to_tt, enum <a class="el" href="group__equatorial.html#ga7ba038ea34eb901ccfb8f785708c651e">novas_reference_system</a> sys, enum <a class="el" href="group__frame.html#ga3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, double *restrict ra, double *restrict dec, double *restrict rv)</td></tr>
 <tr class="memdesc:a0f307c2a37d594a68e99c5c8af6d50c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the place of a star at date 'jd_tt', for an observer in the specified coordinate system, given the star's ICRS catalog place, proper motion, parallax, and radial velocity.  <br /></td></tr>
 <tr class="separator:a0f307c2a37d594a68e99c5c8af6d50c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5f22db2fa785675372d45b88f2f1736" id="r_aa5f22db2fa785675372d45b88f2f1736"><td class="memItemLeft" align="right" valign="top">double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa5f22db2fa785675372d45b88f2f1736">readeph</a> (int mp, const char *restrict name, double jd_tdb, int *restrict error)</td></tr>
+<tr class="separator:aa5f22db2fa785675372d45b88f2f1736"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf56088995d42a0673e03bca1f3891544" id="r_gaf56088995d42a0673e03bca1f3891544"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spectral.html#gaf56088995d42a0673e03bca1f3891544">redshift_vrad</a> (double vrad, double z)</td></tr>
 <tr class="memdesc:gaf56088995d42a0673e03bca1f3891544"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies an incremental redshift correction to a radial velocity.  <br /></td></tr>
 <tr class="separator:gaf56088995d42a0673e03bca1f3891544"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1409,9 +1540,18 @@ Functions</h2></td></tr>
 <tr class="separator:gafe1d4e96dd66676f5567a279e83e88d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade20b8035266dfe5b082b12248f5affa" id="r_ade20b8035266dfe5b082b12248f5affa"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ade20b8035266dfe5b082b12248f5affa">set_cio_locator_file</a> (const char *restrict filename)</td></tr>
 <tr class="separator:ade20b8035266dfe5b082b12248f5affa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6097083c438a8d1872c2e00a66360030" id="r_ga6097083c438a8d1872c2e00a66360030"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__solar-system.html#ga6097083c438a8d1872c2e00a66360030">set_ephem_provider</a> (<a class="el" href="group__solar-system.html#gaebb3d71006e8d93de242df61510374ad">novas_ephem_provider</a> func)</td></tr>
+<tr class="memdesc:ga6097083c438a8d1872c2e00a66360030"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the function to use for obtaining position / velocity information for minor planets, or satellites.  <br /></td></tr>
+<tr class="separator:ga6097083c438a8d1872c2e00a66360030"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga694288eb631d6a69ecf313b7b5b4a677" id="r_ga694288eb631d6a69ecf313b7b5b4a677"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__earth.html#ga694288eb631d6a69ecf313b7b5b4a677">set_nutation_lp_provider</a> (<a class="el" href="group__earth.html#ga1f0e319630e7a47f17247bf51f7bf36c">novas_nutation_provider</a> func)</td></tr>
 <tr class="memdesc:ga694288eb631d6a69ecf313b7b5b4a677"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the function to use for low-precision IAU 2000 nutation calculations instead of the default <a class="el" href="group__earth.html#gabd066c2857d1b1cc06d8bd51b912d841" title="Computes the forced nutation of the non-rigid Earth: Model NU2000K.">nu2000k()</a>.  <br /></td></tr>
 <tr class="separator:ga694288eb631d6a69ecf313b7b5b4a677"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9904c454bc7148b42d0f927b82ea3973" id="r_ga9904c454bc7148b42d0f927b82ea3973"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__solar-system.html#ga9904c454bc7148b42d0f927b82ea3973">set_planet_provider</a> (<a class="el" href="group__solar-system.html#gaae2b06af367d7b0a70a8b89c258b00b0">novas_planet_provider</a> func)</td></tr>
+<tr class="memdesc:ga9904c454bc7148b42d0f927b82ea3973"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a custom function to use for regular precision (see NOVAS_REDUCED_ACCURACY) ephemeris calculations instead of the default solarsystem() routine.  <br /></td></tr>
+<tr class="separator:ga9904c454bc7148b42d0f927b82ea3973"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga418f45a11ce7f92ba0ef817558415640" id="r_ga418f45a11ce7f92ba0ef817558415640"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__solar-system.html#ga418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp</a> (<a class="el" href="group__solar-system.html#gae8d7c10a8b9e69b1f0654ef4038482fd">novas_planet_provider_hp</a> func)</td></tr>
+<tr class="memdesc:ga418f45a11ce7f92ba0ef817558415640"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a custom function to use for high precision (see NOVAS_FULL_ACCURACY) ephemeris calculations instead of the default solarsystem_hp() routine.  <br /></td></tr>
+<tr class="separator:ga418f45a11ce7f92ba0ef817558415640"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6eacba14d3c382d67307856a2ea290e3" id="r_a6eacba14d3c382d67307856a2ea290e3"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6eacba14d3c382d67307856a2ea290e3">sidereal_time</a> (double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum <a class="el" href="group__earth.html#gab970f5de5d5e04874cb31865459b0b4f">novas_equinox_type</a> gst_type, enum <a class="el" href="#a9e882d9c9055f187d3a8dc9b019f0609">novas_earth_rotation_measure</a> erot, enum <a class="el" href="group__frame.html#ga3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, double *restrict gst)</td></tr>
 <tr class="separator:a6eacba14d3c382d67307856a2ea290e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf4090e519d7ce7ab1fcdb24b10126eb4" id="r_gaf4090e519d7ce7ab1fcdb24b10126eb4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#gaf4090e519d7ce7ab1fcdb24b10126eb4">spin</a> (double angle, const double *in, double *out)</td></tr>
@@ -1488,6 +1628,15 @@ Functions</h2></td></tr>
 <tr class="memitem:gaead87744eeb3029ce7d5ffb1801ee652" id="r_gaead87744eeb3029ce7d5ffb1801ee652"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nonequatorial.html#gaead87744eeb3029ce7d5ffb1801ee652">wobble</a> (double jd_tt, enum <a class="el" href="group__nonequatorial.html#gaab27106a2d5c2c7fa64b2f208deff7f5">novas_wobble_direction</a> direction, double xp, double yp, const double *in, double *out)</td></tr>
 <tr class="memdesc:gaead87744eeb3029ce7d5ffb1801ee652"><td class="mdescLeft">&#160;</td><td class="mdescRight">Corrects a vector in the ITRS (rotating Earth-fixed system) for polar motion, and also corrects the longitude origin (by a tiny amount) to the Terrestrial Intermediate Origin (TIO).  <br /></td></tr>
 <tr class="separator:gaead87744eeb3029ce7d5ffb1801ee652"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:ga18647d39520d1a15a137661f698cb12a" id="r_ga18647d39520d1a15a137661f698cb12a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__apparent.html#ga18647d39520d1a15a137661f698cb12a">grav_bodies_full_accuracy</a></td></tr>
+<tr class="memdesc:ga18647d39520d1a15a137661f698cb12a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current set of gravitating bodies to use for deflection calculations in full accuracy mode.  <br /></td></tr>
+<tr class="separator:ga18647d39520d1a15a137661f698cb12a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga03a4df8961a0cd05f89aca478d2dcd24" id="r_ga03a4df8961a0cd05f89aca478d2dcd24"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__apparent.html#ga03a4df8961a0cd05f89aca478d2dcd24">grav_bodies_reduced_accuracy</a></td></tr>
+<tr class="memdesc:ga03a4df8961a0cd05f89aca478d2dcd24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current set of gravitating bodies to use for deflection calculations in reduced accuracy mode.  <br /></td></tr>
+<tr class="separator:ga03a4df8961a0cd05f89aca478d2dcd24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>SuperNOVAS types, definitions, and function prototypes. </p>
@@ -1676,6 +1825,28 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a0ae90838b446c7d4c1d3386ec8857410" name="a0ae90838b446c7d4c1d3386ec8857410"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ae90838b446c7d4c1d3386ec8857410">&#9670;&#160;</a></span>NOVAS_PLANET_GRAV_Z_INIT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define NOVAS_PLANET_GRAV_Z_INIT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gravitational redshifts for major planets (and Moon and Sun) for light emitted at surface and detected at a large distance away. </p>
+<p>Barycenters are not considered, and for Pluto the redshift for the Pluto system is assumed for distant observers.</p>
+<dl class="section see"><dt>See also</dt><dd>enum <a class="el" href="group__source.html#ga219df36b21dc4476656e708d14d08045" title="Enumeration for the &#39;major planet&#39; numbers in NOVAS to use as the solar-system body number whenever t...">novas_planet</a> </dd>
+<dd>
+<a class="el" href="#a1853540eae9f8699b6aaff9c0b518e08" title="The number of major planets defined in NOVAS.">NOVAS_PLANETS</a></dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.1.1 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+
+</div>
+</div>
 <a id="ad34a88c2c04b624f8f85fc86e7935967" name="ad34a88c2c04b624f8f85fc86e7935967"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad34a88c2c04b624f8f85fc86e7935967">&#9670;&#160;</a></span>NOVAS_PLANET_INIT</h2>
 
@@ -1705,6 +1876,42 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section since"><dt>Since</dt><dd>1.2</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structobject.html" title="Celestial object of interest.">object</a>, <a class="el" href="group__source.html#ga4c7846be95299769f4d0377bf127bcf5" title="Sets a celestial object to be a major planet, or the Sun, Moon, Solar-system Barycenter,...">make_planet()</a> </dd></dl>
+
+</div>
+</div>
+<a id="ae48a8495c1ddf3960784aba5189d178e" name="ae48a8495c1ddf3960784aba5189d178e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae48a8495c1ddf3960784aba5189d178e">&#9670;&#160;</a></span>NOVAS_PLANET_RADII_INIT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define NOVAS_PLANET_RADII_INIT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Array initializer for mean planet radii in meters, matching the enum <a class="el" href="group__source.html#ga219df36b21dc4476656e708d14d08045" title="Enumeration for the &#39;major planet&#39; numbers in NOVAS to use as the solar-system body number whenever t...">novas_planet</a>. </p>
+<p>E.g.</p>
+<div class="fragment"><div class="line"><span class="keyword">const</span> <span class="keywordtype">double</span> *planet_radii[] = <a class="code hl_define" href="#ae48a8495c1ddf3960784aba5189d178e">NOVAS_PLANET_RADII_INIT</a>;</div>
+<div class="ttc" id="anovas_8h_html_ae48a8495c1ddf3960784aba5189d178e"><div class="ttname"><a href="#ae48a8495c1ddf3960784aba5189d178e">NOVAS_PLANET_RADII_INIT</a></div><div class="ttdeci">#define NOVAS_PLANET_RADII_INIT</div><div class="ttdoc">Array initializer for mean planet radii in meters, matching the enum novas_planet.</div><div class="ttdef"><b>Definition</b> novas.h:561</div></div>
+</div><!-- fragment --><p>REFERENCES: </p><ol>
+<li>
+<a href="https://orbital-mechanics.space/reference/planetary-parameters.html">https://orbital-mechanics.space/reference/planetary-parameters.html</a>, Table 3. </li>
+<li>
+B. A. Archinal, et al., Report of the IAU Working Group on Cartographic Coordinates and Rotational Elements:<ol type="1">
+<li>Celestial Mechanics and Dynamical Astronomy, 130(3):22, March 2018. doi:10.1007/s10569-017-9805-5.</li>
+</ol>
+</li>
+<li>
+B. A. Archinal, et al., Report of the IAU Working Group on Cartographic Coordinates and Rotational Elements:<ol type="1">
+<li>Celestial Mechanics and Dynamical Astronomy, 130(3):22, March 2018. doi:10.1007/s10569-017-9805-5. </li>
+</ol>
+</li>
+</ol>
+<dl class="section since"><dt>Since</dt><dd>1.5 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>enum <a class="el" href="group__source.html#ga219df36b21dc4476656e708d14d08045" title="Enumeration for the &#39;major planet&#39; numbers in NOVAS to use as the solar-system body number whenever t...">novas_planet</a>, <a class="el" href="group__source.html#gabbd19f57e31db2ac91cbe22f9a95f390" title="String array initializer for Major planet names, matching the enum novas_planet.">NOVAS_PLANET_NAMES_INIT</a>, <a class="el" href="#a5ddc7a011476a8cffaec1866beaa0095" title="Reciprocal masses of solar system bodies, from DE-405 (Sun mass / body mass).">NOVAS_RMASS_INIT</a> </dd></dl>
 
 </div>
 </div>
@@ -1756,6 +1963,55 @@ Functions</h2></td></tr>
 
 <p>The number of built-in refraction models available in SuperNOVAS. </p>
 <dl class="section see"><dt>See also</dt><dd>enum <a class="el" href="group__refract.html#gabe97e2d459a30db9d0f67d8c60af3b81" title="Constants that determine whether what model (if any) to use for implicit refraction calculations.">novas_refraction_model</a> </dd></dl>
+
+</div>
+</div>
+<a id="a5ddc7a011476a8cffaec1866beaa0095" name="a5ddc7a011476a8cffaec1866beaa0095"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ddc7a011476a8cffaec1866beaa0095">&#9670;&#160;</a></span>NOVAS_RMASS_INIT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define NOVAS_RMASS_INIT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reciprocal masses of solar system bodies, from DE-405 (Sun mass / body mass). </p>
+<p>[0]: Earth/Moon barycenter (legacy from NOVAS C), MASS[1] = Mercury, ...,</p>
+<p>Barycentric reciprocal masses (index 12, 13) are not set.</p>
+<p>NOTES: </p><ol>
+<li>
+The values have been updated to used DE440 data (Park et al. 2021) in 1.4. </li>
+</ol>
+<p>REFERENCES: </p><ol>
+<li>
+Ryan S. Park et al 2021 AJ 161 105, DOI 10.3847/1538-3881/abd414 </li>
+<li>
+IERS Conventions, Chapter 3, Table 3.1 </li>
+</ol>
+<dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>enum <a class="el" href="group__source.html#ga219df36b21dc4476656e708d14d08045" title="Enumeration for the &#39;major planet&#39; numbers in NOVAS to use as the solar-system body number whenever t...">novas_planet</a>, <a class="el" href="group__source.html#gabbd19f57e31db2ac91cbe22f9a95f390" title="String array initializer for Major planet names, matching the enum novas_planet.">NOVAS_PLANET_NAMES_INIT</a>, NOVAS_PLANET_RAII_INIT, NOVAS_PLANETS_GRAV_Z_INIT </dd></dl>
+
+</div>
+</div>
+<a id="a5e72489b5d24fa737d04cb9ec303b71e" name="a5e72489b5d24fa737d04cb9ec303b71e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e72489b5d24fa737d04cb9ec303b71e">&#9670;&#160;</a></span>NOVAS_SOLAR_CONSTANT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define NOVAS_SOLAR_CONSTANT&#160;&#160;&#160;1367.0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>[W/m<sup>2</sup>] The Solar Constant i.e., typical incident Solar power on Earth. </p>
+<p>The value of 1367 Wm<sup>−2</sup> was adopted by the World Radiation Center (Gueymard, 2004). </p><dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__solar-system.html#ga763f9a9dd2edb4645a5db05184ca7495" title="Returns the typical incident Solar power on a Solar-system body at the time of observation.">novas_solar_power()</a> </dd></dl>
 
 </div>
 </div>
@@ -2636,7 +2892,7 @@ Klioner, S. (2003), Astronomical Journal 125, 1580-1597, Section 6. </li>
 <dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
-<p class="reference">References <a class="el" href="util_8c.html#ad799864f637c483fb49491bde5a93e25">d_light()</a>, <a class="el" href="grav_8c.html#a08a008572e2746a70bec19739b5fb7e6">grav_vec()</a>, <a class="el" href="#a1853540eae9f8699b6aaff9c0b518e08">NOVAS_PLANETS</a>, <a class="el" href="solarsystem_8h.html#a5ddc7a011476a8cffaec1866beaa0095">NOVAS_RMASS_INIT</a>, and <a class="el" href="util_8c.html#a0f41cefb8c872973b07e936b5026d143">novas_vlen()</a>.</p>
+<p class="reference">References <a class="el" href="util_8c.html#ad799864f637c483fb49491bde5a93e25">d_light()</a>, <a class="el" href="grav_8c.html#a08a008572e2746a70bec19739b5fb7e6">grav_vec()</a>, <a class="el" href="#a1853540eae9f8699b6aaff9c0b518e08">NOVAS_PLANETS</a>, <a class="el" href="#a5ddc7a011476a8cffaec1866beaa0095">NOVAS_RMASS_INIT</a>, and <a class="el" href="util_8c.html#a0f41cefb8c872973b07e936b5026d143">novas_vlen()</a>.</p>
 
 </div>
 </div>
@@ -2818,7 +3074,7 @@ Kaplan, G. et al. (1989) Astronomical Journal 97, 1197-1210, section iii f. </li
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if any of the input vectors is NULL.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="grav_8c.html#a48f90ac20950507fad9b880a7f7f2383" title="(primarily for internal use) Computes the total gravitational deflection of light for the observed ob...">grav_def()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="util_8c.html#a0f41cefb8c872973b07e936b5026d143">novas_vlen()</a>.</p>
+<p class="reference">References <a class="el" href="group__source.html#gabc8f275a2d431e59a1ec9e276abaca1a">NOVAS_AU</a>, and <a class="el" href="util_8c.html#a0f41cefb8c872973b07e936b5026d143">novas_vlen()</a>.</p>
 
 </div>
 </div>
@@ -3671,6 +3927,52 @@ Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3. </li>
 <a class="el" href="group__apparent.html#gac365a1e015ae1f875dc5a66fd5435b2f" title="Calculates an apparent location on sky for the source.">novas_sky_pos()</a>, <a class="el" href="group__geometric.html#gac6652ee3257621080dac342313d0a0a7" title="Calculates the geometric position and velocity vectors, relative to the observer, for a source in the...">novas_geom_posvel()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="structsky__pos.html#ac4ae7989694321b540abb75c30eec690">sky_pos::dec</a>, <a class="el" href="place_8c.html#a1504058672e6e3cf24ce6b7189ede005">place_star()</a>, <a class="el" href="structsky__pos.html#a713a0c71a86d92fa6892fdb2cb7c9422">sky_pos::ra</a>, <a class="el" href="structsky__pos.html#ad9e8b5daff39072d109a6f4f1fa61f55">sky_pos::rv</a>, and <a class="el" href="group__apparent.html#ga462bdac0f370f0c5b421ae5b3f3e35f2">SKY_POS_INIT</a>.</p>
+
+</div>
+</div>
+<a id="aa5f22db2fa785675372d45b88f2f1736" name="aa5f22db2fa785675372d45b88f2f1736"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5f22db2fa785675372d45b88f2f1736">&#9670;&#160;</a></span>readeph()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double * readeph </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>mp</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *restrict</td>          <td class="paramname"><span class="paramname"><em>name</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>jd_tdb</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *restrict</td>          <td class="paramname"><span class="paramname"><em>error</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000025">Deprecated</a></b></dt><dd>This old ephemeris reader is prone to memory leaks, and lacks some useful functionality. Users are strongly encouraged to use the new <code><a class="el" href="group__solar-system.html#gaebb3d71006e8d93de242df61510374ad" title="Function to obtain ephemeris data for minor planets, which are not handled by the solarsystem() type ...">novas_ephem_provider</a></code> / <code>novas_set_ephem_provider()</code> instead, for dynamically configured implementations at runtime. This prototype is provided only to extend support for legacy NOVAS applications only, where an inplementation had to be linked always.</dd></dl>
+<p>Legacy NOVAS C function to handle position and velocity calculations for Solar-system sources, beyond the major planets. This function can be defined by an external module, as per the NOVAS C way, provided you compile SuperNOVAS with the <code>READPH_SOURCE</code> option set to specify the source(s) that implement it (in <code>config.mk</code> or the environment). If <code>READEPH_SOURCE</code> in not defined during the build of SuperNOVAS, then this function will not be used by <b>SuperNOVAS</b>, nor will be implemented by it.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">mp</td><td>The ID number of the solar-system body for which the position are desired. An actual implementation might use this and/or the name to identify the object. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">name</td><td>The name of the solar-system body (usually upper-case). An actual implementation might use this and/or <code>mp</code> to identify the object. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date for which to find the position and velocity. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">error</td><td>Pointer to integer to populate with the error status: 0 if successful, -1 if any of the pointer arguments are NULL, or some non-zero value if the was an error s.t. the position and velocity vector should not be used. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>[AU, AU/day] A newly allocated 6-vector in rectangular equatorial coordinates, containing the heliocentric position coordinates in AU, followed by hte heliocentric velocity components in AU/day. The caller is responsible for calling free() on the returned value when it is no longer needed.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__solar-system.html#gaebb3d71006e8d93de242df61510374ad" title="Function to obtain ephemeris data for minor planets, which are not handled by the solarsystem() type ...">novas_ephem_provider</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="util_8c.html#ad2b933ce2f58e8b04bbe76ffbff99eb0">novas_inv_max_iter</a>, and <a class="el" href="group__spectral.html#gafca24d914664bb60d20fb428177f329a">rad_vel()</a>.</p>
 
 </div>
 </div>
