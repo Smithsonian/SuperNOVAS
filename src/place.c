@@ -165,7 +165,7 @@ short place(double jd_tt, const object *restrict source, const observer *restric
   static THREAD_LOCAL double peb[3], veb[3], psb[3];
 
   observer obs;
-  novas_planet_bundle planets = {0};
+  novas_planet_bundle planets = {};
   int pl_mask = (accuracy == NOVAS_FULL_ACCURACY) ? grav_bodies_full_accuracy : grav_bodies_reduced_accuracy;
   double x, jd_tdb, pob[3], vob[3], pos[3] = {0.0}, vel[3], vpos[3], t_light, d_sb;
   int i;
