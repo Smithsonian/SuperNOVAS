@@ -7,8 +7,8 @@
  * @author G. Kaplan and Attila Kovacs
  */
 
+#include <stdarg.h>               // before stdio for vfprintf on LynxOS 3.1
 #include <stdio.h>
-#include <stdarg.h>
 #include <string.h>
 #include <errno.h>
 
