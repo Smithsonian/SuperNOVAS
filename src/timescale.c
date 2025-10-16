@@ -12,7 +12,7 @@
 
 /// \cond PRIVATE
 #if !defined(_MSC_VER) && __STDC_VERSION__ < 201112L
-#  define _POSIX_C_SOURCE 199309    ///< struct timespec
+#  define _POSIX_C_SOURCE 199309L   ///< struct timespec
 #endif
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
 /// \endcond
