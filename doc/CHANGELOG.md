@@ -131,7 +131,7 @@ Upcoming feature release, expected around 1 November 2025.
  - #242: README edits and collapsible sections, as well as Github style highlighting of notes, warnings etc.
 
  - #249: Option to exclude deprecated API from `novas.h` definitions for your application. Simply compile your 
-   application with `-D_EXCLUDE_DEPRECATED` or else define `EXCLUDE_DEPRECATED` in your source _before_ including
+   application with `-D_EXCLUDE_DEPRECATED` or else define `_EXCLUDE_DEPRECATED` in your source _before_ including
    `novas.h`. 
    
  - #250: `cio_array()` is changed to calculate CIO locations vs GCRS on the fly. With the change SuperNOVAS does not 
