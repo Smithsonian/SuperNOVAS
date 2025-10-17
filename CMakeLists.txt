@@ -81,7 +81,7 @@ endif()
 # Use pthread mutexes for thread safe CALCEPH / CSPICE plugins
 if(ENABLE_CSPICE OR ENABLE_CALCEPH)
   set(THREADS_PREFER_PTHREAD_FLAG ON)
-  find_library(Threads REQUIRED)
+  find_package(Threads REQUIRED)
   set(THREADLIB Threads::Threads)
 endif()
 
