@@ -15,6 +15,8 @@
 #  ifdef NOVAS_NAMESPACE
 namespace novas {
 #  endif
+
+extern "C" {
 #endif
 
 /// @ingroup solar-system
@@ -33,6 +35,8 @@ int cspice_add_kernel(const char *filename);
 int cspice_remove_kernel(const char *filename);
 
 #if __cplusplus
+} // extern "C"
+
 #  ifdef NOVAS_NAMESPACE
 } // namespace novas
 #  endif

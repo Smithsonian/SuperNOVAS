@@ -86,10 +86,10 @@ namespace novas {
 
 /// Multiplicative normalization for the velocities returned by CALCEPH to AU/day
 #define NORM_VEL                    (NORM_POS)
+/// \endcond
 
 /// Whether to force serialized (non-parallel CALCEPH queries)
 int serialized_calceph_queries;
-/// \endcond
 
 static int compute_flags = CALCEPH_USE_NAIFID;
 
