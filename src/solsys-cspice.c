@@ -39,7 +39,7 @@
  *    novas_use_cspice();
  *  ```
  *
- *  The CSPICE plugin will use the ID numbers stored in the @ref object structure. For planets, it
+ *  The CSPICE plugin will use the ID numbers stored in the object structure. For planets, it
  *  will automatically translate NOVAS planet IDs to NAIF IDs, while for other Solar-system
  *  bodies, you should set the NAIF ID when defining the object via `make_ephem_object()`. If the
  *  ID is set to -1, then name-based lookup will be used instead.
@@ -71,14 +71,7 @@
 #include "cspice/SpiceUsr.h"
 #include "cspice/SpiceZpr.h"        // for reset_c
 
-#if __cplusplus
-#  ifdef NOVAS_NAMESPACE
-namespace novas {
-#  endif
-#endif
-
 /// \cond PRIVATE
-
 /// Multiplicative normalization for the positions returned by km to AU
 #define NORM_POS                    (NOVAS_KM / NOVAS_AU)
 
@@ -552,11 +545,4 @@ int novas_use_cspice() {
   novas_use_cspice_ephem();
   return 0;
 }
-
-#if __cplusplus
-#  ifdef NOVAS_NAMESPACE
-} // namespace novas
-#  endif
-#endif
-
 
