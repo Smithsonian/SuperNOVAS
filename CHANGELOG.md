@@ -148,6 +148,10 @@ Upcoming feature release, expected around 1 November 2025.
  - #255: More platform-independent code, by eliminating some UNIX specific calls. Windows builds with the Microsoft 
    Visual C compiler are now possible also (with CMake). 
 
+ - #263: Use pthread mutexes instead of POSIX semaphores to provide thread-safe access to CALCEPH / CSPICE ephemeris
+   data. POSIX semaphores are not supported on Windows and MacOS, whereas pthread is available on all (via wrapper
+   library on Windows -- something that CMake is aware of).
+
  - Both CMake and GNU make now install only the headers for the components that were built. E.g. `novas-calceph.h` is 
    installed only if the library is built with the CALCEPH support option enabled.
  

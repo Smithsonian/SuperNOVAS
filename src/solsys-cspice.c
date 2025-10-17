@@ -59,7 +59,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
-#include <semaphore.h>
+#include <pthread.h>
 
 /// \cond PRIVATE
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
@@ -87,27 +87,14 @@ namespace novas {
 /// \endcond
 
 /// Semaphore for thread-safe access of ephemerides
-static sem_t *sem;
+static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 static int mutex_lock() {
-  if(!sem) {
-    sem = (sem_t *) calloc(1, sizeof(sem_t));
-    if(!sem) {
-      perror("ERROR! solsys-cspice: alloc sem_t");
-      exit(errno);
-    }
-    sem_init(sem, 0, 1);
-  }
-
-  if(sem_wait(sem) != 0)
-    return novas_error(-1, errno, "mutex_lock()", "sem_wait()");
-
-  return 0;
+  return pthread_mutex_lock(&mutex);
 }
 
 static int mutex_unlock() {
-  sem_post(sem);
-  return 0;
+  return pthread_mutex_unlock(&mutex);
 }
 
 /**

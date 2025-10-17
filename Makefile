@@ -127,11 +127,11 @@ $(LIB)/libnovas.$(SOEXT): $(LIB)/libsupernovas.$(SOEXT)
 $(LIB)/libsupernovas.$(SOEXT).$(SO_VERSION): $(SOURCES)
 
 # Shared library: libsolsys-calceph.so.1 (standalone solsys2.c functionality)
-$(LIB)/libsolsys-calceph.$(SOEXT).$(SO_VERSION): SHLIBS := -lcalceph
+$(LIB)/libsolsys-calceph.$(SOEXT).$(SO_VERSION): SHLIBS := -lcalceph -lpthread
 $(LIB)/libsolsys-calceph.$(SOEXT).$(SO_VERSION): $(SRC)/solsys-calceph.c
 
 # Shared library: libsolsys-cspice.so.1 (standalone solsys2.c functionality)
-$(LIB)/libsolsys-cspice.$(SOEXT).$(SO_VERSION): SHLIBS := -lcspice
+$(LIB)/libsolsys-cspice.$(SOEXT).$(SO_VERSION): SHLIBS := -lcspice -lpthread
 $(LIB)/libsolsys-cspice.$(SOEXT).$(SO_VERSION): $(SRC)/solsys-cspice.c
 
 # Link submodules against the supernovas shared lib
@@ -242,8 +242,9 @@ summary:
 	@echo "    CSPICE_SUPPORT       = $(CSPICE_SUPPORT)"
 	@echo "    SOLSYS_SOURCES       = $(SOLSYS_SOURCES)"
 	@echo "    READEPH_SOURCES      = $(READEPH_SOURCES)"
-	@echo 
-	@echo "    CFLAGS = $(CFLAGS)"
+	@echo
+	@echo "    CC      = $(CC)" 
+	@echo "    CFLAGS  = $(CFLAGS)"
 	@echo "    LDFLAGS = $(LDFLAGS)"
 	@echo
 

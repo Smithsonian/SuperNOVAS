@@ -78,6 +78,13 @@ if(NOT LIBM)
     set(LIBM "")
 endif()
 
+# Use pthread mutexes for thread safe CALCEPH / CSPICE plugins
+if(ENABLE_CSPICE OR ENABLE_CALCEPH)
+  set(THREADS_PREFER_PTHREAD_FLAG ON)
+  find_library(Threads REQUIRED)
+  set(THREADLIB Threads::Threads)
+endif()
+
 
 # ----------------------------------------------------------------------------
 # Extenal plugin configuration
@@ -180,12 +187,12 @@ function(solsys_plugin EPHEM_LIB)
     )
     
     target_include_directories(${PLUGIN} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
-    target_compile_definitions(${PLUGIN} PRIVATE ${SUPERNOVAS_COMPILE_DEFINITIONS})
     
     target_link_libraries(solsys-${EPHEM_LIB} PRIVATE
         supernovas
         ${EPHEM_LIB}
         ${LIBM}
+        ${THREADLIB}
     )
 endfunction()
 
