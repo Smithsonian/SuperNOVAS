@@ -131,7 +131,7 @@ Upcoming feature release, expected around 1 November 2025.
  - #242: README edits and collapsible sections, as well as Github style highlighting of notes, warnings etc.
 
  - #249: Option to exclude deprecated API from `novas.h` definitions for your application. Simply compile your 
-   application with `-D_EXCLUDE_DEPRECATED` or else define `EXCLUDE_DEPRECATED` in your source _before_ including
+   application with `-D_EXCLUDE_DEPRECATED` or else define `_EXCLUDE_DEPRECATED` in your source _before_ including
    `novas.h`. 
    
  - #250: `cio_array()` is changed to calculate CIO locations vs GCRS on the fly. With the change SuperNOVAS does not 
@@ -156,6 +156,9 @@ Upcoming feature release, expected around 1 November 2025.
    corrections for libration and ocean tides to the input EOP values. As such, users should supply mean (interpolated) 
    UT1-UTC time differences and _x_<sub>p</sub>, _y_<sub>p</sub> pole offsets, e.g. directly from the IERS Bulletins.
 
+ - #264: `novas_timespec` now stores the TT-TDB conversion to the full (100 ns) precision. It's slightly slower than
+   the less precise original NOVAS `tdb2tt()`, but it's worth it not having to worry about the precision.
+ 
  - Both CMake and GNU make now install only the headers for the components that were built. E.g. `novas-calceph.h` is 
    installed only if the library is built with the CALCEPH support option enabled.
  
