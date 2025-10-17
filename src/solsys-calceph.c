@@ -362,7 +362,7 @@ static int novas_calceph(const char *name, long id, double jd_tdb_high, double j
   success = calceph_compute_unit(bodies, jd_tdb_high, jd_tdb_low, id, center, (compute_flags | CALCEPH_UNITS), pv);
 
   if(lock)
-    pthread_mutex_unlock(&planet_mutex);
+    pthread_mutex_unlock(&ephem_mutex);
 
   if(!success)
     return novas_error(3, EAGAIN, fn, "calceph_compute() failure (name='%s', NAIF=%ld)", name ? name : "<null>", id);
