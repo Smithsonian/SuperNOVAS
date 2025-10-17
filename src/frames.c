@@ -495,16 +495,14 @@ int novas_frame_is_initialized(const novas_frame *frame) {
  *                    NOVAS_REDUCED_ACCURACY (1) if ~1 mas accuracy is sufficient.
  * @param obs         Observer location
  * @param time        Time of observation
- * @param xp          [mas] Earth orientation parameter, polar offset in _x_, e.g. from the IERS
- *                    Bulletins, and possibly corrected for diurnal and semi-diurnal variations,
- *                    e.g. via `novas_diurnal_eop()`. (The global, undated value set by cel_pole()
- *                    is not not used here.) You can use 0.0 if sub-arcsecond accuracy is not
- *                    required.
- * @param yp          [mas] Earth orientation parameter, polar offset in _y_, e.g. from the IERS
- *                    Bulletins, and possibly corrected for diurnal and semi-diurnal variations,
- *                    e.g. via `novas_diurnal_eop()`. (The global, undated value set by cel_pole()
- *                    is not not used here.) You can use 0.0 if sub-arcsecond accuracy is not
- *                    required.
+ * @param xp          [mas] Earth orientation parameter, mean polar offset in _x_, e.g. from the
+ *                    IERS Bulletins, without diurnal libration and ocean tides. (The global,
+ *                    undated, value set by cel_pole() is not not used here.) You can use 0.0 if
+ *                    sub-arcsecond accuracy is not required.
+ * @param yp          [mas] Earth orientation parameter, mean polar offset in _y_, e.g. from the
+ *                    IERS Bulletins, without diurnal libration and ocean tides. (The global,
+ *                    undated, value set by cel_pole() is not not used here.) You can use 0.0 if
+ *                    sub-arcsecond accuracy is not required.
  * @param[out] frame  Pointer to the observing frame to configure.
  * @return            0 if successful,
  *                    10--40: error is 10 + the error from ephemeris(),
@@ -516,7 +514,7 @@ int novas_frame_is_initialized(const novas_frame *frame) {
  *
  * @sa novas_change_observer(), novas_sky_pos(), novas_geom_posvel(), novas_make_transform()
  * @sa set_planet_provider(), set_planet_provider_hp(), set_nutation_lp_provider(),
- *     novas_diurnal_eop(), novas_itrf_transform_eop()
+ *     novas_itrf_transform_eop()
  */
 int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const novas_timespec *time, double xp, double yp,
         novas_frame *frame) {
@@ -545,7 +543,7 @@ int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const no
   frame->time = *time;
 
   tdb2[0] = time->ijd_tt;
-  tdb2[1] = time->fjd_tt + tt2tdb(time->ijd_tt + time->fjd_tt) / DAY;
+  tdb2[1] = time->fjd_tt + time->tt2tdb / DAY;
 
   nutation_angles((tdb2[0] + tdb2[1] - NOVAS_JD_J2000) / JULIAN_CENTURY_DAYS, accuracy, &dpsi, &deps);
 
@@ -571,6 +569,17 @@ int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const no
   frame->gst = (frame->era + novas_gmst_prec(tdb2[0] + tdb2[1]) / 3600.0) / 15.0 + frame->ee / HOURANGLE;
   frame->gst = remainder(frame->gst, DAY_HOURS);
   if(frame->gst < 0) frame->gst += DAY_HOURS;
+
+  if(accuracy == NOVAS_FULL_ACCURACY) {
+    novas_delaunay_args a = {};
+    double dxp = 0.0, dyp = 0.0;
+
+    fund_args((tdb2[0] + tdb2[1]) / (100.0 * NOVAS_JULIAN_YEAR_DAYS), &a);
+    novas_diurnal_eop(frame->gst, &a, &dxp, &dyp, NULL);
+
+    frame->dx += 0.001 * dxp;
+    frame->dy += 0.001 * dyp;
+  }
 
   set_frame_tie(frame);
   set_precession(frame);
