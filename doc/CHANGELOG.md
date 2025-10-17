@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [1.5.0-rc7] - 2025-10-15
+## [Unreleased]
 
 Upcoming feature release, expected around 1 November 2025.
 
@@ -148,6 +148,17 @@ Upcoming feature release, expected around 1 November 2025.
  - #255: More platform-independent code, by eliminating some UNIX specific calls. Windows builds with the Microsoft 
    Visual C compiler are now possible also (with CMake). 
 
+ - #263: Use pthread mutexes instead of POSIX semaphores to provide thread-safe access to CALCEPH / CSPICE ephemeris
+   data. POSIX semaphores are not supported on Windows and MacOS, whereas pthread is available on all (via wrapper
+   library on Windows -- something that CMake is aware of).
+
+ - #264: The likes of `novas_set_time()` and full accuracy `novas_make_frame()` will automatically apply diurnal
+   corrections for libration and ocean tides to the input EOP values. As such, users should supply mean (interpolated) 
+   UT1-UTC time differences and _x_<sub>p</sub>, _y_<sub>p</sub> pole offsets, e.g. directly from the IERS Bulletins.
+
+ - #264: `novas_timespec` now stores the TT-TDB conversion to the full (100 ns) precision. It's slightly slower than
+   the less precise original NOVAS `tdb2tt()`, but it's worth it not having to worry about the precision.
+ 
  - Both CMake and GNU make now install only the headers for the components that were built. E.g. `novas-calceph.h` is 
    installed only if the library is built with the CALCEPH support option enabled.
  
