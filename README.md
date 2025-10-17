@@ -1324,10 +1324,10 @@ values, positions for Earth-based calculations will be accurate at the tenths of
 
 The [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html) provide up-to-date 
 measurements, historical data, and near-term projections for the polar offsets, the UT1-UTC time difference, and 
-leap-seconds (UTC-TAI). For sub-milliarcsecond accuracy the values published by IERS should be interpolated and 
-amended to include corrections for variations caused by libration and ocean tides, e.g. via `novas_diurnal_eop()`. At 
-the micro-arcsecond (&mu;as) level, you will need to ensure also that the EOP values are provided for the same ITRF 
-realization as the observer's location, e.g. via `novas_itrf_transform_eop()`. 
+leap-seconds (UTC-TAI). For sub-milliarcsecond accuracy the values published by IERS should be interpolated before
+passing to the likes of `novas_set_time()` or `novas_make_frame()`. At the micro-arcsecond (&mu;as) level, you will 
+need to ensure also that the EOP values are provided for the same ITRF realization as the observer's location, e.g. 
+via `novas_itrf_transform_eop()`. 
 </details>
    
 <details><summary>Atmospheric refraction model</summary>
@@ -1375,8 +1375,7 @@ When one does not need positions at the microarcsecond level, some shortcuts can
 
  - You may forgo reconciling the ITRF realizations of EOP vs. an Earth-based observing site, if precision at the 
    microarcsecond level is not required.
- - You may skip the interpolation of published EOP values, and skip diurnal corrections for ocean tides and libration,
-   if accuracy below the milliarcsecond level is not required.
+ - You may skip the interpolation of published EOP values, if accuracy below the milliarcsecond level is not required.
  - You can use `NOVAS_REDUCED_ACCURACY` instead of `NOVAS_FULL_ACCURACY` for the calculations. This typically has an 
    effect at or below the milliarcsecond level only, but may be much faster to calculate.
  - You might skip the pole offsets _x_<sub>p</sub>, _y_<sub>p</sub>. These are tenths of arcsec, typically.
