@@ -732,8 +732,8 @@ e.g.:
 
 Next, we set the time of observation. For a ground-based observer, you will need to provide __SuperNOVAS__ with the
 UT1 - UTC time difference (a.k.a. DUT1), and the current leap seconds. You can obtain suitable values for DUT1 from 
-IERS, and for the highest precision, interpolate for the time of observations, and add diurnal corrections obtained 
-from `novas_diurnal_eop()`. For the example, let's assume 37 leap seconds, and DUT1 = 0.042,
+IERS, and for the highest precision, interpolate for the time of observations. For the example, let's assume 37 leap 
+seconds, and DUT1 = 0.042,
 
 ```c
   int leap_seconds = 37;        // [s] UTC - TAI time difference
@@ -773,6 +773,10 @@ Or, you might use string dates, such as an ISO timestamp:
  novas_set_str_time(NOVAS_UTC, "2025-01-26T22:05:14.234+0200", leap_seconds, dut1, &obs_time);
 ```
 
+Note, that the likes of `novas_set_time()` will automatically apply diurnal corrections to the supplied UT1-UTC time 
+difference for libration and ocean tides. Thus, the supplied values should not include these. Rather you should pass
+`dut1` directly (or interpolated) from the IERS Bulletin values for the time of observation.
+
 <a name="observing-frame"></a>
 #### Set up the observing frame
 
@@ -789,11 +793,12 @@ observation:
 ```
 
 Here `xp` and `yp` are small (sub-arcsec level) corrections to Earth orientation. Values for these are are published 
-in the [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html), and if accuracy below the
-milliarcsecond level is required, should be corrected for diurnal and semi-diurnal variations caused by libration and
-ocean tides (see `novas_diurnal_eop()` for calculating such corrections). These Earth orientation parameters (EOP) are 
-needed only when converting positions from the celestial CIRS (or PEF) frame to the Earth-fixed ITRS frame. You may 
-ignore these and set zeroes if sub-arcsecond precision is not required. 
+in the [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html). These values should be 
+interpolated for the time of observation, but should NOT be corrected for libration and ocean tides 
+(`novas_make_frame() will apply such corrections as appropriate for full accuracy frames). The Earth orientation 
+parameters (EOP) are needed only when converting positions from the celestial CIRS (or TOD) frame to the Earth-fixed 
+ITRS (or PEF) frames. You may ignore these and set zeroes if not interested in Earth-fixed calculations or if 
+sub-arcsecond precision is not required. 
 
 The advantage of using the observing frame, is that it enables very fast position calculations for multiple objects
 in that frame (see the [benchmarks](#benchmarks)), since all sources in a frame have well-defined, fixed, topological 
@@ -1292,10 +1297,10 @@ values, positions for Earth-based calculations will be accurate at the tenths of
 
 The [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html) provide up-to-date 
 measurements, historical data, and near-term projections for the polar offsets, the UT1-UTC time difference, and 
-leap-seconds (UTC-TAI). For sub-milliarcsecond accuracy the values published by IERS should be interpolated and 
-amended to include corrections for variations caused by libration and ocean tides, e.g. via `novas_diurnal_eop()`. At 
-the micro-arcsecond (&mu;as) level, you will need to ensure also that the EOP values are provided for the same ITRF 
-realization as the observer's location, e.g. via `novas_itrf_transform_eop()`. 
+leap-seconds (UTC-TAI). For sub-milliarcsecond accuracy the values published by IERS should be interpolated before
+passing to the likes of `novas_set_time()` or `novas_make_frame()`. At the micro-arcsecond (&mu;as) level, you will 
+need to ensure also that the EOP values are provided for the same ITRF realization as the observer's location, e.g. 
+via `novas_itrf_transform_eop()`. 
    
 Ground based observations are subject to atmospheric refraction. __SuperNOVAS__ offers the option to include 
 refraction corrections with a set of atmospheric models. Estimating refraction accurately requires local weather 
@@ -1340,8 +1345,7 @@ When one does not need positions at the microarcsecond level, some shortcuts can
 
  - You may forgo reconciling the ITRF realizations of EOP vs. an Earth-based observing site, if precision at the 
    microarcsecond level is not required.
- - You may skip the interpolation of published EOP values, and skip diurnal corrections for ocean tides and libration,
-   if accuracy below the milliarcsecond level is not required.
+ - You may skip the interpolation of published EOP values, if accuracy below the milliarcsecond level is not required.
  - You can use `NOVAS_REDUCED_ACCURACY` instead of `NOVAS_FULL_ACCURACY` for the calculations. This typically has an 
    effect at or below the milliarcsecond level only, but may be much faster to calculate.
  - You might skip the pole offsets _x_<sub>p</sub>, _y_<sub>p</sub>. These are tenths of arcsec, typically.

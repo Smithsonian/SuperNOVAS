@@ -690,6 +690,10 @@ Capitaine et al. (2003), Astronomy and Astrophysics 412, 567-586. </li>
 <p>Calculate corrections to the Earth orientation parameters (EOP) due to short term (diurnal and semidiurnal) libration and the ocean tides. </p>
 <p>See Chapters 5 and 8 of the IERS Conventions. This one is faster than <code><a class="el" href="#ga087d587e90b4e2138c0dba12d727696e" title="Calculate corrections to the Earth orientation parameters (EOP) due to short term (diurnal and semidi...">novas_diurnal_eop_at_time()</a></code> if the GMST and/or fundamental arguments are readily avaialbe, e.g. from a previous calculation.</p>
 <p>These corrections are typically at the sub-milliarcsecond level in polar offsets <em>x</em> and <em>y</em> and sub-millisecond level in UT1. Thus, these diurnal and semi-diurnal variations are important for the highest precision astrometry only, when converting between ITRS and TIRS frames.</p>
+<p>NOTES: </p><ol>
+<li>
+These diurnal corrections are automatically added to the mean Earth Orinetation parameters used when defining astronomical times and observing frames. I.e., you should pass mean values to the likes of <code><a class="el" href="group__time.html#gaf4a1a5180905a7d8f76aeafe3f9a8ebb" title="Sets an astronomical time to the fractional Julian Date value, defined in the specified timescale.">novas_set_time()</a></code> and <code><a class="el" href="group__frame.html#gadc72577f99a7b076b23e0e44ddbca838" title="Sets up a observing frame for a specific observer location, time of observation, and accuracy require...">novas_make_frame()</a></code>, which will then add the diurnal corrections as appropriate automatically. </li>
+</ol>
 <p>REFERENCES: </p><ol>
 <li>
 IERS Conventions 2010, Chapter 5, <a href="https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf">https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</a> </li>
@@ -746,6 +750,10 @@ novas_diurnal_librations(), <a class="el" href="#gabcd371629ee17cd1f1512ff0687db
 
 <p>Calculate corrections to the Earth orientation parameters (EOP) due to short term (diurnal and semidiurnal) libration and the ocean tides at a given astromtric time. </p>
 <p>See Chapters 5 and 8 of the IERS Conventions.</p>
+<p>NOTES: </p><ol>
+<li>
+These diurnal corrections are automatically added to the mean Earth Orinetation parameters used when defining astronomical times and observing frames. I.e., you should pass mean values to the likes of <code><a class="el" href="group__time.html#gaf4a1a5180905a7d8f76aeafe3f9a8ebb" title="Sets an astronomical time to the fractional Julian Date value, defined in the specified timescale.">novas_set_time()</a></code> and <code><a class="el" href="group__frame.html#gadc72577f99a7b076b23e0e44ddbca838" title="Sets up a observing frame for a specific observer location, time of observation, and accuracy require...">novas_make_frame()</a></code>, which will then add the diurnal corrections as appropriate automatically. </li>
+</ol>
 <p>REFERENCES: </p><ol>
 <li>
 IERS Conventions 2010, Chapter 5, <a href="https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf">https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</a> </li>

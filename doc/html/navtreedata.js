@@ -87,7 +87,7 @@ var NAVTREE =
       [ "Release schedule", "index.html#autotoc_md109", null ]
     ] ],
     [ "Changelog", "md__2github_2workspace_2CHANGELOG.html", [
-      [ "[1.5.0-rc7] - 2025-10-15", "md__2github_2workspace_2CHANGELOG.html#autotoc_md1", [
+      [ "[Unreleased]", "md__2github_2workspace_2CHANGELOG.html#autotoc_md1", [
         [ "Fixed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md2", null ],
         [ "Added", "md__2github_2workspace_2CHANGELOG.html#autotoc_md3", null ],
         [ "Removed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md4", null ],
@@ -176,7 +176,7 @@ var NAVTREEINDEX =
 "annotated.html",
 "group__observer.html#gab07d86d425d68a62e94e965dd36b7a32",
 "group__util.html#ga0a84af1a760ed2aaa01dd93e9e22bdf1",
-"solsys-ephem_8c.html"
+"solsys-cspice_8c.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';
