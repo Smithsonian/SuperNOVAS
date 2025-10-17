@@ -16,6 +16,8 @@
 #  ifdef NOVAS_NAMESPACE
 namespace novas {
 #  endif
+
+extern "C" {
 #endif
 
 /// @ingroup solar-system
@@ -28,6 +30,8 @@ int novas_use_calceph_planets(t_calcephbin *eph);
 int novas_calceph_use_ids(enum novas_id_type idtype);
 
 #if __cplusplus
+} // extern "C"
+
 #  ifdef NOVAS_NAMESPACE
 } // namespace novas
 #  endif
