@@ -152,6 +152,10 @@ Upcoming feature release, expected around 1 November 2025.
    data. POSIX semaphores are not supported on Windows and MacOS, whereas pthread is available on all (via wrapper
    library on Windows -- something that CMake is aware of).
 
+ - #264: The likes of `novas_set_time()` and full accuracy `novas_make_frame()` will automatically apply diurnal
+   corrections for libration and ocean tides to the input EOP values. As such, users should supply mean (interpolated) 
+   UT1-UTC time differences and _x_<sub>p</sub>, _y_<sub>p</sub> pole offsets, e.g. directly from the IERS Bulletins.
+
  - Both CMake and GNU make now install only the headers for the components that were built. E.g. `novas-calceph.h` is 
    installed only if the library is built with the CALCEPH support option enabled.
  

@@ -1289,8 +1289,8 @@ static int test_set_time() {
   if(!is_ok("set_time:set:ut1", novas_set_split_time(NOVAS_UT1, ijd, fjd, leap, dut1, &ut1))) return 1;
 
   dt = remainder(novas_get_split_time(&TDB, NOVAS_TT, NULL) - novas_get_split_time(&tt, NOVAS_TT, NULL), 1.0);
-  if(!is_equal("set_time:check:tdb-tt", dt * DAY, -tt2tdb(novas_get_time(&tt, NOVAS_TT)), 1e-9)) {
-    printf("!!! TT-TDB: %.9f (expected %.9f)\n", dt * DAY, -tt2tdb(ijd + fjd));
+  if(!is_equal("set_time:check:tdb-tt", dt * DAY, -tt2tdb_hp(novas_get_time(&tt, NOVAS_TT)), 1e-9)) {
+    printf("!!! TT-TDB: %.9f (expected %.9f)\n", dt * DAY, -tt2tdb_hp(ijd + fjd));
     return 1;
   }
 
@@ -1335,7 +1335,7 @@ static int test_get_time() {
   if(!is_equal("get_time:check:nosplit", dt * DAY, 0.0, 1e-5)) return 1;
 
   dt = remainder(novas_get_split_time(&tt, NOVAS_TDB, NULL) - novas_get_split_time(&tt, NOVAS_TT, NULL), 1.0);
-  if(!is_equal("get_time:check:tdb-tt", dt * DAY, tt2tdb(novas_get_time(&tt, NOVAS_TT)), 1e-9)) return 1;
+  if(!is_equal("get_time:check:tdb-tt", dt * DAY, tt2tdb_hp(novas_get_time(&tt, NOVAS_TT)), 1e-9)) return 1;
 
   dt = novas_get_split_time(&tt, NOVAS_TCB, NULL) - novas_get_split_time(&tt, NOVAS_TDB, NULL);
   dt -= LB * (novas_get_time(&tt, NOVAS_TDB) - CT0) - TDB0 / DAY;
@@ -1355,7 +1355,7 @@ static int test_get_time() {
   if(!is_equal("get_time:check:tai-utc", dt * DAY, leap, 1e-9)) return 1;
 
   dt = novas_get_split_time(&tt, NOVAS_UT1, NULL) - novas_get_split_time(&tt, NOVAS_UTC, NULL);
-  if(!is_equal("get_time:check:ut1-utc", dt * DAY, dut1, 1e-9)) return 1;
+  if(!is_equal("get_time:check:ut1-utc", dt * DAY, dut1, 1e-3)) return 1;
 
   tt.fjd_tt = 0.0;
   dt = novas_get_split_time(&tt, NOVAS_TAI, &ijd) - (1.0 - 32.184 / DAY);
@@ -3937,7 +3937,7 @@ static int test_time_lst() {
   if(!is_ok("time_lst:make_frame", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &t, 0.0, 0.0, &f))) return 1;
 
   if(!is_equal("time_lst:check", novas_time_lst(&t, obs.on_surf.longitude, f.accuracy),
-          novas_frame_lst(&f), 1e-9)) return 1;
+          novas_frame_lst(&f), 1e-8)) return 1;
 
   return 0;
 }

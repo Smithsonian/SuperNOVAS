@@ -479,6 +479,14 @@ static int add_diurnal_eop(double gmst, const novas_delaunay_args *restrict dela
  * and sub-millisecond level in UT1. Thus, these diurnal and semi-diurnal variations are important
  * for the highest precision astrometry only, when converting between ITRS and TIRS frames.
  *
+ * NOTES:
+ * <ol>
+ * <li>These diurnal corrections are automatically added to the mean Earth Orinetation parameters
+ * used when defining astronomical times and observing frames. I.e., you should pass mean values
+ * to the likes of `novas_set_time()` and `novas_make_frame()`, which will then add the diurnal
+ * corrections as appropriate automatically.</li>
+ * </ol>
+ *
  * REFERENCES:
  * <ol>
  * <li>IERS Conventions 2010, Chapter 5, https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</li>
@@ -519,6 +527,14 @@ int novas_diurnal_eop(double gmst, const novas_delaunay_args *restrict delaunay,
  * Calculate corrections to the Earth orientation parameters (EOP) due to short term (diurnal and
  * semidiurnal) libration and the ocean tides at a given astromtric time. See Chapters 5 and 8 of
  * the IERS Conventions.
+ *
+ * NOTES:
+ * <ol>
+ * <li>These diurnal corrections are automatically added to the mean Earth Orinetation parameters
+ * used when defining astronomical times and observing frames. I.e., you should pass mean values
+ * to the likes of `novas_set_time()` and `novas_make_frame()`, which will then add the diurnal
+ * corrections as appropriate automatically.</li>
+ * </ol>
  *
  * REFERENCES:
  * <ol>

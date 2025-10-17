@@ -416,7 +416,8 @@ double get_utc_to_tt(int leap_seconds) {
  * </ol>
  *
  * @param leap_seconds  [s] Leap seconds at the time of observations
- * @param dut1          [s] UT1 - UTC time difference [-0.5:0.5]
+ * @param dut1          [s] UT1 - UTC time difference [-0.5:0.5], corrected for diurnal
+ *                      variations due to libration and ocean tides.
  * @return              [s] The TT - UT1 time difference that is suitable for used with all
  *                      calls in this library that require a `ut1_to_tt` argument.
  *
@@ -438,11 +439,11 @@ double get_ut1_to_tt(int leap_seconds, double dut1) {
  * @param timescale     The astronomical time scale in which the Julian Date is given
  * @param jd            [day] Julian day value in the specified timescale
  * @param leap          [s] Leap seconds, e.g. as published by IERS Bulletin C.
- * @param dut1          [s] UT1-UTC time difference, e.g. as published in IERS Bulletin A, and
- *                      possibly corrected for diurnal and semi-diurnal variations, e.g.
- *                      via `novas_diurnal_eop()`. If the time offset is defined for a different
- *                      ITRS realization than what is used for the coordinates of an Earth-based
- *                      observer, you can use `novas_itrf_transform_eop()` to make it consistent.
+ * @param dut1          [s] mean UT1-UTC time difference, e.g. as published in IERS Bulletin A
+ *                      (without diurnal corrections for libration and ocean tides). If the time
+ *                      offset is defined for a different ITRS realization than what is used for
+ *                      the coordinates of an Earth-based observer, you can use
+ *                      `novas_itrf_transform_eop()` to make it consistent.
  * @param[out] time     Pointer to the data structure that uniquely defines the astronomical time
  *                      for all applications.
  * @return              0 if successful, or else -1 if there was an error (errno will be set to
@@ -472,11 +473,11 @@ int novas_set_time(enum novas_timescale timescale, double jd, int leap, double d
  *                      to the Gregorian calendar reform of 1582 October 15 (otherwise, the two
  *                      are identical). See `novas_parse_date()` for more on acceptable formats.
  * @param leap          [s] Leap seconds, e.g. as published by IERS Bulletin C.
- * @param dut1          [s] UT1-UTC time difference, e.g. as published in IERS Bulletin A, and
- *                      possibly corrected for diurnal and semi-diurnal variations, e.g.
- *                      via `novas_diurnal_eop()`. If the time offset is defined for a different
- *                      ITRS realization than what is used for the coordinates of an Earth-based
- *                      observer, you can use `novas_itrf_transform_eop()` to make it consistent.
+ * @param dut1          [s] mean UT1-UTC time difference, e.g. as published in IERS Bulletin A
+ *                      (without diurnal corrections for libration and ocean tides). If the time
+ *                      offset is defined for a different ITRS realization than what is used for
+ *                      the coordinates of an Earth-based observer, you can use
+ *                      `novas_itrf_transform_eop()` to make it consistent.
  * @param[out] time     Pointer to the data structure that uniquely defines the astronomical time
  *                      for all applications.
  * @return              0 if successful, or else -1 if there was an error (errno will be set to
@@ -522,11 +523,11 @@ int novas_set_str_time(enum novas_timescale timescale, const char *restrict str,
  * @param ijd           [day] integer part of the Julian day in the specified timescale
  * @param fjd           [day] fractional part Julian day value in the specified timescale
  * @param leap          [s] Leap seconds, e.g. as published by IERS Bulletin C.
- * @param dut1          [s] UT1-UTC time difference, e.g. as published in IERS Bulletin A, and
- *                      possibly corrected for diurnal and semi-diurnal variations, e.g.
- *                      via `novas_diurnal_eop()`. If the time offset is defined for a different
- *                      ITRS realization than what is used for the coordinates of an Earth-based
- *                      observer, you can use `novas_itrf_transform_eop()` to make it consistent.
+ * @param dut1          [s] mean UT1-UTC time difference, e.g. as published in IERS Bulletin A
+ *                      (without diurnal corrections for libration and ocean tides), If the time
+ *                      offset is defined for a different ITRS realization than what is used for
+ *                      the coordinates of an Earth-based observer, you can use
+ *                      `novas_itrf_transform_eop()` to make it consistent.
  * @param[out] time     Pointer to the data structure that uniquely defines the astronomical time
  *                      for all applications.
  * @return              0 if successful, or else -1 if there was an error (errno will be set to
@@ -543,6 +544,7 @@ int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, i
   static const char *fn = "novas_set_split_time";
 
   long ifjd;
+  double dt = 0.0;
 
   if(!time)
     return novas_error(-1, EINVAL, "novas_set_time", "NULL output time structure");
@@ -555,7 +557,7 @@ int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, i
     case NOVAS_TT:
       break;
     case NOVAS_TCB:
-      time->tt2tdb = tt2tdb(ijd + fjd);
+      time->tt2tdb = tt2tdb_hp(ijd + fjd);
       fjd -= time->tt2tdb / DAY - TC_TDB0;
       fjd -= TC_LB * ((ijd - TC_T0) + fjd);
       break;
@@ -563,7 +565,7 @@ int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, i
       fjd -= TC_LG * ((ijd - TC_T0) + fjd);
       break;
     case NOVAS_TDB: {
-      time->tt2tdb = tt2tdb(ijd + fjd);
+      time->tt2tdb = tt2tdb_hp(ijd + fjd);
       fjd -= time->tt2tdb / DAY;
       break;
     }
@@ -589,7 +591,12 @@ int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, i
   time->fjd_tt = fjd - ifjd;
 
   if(isnan(time->tt2tdb))
-    time->tt2tdb = tt2tdb(time->ijd_tt + time->fjd_tt);
+    time->tt2tdb = tt2tdb_hp(time->ijd_tt + time->fjd_tt);
+
+  // Diurnal variations in Earth rotation
+  novas_diurnal_eop_at_time(time, NULL, NULL, &dt);
+  time->dut1 += dt;
+  time->ut1_to_tt -= dt;
 
   return 0;
 }
