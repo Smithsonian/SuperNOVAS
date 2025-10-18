@@ -11,6 +11,7 @@
 #define NOVAS_CALCEPH_H_
 
 #  include <calceph.h>
+#  include "novas.h"
 
 #if __cplusplus
 #  ifdef NOVAS_NAMESPACE
@@ -19,6 +20,9 @@ namespace novas {
 
 extern "C" {
 #endif
+
+/// @ingroup solar-system
+int novas_calceph_is_thread_safe();
 
 /// @ingroup solar-system
 int novas_use_calceph(t_calcephbin *eph);

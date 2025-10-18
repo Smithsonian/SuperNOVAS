@@ -10,7 +10,6 @@
  */
 
 /// \cond PRIVATE
-#define _X_OPEN_SOURCE 500        ///< For strdup(), glibc >= 2.12
 #define __NOVAS_INTERNAL_API__    ///< Use definitions meant for internal use by SuperNOVAS only
 /// \endcond
 

@@ -2139,7 +2139,7 @@ static int test_set_current_time() {
   struct timespec now = {};
   novas_timespec t1 = {}, t2 = {};
 
-#if !__ANDROID__ && (__STDC_VERSION__ >= 201112L || defined(_MSC_VER))
+#if (__STDC_VERSION__ >= 201112L && !defined(__ANDROID__)) || defined(_MSC_VER)
   timespec_get(&now, TIME_UTC);
 #else
   clock_gettime(CLOCK_REALTIME, &now);

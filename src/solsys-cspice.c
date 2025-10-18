@@ -59,9 +59,33 @@
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
-#include <pthread.h>
 
 /// \cond PRIVATE
+
+#if defined(_PTHREAD_) || defined(__unix__) || defined(__unix) || defined(__APPLE__)
+#  include <pthread.h>
+
+#  define mtx_init        pthread_mutex_init
+#  define mtx_lock        pthread_mutex_lock
+#  define mtx_unlock      pthread_mutex_unlock
+#  define THREAD_SAFE     1
+
+typedef pthread_mutex_t   mtx_t;
+
+#elif __STDC_VERSION__ >= 201112L
+#  include <threads.h>
+#  define THREAD_SAFE     1
+
+#else
+#  define mtx_init        (void)
+#  define mtx_lock        (void)
+#  define mtx_unlock      (void)
+#  define THREAD_SAFE     0
+
+typedef int               mtx_t;
+
+#endif
+
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
 /// \endcond
 
@@ -87,14 +111,32 @@ namespace novas {
 /// \endcond
 
 /// Semaphore for thread-safe access of ephemerides
-static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+static mtx_t mutex;
 
-static int mutex_lock() {
-  return pthread_mutex_lock(&mutex);
+static void mutex_lock() {
+  static int initialized;
+
+  if(!initialized) {
+    mtx_init(&mutex, 0);
+    initialized = 1;
+  }
+
+  mtx_lock(&mutex);
 }
 
-static int mutex_unlock() {
-  return pthread_mutex_unlock(&mutex);
+static void mutex_unlock() {
+  mtx_unlock(&mutex);
+}
+
+/**
+ * Checks if the CSPICE plugin is thread safe.
+ *
+ * @return      TRUE (1) if the lugin is thread safe, or else FALSE (0).
+ *
+ * @since 1.5
+ */
+int novas_cspice_is_thread_safe() {
+  return THREAD_SAFE;
 }
 
 /**
@@ -164,7 +206,7 @@ int cspice_add_kernel(const char *filename) {
 
   suppress_cspice_errors();
 
-  prop_error(fn, mutex_lock(), 0);
+  mutex_lock();
   reset_c();
   furnsh_c(filename);
   err = get_cspice_error(msg, sizeof(msg));
@@ -210,7 +252,7 @@ int cspice_remove_kernel(const char *filename) {
 
   suppress_cspice_errors();
 
-  prop_error(fn, mutex_lock(), 0);
+  mutex_lock();
   reset_c();
   unload_c(filename);
   err = get_cspice_error(msg, sizeof(msg));
@@ -295,7 +337,7 @@ static short planet_cspice_hp(const double jd_tdb[restrict 2], enum novas_planet
 
   tdb2000 = (jd_tdb[0] + jd_tdb[1] - NOVAS_JD_J2000) * 86400.0;
 
-  prop_error(fn, mutex_lock(), 0);
+  mutex_lock();
 
   // Try with proper planet center NAIF ID first...
   //
@@ -462,7 +504,7 @@ static int novas_cspice(const char *name, long id, double jd_tdb_high, double jd
 
   tdb2000 = (jd_tdb_high + jd_tdb_low - NOVAS_JD_J2000) * 86400.0;
 
-  prop_error(fn, mutex_lock(), 0);
+  mutex_lock();
 
   // See https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/req/frames.html#Reference%20Frames
   // "J2000" and "ICRF" are treated the same, with "J2000" being the compatibility label.
