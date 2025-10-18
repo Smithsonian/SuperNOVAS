@@ -3,7 +3,7 @@
  * @author Attila Kovacs
  */
 
-#define _XOPEN_SOURCE 500           /// strdup()
+#define _DEFAULT_SOURCE             /// strdup()
 
 
 #include <stdio.h>
@@ -197,8 +197,6 @@ static int test_remove_kernel() {
 
   return n;
 }
-
-
 
 static int init() {
   int n = 0;

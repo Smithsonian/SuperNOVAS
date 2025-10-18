@@ -59,9 +59,27 @@
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
-#include <pthread.h>
 
 /// \cond PRIVATE
+
+#if defined(_PTHREAD_) || defined(__unix__) || defined(__unix) || defined(__APPLE__)
+#  include <pthread.h>
+
+#  define mtx_init        pthread_mutex_init
+#  define mtx_lock        pthread_mutex_lock
+#  define mtx_unlock      pthread_mutex_unlock
+#  define THREAD_SAFE     1
+
+typedef pthread_mutex_t   mtx_t;
+
+#elif __STDC_VERSION__ >= 201112L
+#  include <threads.h>
+#  define THREAD_SAFE     1
+
+#else
+#  define THREAD_SAFE     0
+#endif
+
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
 /// \endcond
 
@@ -86,15 +104,43 @@ namespace novas {
 #define NORM_VEL                    (NORM_POS * 86400.0)
 /// \endcond
 
+#if THREAD_SAFE
 /// Semaphore for thread-safe access of ephemerides
-static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+static mtx_t mutex;
+#endif
 
 static int mutex_lock() {
-  return pthread_mutex_lock(&mutex);
+#if THREAD_SAFE
+  static int initialized;
+
+  if(!initialized) {
+    mtx_init(&mutex, 0);
+    initialized = 1;
+  }
+
+  return mtx_lock(&mutex);
+#else
+  return 0;
+#endif
 }
 
 static int mutex_unlock() {
-  return pthread_mutex_unlock(&mutex);
+#if THREAD_SAFE
+  return mtx_unlock(&mutex);
+#else
+  return 0;
+#endif
+}
+
+/**
+ * Checks if the CSPICE plugin is thread safe.
+ *
+ * @return      TRUE (1) if the lugin is thread safe, or else FALSE (0).
+ *
+ * @since 1.5
+ */
+int novas_cspice_is_thread_safe() {
+  return THREAD_SAFE;
 }
 
 /**
