@@ -296,6 +296,7 @@ install(DIRECTORY ${PROJECT_SOURCE_DIR}/legacy
    DESTINATION ${CMAKE_INSTALL_DOCDIR}
    MESSAGE_NEVER
    COMPONENT Development
+   FILES_MATCHING PATTERN "?*.*"
 )
 
 install(EXPORT supernovasTargets

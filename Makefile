@@ -217,7 +217,7 @@ install-examples:
 install-legacy:
 	@echo "installing legacy files to $(DESTDIR)$(docdir)/legacy"
 	install -d $(DESTDIR)$(docdir)/legacy
-	$(INSTALL_DATA) legacy/* $(DESTDIR)$(docdir)/legacy/
+	$(INSTALL_DATA) legacy/?*.* $(DESTDIR)$(docdir)/legacy/
 
 # Some standard GNU targets, that should always exist...
 .PHONY: html
