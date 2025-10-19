@@ -106,6 +106,7 @@ static int test_calceph_planet() {
   make_planet(NOVAS_MARS, &mars);
   make_ephem_object("Phobos", 401, &phobos);
 
+
   sprintf(filename, "%s" PATH_SEP MARS_EPH, prefix);
   eph = calceph_open(filename);
   if(check("calceph_planet:use", 0, novas_use_calceph(eph))) return 1;
@@ -251,6 +252,11 @@ static int test_calceph_use_ids() {
   return n;
 }
 
+int test_calceph_is_thread_safe() {
+  if(!is_ok("calceph_is_thread_safe", novas_calceph_is_thread_safe() < 0)) return 1;
+  return 0;
+}
+
 int main(int argc, char *argv[]) {
   int n = 0;
 
@@ -266,6 +272,7 @@ int main(int argc, char *argv[]) {
   if(test_use_calceph_planets()) n++;
   if(test_calceph_lock()) n++;
   if(test_calceph_use_ids()) n++;
+  if(test_calceph_is_thread_safe()) n++;
 
   novas_debug(NOVAS_DEBUG_OFF);
   if(test_errors()) n++;
@@ -276,3 +283,4 @@ int main(int argc, char *argv[]) {
 
   return n;
 }
+

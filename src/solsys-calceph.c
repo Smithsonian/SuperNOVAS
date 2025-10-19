@@ -223,8 +223,6 @@ static short planet_calceph_hp(const double jd_tdb[restrict 2], enum novas_plane
   double pv[6] = {0.0};
   int i, target, center, success;
 
-  if(!planets)
-    return novas_error(3, EAGAIN, fn, "No planet ephemerides have been configured");
   if(!jd_tdb)
     return novas_error(-1, EINVAL, fn, "jd_tdb input time array is NULL.");
 
@@ -256,11 +254,6 @@ static short planet_calceph_hp(const double jd_tdb[restrict 2], enum novas_plane
   }
 
   mtx_lock(&planet_mutex);
-  if(!planets) {
-    mtx_unlock(&planet_mutex);
-    return novas_error(3, EAGAIN, fn, "No planet ephemerides have been configured");
-  }
-
   ephem = planets;
 
   parallel = !serialized_calceph_queries && calceph_isthreadsafe(ephem);
@@ -379,9 +372,6 @@ static int novas_calceph(const char *name, long id, double jd_tdb_high, double j
   double pv[6] = {0.0};
   int i, success, center;
 
-  if(!bodies)
-    return novas_error(-1, EAGAIN, fn, "No ephemerides have been configured");
-
   if(id == -1) {
     // Lookup by name...
     if(!name)
@@ -404,11 +394,6 @@ static int novas_calceph(const char *name, long id, double jd_tdb_high, double j
   center = (compute_flags & CALCEPH_USE_NAIFID) ? NAIF_SSB : CALCEPH_SSB;
 
   mtx_lock(&bodies_mutex);
-  if(!bodies) {
-    mtx_unlock(&bodies_mutex);
-    return novas_error(-1, EAGAIN, fn, "No ephemerides have been configured");
-  }
-
   ephem = bodies;
 
   // If CALCEPH itself is thread-safe we can release the lock here...

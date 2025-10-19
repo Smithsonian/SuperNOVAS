@@ -198,6 +198,11 @@ static int test_remove_kernel() {
   return n;
 }
 
+int test_cspice_is_thread_safe() {
+  if(!is_ok("cspice_is_thread_safe", novas_cspice_is_thread_safe() < 0)) return 1;
+  return 0;
+}
+
 static int init() {
   int n = 0;
 
@@ -228,6 +233,8 @@ int main(int argc, char *argv[]) {
   if(test_errors()) n++;
 
   if(test_remove_kernel()) n++;
+
+  if(test_cspice_is_thread_safe()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");
