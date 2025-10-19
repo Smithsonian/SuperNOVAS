@@ -3,7 +3,7 @@
  * @author Attila Kovacs
  */
 
-#define _XOPEN_SOURCE 500           /// strdup()
+#define _DEFAULT_SOURCE             /// strdup()
 
 
 #include <stdio.h>

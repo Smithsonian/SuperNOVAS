@@ -416,10 +416,14 @@ double get_utc_to_tt(int leap_seconds) {
  * </ol>
  *
  * @param leap_seconds  [s] Leap seconds at the time of observations
- * @param dut1          [s] UT1 - UTC time difference [-0.5:0.5], corrected for diurnal
- *                      variations due to libration and ocean tides.
- * @return              [s] The TT - UT1 time difference that is suitable for used with all
- *                      calls in this library that require a `ut1_to_tt` argument.
+ * @param dut1          [s] mean UT1-UTC time difference, e.g. as published in IERS Bulletin A
+ *                      (without diurnal corrections for libration and ocean tides), If the time
+ *                      offset is defined for a different ITRS realization than what is used for
+ *                      the coordinates of an Earth-based observer, you can use
+ *                      `novas_itrf_transform_eop()` to make it consistent.
+ * @return              [s] The TT - UT1 time difference that is suitable for use with all
+ *                      calls in this library that require a `ut1_to_tt` argument. It includes
+ *                      diurnal corrections for libration and ocean tides.
  *
  * @since 1.0
  * @author Attila Kovacs
@@ -834,11 +838,11 @@ double novas_diff_tcg(const novas_timespec *t1, const novas_timespec *t2) {
  * @param unix_time   [s] UNIX time (UTC) seconds
  * @param nanos       [ns] UTC sub-second component
  * @param leap        [s] Leap seconds, e.g. as published by IERS Bulletin C.
- * @param dut1        [s] UT1-UTC time difference, e.g. as published in IERS Bulletin A, and
- *                    possibly corrected for diurnal and semi-diurnal variations, e.g.
- *                    via `novas_diurnal_eop()`. If the time offset is defined for a different
- *                    ITRS realization than what is used for the coordinates of an Earth-based
- *                    observer, you can use `novas_itrf_transform_eop()` to make it consistent.
+ * @param dut1        [s] mean UT1-UTC time difference, e.g. as published in IERS Bulletin A
+ *                    (without diurnal corrections for libration and ocean tides), If the time
+ *                    offset is defined for a different ITRS realization than what is used for
+ *                    the coordinates of an Earth-based observer, you can use
+ *                    `novas_itrf_transform_eop()` to make it consistent.
  * @param[out] time   Pointer to the data structure that uniquely defines the astronomical time
  *                    for all applications.
  * @return            0 if successful, or else -1 if there was an error (errno will be set to
@@ -880,11 +884,11 @@ int novas_set_unix_time(time_t unix_time, long nanos, int leap, double dut1, nov
  * </ol>
  *
  * @param leap        [s] Leap seconds, e.g. as published by IERS Bulletin C.
- * @param dut1        [s] UT1-UTC time difference, e.g. as published in IERS Bulletin A, and
- *                    possibly corrected for diurnal and semi-diurnal variations, e.g.
- *                    via `novas_diurnal_eop()`. If the time offset is defined for a different
- *                    ITRS realization than what is used for the coordinates of an Earth-based
- *                    observer, you can use `novas_itrf_transform_eop()` to make it consistent.
+ * @param dut1        [s] mean UT1-UTC time difference, e.g. as published in IERS Bulletin A
+ *                    (without diurnal corrections for libration and ocean tides), If the time
+ *                    offset is defined for a different ITRS realization than what is used for
+ *                    the coordinates of an Earth-based observer, you can use
+ *                    `novas_itrf_transform_eop()` to make it consistent.
  * @param[out] time   Pointer to the data structure that uniquely defines the astronomical time
  *                    for all applications.
  * @return            0 if successful, or else -1 if there was an error (errno will be set to
@@ -898,7 +902,7 @@ int novas_set_unix_time(time_t unix_time, long nanos, int leap, double dut1, nov
 int novas_set_current_time(int leap, double dut1, novas_timespec *restrict time) {
   struct timespec t = {};
 
-#if !__ANDROID__ && (__STDC_VERSION__ >= 201112L || defined(_MSC_VER))
+#if (__STDC_VERSION__ >= 201112L && !defined(__ANDROID__)) || defined(_MSC_VER)
   timespec_get(&t, TIME_UTC);
 #else
   clock_gettime(CLOCK_REALTIME, &t);

@@ -159,6 +159,8 @@ Upcoming feature release, expected around 1 November 2025.
  - #264: `novas_timespec` now stores the TT-TDB conversion to the full (100 ns) precision. It's slightly slower than
    the less precise original NOVAS `tdb2tt()`, but it's worth it not having to worry about the precision.
  
+ - #265: CALCEPH and CSPICE plugins to use portable mutex code.
+ 
  - Both CMake and GNU make now install only the headers for the components that were built. E.g. `novas-calceph.h` is 
    installed only if the library is built with the CALCEPH support option enabled.
  

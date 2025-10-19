@@ -31,6 +31,7 @@ project(supernovas
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 include(FeatureSummary)
+include(FindThreads)
 
 # Build options
 option(BUILD_SHARED_LIBS "Build as shared libraries instead of static" OFF)
@@ -78,13 +79,9 @@ if(NOT LIBM)
     set(LIBM "")
 endif()
 
-# Use pthread mutexes for thread safe CALCEPH / CSPICE plugins
-if(ENABLE_CSPICE OR ENABLE_CALCEPH)
-  set(THREADS_PREFER_PTHREAD_FLAG ON)
-  find_package(Threads REQUIRED)
-  set(THREADLIB Threads::Threads)
+if(ENABLE_CALCEPH OR ENABLE_CSPICE)
+    find_package(Threads REQUIRED)
 endif()
-
 
 # ----------------------------------------------------------------------------
 # Extenal plugin configuration
@@ -98,13 +95,11 @@ if(ENABLE_CALCEPH)
         TYPE REQUIRED
         PURPOSE "Provides ephemeris support for supernovas"
     )
-    list(APPEND SUPERNOVAS_COMPILE_DEFINITIONS USE_CALCEPH=1)
 endif()
 
 # CSPICE plugin
 if(ENABLE_CSPICE)
     find_library(cspice cspice REGISTRY_VIEW TARGET REQUIRED)
-    list(APPEND SUPERNOVAS_COMPILE_DEFINITIONS USE_CSPICE=1)
 endif()
 
 # ----------------------------------------------------------------------------
@@ -186,13 +181,17 @@ function(solsys_plugin EPHEM_LIB)
         POSITION_INDEPENDENT_CODE ON
     )
     
+    if(CMAKE_USE_PTHREADS_INIT)
+        target_compile_definitions(${PLUGIN} PRIVATE _PTHREAD_)
+    endif()
+    
     target_include_directories(${PLUGIN} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
     
     target_link_libraries(solsys-${EPHEM_LIB} PRIVATE
         supernovas
         ${EPHEM_LIB}
         ${LIBM}
-        ${THREADLIB}
+        Threads::Threads
     )
 endfunction()
 
