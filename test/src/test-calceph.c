@@ -152,7 +152,7 @@ static int test_calceph_planet() {
   return 0;
 }
 
-static int test_calceph_lock() {
+static int test_calceph_serialized() {
   extern int serialized_calceph_queries;
 
   object mars, phobos;
@@ -165,8 +165,10 @@ static int test_calceph_lock() {
   make_planet(NOVAS_MARS, &mars);
   make_ephem_object("Phobos", 401, &phobos);
 
-  if(!is_ok("calceph_planet:mars", ephemeris(jd2, &mars, NOVAS_BARYCENTER, NOVAS_REDUCED_ACCURACY, pos, vel))) return 1;
-  if(!is_ok("calceph_planet:phobos", ephemeris(jd2, &phobos, NOVAS_BARYCENTER, NOVAS_REDUCED_ACCURACY, pos, vel))) return -1;
+  if(!is_ok("calceph_serialized:mars", ephemeris(jd2, &mars, NOVAS_BARYCENTER, NOVAS_REDUCED_ACCURACY, pos, vel))) return 1;
+  if(!is_ok("calceph_serialized:phobos", ephemeris(jd2, &phobos, NOVAS_BARYCENTER, NOVAS_REDUCED_ACCURACY, pos, vel))) return -1;
+
+  serialized_calceph_queries = 0;
 
   return 0;
 }
@@ -270,9 +272,10 @@ int main(int argc, char *argv[]) {
   if(test_calceph_planet()) n++;
   if(test_use_calceph()) n++;
   if(test_use_calceph_planets()) n++;
-  if(test_calceph_lock()) n++;
+  if(test_calceph_serialized()) n++;
   if(test_calceph_use_ids()) n++;
   if(test_calceph_is_thread_safe()) n++;
+
 
   novas_debug(NOVAS_DEBUG_OFF);
   if(test_errors()) n++;
