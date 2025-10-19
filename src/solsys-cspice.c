@@ -485,11 +485,11 @@ static int novas_cspice(const char *name, long id, double jd_tdb_high, double jd
     bodn2c_c(name, &spiceCode, &spiceFound);
     err = get_cspice_error(msg, sizeof(msg));
 
+    if(err)
+      return novas_error(1, EINVAL, fn, "CSPICE error for '%s': %s", name, msg);
+
     if(!spiceFound)
       return novas_error(1, EINVAL, fn, "CSPICE could not find a NAIF ID for '%s'", name);
-
-    if(err)
-      return novas_error(1, EINVAL, fn, "CSPICE name lookup error for '%s': %s", name, msg);
 
     id = spiceCode;
   }

@@ -137,6 +137,11 @@ static int test_cspice_planet() {
   if(!is_ok("cspice_planet:phobos:byname", ephemeris(jd2, &phobos, NOVAS_BARYCENTER, NOVAS_REDUCED_ACCURACY, pos0, vel0))) return -1;
   if(!is_ok("cspice_planet:phobos:match", check_equal_pos(pos, pos0, 1e-6))) return 1;
 
+  strcpy(phobos.name, "Bad");
+  if(check("cspice_planet:bad:name", 21, ephemeris(jd2, &phobos, NOVAS_BARYCENTER, NOVAS_REDUCED_ACCURACY, pos0, vel0))) return -1;
+
+  phobos.number = 2025;
+  if(check("cspice_planet:bad:id", 23, ephemeris(jd2, &phobos, NOVAS_BARYCENTER, NOVAS_REDUCED_ACCURACY, pos0, vel0))) return -1;
 
   return 0;
 }
@@ -211,6 +216,7 @@ static int init() {
 
   if(check("init:add_kernel:null", -1, cspice_add_kernel(NULL))) n++;
   if(check("init:add_kernel:empty", -1, cspice_add_kernel(""))) n++;
+  if(check("init:add_kernel:blah", -1, cspice_add_kernel("blah"))) n++;
 
   return n;
 }
