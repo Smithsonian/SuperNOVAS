@@ -571,12 +571,8 @@ int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const no
   if(frame->gst < 0) frame->gst += DAY_HOURS;
 
   if(accuracy == NOVAS_FULL_ACCURACY) {
-    novas_delaunay_args a = {};
     double dxp = 0.0, dyp = 0.0;
-
-    fund_args((tdb2[0] + tdb2[1]) / (100.0 * NOVAS_JULIAN_YEAR_DAYS), &a);
-    novas_diurnal_eop(frame->gst, &a, &dxp, &dyp, NULL);
-
+    novas_diurnal_eop_at_time(&frame->time, &dxp, &dyp, NULL);
     frame->dx += 0.001 * dxp;
     frame->dy += 0.001 * dyp;
   }

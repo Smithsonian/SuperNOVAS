@@ -371,6 +371,11 @@ double tt2tdb_fp(double jd_tt, double limit) {
  * Returns the TDB-TT time difference with high precision. This implementation uses the full
  * series expansion by Fairhead &amp; Bretagnon 1990, resulting in an accuracy below 100 ns.
  *
+ * NOTES:
+ * <ol>
+ * <li>This function caches the result of the last calculation.</li>
+ * </ol>
+ *
  * REFERENCES:
  * <ol>
  * <li>Fairhead, L., &amp; Bretagnon, P. (1990) A&amp;A, 229, 240</li>
@@ -385,7 +390,14 @@ double tt2tdb_fp(double jd_tt, double limit) {
  * @sa tt2tdb_fp(), tt2tdb()
  */
 double tt2tdb_hp(double jd_tt) {
-  return tt2tdb_fp(jd_tt, 0.0);
+  static THREAD_LOCAL double last_tt = NAN, last_dt;
+
+  if(!novas_time_equals(jd_tt, last_tt)) {
+    last_dt = tt2tdb_fp(jd_tt, 0.0);
+    last_tt = jd_tt;
+  }
+
+  return last_dt;
 }
 
 /**

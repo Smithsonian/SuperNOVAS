@@ -166,10 +166,10 @@ double novas_gmst(double jd_ut1, double ut1_to_tt) {
 /**
  * Returns the Greenwich Apparent Sidereal Time (GAST) for a given UT1 date.
  *
- * @param jd_ut1      [day] UT1-based Julian Date.
- * @param ut1_to_tt   [s] UT1 - UTC time difference.
- * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
- * @return            [h] The Greenwich Apparent Sidereal Time (GAST) in the 0-24 range.
+ * NOTES:
+ * <ol>
+ * <li>This function caches the result of the last calculation.</li>
+ * </ol>
  *
  * REFERENCES:
  * <ol>
@@ -180,19 +180,35 @@ double novas_gmst(double jd_ut1, double ut1_to_tt) {
  * https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2e.txt</li>
  * </ol>
  *
+ * @param jd_ut1      [day] UT1-based Julian Date.
+ * @param ut1_to_tt   [s] UT1 - UTC time difference.
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @return            [h] The Greenwich Apparent Sidereal Time (GAST) in the 0-24 range.
+ *
  * @since 1.5
  * @author Attila Kovacs
  *
  * @sa novas_gmst()
  */
 double novas_gast(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy) {
-  double ee = 0.0, gst;
+  static THREAD_LOCAL double last_ut1 = NAN, last_gast;
+  static THREAD_LOCAL enum novas_accuracy last_acc = (enum novas_accuracy) -1;
 
-  if(e_tilt(jd_ut1 + ut1_to_tt / DAY, accuracy, NULL, NULL, &ee, NULL, NULL) != 0)
-    return novas_trace_nan("novas_gast");
+  if(accuracy != last_acc || !novas_time_equals(jd_ut1, last_ut1)) {
+    double ee = 0.0;
 
-  gst = remainder(novas_gmst(jd_ut1, ut1_to_tt) + ee / 3600.0, DAY_HOURS);
-  return (gst < 0.0) ? gst + DAY_HOURS : gst;
+    if(e_tilt(jd_ut1 + ut1_to_tt / DAY, accuracy, NULL, NULL, &ee, NULL, NULL) != 0)
+      return novas_trace_nan("novas_gast");
+
+    last_gast = remainder(novas_gmst(jd_ut1, ut1_to_tt) + ee / 3600.0, DAY_HOURS);
+    if(last_gast < 0.0)
+      last_gast += DAY_HOURS;
+
+    last_ut1 = jd_ut1;
+    last_acc = accuracy;
+  }
+
+  return last_gast;
 }
 
 /**
@@ -534,6 +550,7 @@ int novas_diurnal_eop(double gmst, const novas_delaunay_args *restrict delaunay,
  * used when defining astronomical times and observing frames. I.e., you should pass mean values
  * to the likes of `novas_set_time()` and `novas_make_frame()`, which will then add the diurnal
  * corrections as appropriate automatically.</li>
+ * <li>This function caches the result of the last calculation.</li>
  * </ol>
  *
  * REFERENCES:
@@ -557,14 +574,28 @@ int novas_diurnal_eop(double gmst, const novas_delaunay_args *restrict delaunay,
  * @sa novas_diurnal_eop()
  */
 int novas_diurnal_eop_at_time(const novas_timespec *restrict time, double *restrict dxp, double *restrict dyp, double *restrict dut1) {
-  novas_delaunay_args a = {};
+  static THREAD_LOCAL double last_tt = NAN;
+  static THREAD_LOCAL double last_x, last_y, last_t;
 
   if(!time)
     return novas_error(-1, EINVAL, "novas_diurnal_eop_at_time", "time argument is NULL");
 
-  fund_args((time->ijd_tt - NOVAS_JD_J2000 + time->fjd_tt) / JULIAN_CENTURY_DAYS, &a);
+  if(!novas_time_equals(time->ijd_tt + time->fjd_tt, last_tt)) {
+    novas_delaunay_args a = {};
+    double gmst = novas_gmst(novas_get_time(time, NOVAS_UT1), time->ut1_to_tt);
+    fund_args((time->ijd_tt - NOVAS_JD_J2000 + time->fjd_tt) / JULIAN_CENTURY_DAYS, &a);
+    novas_diurnal_eop(gmst, &a, &last_x, &last_y, &last_t);
+    last_tt = time->ijd_tt + time->fjd_tt;
+  }
 
-  return novas_diurnal_eop(novas_time_gst(time, NOVAS_REDUCED_ACCURACY), &a, dxp, dyp, dut1);
+  if(dxp)
+    *dxp = last_x;
+  if(dyp)
+    *dyp = last_y;
+  if(dut1)
+    *dut1 = last_t;
+
+  return 0;
 }
 
 /**
