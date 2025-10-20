@@ -33,7 +33,7 @@ static void timestamp(novas_timespec *t) {
 
 int main() {              // observer location
   // Other variables we need ----------------------------------------------->
-  int i, N = 30000;
+  int i, N = 100000, N2 = N / 10;
   double tjd = 2460683.132905, dx, dy;
   novas_timespec start, end;
 
@@ -44,9 +44,9 @@ int main() {              // observer location
   // -------------------------------------------------------------------------
   // Benchmark reduced accuracy, place(), same time
   timestamp(&start);
-  for(i = 0; i < N; i++) iau2000a(tjd + i * 0.01, 0.0, &dx, &dy);
+  for(i = 0; i < N2; i++) iau2000a(tjd + i * 0.01, 0.0, &dx, &dy);
   timestamp(&end);
-  printf(" - iau2000a:   %12.1f nutations/sec\n", N / novas_diff_time(&end, &start));
+  printf(" - iau2000a:   %12.1f nutations/sec\n", N2 / novas_diff_time(&end, &start));
 
   // -------------------------------------------------------------------------
   // Benchmark reduced accuracy, place(), different times()

@@ -625,11 +625,10 @@ int novas_change_observer(const novas_frame *orig, const observer *obs, novas_fr
   out->state = FRAME_DEFAULT;
   out->observer = *obs;
 
-  pl_mask = (out->accuracy == NOVAS_FULL_ACCURACY) ? grav_bodies_full_accuracy : grav_bodies_reduced_accuracy;
-
   prop_error(fn, set_obs_posvel(out), 0);
 
   jd_tdb = novas_get_time(&out->time, NOVAS_TDB);
+  pl_mask = (out->accuracy == NOVAS_FULL_ACCURACY) ? grav_bodies_full_accuracy : grav_bodies_reduced_accuracy;
   prop_error(fn, obs_planets(jd_tdb, out->accuracy, out->obs_pos, pl_mask, &out->planets), 0);
 
   out->state = FRAME_INITIALIZED;
@@ -733,6 +732,7 @@ int novas_geom_posvel(const object *restrict source, const novas_frame *restrict
 
   if(frame->accuracy != NOVAS_FULL_ACCURACY && frame->accuracy != NOVAS_REDUCED_ACCURACY)
     return novas_error(-1, EINVAL, fn, "invalid accuracy: %d", frame->accuracy);
+
   // Compute 'jd_tdb', the TDB Julian date corresponding to 'jd_tt'.
   jd_tdb = novas_get_time(&frame->time, NOVAS_TDB);
 

@@ -64,8 +64,9 @@ int main(int argc, const char *argv[]) {
 
 
   // Other variables we need ----------------------------------------------->
-  int i, N = 300000;
+  int i, N = 300000, N2 = N  / 10, N3 = N / 30;
 
+  novas_debug(1);
 
   if(argc > 1) N = (int) strtol(argv[1], NULL, 10);
 
@@ -186,52 +187,51 @@ int main(int argc, const char *argv[]) {
   // -------------------------------------------------------------------------
   // Benchmark reduced accuracy, individual fames
   timestamp(&start);
-  for(i = 0; i < N; i++) {
+  for(i = 0; i < N2; i++) {
     novas_set_time(NOVAS_TT, novas_get_time(&start, NOVAS_TT) + i, LEAP_SECONDS, DUT1, &obs_time);
     novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &obs_time, POLAR_DX, POLAR_DY, &obs_frame);
     calc_pos(&stars[i], &obs_frame);
   }
   timestamp(&end);
   printf(" - novas_sky_pos, individual, red. acc.:          %12.1f positions/sec\n",
-          N / novas_diff_time(&end, &start));
+          N2 / novas_diff_time(&end, &start));
 
   // -------------------------------------------------------------------------
   // Benchmark full accuracy, individual frames
   timestamp(&start);
-  for(i = 0; i < N; i++) {
+  for(i = 0; i < N3; i++) {
     novas_set_time(NOVAS_TT, novas_get_time(&start, NOVAS_TT) + i, LEAP_SECONDS, DUT1, &obs_time);
     novas_make_frame(NOVAS_FULL_ACCURACY, &obs, &obs_time, POLAR_DX, POLAR_DY, &obs_frame);
     calc_pos(&stars[i], &obs_frame);
   }
   timestamp(&end);
   printf(" - novas_sky_pos, individual, full acc.:          %12.1f positions/sec\n",
-          N / novas_diff_time(&end, &start));
-
+          N3 / novas_diff_time(&end, &start));
 
 
   // -------------------------------------------------------------------------
   // Benchmark place() reduced accuracy, individual frames
   obs_frame.accuracy = NOVAS_REDUCED_ACCURACY;
   timestamp(&start);
-  for(i = 0; i < N; i++) {
-    obs_frame.time.ijd_tt += (i % 2) ? 1 : -1;  // alternate dates.
+  for(i = 0; i < N2; i++) {
+    novas_set_time(NOVAS_TT, novas_get_time(&start, NOVAS_TT) + ((i % 2) ? 1 : -1), LEAP_SECONDS, DUT1, &obs_frame.time);
     calc_place(&stars[i], &obs_frame);
   }
   timestamp(&end);
   printf(" - place(), individual, red. acc.:                %12.1f positions/sec\n",
-          N / novas_diff_time(&end, &start));
+          N2 / novas_diff_time(&end, &start));
 
   // -------------------------------------------------------------------------
   // Benchmark place full accuracy, individual frames
   obs_frame.accuracy = NOVAS_FULL_ACCURACY;
   timestamp(&start);
-  for(i = 0; i < N; i++) {
-    obs_frame.time.ijd_tt += (i % 2) ? 1 : -1;
+  for(i = 0; i < N3; i++) {
+    novas_set_time(NOVAS_TT, novas_get_time(&start, NOVAS_TT) + ((i % 2) ? 1 : -1), LEAP_SECONDS, DUT1, &obs_frame.time);
     calc_place(&stars[i], &obs_frame);
   }
   timestamp(&end);
   printf(" - place(), individual, full acc.:                %12.1f positions/sec\n",
-          N / novas_diff_time(&end, &start));
+          N3 / novas_diff_time(&end, &start));
 
 
   return 0;
