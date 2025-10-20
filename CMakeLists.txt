@@ -80,7 +80,7 @@ if(NOT LIBM)
 endif()
 
 if(ENABLE_CALCEPH OR ENABLE_CSPICE)
-    find_package(Threads REQUIRED)
+    find_package(Threads)
 endif()
 
 # ----------------------------------------------------------------------------
