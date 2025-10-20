@@ -4282,23 +4282,25 @@ static int test_ocean_tides() {
   return n;
 }
 
-static int test_diurnal_eop_at_time() {
+static int test_diurnal_eop() {
   int n = 0;
   novas_delaunay_args a = {};
   novas_timespec j2000 = {};
+  double gmst;
   double x[3], y[3], u[3];
 
   novas_set_time(NOVAS_TT, NOVAS_JD_J2000, 0.0, 0.0, &j2000);
+  gmst = novas_gmst(novas_get_time(&j2000, NOVAS_UT1), j2000.ut1_to_tt);
 
   if(!is_ok("diurnal_eop_at_time:args", fund_args(0.0, &a))) return 1;
 
   if(!is_ok("diurnal_eop_at_time", novas_diurnal_eop_at_time(&j2000, &x[0], &y[0], &u[0]))) return 1;
-  if(!is_ok("diurnal_eop_at_time:libration", novas_diurnal_libration(novas_gmst(NOVAS_JD_J2000, 0.0), &a, &x[1], &y[1], &u[1]))) return 1;
-  if(!is_ok("diurnal_eop_at_time:ocean_tides", novas_diurnal_ocean_tides(novas_gmst(NOVAS_JD_J2000, 0.0), &a, &x[2], &y[2], &u[2]))) return 1;
+  if(!is_ok("diurnal_eop_at_time:libration", novas_diurnal_libration(gmst, &a, &x[1], &y[1], &u[1]))) return 1;
+  if(!is_ok("diurnal_eop_at_time:ocean_tides", novas_diurnal_ocean_tides(gmst, &a, &x[2], &y[2], &u[2]))) return 1;
 
-  if(!is_equal("ocean_tides:x:only", x[0], x[1] + x[2], 1e-6)) n++;
-  if(!is_equal("ocean_tides:x:only", y[0], y[1] + y[2], 1e-6)) n++;
-  if(!is_equal("ocean_tides:x:only", u[0], u[1] + u[2], 1e-6)) n++;
+  if(!is_equal("diurnal_eop_at_time:check:x", x[0], x[1] + x[2], 1e-6)) n++;
+  if(!is_equal("diurnal_eop_at_time:check:y", y[0], y[1] + y[2], 1e-6)) n++;
+  if(!is_equal("diurnal_eop_at_time:check:z", u[0], u[1] + u[2], 1e-6)) n++;
 
   if(!is_ok("diurnal_eop_at_time", novas_diurnal_eop_at_time(&j2000, &x[1], NULL, NULL))) return 1;
   if(!is_equal("diurnal_eop_at_time:x:only", x[0], x[1], 1e-12)) n++;
@@ -4308,6 +4310,15 @@ static int test_diurnal_eop_at_time() {
 
   if(!is_ok("diurnal_eop_at_time", novas_diurnal_eop_at_time(&j2000, NULL, NULL, &u[1]))) return 1;
   if(!is_equal("diurnal_eop_at_time:x:only", u[0], u[1], 1e-12)) n++;
+
+  if(!is_ok("diurnal_eop", novas_diurnal_eop(gmst, &a, &x[1], NULL, NULL))) return 1;
+  if(!is_equal("diurnal_eop:x:only", x[0], x[1], 1e-12)) n++;
+
+  if(!is_ok("diurnal_eop", novas_diurnal_eop(gmst, &a, NULL, &y[1], NULL))) return 1;
+  if(!is_equal("diurnal_eop:x:only", y[0], y[1], 1e-12)) n++;
+
+  if(!is_ok("diurnal_eop", novas_diurnal_eop(gmst, &a, NULL, NULL, &u[1]))) return 1;
+  if(!is_equal("diurnal_eop:x:only", u[0], u[1], 1e-12)) n++;
 
   return n;
 }
@@ -4823,7 +4834,7 @@ int main(int argc, char *argv[]) {
   // v 1.5
   if(test_libration()) n++;
   if(test_ocean_tides()) n++;
-  if(test_diurnal_eop_at_time()) n++;
+  if(test_diurnal_eop()) n++;
 
   if(test_cartesian_to_geodetic()) n++;
   if(test_geodetic_to_cartesian()) n++;

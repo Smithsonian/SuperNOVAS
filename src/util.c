@@ -207,7 +207,6 @@ double novas_vdot(const double *v1, const double *v2) {
  * for the highest accuracy calculations. As such it is safe to use the reduced accuracy time
  * check for cached precession-related quantities.
  *
- * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param jd1       [day] a Julian date (in any time measure)
  * @param jd2       [day] a Julian date in the same time measure as the first argument
  * @return          TRUE (1) if the two dates are effectively the same at the precision of

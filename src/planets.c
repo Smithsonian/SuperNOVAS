@@ -566,6 +566,11 @@ int novas_approx_sky_pos(enum novas_planet id, const novas_frame *restrict frame
  * a few degrees.</li>
  * </ol>
  *
+ * NOTES:
+ * <ol>
+ * <li>This function caches the result of the last calculation.</li>
+ * </ol>
+ *
  * REFERENCES:
  * <ol>
  *  <li>The Explanatory Supplement to the Astronomical Almanac, University Science Books, 3rd ed.,
@@ -592,6 +597,11 @@ int novas_approx_sky_pos(enum novas_planet id, const novas_frame *restrict frame
 double novas_moon_phase(double jd_tdb) {
   static const char *fn = "novas_moon_phase";
 
+  static THREAD_LOCAL double last_tdb = NAN, last_phase;
+
+  if(novas_time_equals(jd_tdb, last_tdb))
+    return last_phase;
+
   novas_orbital orbit = NOVAS_ORBIT_INIT;
   double pos[3] = {0.0};
   double he, hm;
@@ -606,7 +616,10 @@ double novas_moon_phase(double jd_tdb) {
   prop_nan(fn, novas_orbit_native_posvel(jd_tdb, &orbit, pos, NULL));
   vector2radec(pos, &hm, NULL);
 
-  return remainder(12.0 + hm - he, 24.0) * 15.0;
+  last_phase = remainder(12.0 + hm - he, 24.0) * 15.0;
+  last_tdb = jd_tdb;
+
+  return last_phase;
 }
 
 /**
