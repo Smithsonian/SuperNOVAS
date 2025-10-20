@@ -217,7 +217,7 @@ install-examples:
 install-legacy:
 	@echo "installing legacy files to $(DESTDIR)$(docdir)/legacy"
 	install -d $(DESTDIR)$(docdir)/legacy
-	$(INSTALL_DATA) legacy/?*.* $(DESTDIR)$(docdir)/legacy/
+	$(INSTALL_DATA) legacy/* $(DESTDIR)$(docdir)/legacy/
 
 # Some standard GNU targets, that should always exist...
 .PHONY: html
@@ -254,7 +254,7 @@ help:
 	@echo
 	@echo "Syntax: make [target]"
 	@echo
-	@echo "The following targets are available:"
+	@echo "The following tairgets are available:"
 	@echo
 	@echo "  distro        (default) 'shared' targets and also 'local-dox' provided 'doxygen'" 
 	@echo "                is available, or was specified via the DOXYGEN variable (e.g. in"
