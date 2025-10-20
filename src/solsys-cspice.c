@@ -61,30 +61,46 @@
 #include <errno.h>
 
 /// \cond PRIVATE
-
 #if defined(_PTHREAD_) || defined(__unix__) || defined(__unix) || defined(__APPLE__)
 #  include <pthread.h>
 
-#  define mtx_init        pthread_mutex_init
-#  define mtx_lock        pthread_mutex_lock
-#  define mtx_unlock      pthread_mutex_unlock
-#  define THREAD_SAFE     1
+#  define init_lock           pthread_mutex_init
+#  define ephem_lock          pthread_mutex_lock
+#  define ephem_unlock        pthread_mutex_unlock
+#  define THREAD_SAFE         1
 
-typedef pthread_mutex_t   mtx_t;
+typedef pthread_mutex_t       lock_type;
 
 #elif __STDC_VERSION__ >= 201112L
 #  include <threads.h>
-#  define THREAD_SAFE     1
+
+#  define init_lock           mtx_init
+#  define ephem_lock          mtx_lock
+#  define ephem_unlock        mtx_unlock
+
+#  define THREAD_SAFE         1
+
+typedef mtx_t                 lock_type;
+
+#elif defined(WIN32)
+#include <windows.h>
+
+#  define init_lock(x, t)     InitializeSRWLock(x)
+#  define ephem_lock          AcquireSRWLockExclusive
+#  define ephem_unlock        ReleaseSRWLockExclusive
+#  define THREAD_SAFE         1
+
+typedef SRWLOCK               lock_type;
 
 #else
-#  define mtx_init        (void)
-#  define mtx_lock        (void)
-#  define mtx_unlock      (void)
-#  define THREAD_SAFE     0
+#  define ephem_lock(x)
+#  define ephem_unlock(x)
+#  define THREAD_SAFE         0
 
-typedef int               mtx_t;
+typedef int                   lock_type;
 
 #endif
+
 
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
 /// \endcond
@@ -110,23 +126,25 @@ namespace novas {
 #define NORM_VEL                    (NORM_POS * 86400.0)
 /// \endcond
 
+#if THREAD_SAFE
 /// Semaphore for thread-safe access of ephemerides
-static mtx_t mutex;
+static lock_type mutex;
 
 static void mutex_lock() {
   static int initialized;
 
   if(!initialized) {
-    mtx_init(&mutex, 0);
+    init_lock(&mutex, 0);
     initialized = 1;
   }
 
-  mtx_lock(&mutex);
+  ephem_lock(&mutex);
 }
 
 static void mutex_unlock() {
-  mtx_unlock(&mutex);
+  ephem_unlock(&mutex);
 }
+#endif
 
 /**
  * Checks if the CSPICE plugin is thread safe.
@@ -270,7 +288,7 @@ int cspice_remove_kernel(const char *filename) {
  * novas_use_cspice() or novas_use_cspice_planet() to activate CSPICE as the NOVAS ephemeris
  * provider.
  *
- * This call is generally thread safe (notwithstanding outside access to the ephemeris files),
+ * This call is generally th#if defined(_PTHREAD_) || defined(__unix__) || defined(__unix) || defined(__APPLE__)read safe (notwithstanding outside access to the ephemeris files),
  * even if CSPICE itself may not be. All ephemeris access will be mutexed to ensure sequential
  * access under the hood.
  *
@@ -440,7 +458,40 @@ static short planet_cspice(double jd_tdb, enum novas_planet body, enum novas_ori
  *                      this may be the integer part of the Julian date for high-precision
  *                      calculations, or else the entire Julian date for reduced precision.
  * @param jd_tdb_low    [day] The low-order part of Barycentric Dynamical Time (TDB) based
- *                      Julian date for which to find the position and velocity. Typically
+ *                      Julian date for which to find #if defined(_PTHREAD_) || defined(__unix__) || defined(__unix) || defined(__APPLE__)
+#  include <pthread.h>
+
+#  define mutex_init      pthread_mutex_init
+#  define mutex_lock      pthread_mutex_lock
+#  define mutex_unlock    pthread_mutex_unlock
+#  define THREAD_SAFE     1
+
+typedef pthread_mutex_t   mtx_t;
+
+#elif __STDC_VERSION__ >= 201112L
+#  include <threads.h>
+#  define mutex_init      mtx_init
+#  define mutex_lock      mtx_lock
+#  define mutex_unlock    mtx_unlock
+
+#  define THREAD_SAFE     1
+
+#elif defined(WIN32)
+#include <windows.h>
+#  define mutex_init      InitializeSRWLock
+#  define mutex_lock      AcquireSRWLockExclusive
+#  define mutex_unlock    ReleaseSRWLockExclusive
+#  define THREAD_SAFE     1
+
+#else
+#  define mtx_lock        (void)
+#  define mtx_unlock      (void)
+#  define THREAD_SAFE     0
+
+typedef int               mtx_t;
+
+#endif
+ *                      the position and velocity. Typically
  *                      this may be the fractional part of the Julian date for high-precision
  *                      calculations, or else 0.0 if the date is defined entirely by the
  *                      high-order component for reduced precision.
