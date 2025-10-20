@@ -182,7 +182,7 @@ function(solsys_plugin EPHEM_LIB)
     )
     
     if(CMAKE_USE_PTHREADS_INIT)
-        target_compile_definitions(${PLUGIN} PRIVATE _PTHREAD_)
+        target_compile_definitions(${PLUGIN} PRIVATE SUPERNOVAS_USE_PTHREAD)
     endif()
     
     target_include_directories(${PLUGIN} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
