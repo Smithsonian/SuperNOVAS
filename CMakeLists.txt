@@ -31,7 +31,6 @@ project(supernovas
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 include(FeatureSummary)
-include(FindThreads)
 
 # Build options
 option(BUILD_SHARED_LIBS "Build as shared libraries instead of static" OFF)
