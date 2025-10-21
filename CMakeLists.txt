@@ -38,8 +38,8 @@ option(BUILD_DOC "Build HTML documetation" OFF)
 option(BUILD_TESTING "Build regression test suite" ON)
 option(BUILD_EXAMPLES "Build example programs" OFF)
 option(BUILD_BENCHMARK "Build benchmark programs" OFF)
-option(ENABLE_CALCEPH "Enable CALCEPH support" OFF)
-option(ENABLE_CSPICE "Enable CSPICE support" OFF)
+option(ENABLE_CALCEPH "Enable CALCEPH support (solsys-calceph component)" OFF)
+option(ENABLE_CSPICE "Enable CSPICE support (solsys-cspice component)" OFF)
 
 # Set feature descriptions for summary
 add_feature_info(SharedLibs BUILD_SHARED_LIBS "Build as shared libraries")
@@ -48,8 +48,8 @@ add_feature_info(Examples BUILD_EXAMPLES "Build and test example programs")
 add_feature_info(Testing BUILD_TESTING "Run regression testing")
 add_feature_info(Benchmarks BUILD_BENCHMARK "Build benchmarking programs")
 
-add_feature_info(Calceph-Plugin ENABLE_CALCEPH "Optional ephemeris support via CALCEPH")
-add_feature_info(CSPICE-Plugin ENABLE_CSPICE "Optional ephemeris support via CSPICE")
+add_feature_info(Calceph-Plugin ENABLE_CALCEPH "Optional ephemeris support via CALCEPH (solsys-calceph)")
+add_feature_info(CSPICE-Plugin ENABLE_CSPICE "Optional ephemeris support via CSPICE (solsys-cspice)")
 
 # ----------------------------------------------------------------------------
 # Global build configuration
@@ -65,6 +65,9 @@ set(CMAKE_DEBUG_POSTFIX d)
 # Position Independent Code for shared libs
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
+# Build time locations for sub-configs
+link_directories(${CMAKE_BINARY_DIR}/lib)
+set(SUPERNOVAS_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/include)
 
 if(WIN32)
     # Windows-specific settings
@@ -133,12 +136,10 @@ set(SUPERNOVAS_CORE_SOURCES
     src/solsys-ephem.c
 )
 
-add_library(supernovas ${SUPERNOVAS_CORE_SOURCES})
+add_library(core ${SUPERNOVAS_CORE_SOURCES})
+add_library(supernovas::core ALIAS core)
 
-# Alias to supernovas:: namespace
-add_library(supernovas::core ALIAS supernovas)
-
-set_target_properties(supernovas PROPERTIES
+set_target_properties(core PROPERTIES
     VERSION ${PROJECT_VERSION}
     SOVERSION ${PROJECT_VERSION_MAJOR}
     POSITION_INDEPENDENT_CODE ON
@@ -147,22 +148,19 @@ set_target_properties(supernovas PROPERTIES
     CLEAN_DIRECT_OUTPUT ON
 )
 
-target_include_directories(supernovas PRIVATE
+target_include_directories(core PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/include/eop
     ${CMAKE_CURRENT_SOURCE_DIR}/include/nutation
 )
 
-target_include_directories(supernovas PUBLIC
+target_include_directories(core PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
 # Link with math libs as necessary
-target_link_libraries(supernovas PRIVATE ${LIBM})
-
-# Compatibility alias
-add_library(novas ALIAS supernovas)
+target_link_libraries(core PRIVATE ${LIBM})
 
 # ----------------------------------------------------------------------------
 # Plugins
@@ -181,6 +179,7 @@ function(solsys_plugin EPHEM_LIB)
     )
     
     if(CMAKE_USE_PTHREADS_INIT)
+        # if Threads is provided via pthread, then compile source accordingly
         target_compile_definitions(${PLUGIN} PRIVATE SUPERNOVAS_USE_PTHREAD)
     endif()
     
@@ -232,7 +231,7 @@ endif()
 # ----------------------------------------------------------------------------
 # Install Runtime component
 
-set(INSTALL_TARGETS supernovas)
+set(INSTALL_TARGETS core)
 set(CMAKE_INSTALL_DEFAULT_COMPONENT_NAME Runtime)
 
 if(ENABLE_CALCEPH)
@@ -352,6 +351,8 @@ endif()
 # Export the package for use from the build-tree
 # (this registers the build-tree with a global CMake-registry)
 export(PACKAGE supernovas)
+
+
 
 # ----------------------------------------------------------------------------
 # Summary
