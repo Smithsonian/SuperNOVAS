@@ -16,47 +16,36 @@ endif()
 include("${CMAKE_CURRENT_LIST_DIR}/supernovasTargets.cmake")
 
 # Set variables for backward compatibility
-set(SUPERNOVAS_LIBRARIES supernovas::supernovas)
+set(SUPERNOVAS_LIBRARIES supernovas::core)
 set(SUPERNOVAS_INCLUDE_DIRS "")
 
 # Get include directories from target properties
-get_target_property(supernovas_INCLUDE_DIRS supernovas::supernovas INTERFACE_INCLUDE_DIRECTORIES)
+get_target_property(SUPERNOVAS_INCLUDE_DIRS supernovas::core INTERFACE_INCLUDE_DIRECTORIES)
 
 # Check if optional components are available
 if(TARGET supernovas::solsys-calceph)
-    set(SUPERNOVAS_SOLSYS_CALCEPH_FOUND TRUE)
+    set(SUPERNOVAS_solsys-calceph_FOUND TRUE)
 else()
-    set(SUPERNOVAS_SOLSYS_CALCEPH_FOUND FALSE)
+    set(SUPERNOVAS_solsys-calceph_FOUND FALSE)
 endif()
 
 if(TARGET supernovas::solsys-cspice)
-    set(SUPERNOVAS_SOLSYS_CSPICE_FOUND TRUE)
+    set(SUPERNOVAS_solsys-cspice_FOUND TRUE)
 else()
-    set(SUPERNOVAS_SOLSYS_CSPICE_FOUND FALSE)
+    set(SUPERNOVAS_solsys-cspice_FOUND FALSE)
 endif()
 
-# Component support
-foreach(component ${SUPERNOVAS_FIND_COMPONENTS})
+check_required_components(supernovas)
+
+# Component dependencies
+foreach(component ${SUPERNOVAS_FIND_COMPONENTS})		
     if(component STREQUAL "solsys-calceph")
-        if(SUPERNOVAS_SOLSYS_CALCEPH_FOUND)
-            find_dependency(Threads)        
-        else()
-            set(SUPERNOVAS_FOUND FALSE)
-            set(SUPERNOVAS_NOT_FOUND_MESSAGE "supernovas solsys-calceph component not available")
-        endif()
-    
+        find_library(calceph)
+        find_dependency(Threads)
     elseif(component STREQUAL "solsys-cspice")
-        if(SUPERNOVAS_SOLSYS_CSPICE_FOUND)
-            find_dependency(Threads)        
-        else()
-            set(SUPERNOVAS_FOUND FALSE)
-            set(SUPERNOVAS_NOT_FOUND_MESSAGE "supernovas solsys-cspice component not available")
-        endif()
-        
-    else()
-        set(SUPERNOVAS_FOUND FALSE)
-        set(SUPERNOVAS_NOT_FOUND_MESSAGE "Unknown supernovas component: ${component}")
-    endif()
+        find_library(cspice)
+        find_dependency(Threads)
+    endif()		
 endforeach()
 
-check_required_components(supernovas)
+

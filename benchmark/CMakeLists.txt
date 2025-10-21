@@ -12,8 +12,7 @@ set(BENCHMARK_PROGRAMS
     benchmark-place
 )
 
-# Link against binaries in the local supernovas lib/ directory
-link_directories(${CMAKE_BINARY_DIR}/lib)
+include_directories(${SUPERNOVAS_INCLUDE_DIRS})
 
 # Build each example
 foreach(BENCHMARK ${BENCHMARK_PROGRAMS})
@@ -24,10 +23,9 @@ foreach(BENCHMARK ${BENCHMARK_PROGRAMS})
 
         # Link against the supernovas library
         target_link_libraries(${BENCHMARK} PRIVATE
-            supernovas
+            supernovas::core
             ${LIBM}
         )
-
     else()
         message(WARNING "Source file ${BENCHMARK_SOURCE} not found - ${BENCHMARK} will not be built")
     endif()

@@ -19,7 +19,7 @@ namespace novas {
 extern "C" {
 #endif
 
-/// @ingroup solar_system
+/// @ingroup solar-system
 int novas_cspice_is_thread_safe();
 
 /// @ingroup solar-system
