@@ -24,21 +24,21 @@ get_target_property(SUPERNOVAS_INCLUDE_DIRS supernovas::core INTERFACE_INCLUDE_D
 
 # Check if optional components are available
 if(TARGET supernovas::solsys-calceph)
-    set(SUPERNOVAS_solsys-calceph_FOUND TRUE)
+    set(supernovas_solsys-calceph_FOUND TRUE)
 else()
-    set(SUPERNOVAS_solsys-calceph_FOUND FALSE)
+    set(supernovas_solsys-calceph_FOUND FALSE)
 endif()
 
 if(TARGET supernovas::solsys-cspice)
-    set(SUPERNOVAS_solsys-cspice_FOUND TRUE)
+    set(supernovas_solsys-cspice_FOUND TRUE)
 else()
-    set(SUPERNOVAS_solsys-cspice_FOUND FALSE)
+    set(supernovas_solsys-cspice_FOUND FALSE)
 endif()
 
 check_required_components(supernovas)
 
 # Component dependencies
-foreach(component ${SUPERNOVAS_FIND_COMPONENTS})		
+foreach(component ${supernovas_FIND_COMPONENTS})		
     if(component STREQUAL "solsys-calceph")
         find_library(calceph)
         find_dependency(Threads)
