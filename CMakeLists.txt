@@ -148,12 +148,6 @@ set_target_properties(core PROPERTIES
     CLEAN_DIRECT_OUTPUT ON
 )
 
-target_include_directories(core PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/src
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/eop
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/nutation
-)
-
 target_include_directories(core PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
