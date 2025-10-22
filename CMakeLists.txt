@@ -57,9 +57,6 @@ add_feature_info(CSPICE-Plugin ENABLE_CSPICE "Optional ephemeris support via CSP
 # [.pc] Libs -- linker flags for apps
 set(PC_LIBS "-lsupernovas ")
 
-# [.pc] Requires.private -- package dependencies for supernovas itself
-set(PC_REQUIRES_PRIVATE "")
-
 # [.pc] Libs.private -- linker flags for supernovas itself
 set(PC_LIBS_PRIVATE "")
 
@@ -121,7 +118,6 @@ if(ENABLE_CALCEPH)
         TYPE REQUIRED
         PURPOSE "Provides ephemeris support for supernovas"
     )
-    string(APPEND PC_REQUIRES_PRIVATE "calceph >= 4.0.0 ")
     string(APPEND PC_LIBS "-lsolsys-calceph ")
     string(APPEND PC_LIBS_PRIVATE "-lcalceph ")
 endif()
@@ -129,7 +125,6 @@ endif()
 # CSPICE plugin
 if(ENABLE_CSPICE)
     find_library(cspice cspice REGISTRY_VIEW TARGET REQUIRED)
-    string(APPEND PC_REQUIRES_PRIVATE "cspice ")
     string(APPEND PC_LIBS "-lsolsys-cspice ")
     string(APPEND PC_LIBS_PRIVATE "-lcspice ")
 endif()

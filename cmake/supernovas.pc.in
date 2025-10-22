@@ -10,7 +10,6 @@ URL: @PROJECT_HOMEPAGE_URL@
 Copyright: (C) 2025 Attila Kovacs
 License: Unlicense
 
-Requires.private: @PC_REQUIRES_PRIVATE@
 Cflags: -I${includedir}
 Libs: -L${libdir} @PC_LIBS@
 Libs.private: @PC_LIBS_PRIVATE@
