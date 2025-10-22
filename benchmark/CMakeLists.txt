@@ -24,7 +24,7 @@ foreach(BENCHMARK ${BENCHMARK_PROGRAMS})
         # Link against the supernovas library
         target_link_libraries(${BENCHMARK} PRIVATE
             supernovas::core
-            ${LIBM}
+            ${MATH}
         )
     else()
         message(WARNING "Source file ${BENCHMARK_SOURCE} not found - ${BENCHMARK} will not be built")

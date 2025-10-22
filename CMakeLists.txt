@@ -89,13 +89,14 @@ if(WIN32)
     add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
 endif()
 
-find_library(MATH_LIB m OPTIONAL)
-if(MATH_LIB)
-    set(LIBM "m")
-    # [.pc] Link applications against math lib...
-    string(APPEND PC_LIBS_PRIVATE -l${LIBM} " ")
+if(WIN32)
+    set(MATH "")
 else()
-    set(LIBM "")
+    find_library(MATH_LIBRARY m REQUIRED)
+    set(MATH m)
+    
+    # [.pc] Link applications against math lib...
+    string(APPEND PC_LIBS_PRIVATE -l${MATH} " ")
 endif()
 
 
@@ -183,7 +184,9 @@ target_include_directories(core PUBLIC
 )
 
 # Link with math libs as necessary
-target_link_libraries(core PRIVATE ${LIBM})
+if(MATH_LIB)
+    target_link_libraries(core PRIVATE ${MATH})
+endif()
 
 # ----------------------------------------------------------------------------
 # Plugins
@@ -209,9 +212,9 @@ function(solsys_plugin EPHEM_LIB)
     target_include_directories(${PLUGIN} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
     
     target_link_libraries(solsys-${EPHEM_LIB} PRIVATE
-        supernovas
+        supernovas::core
         ${EPHEM_LIB}
-        ${LIBM}
+        ${MATH}
         Threads::Threads
     )
 endfunction()

@@ -22,11 +22,11 @@ if(NOT PROJECT_NAME)
         
     find_package(supernovas)
 
-    find_library(MATH_LIBS m OPTIONAL)
-    if(MATH_LIBS)
-        set(LIBM "m")
+    if(WIN32)
+        set(MATH "")
     else()
-        set(LIBM "")
+        find_library(MATH_LIBRARY m REQUIRED)
+        set(MATH m)
     endif()
 endif()
 
@@ -64,7 +64,7 @@ foreach(EXAMPLE ${EXAMPLE_PROGRAMS})
         # Link against the supernovas library
         target_link_libraries(${EXAMPLE} PRIVATE
             supernovas::core
-            ${LIBM}
+            ${MATH}
         )
 
         # Special handling for CALCEPH example

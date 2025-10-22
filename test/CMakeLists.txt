@@ -21,8 +21,7 @@ if(ENABLE_CSPICE)
     list(APPEND TEST_PROGRAMS test-cspice)
 endif()
 
-# Look for headers in the supernovas include/ directory
-include_directories(${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/legacy)
+include_directories(${SUPERNOVAS_INCLUDE_DIRS} ${PROJECT_SOURCE_DIR}/legacy)
 
 # Link against binaries in the local supernovas lib/ directory
 link_directories(${CMAKE_BINARY_DIR}/lib)
@@ -46,14 +45,14 @@ foreach(TEST ${TEST_PROGRAMS})
         
         # Link against the supernovas library
         target_link_libraries(${TEST} PRIVATE
-            supernovas
-            ${LIBM}
+            supernovas::core
+            ${MATH}
         )
 
         # Special handling for CALCEPH example
         if(${TEST} STREQUAL "test-calceph")
             target_link_libraries(${TEST} PRIVATE
-                solsys-calceph
+                supernovas::solsys-calceph
                 calceph
             )
      	    add_test(NAME ${TEST} COMMAND ${TEST} ${EPHEM_DIR})
@@ -61,7 +60,7 @@ foreach(TEST ${TEST_PROGRAMS})
         # Special handling for CSPICE example
         elseif(${TEST} STREQUAL "test-cspice")
             target_link_libraries(${TEST} PRIVATE
-                solsys-cspice
+                supernovas::solsys-cspice
                 cspice
             )
             add_test(NAME ${TEST} COMMAND ${TEST} ${EPHEM_DIR})
