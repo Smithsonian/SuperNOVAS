@@ -56,6 +56,7 @@
 #include "novas.h"
 /// \endcond
 
+
 #if __cplusplus
 #  ifdef NOVAS_NAMESPACE
 namespace novas {
@@ -282,7 +283,7 @@ short ephemeris(const double *restrict jd_tdb, const object *restrict body, enum
     return novas_error(-1, EINVAL, fn, "NULL output pointer: pos=%p, vel=%p", pos, vel);
 
   // Check the value of 'origin'.
-  if(origin < 0 || origin >= NOVAS_ORIGIN_TYPES)
+  if((unsigned) origin >= NOVAS_ORIGIN_TYPES)
     return novas_error(1, EINVAL, fn, "invalid origin type: %d", origin);
 
   // Invoke the appropriate ephemeris access software depending upon the

@@ -41,8 +41,8 @@ namespace novas {
 
 #define IJD_J2000   2451545
 
-#define UNIX_SECONDS_0UTC_1JAN2000  946684800    ///< [s] UNIX time at J2000.0
-#define UNIX_J2000                  (UNIX_SECONDS_0UTC_1JAN2000 + (IDAY / 2))
+#define UNIX_SECONDS_0UTC_1JAN2000  946684800L   ///< [s] UNIX time at J2000.0
+#define UNIX_UTC_J2000              (UNIX_SECONDS_0UTC_1JAN2000 + (IDAY / 2))
 
 // IAU 2006 Resolution B3
 #define TC_T0      2443144.5003725       ///< 1977 January 1, 0h 0m 0s TAI
@@ -869,7 +869,7 @@ int novas_set_unix_time(time_t unix_time, long nanos, int leap, double dut1, nov
   long jd, sojd;
 
   // UTC based integer JD
-  unix_time -= UNIX_J2000;
+  unix_time -= UNIX_UTC_J2000;
   jd = IJD_J2000 + unix_time / IDAY;
 
   // seconds of JD date
@@ -949,7 +949,7 @@ time_t novas_get_unix_time(const novas_timespec *restrict time, long *restrict n
   }
 
   isod = (long) floor(sod);
-  seconds = UNIX_J2000 + (ijd - IJD_J2000) * IDAY + isod;
+  seconds = UNIX_UTC_J2000 + (ijd - IJD_J2000) * IDAY + isod;
 
   if(nanos) {
     *nanos = (long) floor(1e9 * (sod - isod) + 0.5);
@@ -1059,7 +1059,7 @@ static int timestamp(long ijd, double fjd, enum novas_calendar_type cal, char *b
   s = (int) (ms / 1000L);
   ms -= 1000L * s;
 
-  return sprintf(buf, "%04d-%02d-%02dT%02d:%02d:%02d.%03d", y, M, d, h, m, s, (int) ms);
+  return novas_snprintf(buf, NOVAS_TIMESTAMP_LEN, "%04d-%02d-%02dT%02d:%02d:%02d.%03d", y, M, d, h, m, s, (int) ms);
 }
 
 /**
@@ -1222,21 +1222,21 @@ int novas_print_timescale(enum novas_timescale scale, char *restrict buf) {
 
   switch(scale) {
     case NOVAS_UT1:
-      return sprintf(buf, "UT1");
+      return novas_snprintf(buf, 4, "UT1");
     case NOVAS_UTC:
-      return sprintf(buf, "UTC");
+      return novas_snprintf(buf, 4, "UTC");
     case NOVAS_GPS:
-      return sprintf(buf, "GPS");
+      return novas_snprintf(buf, 4, "GPS");
     case NOVAS_TAI:
-      return sprintf(buf, "TAI");
+      return novas_snprintf(buf, 4, "TAI");
     case NOVAS_TT:
-      return sprintf(buf, "TT");
+      return novas_snprintf(buf, 3, "TT");
     case NOVAS_TCG:
-      return sprintf(buf, "TCG");
+      return novas_snprintf(buf, 4, "TCG");
     case NOVAS_TCB:
-      return sprintf(buf, "TCB");
+      return novas_snprintf(buf, 4, "TCB");
     case NOVAS_TDB:
-      return sprintf(buf, "TDB");
+      return novas_snprintf(buf, 4, "TDB");
   }
 
   *buf = '\0';

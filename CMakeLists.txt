@@ -21,10 +21,10 @@ cmake_minimum_required(VERSION 3.20)
 
 # Project definition
 project(supernovas
-    VERSION 1.5.0
+    VERSION 1.6.0
     DESCRIPTION "SuperNOVAS astrometry library"
     HOMEPAGE_URL "https://smithsonian.github.io/SuperNOVAS/"
-    LANGUAGES C
+    LANGUAGES C CXX
 )
 
 # Include required modules
@@ -40,6 +40,7 @@ option(BUILD_EXAMPLES "Build example programs" OFF)
 option(BUILD_BENCHMARK "Build benchmark programs" OFF)
 option(ENABLE_CALCEPH "Enable CALCEPH support (solsys-calceph component)" OFF)
 option(ENABLE_CSPICE "Enable CSPICE support (solsys-cspice component)" OFF)
+option(ENABLE_CPP_LIBS "Enable C++ library build (cpp component)" OFF)
 
 # Set feature descriptions for summary
 add_feature_info(SharedLibs BUILD_SHARED_LIBS "Build as shared libraries")
@@ -50,6 +51,7 @@ add_feature_info(Benchmarks BUILD_BENCHMARK "Build benchmarking programs")
 
 add_feature_info(Calceph-Plugin ENABLE_CALCEPH "Optional ephemeris support via CALCEPH (solsys-calceph)")
 add_feature_info(CSPICE-Plugin ENABLE_CSPICE "Optional ephemeris support via CSPICE (solsys-cspice)")
+add_feature_info(SharedLibs ENABLE_CPP_LIBS "Build C++ libraries also (cpp)")
 
 # ----------------------------------------------------------------------------
 # Global build configuration
@@ -201,6 +203,11 @@ endif()
 
 # Run tests for the enabled options below...
 enable_testing()
+
+# C++ library
+if(ENABLE_CPP_LIBS)
+    add_subdirectory(cpp)
+endif()
 
 # Examples
 if(BUILD_EXAMPLES)
