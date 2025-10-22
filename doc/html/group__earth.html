@@ -753,6 +753,8 @@ novas_diurnal_librations(), <a class="el" href="#gabcd371629ee17cd1f1512ff0687db
 <p>NOTES: </p><ol>
 <li>
 These diurnal corrections are automatically added to the mean Earth Orinetation parameters used when defining astronomical times and observing frames. I.e., you should pass mean values to the likes of <code><a class="el" href="group__time.html#gaf4a1a5180905a7d8f76aeafe3f9a8ebb" title="Sets an astronomical time to the fractional Julian Date value, defined in the specified timescale.">novas_set_time()</a></code> and <code><a class="el" href="group__frame.html#gadc72577f99a7b076b23e0e44ddbca838" title="Sets up a observing frame for a specific observer location, time of observation, and accuracy require...">novas_make_frame()</a></code>, which will then add the diurnal corrections as appropriate automatically. </li>
+<li>
+This function caches the result of the last calculation. </li>
 </ol>
 <p>REFERENCES: </p><ol>
 <li>
@@ -774,7 +776,7 @@ IERS Conventions 2010, Chapter 8, <a href="https://iers-conventions.obspm.fr/con
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#ga9fc52f6fd358463d0c1ca7aa651e65f6" title="Calculate corrections to the Earth orientation parameters (EOP) due to short term (diurnal and semidi...">novas_diurnal_eop()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="#ga312b5ab1a004b179d80463a07ca7da8f">fund_args()</a>, <a class="el" href="#ga9fc52f6fd358463d0c1ca7aa651e65f6">novas_diurnal_eop()</a>, <a class="el" href="group__time.html#ga31bf4a08940bfa3e97ae6a1abee80422">NOVAS_JD_J2000</a>, <a class="el" href="group__frame.html#gga3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, and <a class="el" href="#gaaf53fcad3fade814381cef3d06779a8c">novas_time_gst()</a>.</p>
+<p class="reference">References <a class="el" href="#ga312b5ab1a004b179d80463a07ca7da8f">fund_args()</a>, <a class="el" href="#ga9fc52f6fd358463d0c1ca7aa651e65f6">novas_diurnal_eop()</a>, <a class="el" href="group__time.html#gae30e3dd8e30bdcf4e8486cfce696fb98">novas_get_time()</a>, <a class="el" href="#ga231f535f73e846d3867dbd914054d47b">novas_gmst()</a>, <a class="el" href="group__time.html#ga31bf4a08940bfa3e97ae6a1abee80422">NOVAS_JD_J2000</a>, and <a class="el" href="group__time.html#ggaa642c4ccc7195dc62fd0dc56567ebd0baa6fc4520426c4c9cbe497ab87f2ad583">NOVAS_UT1</a>.</p>
 
 </div>
 </div>
@@ -919,6 +921,18 @@ IERS Conventions 2010, Chapter 8, Tables 8.2a, 8.2b, 8.3a, and 8.3b, see <a href
 </div><div class="memdoc">
 
 <p>Returns the Greenwich Apparent Sidereal Time (GAST) for a given UT1 date. </p>
+<p>NOTES: </p><ol>
+<li>
+This function caches the result of the last calculation. </li>
+</ol>
+<p>REFERENCES: </p><ol>
+<li>
+Capitaine, N. et al. (2003), Astronomy and Astrophysics 412, 567-586, eq. (42). </li>
+<li>
+Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
+<li>
+IERS Conventions 2010, Chapter 5, Eq. 5.30 and Table 5.2e, see at <a href="https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf">https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</a> and <a href="https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2e.txt">https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2e.txt</a> </li>
+</ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">jd_ut1</td><td>[day] UT1-based Julian Date. </td></tr>
@@ -928,14 +942,6 @@ IERS Conventions 2010, Chapter 8, Tables 8.2a, 8.2b, 8.3a, and 8.3b, see <a href
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>[h] The Greenwich Apparent Sidereal Time (GAST) in the 0-24 range.</dd></dl>
-<p>REFERENCES: </p><ol>
-<li>
-Capitaine, N. et al. (2003), Astronomy and Astrophysics 412, 567-586, eq. (42). </li>
-<li>
-Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
-<li>
-IERS Conventions 2010, Chapter 5, Eq. 5.30 and Table 5.2e, see at <a href="https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf">https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</a> and <a href="https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2e.txt">https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2e.txt</a> </li>
-</ol>
 <dl class="section since"><dt>Since</dt><dd>1.5 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#ga231f535f73e846d3867dbd914054d47b" title="Returns the Greenwich Mean Sidereal Time (GMST) for a given UT1 date, using eq.">novas_gmst()</a> </dd></dl>

@@ -25,123 +25,123 @@
 var NAVTREE =
 [
   [ "SuperNOVAS", "index.html", [
-    [ "User's guide", "index.html#autotoc_md47", [
-      [ "Table of Contents", "index.html#autotoc_md48", null ],
-      [ "Introduction", "index.html#autotoc_md50", [
-        [ "Related links", "index.html#autotoc_md51", null ]
+    [ "User's guide", "index.html#autotoc_md64", [
+      [ "Table of Contents", "index.html#autotoc_md65", null ],
+      [ "Introduction", "index.html#autotoc_md67", [
+        [ "Related links", "index.html#autotoc_md68", null ]
       ] ],
-      [ "Fixed NOVAS C 3.1 issues", "index.html#autotoc_md53", null ],
-      [ "Compatibility with NOVAS C 3.1", "index.html#autotoc_md55", null ],
-      [ "Building and installation", "index.html#autotoc_md57", [
-        [ "Build SuperNOVAS using GNU make", "index.html#autotoc_md58", null ],
-        [ "Build SuperNOVAS using CMake", "index.html#autotoc_md59", null ]
+      [ "Fixed NOVAS C 3.1 issues", "index.html#autotoc_md70", null ],
+      [ "Compatibility with NOVAS C 3.1", "index.html#autotoc_md72", null ],
+      [ "Building and installation", "index.html#autotoc_md74", [
+        [ "Build SuperNOVAS using GNU make", "index.html#autotoc_md75", null ],
+        [ "Build SuperNOVAS using CMake", "index.html#autotoc_md76", null ]
       ] ],
-      [ "Building your application with SuperNOVAS", "index.html#autotoc_md61", [
-        [ "Using a GNU Makefile", "index.html#autotoc_md62", null ],
-        [ "Using CMake", "index.html#autotoc_md63", null ],
-        [ "Deprecated API", "index.html#autotoc_md64", null ],
-        [ "Legacy linking solarsystem() / solarsystem_hp() and readeph() modules", "index.html#autotoc_md65", null ],
-        [ "Legacy modules: a better way", "index.html#autotoc_md66", null ]
+      [ "Building your application with SuperNOVAS", "index.html#autotoc_md78", [
+        [ "Using a GNU Makefile", "index.html#autotoc_md79", null ],
+        [ "Using CMake", "index.html#autotoc_md80", null ],
+        [ "Deprecated API", "index.html#autotoc_md81", null ],
+        [ "Legacy linking solarsystem() / solarsystem_hp() and readeph() modules", "index.html#autotoc_md82", null ],
+        [ "Legacy modules: a better way", "index.html#autotoc_md83", null ]
       ] ],
-      [ "Celestial coordinate systems (old vs. new)", "index.html#autotoc_md68", null ],
-      [ "Example usage", "index.html#autotoc_md70", [
-        [ "Calculating positions for a sidereal source", "index.html#autotoc_md71", [
-          [ "Specify the object of interest", "index.html#autotoc_md72", null ],
-          [ "Specify the observer location", "index.html#autotoc_md73", null ],
-          [ "Specify the time of observation", "index.html#autotoc_md74", null ],
-          [ "Set up the observing frame", "index.html#autotoc_md75", null ],
-          [ "Calculate an apparent place on sky", "index.html#autotoc_md76", null ],
-          [ "Calculate azimuth and elevation angles at the observing location", "index.html#autotoc_md77", null ],
-          [ "Going in reverse...", "index.html#autotoc_md78", null ],
-          [ "Calculate rise, set, and transit times", "index.html#autotoc_md79", null ]
+      [ "Celestial coordinate systems (old vs. new)", "index.html#autotoc_md85", null ],
+      [ "Example usage", "index.html#autotoc_md87", [
+        [ "Calculating positions for a sidereal source", "index.html#autotoc_md88", [
+          [ "Specify the object of interest", "index.html#autotoc_md89", null ],
+          [ "Specify the observer location", "index.html#autotoc_md90", null ],
+          [ "Specify the time of observation", "index.html#autotoc_md91", null ],
+          [ "Set up the observing frame", "index.html#autotoc_md92", null ],
+          [ "Calculate an apparent place on sky", "index.html#autotoc_md93", null ],
+          [ "Calculate azimuth and elevation angles at the observing location", "index.html#autotoc_md94", null ],
+          [ "Going in reverse...", "index.html#autotoc_md95", null ],
+          [ "Calculate rise, set, and transit times", "index.html#autotoc_md96", null ]
         ] ],
-        [ "Calculating positions for a Solar-system source", "index.html#autotoc_md80", [
-          [ "Planets and/or ephemeris type objects", "index.html#autotoc_md81", null ],
-          [ "Solar-system objects with Keplerian orbital parameters", "index.html#autotoc_md82", null ],
-          [ "Approximate planet and Moon orbitals", "index.html#autotoc_md83", null ]
+        [ "Calculating positions for a Solar-system source", "index.html#autotoc_md97", [
+          [ "Planets and/or ephemeris type objects", "index.html#autotoc_md98", null ],
+          [ "Solar-system objects with Keplerian orbital parameters", "index.html#autotoc_md99", null ],
+          [ "Approximate planet and Moon orbitals", "index.html#autotoc_md100", null ]
         ] ],
-        [ "Coordinate and velocity transforms (change of coordinate system)", "index.html#autotoc_md84", null ]
+        [ "Coordinate and velocity transforms (change of coordinate system)", "index.html#autotoc_md101", null ]
       ] ],
-      [ "Incorporating Solar-system ephemeris data or services", "index.html#autotoc_md86", [
-        [ "CALCEPH integration", "index.html#autotoc_md87", null ],
-        [ "NAIF CSPICE toolkit integration", "index.html#autotoc_md88", null ],
-        [ "Universal ephemeris data / service integration", "index.html#autotoc_md89", null ]
+      [ "Incorporating Solar-system ephemeris data or services", "index.html#autotoc_md103", [
+        [ "CALCEPH integration", "index.html#autotoc_md104", null ],
+        [ "NAIF CSPICE toolkit integration", "index.html#autotoc_md105", null ],
+        [ "Universal ephemeris data / service integration", "index.html#autotoc_md106", null ]
       ] ],
-      [ "Notes on precision", "index.html#autotoc_md90", [
-        [ "Prerequisites to precise results", "index.html#autotoc_md91", null ]
+      [ "Notes on precision", "index.html#autotoc_md107", [
+        [ "Prerequisites to precise results", "index.html#autotoc_md108", null ]
       ] ],
-      [ "Tips and tricks", "index.html#autotoc_md93", [
-        [ "SuperNOVAS and C++", "index.html#autotoc_md94", null ],
-        [ "Reduced accuracy shortcuts", "index.html#autotoc_md95", null ],
-        [ "Multi-threaded calculations", "index.html#autotoc_md96", null ],
-        [ "Physical units", "index.html#autotoc_md97", null ],
-        [ "String times and angles", "index.html#autotoc_md98", null ],
-        [ "String dates", "index.html#autotoc_md99", null ]
+      [ "Tips and tricks", "index.html#autotoc_md110", [
+        [ "SuperNOVAS and C++", "index.html#autotoc_md111", null ],
+        [ "Reduced accuracy shortcuts", "index.html#autotoc_md112", null ],
+        [ "Multi-threaded calculations", "index.html#autotoc_md113", null ],
+        [ "Physical units", "index.html#autotoc_md114", null ],
+        [ "String times and angles", "index.html#autotoc_md115", null ],
+        [ "String dates", "index.html#autotoc_md116", null ]
       ] ],
-      [ "Runtime debug support", "index.html#autotoc_md101", null ],
-      [ "Representative benchmarks", "index.html#autotoc_md103", null ],
-      [ "SuperNOVAS added features", "index.html#autotoc_md105", [
-        [ "New functionality highlights", "index.html#autotoc_md106", null ],
-        [ "Refinements to the NOVAS C API", "index.html#autotoc_md107", null ]
+      [ "Runtime debug support", "index.html#autotoc_md118", null ],
+      [ "Representative benchmarks", "index.html#autotoc_md120", null ],
+      [ "SuperNOVAS added features", "index.html#autotoc_md122", [
+        [ "New functionality highlights", "index.html#autotoc_md123", null ],
+        [ "Refinements to the NOVAS C API", "index.html#autotoc_md124", null ]
       ] ],
-      [ "Release schedule", "index.html#autotoc_md109", null ]
+      [ "Release schedule", "index.html#autotoc_md126", null ]
     ] ],
     [ "Changelog", "md__2github_2workspace_2CHANGELOG.html", [
-      [ "[Unreleased]", "md__2github_2workspace_2CHANGELOG.html#autotoc_md1", [
-        [ "Fixed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md2", null ],
-        [ "Added", "md__2github_2workspace_2CHANGELOG.html#autotoc_md3", null ],
-        [ "Removed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md4", null ],
-        [ "Changed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md5", null ],
-        [ "Deprecated", "md__2github_2workspace_2CHANGELOG.html#autotoc_md6", null ]
-      ] ],
-      [ "[1.4.2] - 2025-08-25", "md__2github_2workspace_2CHANGELOG.html#autotoc_md7", [
-        [ "Fixed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md8", null ],
-        [ "Changed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md9", null ]
-      ] ],
-      [ "[1.4.1] - 2025-07-21", "md__2github_2workspace_2CHANGELOG.html#autotoc_md10", [
-        [ "Fixed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md11", null ],
-        [ "Changed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md12", null ]
-      ] ],
-      [ "[1.4.0] - 2025-06-02", "md__2github_2workspace_2CHANGELOG.html#autotoc_md13", [
-        [ "Fixed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md14", null ],
-        [ "Added", "md__2github_2workspace_2CHANGELOG.html#autotoc_md15", null ],
-        [ "Changed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md16", null ],
-        [ "Deprecated", "md__2github_2workspace_2CHANGELOG.html#autotoc_md17", null ]
-      ] ],
-      [ "[1.3.1] - 2025-05-07", "md__2github_2workspace_2CHANGELOG.html#autotoc_md18", [
+      [ "[1.5.0-rc8] - 2025-10-22", "md__2github_2workspace_2CHANGELOG.html#autotoc_md18", [
         [ "Fixed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md19", null ],
-        [ "Changed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md20", null ],
-        [ "Deprecated", "md__2github_2workspace_2CHANGELOG.html#autotoc_md21", null ]
+        [ "Added", "md__2github_2workspace_2CHANGELOG.html#autotoc_md20", null ],
+        [ "Removed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md21", null ],
+        [ "Changed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md22", null ],
+        [ "Deprecated", "md__2github_2workspace_2CHANGELOG.html#autotoc_md23", null ]
       ] ],
-      [ "[1.3.0] - 2025-04-15", "md__2github_2workspace_2CHANGELOG.html#autotoc_md22", [
-        [ "Fixed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md23", null ],
-        [ "Added", "md__2github_2workspace_2CHANGELOG.html#autotoc_md24", null ],
-        [ "Changed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md25", null ]
+      [ "[1.4.2] - 2025-08-25", "md__2github_2workspace_2CHANGELOG.html#autotoc_md24", [
+        [ "Fixed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md25", null ],
+        [ "Changed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md26", null ]
       ] ],
-      [ "[1.2.0] - 2025-01-15", "md__2github_2workspace_2CHANGELOG.html#autotoc_md26", [
-        [ "Fixed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md27", null ],
-        [ "Added", "md__2github_2workspace_2CHANGELOG.html#autotoc_md28", null ],
+      [ "[1.4.1] - 2025-07-21", "md__2github_2workspace_2CHANGELOG.html#autotoc_md27", [
+        [ "Fixed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md28", null ],
         [ "Changed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md29", null ]
       ] ],
-      [ "[1.1.1] - 2024-10-28", "md__2github_2workspace_2CHANGELOG.html#autotoc_md30", [
+      [ "[1.4.0] - 2025-06-02", "md__2github_2workspace_2CHANGELOG.html#autotoc_md30", [
         [ "Fixed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md31", null ],
-        [ "Changed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md32", null ]
+        [ "Added", "md__2github_2workspace_2CHANGELOG.html#autotoc_md32", null ],
+        [ "Changed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md33", null ],
+        [ "Deprecated", "md__2github_2workspace_2CHANGELOG.html#autotoc_md34", null ]
       ] ],
-      [ "[1.1.0] - 2024-08-04", "md__2github_2workspace_2CHANGELOG.html#autotoc_md33", [
-        [ "Fixed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md34", null ],
-        [ "Added", "md__2github_2workspace_2CHANGELOG.html#autotoc_md35", null ],
-        [ "Changed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md36", null ]
+      [ "[1.3.1] - 2025-05-07", "md__2github_2workspace_2CHANGELOG.html#autotoc_md35", [
+        [ "Fixed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md36", null ],
+        [ "Changed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md37", null ],
+        [ "Deprecated", "md__2github_2workspace_2CHANGELOG.html#autotoc_md38", null ]
       ] ],
-      [ "[1.0.1] - 2024-05-13", "md__2github_2workspace_2CHANGELOG.html#autotoc_md37", [
-        [ "Fixed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md38", null ],
-        [ "Added", "md__2github_2workspace_2CHANGELOG.html#autotoc_md39", null ],
-        [ "Changed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md40", null ]
+      [ "[1.3.0] - 2025-04-15", "md__2github_2workspace_2CHANGELOG.html#autotoc_md39", [
+        [ "Fixed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md40", null ],
+        [ "Added", "md__2github_2workspace_2CHANGELOG.html#autotoc_md41", null ],
+        [ "Changed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md42", null ]
       ] ],
-      [ "[1.0.0] - 2024-03-01", "md__2github_2workspace_2CHANGELOG.html#autotoc_md41", [
-        [ "Fixed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md42", null ],
-        [ "Added", "md__2github_2workspace_2CHANGELOG.html#autotoc_md43", null ],
-        [ "Changed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md44", null ],
-        [ "Deprecated", "md__2github_2workspace_2CHANGELOG.html#autotoc_md45", null ]
+      [ "[1.2.0] - 2025-01-15", "md__2github_2workspace_2CHANGELOG.html#autotoc_md43", [
+        [ "Fixed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md44", null ],
+        [ "Added", "md__2github_2workspace_2CHANGELOG.html#autotoc_md45", null ],
+        [ "Changed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md46", null ]
+      ] ],
+      [ "[1.1.1] - 2024-10-28", "md__2github_2workspace_2CHANGELOG.html#autotoc_md47", [
+        [ "Fixed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md48", null ],
+        [ "Changed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md49", null ]
+      ] ],
+      [ "[1.1.0] - 2024-08-04", "md__2github_2workspace_2CHANGELOG.html#autotoc_md50", [
+        [ "Fixed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md51", null ],
+        [ "Added", "md__2github_2workspace_2CHANGELOG.html#autotoc_md52", null ],
+        [ "Changed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md53", null ]
+      ] ],
+      [ "[1.0.1] - 2024-05-13", "md__2github_2workspace_2CHANGELOG.html#autotoc_md54", [
+        [ "Fixed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md55", null ],
+        [ "Added", "md__2github_2workspace_2CHANGELOG.html#autotoc_md56", null ],
+        [ "Changed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md57", null ]
+      ] ],
+      [ "[1.0.0] - 2024-03-01", "md__2github_2workspace_2CHANGELOG.html#autotoc_md58", [
+        [ "Fixed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md59", null ],
+        [ "Added", "md__2github_2workspace_2CHANGELOG.html#autotoc_md60", null ],
+        [ "Changed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md61", null ],
+        [ "Deprecated", "md__2github_2workspace_2CHANGELOG.html#autotoc_md62", null ]
       ] ]
     ] ],
     [ "Contributing to SuperNOVAS", "md__2github_2workspace_2CONTRIBUTING.html", null ],
@@ -175,8 +175,8 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "group__observer.html#gab07d86d425d68a62e94e965dd36b7a32",
-"group__util.html#ga0a84af1a760ed2aaa01dd93e9e22bdf1",
-"solsys-cspice_8c.html"
+"group__time.html#ggaa8cfc18bfdf8ebd0198065c9d07e3bbaa90f19bf1771802f4ad20cf14660c8322",
+"solsys-calceph_8c.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

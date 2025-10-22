@@ -166,9 +166,15 @@ Functions</h2></td></tr>
 <tr class="memitem:gae45badb450c1ca73920d982e12346c5b" id="r_gae45badb450c1ca73920d982e12346c5b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#gae8d7c10a8b9e69b1f0654ef4038482fd">novas_planet_provider_hp</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gae45badb450c1ca73920d982e12346c5b">get_planet_provider_hp</a> ()</td></tr>
 <tr class="memdesc:gae45badb450c1ca73920d982e12346c5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the custom high-precision ephemeris provider function for major planets (and Sun, Moon, SSB...), if any.  <br /></td></tr>
 <tr class="separator:gae45badb450c1ca73920d982e12346c5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab95452208a59bcca11ceb8870dfdb967" id="r_gab95452208a59bcca11ceb8870dfdb967"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gab95452208a59bcca11ceb8870dfdb967">novas_calceph_is_thread_safe</a> ()</td></tr>
+<tr class="memdesc:gab95452208a59bcca11ceb8870dfdb967"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the CALCEPH plugin is thread safe.  <br /></td></tr>
+<tr class="separator:gab95452208a59bcca11ceb8870dfdb967"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5531b937a5bb5491cb475d2536346ad8" id="r_ga5531b937a5bb5491cb475d2536346ad8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga5531b937a5bb5491cb475d2536346ad8">novas_calceph_use_ids</a> (enum <a class="el" href="group__source.html#gac42df1db80fbcb6f7a72de80d9f9c531">novas_id_type</a> idtype)</td></tr>
 <tr class="memdesc:ga5531b937a5bb5491cb475d2536346ad8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the type of Solar-system body IDs to use as <a class="el" href="structobject.html#a7d578acc2a3e88ef2435fe0e88d01a74" title="enum novas_planet, or minor planet ID (e.g. NAIF), or star catalog ID.">object.number</a> with NOVAS_EPHEM_OBJECT types.  <br /></td></tr>
 <tr class="separator:ga5531b937a5bb5491cb475d2536346ad8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadbb028231581d55f7f8c5fd428ba98c7" id="r_gadbb028231581d55f7f8c5fd428ba98c7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gadbb028231581d55f7f8c5fd428ba98c7">novas_cspice_is_thread_safe</a> ()</td></tr>
+<tr class="memdesc:gadbb028231581d55f7f8c5fd428ba98c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the CSPICE plugin is thread safe.  <br /></td></tr>
+<tr class="separator:gadbb028231581d55f7f8c5fd428ba98c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf4fa5359b8b0167a2780baff17b164a5" id="r_gaf4fa5359b8b0167a2780baff17b164a5"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaf4fa5359b8b0167a2780baff17b164a5">novas_helio_dist</a> (double jd_tdb, const <a class="el" href="structobject.html">object</a> *restrict source, double *restrict rate)</td></tr>
 <tr class="memdesc:gaf4fa5359b8b0167a2780baff17b164a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a Solar-system body's distance from the Sun, and optionally also the rate of recession.  <br /></td></tr>
 <tr class="separator:gaf4fa5359b8b0167a2780baff17b164a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -666,6 +672,27 @@ solarsystem_hp() </dd></dl>
 
 </div>
 </div>
+<a id="gab95452208a59bcca11ceb8870dfdb967" name="gab95452208a59bcca11ceb8870dfdb967"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab95452208a59bcca11ceb8870dfdb967">&#9670;&#160;</a></span>novas_calceph_is_thread_safe()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int novas_calceph_is_thread_safe </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks if the CALCEPH plugin is thread safe. </p>
+<dl class="section return"><dt>Returns</dt><dd>TRUE (1) if the lugin is thread safe, or else FALSE (0).</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.5 </dd></dl>
+
+</div>
+</div>
 <a id="ga5531b937a5bb5491cb475d2536346ad8" name="ga5531b937a5bb5491cb475d2536346ad8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga5531b937a5bb5491cb475d2536346ad8">&#9670;&#160;</a></span>novas_calceph_use_ids()</h2>
 
@@ -693,6 +720,27 @@ solarsystem_hp() </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__source.html#ga4c7846be95299769f4d0377bf127bcf5" title="Sets a celestial object to be a major planet, or the Sun, Moon, Solar-system Barycenter,...">make_planet()</a>, <a class="el" href="group__source.html#gaa22303f98df2d63edf6d8452ff3a43b2" title="Sets a celestial object to be a Solar-system ephemeris body.">make_ephem_object()</a>, <a class="el" href="group__source.html#gga1eecb357eeea0de4759e9c8d55af238fa58f22833170aee0959154d3a7be6c269" title="A Solar-system body that does not fit the major planet type, and requires specific user-provided nova...">NOVAS_EPHEM_OBJECT</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="group__source.html#ggac42df1db80fbcb6f7a72de80d9f9c531a074c723dfc1f03c82d52347c46ee0719">NOVAS_ID_CALCEPH</a>, and <a class="el" href="group__source.html#ggac42df1db80fbcb6f7a72de80d9f9c531ab3e6efc1ad89e02f915df25265ec32db">NOVAS_ID_NAIF</a>.</p>
+
+</div>
+</div>
+<a id="gadbb028231581d55f7f8c5fd428ba98c7" name="gadbb028231581d55f7f8c5fd428ba98c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gadbb028231581d55f7f8c5fd428ba98c7">&#9670;&#160;</a></span>novas_cspice_is_thread_safe()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int novas_cspice_is_thread_safe </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks if the CSPICE plugin is thread safe. </p>
+<dl class="section return"><dt>Returns</dt><dd>TRUE (1) if the lugin is thread safe, or else FALSE (0).</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.5 </dd></dl>
 
 </div>
 </div>

@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [Unreleased]
+## [1.5.0-rc8] - 2025-10-22
 
 Upcoming feature release, expected around 1 November 2025.
 
@@ -158,6 +158,10 @@ Upcoming feature release, expected around 1 November 2025.
 
  - #264: `novas_timespec` now stores the TT-TDB conversion to the full (100 ns) precision. It's slightly slower than
    the less precise original NOVAS `tdb2tt()`, but it's worth it not having to worry about the precision.
+ 
+ - #265: CALCEPH and CSPICE plugins to use portable mutex code.
+ 
+ - #266: Add caching to `tt2tdb_hp()` and `novas_moon_phase()` functions.
  
  - Both CMake and GNU make now install only the headers for the components that were built. E.g. `novas-calceph.h` is 
    installed only if the library is built with the CALCEPH support option enabled.

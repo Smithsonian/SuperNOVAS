@@ -112,6 +112,9 @@ $(function(){initNavTree('solsys-calceph_8c.html',''); initResizable(true); });
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:gab95452208a59bcca11ceb8870dfdb967" id="r_gab95452208a59bcca11ceb8870dfdb967"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__solar-system.html#gab95452208a59bcca11ceb8870dfdb967">novas_calceph_is_thread_safe</a> ()</td></tr>
+<tr class="memdesc:gab95452208a59bcca11ceb8870dfdb967"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the CALCEPH plugin is thread safe.  <br /></td></tr>
+<tr class="separator:gab95452208a59bcca11ceb8870dfdb967"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5531b937a5bb5491cb475d2536346ad8" id="r_ga5531b937a5bb5491cb475d2536346ad8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__solar-system.html#ga5531b937a5bb5491cb475d2536346ad8">novas_calceph_use_ids</a> (enum <a class="el" href="group__source.html#gac42df1db80fbcb6f7a72de80d9f9c531">novas_id_type</a> idtype)</td></tr>
 <tr class="memdesc:ga5531b937a5bb5491cb475d2536346ad8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the type of Solar-system body IDs to use as <a class="el" href="structobject.html#a7d578acc2a3e88ef2435fe0e88d01a74" title="enum novas_planet, or minor planet ID (e.g. NAIF), or star catalog ID.">object.number</a> with NOVAS_EPHEM_OBJECT types.  <br /></td></tr>
 <tr class="separator:ga5531b937a5bb5491cb475d2536346ad8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -125,7 +128,7 @@ Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:aa45ec7973c458617953d2f94393597c2" id="r_aa45ec7973c458617953d2f94393597c2"><td class="memItemLeft" align="right" valign="top"><a id="aa45ec7973c458617953d2f94393597c2" name="aa45ec7973c458617953d2f94393597c2"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>serialized_calceph_queries</b></td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>serialized_calceph_queries</b> = 1</td></tr>
 <tr class="memdesc:aa45ec7973c458617953d2f94393597c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether to force serialized (non-parallel CALCEPH queries) <br /></td></tr>
 <tr class="separator:aa45ec7973c458617953d2f94393597c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -144,7 +147,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>serialized_calceph_que
 <div class="line"><span class="keywordflow">if</span>(status &lt; 0) {</div>
 <div class="line">  <span class="comment">// Oops something went wrong...</span></div>
 <div class="line">}</div>
-<div class="ttc" id="agroup__solar-system_html_ga35fc86a939602ec910dbdfde180d7f31"><div class="ttname"><a href="group__solar-system.html#ga35fc86a939602ec910dbdfde180d7f31">novas_use_calceph</a></div><div class="ttdeci">int novas_use_calceph(t_calcephbin *eph)</div><div class="ttdoc">Sets a ephemeris provider for Solar-system objects using the CALCEPH C library and the specified set ...</div><div class="ttdef"><b>Definition</b> solsys-calceph.c:399</div></div>
+<div class="ttc" id="agroup__solar-system_html_ga35fc86a939602ec910dbdfde180d7f31"><div class="ttname"><a href="group__solar-system.html#ga35fc86a939602ec910dbdfde180d7f31">novas_use_calceph</a></div><div class="ttdeci">int novas_use_calceph(t_calcephbin *eph)</div><div class="ttdoc">Sets a ephemeris provider for Solar-system objects using the CALCEPH C library and the specified set ...</div><div class="ttdef"><b>Definition</b> solsys-calceph.c:452</div></div>
 <div class="ttc" id="anovas-calceph_8h_html"><div class="ttname"><a href="novas-calceph_8h.html">novas-calceph.h</a></div><div class="ttdoc">SuperNOVAS functions interfacing with the CALCEPH C library.</div></div>
 <div class="ttc" id="anovas_8h_html"><div class="ttname"><a href="novas_8h.html">novas.h</a></div><div class="ttdoc">SuperNOVAS types, definitions, and function prototypes.</div></div>
 </div><!-- fragment --><p>Optionally, you may use a separate ephemeris dataset for major planets (or if planet ephemeris was included in 'eph' above, you don't have to):</p>
@@ -153,7 +156,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>serialized_calceph_que
 <div class="line"><span class="keywordflow">if</span>(status &lt; 0) {</div>
 <div class="line">  <span class="comment">// Oops something went wrong...</span></div>
 <div class="line">}</div>
-<div class="ttc" id="agroup__solar-system_html_gab86ec03898e658c86c671a8b6399e331"><div class="ttname"><a href="group__solar-system.html#gab86ec03898e658c86c671a8b6399e331">novas_use_calceph_planets</a></div><div class="ttdeci">int novas_use_calceph_planets(t_calcephbin *eph)</div><div class="ttdoc">Sets the CALCEPH C library and the specified ephemeris data as the ephemeris provider for the major p...</div><div class="ttdef"><b>Definition</b> solsys-calceph.c:434</div></div>
+<div class="ttc" id="agroup__solar-system_html_gab86ec03898e658c86c671a8b6399e331"><div class="ttname"><a href="group__solar-system.html#gab86ec03898e658c86c671a8b6399e331">novas_use_calceph_planets</a></div><div class="ttdeci">int novas_use_calceph_planets(t_calcephbin *eph)</div><div class="ttdoc">Sets the CALCEPH C library and the specified ephemeris data as the ephemeris provider for the major p...</div><div class="ttdef"><b>Definition</b> solsys-calceph.c:495</div></div>
 </div><!-- fragment --><p>By default the CALCEPH plugin will use NAIF ID numbers for the lookup (for planets the NOVAS IDs will be mapped to NAIF IDs automatically). You can enable name-based lookup by setting the <a class="el" href="structobject.html">object</a> number to -1 (e.g. in <code><a class="el" href="group__source.html#gaa22303f98df2d63edf6d8452ff3a43b2" title="Sets a celestial object to be a Solar-system ephemeris body.">make_ephem_object()</a></code>), or else switch to using CALCEPH IDs by calling <code>novas_calceph_use_ids(NOVAS_ID_CALCEPH)</code>.</p>
 <p>REFERENCES: </p><ol>
 <li>

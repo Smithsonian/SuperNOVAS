@@ -625,11 +625,11 @@ The current UT1 - UTC time difference, and polar offsets, historical data and ne
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">leap_seconds</td><td>[s] Leap seconds at the time of observations </td></tr>
-    <tr><td class="paramname">dut1</td><td>[s] UT1 - UTC time difference [-0.5:0.5], corrected for diurnal variations due to libration and ocean tides. </td></tr>
+    <tr><td class="paramname">dut1</td><td>[s] mean UT1-UTC time difference, e.g. as published in IERS Bulletin A (without diurnal corrections for libration and ocean tides), If the time offset is defined for a different ITRS realization than what is used for the coordinates of an Earth-based observer, you can use <code><a class="el" href="group__earth.html#ga3c8c9b8f709d1e5a7aa3a915f8fafcbb" title="Transforms Earth orientation parameters (xp, yp, dUT1) from one ITRF realization to another.">novas_itrf_transform_eop()</a></code> to make it consistent. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>[s] The TT - UT1 time difference that is suitable for used with all calls in this library that require a <code>ut1_to_tt</code> argument.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>[s] The TT - UT1 time difference that is suitable for use with all calls in this library that require a <code>ut1_to_tt</code> argument. It includes diurnal corrections for libration and ocean tides.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#gab7611704bab9ce717744a8b5575c5378" title="Returns the difference between Terrestrial Time (TT) and Universal Coordinated Time (UTC)">get_utc_to_tt()</a>, <a class="el" href="#gaf4a1a5180905a7d8f76aeafe3f9a8ebb" title="Sets an astronomical time to the fractional Julian Date value, defined in the specified timescale.">novas_set_time()</a>, <a class="el" href="group__earth.html#ga348c4fd2a4a046e9768038075717b693" title="Returns the Greenwich Apparent Sidereal Time (GAST) for a given UT1 date.">novas_gast()</a>, <a class="el" href="group__earth.html#gaaf53fcad3fade814381cef3d06779a8c" title="Returns the Greenwich (apparent) Sidereal Time (GST/GaST) for a given astronomical time specification...">novas_time_gst()</a>, <a class="el" href="#ga9e99ea879ba0ddc1d9fbefc4b32b1ef1" title="Returns the Local (apparent) Sidereal Time (LST/LaST) for a given astronomical time specification and...">novas_time_lst()</a> </dd></dl>
@@ -1695,7 +1695,7 @@ With MSC, this function uses the C11 standard <code>timespec_get()</code> functi
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">leap</td><td>[s] Leap seconds, e.g. as published by IERS Bulletin C. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">dut1</td><td>[s] UT1-UTC time difference, e.g. as published in IERS Bulletin A, and possibly corrected for diurnal and semi-diurnal variations, e.g. via <code><a class="el" href="group__earth.html#ga9fc52f6fd358463d0c1ca7aa651e65f6" title="Calculate corrections to the Earth orientation parameters (EOP) due to short term (diurnal and semidi...">novas_diurnal_eop()</a></code>. If the time offset is defined for a different ITRS realization than what is used for the coordinates of an Earth-based observer, you can use <code><a class="el" href="group__earth.html#ga3c8c9b8f709d1e5a7aa3a915f8fafcbb" title="Transforms Earth orientation parameters (xp, yp, dUT1) from one ITRF realization to another.">novas_itrf_transform_eop()</a></code> to make it consistent. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">dut1</td><td>[s] mean UT1-UTC time difference, e.g. as published in IERS Bulletin A (without diurnal corrections for libration and ocean tides), If the time offset is defined for a different ITRS realization than what is used for the coordinates of an Earth-based observer, you can use <code><a class="el" href="group__earth.html#ga3c8c9b8f709d1e5a7aa3a915f8fafcbb" title="Transforms Earth orientation parameters (xp, yp, dUT1) from one ITRF realization to another.">novas_itrf_transform_eop()</a></code> to make it consistent. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">time</td><td>Pointer to the data structure that uniquely defines the astronomical time for all applications. </td></tr>
   </table>
   </dd>
@@ -1936,7 +1936,7 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
     <tr><td class="paramdir"></td><td class="paramname">unix_time</td><td>[s] UNIX time (UTC) seconds </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">nanos</td><td>[ns] UTC sub-second component </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">leap</td><td>[s] Leap seconds, e.g. as published by IERS Bulletin C. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">dut1</td><td>[s] UT1-UTC time difference, e.g. as published in IERS Bulletin A, and possibly corrected for diurnal and semi-diurnal variations, e.g. via <code><a class="el" href="group__earth.html#ga9fc52f6fd358463d0c1ca7aa651e65f6" title="Calculate corrections to the Earth orientation parameters (EOP) due to short term (diurnal and semidi...">novas_diurnal_eop()</a></code>. If the time offset is defined for a different ITRS realization than what is used for the coordinates of an Earth-based observer, you can use <code><a class="el" href="group__earth.html#ga3c8c9b8f709d1e5a7aa3a915f8fafcbb" title="Transforms Earth orientation parameters (xp, yp, dUT1) from one ITRF realization to another.">novas_itrf_transform_eop()</a></code> to make it consistent. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">dut1</td><td>[s] mean UT1-UTC time difference, e.g. as published in IERS Bulletin A (without diurnal corrections for libration and ocean tides), If the time offset is defined for a different ITRS realization than what is used for the coordinates of an Earth-based observer, you can use <code><a class="el" href="group__earth.html#ga3c8c9b8f709d1e5a7aa3a915f8fafcbb" title="Transforms Earth orientation parameters (xp, yp, dUT1) from one ITRF realization to another.">novas_itrf_transform_eop()</a></code> to make it consistent. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">time</td><td>Pointer to the data structure that uniquely defines the astronomical time for all applications. </td></tr>
   </table>
   </dd>
@@ -2331,6 +2331,10 @@ Fairhead, L., &amp; Bretagnon, P. (1990) A&amp;A, 229, 240 </li>
 
 <p>Returns the TDB-TT time difference with high precision. </p>
 <p>This implementation uses the full series expansion by Fairhead &amp; Bretagnon 1990, resulting in an accuracy below 100 ns.</p>
+<p>NOTES: </p><ol>
+<li>
+This function caches the result of the last calculation. </li>
+</ol>
 <p>REFERENCES: </p><ol>
 <li>
 Fairhead, L., &amp; Bretagnon, P. (1990) A&amp;A, 229, 240 </li>

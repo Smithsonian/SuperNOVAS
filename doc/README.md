@@ -417,13 +417,18 @@ shared libraries also:
 Add the appropriate bits from below to the `CMakeLists.txt` file of your application (`my-application`):
 
 ```cmake
-  # Link core library
   find_package(supernovas REQUIRED)
   target_link_libraries(my-application PRIVATE supernovas)
-
-  # If you built with CALCEPH support, link the plugin library
-  target_link_libraries(my-application PRIVATE solsys-calceph)
 ```
+
+Or, to include ephemeris support via the CALCEPH library (`solsys-calceph` component) also: 
+
+```cmake
+  find_package(supernovas REQUIRED COMPONENTS solsys-calceph)
+  target_link_libraries(my-application PRIVATE supernovas solsys-calceph)
+```
+
+Similarly, for ephemeris support via CSPICE you can use the `solsys-cspice` component.
 
 
 <a name="deprecations"></a>
