@@ -108,8 +108,8 @@ typedef int                   lock_type;
 #include "novas.h"
 #include "novas-cspice.h"
 
-#include "SpiceUsr.h"
-#include "SpiceZpr.h"        // for reset_c
+#include "cspice/SpiceUsr.h"
+#include "cspice/SpiceZpr.h"        // for reset_c
 
 #if __cplusplus
 #  ifdef NOVAS_NAMESPACE

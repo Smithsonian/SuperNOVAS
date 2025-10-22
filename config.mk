@@ -65,12 +65,6 @@ CFLAGS ?= -g -Os -Wall
 #CSPICE_SUPPORT = 1
 
 
-# If the CSPICE headers are installed in a place other than the default
-# header search locations, e.g. under a cspice/ folder, you can specify
-# the location of the CSPICE headers here
-#CSPICE_INCLUDE_DIR = /usr/include/cspice
-
-
 # cppcheck options for 'check' target. You can add additional options by
 # setting the CHECKEXTRA variable (e.g. in shell) prior to invoking 'make'.
 CHECKOPTS ?= --enable=performance,warning,portability,style --language=c \

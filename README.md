@@ -1173,13 +1173,9 @@ for handling Solar-system objects.
 <details>
 
 Prior to building __SuperNOVAS__ simply set `CSPICE_SUPPORT` to 1 in `config.mk` or in your environment (or for CMake
-configure with `-DENABLE_CSPICE=ON`). You may also want to set the `CSPICE_INCLUDE_DIR` environment variable to point
-to the location where the CSPICE headers are installed (e.g. `/usr/include/cspice`) if it's not a standard search 
-location. 
-
-Depending on the build target, it will build `libsolsys-cspice.so[.1]` (target `shared` or CMake option 
-`-DBUILD_SHARED_LIBS=ON`) or `libsolsys-cspice.a` (target `static` or default CMake build) libraries or 
-`solsys-cspice.o` (target `solsys`, no CMake equivalent), which provide the `novas_use_cspice()`, 
+configure with `-DENABLE_CSPICE=ON`). Depending on the build target, it will build `libsolsys-cspice.so[.1]` (target 
+`shared` or CMake option `-DBUILD_SHARED_LIBS=ON`) or `libsolsys-cspice.a` (target `static` or default CMake build) 
+libraries or `solsys-cspice.o` (target `solsys`, no CMake equivalent), which provide the `novas_use_cspice()`, 
 `novas_use_cspice_planets()`, and `novas_use_cspice_ephem()` functions to enable CSPICE for providing data for all 
 Solar-system sources, or for major planets only, or for other bodies only, respectively. You can also manage the 
 active kernels with the `cspice_add_kernel()` and `cspice_remove_kernel()` functions.
