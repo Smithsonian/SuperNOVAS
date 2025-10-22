@@ -204,7 +204,7 @@ function(solsys_plugin EPHEM_LIB)
         target_compile_definitions(${PLUGIN} PRIVATE SUPERNOVAS_USE_PTHREAD)
     endif()
     
-    target_include_directories(${PLUGIN} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+    target_include_directories(${PLUGIN} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include ${PLUGIN_INCLUDE_DIR})
     
     target_link_libraries(solsys-${EPHEM_LIB} PRIVATE
         supernovas::core
@@ -216,10 +216,12 @@ endfunction()
 
 # Process plugin options...
 if(ENABLE_CALCEPH)
+    set(PLUGIN_INCLUDE_DIR, "")
     solsys_plugin(calceph)
 endif()
 
 if(ENABLE_CSPICE)
+    set(PLUGIN_INCLUDE_DIR $ENV{CSPICE_INCLUDE_DIR})
     solsys_plugin(cspice)
 endif()
 
