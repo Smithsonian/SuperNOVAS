@@ -37,6 +37,9 @@ ifeq ($(CSPICE_SUPPORT), 1)
   CPPFLAGS += -DUSE_CSPICE=1
   SOLSYS_TARGETS += $(OBJ)/solsys-cspice.o
   SHARED_TARGETS += $(LIB)/libsolsys-cspice.$(SOEXT)
+  ifdef CSPICE_INCLUDE_DIR
+    CPPFLAGS += -I$(CSPICE_INCLUDE_DIR)
+  endif
 endif
 
 # Default target for packaging with Linux distributions

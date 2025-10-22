@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [1.5.0-rc8] - 2025-10-22
+## [Unreleased]
 
 Upcoming feature release, expected around 1 November 2025.
 
@@ -80,6 +80,9 @@ Upcoming feature release, expected around 1 November 2025.
 
  - #246: New `novas_geodetic_transform_site()` and `novas_itrf_transform_site()` convenience functions to make it 
    simpler to change the reference ellipsoid or the ITRF realization of an `on_surface` data structure, respectively.
+
+ - #268: You can set the `CSPICE_INCLUIDE_DIR` environment variable to specify the location of the CSPICE headers for 
+   the build of the `solsys-cspice` plugin.
 
 ### Removed
 
