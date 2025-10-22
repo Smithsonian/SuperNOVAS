@@ -22,7 +22,7 @@ cmake_minimum_required(VERSION 3.20)
 # Project definition
 project(supernovas
     VERSION 1.5.0
-    DESCRIPTION "SuperNOVAS astrometry library"
+    DESCRIPTION "SuperNOVAS C/C++ astrometry library"
     HOMEPAGE_URL "https://smithsonian.github.io/SuperNOVAS/"
     LANGUAGES C
 )
@@ -52,6 +52,19 @@ add_feature_info(Calceph-Plugin ENABLE_CALCEPH "Optional ephemeris support via C
 add_feature_info(CSPICE-Plugin ENABLE_CSPICE "Optional ephemeris support via CSPICE (solsys-cspice)")
 
 # ----------------------------------------------------------------------------
+# pkg-config variables
+
+# [.pc] Libs -- linker flags for apps
+set(PC_LIBS "-lsupernovas ")
+
+# [.pc] Requires.private -- package dependencies for supernovas itself
+set(PC_REQUIRES_PRIVATE "")
+
+# [.pc] Libs.private -- linker flags for supernovas itself
+set(PC_LIBS_PRIVATE "")
+
+
+# ----------------------------------------------------------------------------
 # Global build configuration
 
 # Set output directories
@@ -76,13 +89,23 @@ if(WIN32)
     add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
 endif()
 
-find_library(LIBM m OPTIONAL)
-if(NOT LIBM)
+find_library(MATH_LIB m OPTIONAL)
+if(MATH_LIB)
+    set(LIBM "m")
+    # [.pc] Link applications against math lib...
+    string(APPEND PC_LIBS_PRIVATE -l${LIBM} " ")
+else()
     set(LIBM "")
 endif()
 
+
 if(ENABLE_CALCEPH OR ENABLE_CSPICE)
     find_package(Threads)
+    
+    if(CMAKE_THREAD_LIBS_INIT)
+        # [.pc] apps should be linked against threads libs also...
+        string(APPEND PC_LIBS_PRIVATE ${CMAKE_THREAD_LIBS_INIT} " ")
+    endif()
 endif()
 
 # ----------------------------------------------------------------------------
@@ -97,11 +120,17 @@ if(ENABLE_CALCEPH)
         TYPE REQUIRED
         PURPOSE "Provides ephemeris support for supernovas"
     )
+    string(APPEND PC_REQUIRES_PRIVATE "calceph >= 4.0.0 ")
+    string(APPEND PC_LIBS "-lsolsys-calceph ")
+    string(APPEND PC_LIBS_PRIVATE "-lcalceph ")
 endif()
 
 # CSPICE plugin
 if(ENABLE_CSPICE)
     find_library(cspice cspice REGISTRY_VIEW TARGET REQUIRED)
+    string(APPEND PC_REQUIRES_PRIVATE "cspice ")
+    string(APPEND PC_LIBS "-lsolsys-cspice ")
+    string(APPEND PC_LIBS_PRIVATE "-lcspice ")
 endif()
 
 # ----------------------------------------------------------------------------

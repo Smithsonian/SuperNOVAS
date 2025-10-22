@@ -22,8 +22,10 @@ if(NOT PROJECT_NAME)
         
     find_package(supernovas)
 
-    find_library(LIBM m OPTIONAL)
-    if(NOT LIBM)
+    find_library(MATH_LIBS m OPTIONAL)
+    if(MATH_LIBS)
+        set(LIBM "m")
+    else()
         set(LIBM "")
     endif()
 endif()
