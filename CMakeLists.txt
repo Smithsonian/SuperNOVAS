@@ -204,7 +204,7 @@ function(solsys_plugin EPHEM_LIB)
         target_compile_definitions(${PLUGIN} PRIVATE SUPERNOVAS_USE_PTHREAD)
     endif()
     
-    target_include_directories(${PLUGIN} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+    target_include_directories(${PLUGIN} PRIVATE ${SUPERNOVAS_INCLUDE_DIRS})
     
     target_link_libraries(solsys-${EPHEM_LIB} PRIVATE
         supernovas::core
@@ -217,10 +217,14 @@ endfunction()
 # Process plugin options...
 if(ENABLE_CALCEPH)
     solsys_plugin(calceph)
+    find_path(CALCEPH_INCLUDE_DIR "calceph.h" REQUIRED)
+    target_include_directories(solsys-calceph PRIVATE "${CALCEPH_INCLUDE_DIR}")
 endif()
 
 if(ENABLE_CSPICE)
     solsys_plugin(cspice)
+    find_path(CSPICE_INCLUDE_DIR "cspice/SpiceUsr.h" REQUIRED)
+    target_include_directories(solsys-cspice PRIVATE "${CSPICE_INCLUDE_DIR}")
 endif()
 
 # ----------------------------------------------------------------------------
@@ -263,48 +267,47 @@ if(ENABLE_CSPICE)
     list(APPEND INSTALL_TARGETS solsys-cspice)
 endif()
 
-install(TARGETS ${INSTALL_TARGETS}
-    EXPORT supernovasTargets
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-)
+install(TARGETS ${INSTALL_TARGETS} EXPORT supernovasTargets)
+
 
 # ------------------------------------------------------------------------
 # Install Development component
 
 install(FILES include/novas.h
-    COMPONENT Development
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    COMPONENT Development
 )
 
 if(ENABLE_CALCEPH)
    install(FILES include/novas-calceph.h
+       TYPE INCLUDE
        COMPONENT Development
-       DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
    )
 endif()
 
 if(ENABLE_CSPICE)
    install(FILES include/novas-cspice.h
+       TYPE INCLUDE
        COMPONENT Development
-       DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
    )
 endif()
 
 # Install CHANGELOG
-install(FILES CHANGELOG.md DESTINATION ${CMAKE_INSTALL_DOCDIR})
+install(FILES CHANGELOG.md 
+  TYPE DOC
+  COMPONENT Development   
+)
 
 # Install CONTRIBUTING.md (Development)
 install(FILES CONTRIBUTING.md 
-    DESTINATION ${CMAKE_INSTALL_DOCDIR}
+    TYPE DOC
     COMPONENT Development     
 )
 
 # For examples/ dir, list just the directory, not the individual files installed.
 install(CODE "message(STATUS \"Installing: <prefix>/${CMAKE_INSTALL_DOCDIR}/examples/*\")")
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/examples
-   DESTINATION ${CMAKE_INSTALL_DOCDIR}
+   TYPE DOC
    MESSAGE_NEVER
    COMPONENT Development
 )
@@ -312,7 +315,7 @@ install(DIRECTORY ${PROJECT_SOURCE_DIR}/examples
 # For legacy/ dir, list just the directory, not the individual files installed.
 install(CODE "message(STATUS \"Installing: <prefix>/${CMAKE_INSTALL_DOCDIR}/legacy/*\")")
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/legacy
-   DESTINATION ${CMAKE_INSTALL_DOCDIR}
+   TYPE DOC
    MESSAGE_NEVER
    COMPONENT Development
 )
@@ -323,6 +326,10 @@ install(EXPORT supernovasTargets
     NAMESPACE supernovas::
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/supernovas
 )
+
+
+# ------------------------------------------------------------------------
+# Package config
 
 configure_package_config_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/cmake/supernovasConfig.cmake.in
@@ -372,7 +379,6 @@ endif()
 # Export the package for use from the build-tree
 # (this registers the build-tree with a global CMake-registry)
 export(PACKAGE supernovas)
-
 
 
 # ----------------------------------------------------------------------------
