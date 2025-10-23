@@ -187,8 +187,8 @@ endif()
 # Plugins
 
 # plugins via external libraries (e.g. calceph or cspice). 
-function(solsys_plugin EPHEM_LIB)
-    set(PLUGIN solsys-${EPHEM_LIB})
+function(solsys_plugin EPHEM_LIB_NAME)
+    set(PLUGIN solsys-${EPHEM_LIB_NAME})
     
     add_library(${PLUGIN} src/${PLUGIN}.c)
     add_library(supernovas::${PLUGIN} ALIAS ${PLUGIN})
@@ -206,9 +206,11 @@ function(solsys_plugin EPHEM_LIB)
     
     target_include_directories(${PLUGIN} PRIVATE ${SUPERNOVAS_INCLUDE_DIRS})
     
-    target_link_libraries(solsys-${EPHEM_LIB} PRIVATE
+    find_library(EPHEM_LIBRARY ${EPHEM_LIB_NAME} REQUIRED)
+    
+    target_link_libraries(solsys-${EPHEM_LIB_NAME} PRIVATE
         supernovas::core
-        ${EPHEM_LIB}
+        ${EPHEM_LIBRARY}
         ${MATH}
         Threads::Threads
     )
