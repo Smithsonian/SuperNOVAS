@@ -7,9 +7,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [1.5.0-rc8] - 2025-10-22
+## [1.5.0] - 2025-10-29
 
-Upcoming feature release, expected around 1 November 2025.
+Feature release. Some new functions, enhanced precision, improved portability (including Windows and Android), C++ 
+compatibility, and documentation.
 
 ### Fixed
 
@@ -219,6 +220,7 @@ Upcoming feature release, expected around 1 November 2025.
  - Moved `nutation.h` to `legacy/`. Its functions are now integral to `novas.h` instead. It is unlikely that any one 
    would use it as a separate header, and not via `novas.h`. But, in case someone does want it, they can find it it 
    the installation folder of the `supernovas` documentation, under the `legacy/` folder.
+ 
  
 ## [1.4.2] - 2025-08-25
 
