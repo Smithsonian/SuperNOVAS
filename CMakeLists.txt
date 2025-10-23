@@ -276,7 +276,7 @@ install(TARGETS ${INSTALL_TARGETS} EXPORT supernovasTargets)
 # Install Development component
 
 install(FILES include/novas.h
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    TYPE INCLUDE
     COMPONENT Development
 )
 
