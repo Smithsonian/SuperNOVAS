@@ -77,7 +77,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Build time locations for sub-configs
 link_directories(${CMAKE_BINARY_DIR}/lib)
-set(SUPERNOVAS_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/include)
+set(supernovas_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/include)
 
 if(WIN32)
     # Windows-specific settings
@@ -204,7 +204,7 @@ function(solsys_plugin EPHEM_LIB_NAME)
         target_compile_definitions(${PLUGIN} PRIVATE SUPERNOVAS_USE_PTHREAD)
     endif()
     
-    target_include_directories(${PLUGIN} PRIVATE ${SUPERNOVAS_INCLUDE_DIRS})
+    target_include_directories(${PLUGIN} PRIVATE ${supernovas_INCLUDE_DIRS})
     
     find_library(EPHEM_LIBRARY ${EPHEM_LIB_NAME} REQUIRED)
     

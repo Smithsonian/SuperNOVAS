@@ -21,7 +21,7 @@ if(ENABLE_CSPICE)
     list(APPEND TEST_PROGRAMS test-cspice)
 endif()
 
-include_directories(${SUPERNOVAS_INCLUDE_DIRS} ${PROJECT_SOURCE_DIR}/legacy)
+include_directories(${supernovas_INCLUDE_DIRS} ${PROJECT_SOURCE_DIR}/legacy)
 
 # Link against binaries in the local supernovas lib/ directory
 link_directories(${CMAKE_BINARY_DIR}/lib)

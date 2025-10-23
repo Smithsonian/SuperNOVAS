@@ -12,7 +12,7 @@ set(BENCHMARK_PROGRAMS
     benchmark-place
 )
 
-include_directories(${SUPERNOVAS_INCLUDE_DIRS})
+include_directories(${supernovas_INCLUDE_DIRS})
 
 # Build each example
 foreach(BENCHMARK ${BENCHMARK_PROGRAMS})

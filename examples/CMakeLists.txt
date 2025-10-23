@@ -39,18 +39,18 @@ set(EXAMPLE_PROGRAMS
     example-rise-set
 )
 
-if(SUPERNOVAS_solsys-calceph_FOUND)
+if(supernovas_solsys-calceph_FOUND)
     list(APPEND EXAMPLE_PROGRAMS example-calceph)
 endif()
 
-if(SUPERNOVAS_solsys-cspice_FOUND)
+if(supernovas_solsys-cspice_FOUND)
     list(APPEND EXAMPLE_PROGRAMS example-cspice)
 endif()
 
 # The ephemeris data to use for CALCEPH / CSPICE testing
 set(EPHEM ${PROJECT_SOURCE_DIR}/test/ephem/de440s-j2000.bsp)
 
-message("include dirs is ${SUPERNOVAS_INCLIDE_DIRS}")
+message("include dirs is ${supernovas_INCLUDE_DIRS}")
 
 # Build each example
 foreach(EXAMPLE ${EXAMPLE_PROGRAMS})
@@ -59,7 +59,7 @@ foreach(EXAMPLE ${EXAMPLE_PROGRAMS})
     if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${EXAMPLE_SOURCE})
         add_executable(${EXAMPLE} ${EXAMPLE_SOURCE})
 
-        target_include_directories(${EXAMPLE} PRIVATE ${SUPERNOVAS_INCLUDE_DIRS})
+        target_include_directories(${EXAMPLE} PRIVATE ${supernovas_INCLUDE_DIRS})
 
         # Link against the supernovas library
         target_link_libraries(${EXAMPLE} PRIVATE
