@@ -15,39 +15,31 @@ endif()
 # Include targets
 include("${CMAKE_CURRENT_LIST_DIR}/supernovasTargets.cmake")
 
-# Set variables for backward compatibility
+# Libraries to link against when using SuperNOVAS
 set(supernovas_LIBRARIES supernovas::core)
-set(supernovas_INCLUDE_DIRS "")
 
 # Get include directories from target properties
-get_target_property(SUPERNOVAS_INCLUDE_DIRS supernovas::core INTERFACE_INCLUDE_DIRECTORIES)
+get_target_property(supernovas_INCLUDE_DIRS supernovas::core INTERFACE_INCLUDE_DIRECTORIES)
 
 # Check if optional components are available
 if(TARGET supernovas::solsys-calceph)
+    find_library(CALCEPH_LIB calceph)
+    find_dependency(Threads)
+    list(APPEND supernovas_LIBRARIES supernovas::solsys-calceph ${CALCEPH_LIB} ${MATH_LIBRARY} Threads::Threads)
     set(supernovas_solsys-calceph_FOUND TRUE)
-    list(APPEND supernovas_LIBRARIES supernovas::solsys-calceph)
 else()
     set(supernovas_solsys-calceph_FOUND FALSE)
 endif()
 
 if(TARGET supernovas::solsys-cspice)
+    find_library(CSPICE_LIB cspice)
+    find_dependency(Threads)
+    list(APPEND supernovas_LIBRARIES supernovas::solsys-cspice ${CSPICE_LIB} ${MATH_LIBRARY} Threads::Threads)
     set(supernovas_solsys-cspice_FOUND TRUE)
-    list(APPEND supernovas_LIBRARIES supernovas::solsys-cspice)
 else()
     set(supernovas_solsys-cspice_FOUND FALSE)
 endif()
 
 check_required_components(supernovas)
-
-# Component dependencies
-foreach(component ${supernovas_FIND_COMPONENTS})		
-    if(component STREQUAL "solsys-calceph")
-        find_library(calceph)
-        find_dependency(Threads)
-    elseif(component STREQUAL "solsys-cspice")
-        find_library(cspice)
-        find_dependency(Threads)
-    endif()		
-endforeach()
 
 
