@@ -34,60 +34,63 @@ var NAVTREE =
       [ "Compatibility with NOVAS C 3.1", "index.html#autotoc_md72", null ],
       [ "Building and installation", "index.html#autotoc_md74", [
         [ "Build SuperNOVAS using GNU make", "index.html#autotoc_md75", null ],
-        [ "Build SuperNOVAS using CMake", "index.html#autotoc_md76", null ]
+        [ "Build SuperNOVAS using CMake", "index.html#autotoc_md76", null ],
+        [ "Install SuperNOVAS via vcpkg", "index.html#autotoc_md77", null ],
+        [ "Linux packages", "index.html#autotoc_md78", null ],
+        [ "Homebrew package", "index.html#autotoc_md79", null ]
       ] ],
-      [ "Building your application with SuperNOVAS", "index.html#autotoc_md78", [
-        [ "Using a GNU Makefile", "index.html#autotoc_md79", null ],
-        [ "Using CMake", "index.html#autotoc_md80", null ],
-        [ "Deprecated API", "index.html#autotoc_md81", null ],
-        [ "Legacy linking solarsystem() / solarsystem_hp() and readeph() modules", "index.html#autotoc_md82", null ],
-        [ "Legacy modules: a better way", "index.html#autotoc_md83", null ]
+      [ "Building your application with SuperNOVAS", "index.html#autotoc_md81", [
+        [ "Using a GNU Makefile", "index.html#autotoc_md82", null ],
+        [ "Using CMake", "index.html#autotoc_md83", null ],
+        [ "Deprecated API", "index.html#autotoc_md84", null ],
+        [ "Legacy linking solarsystem() / solarsystem_hp() and readeph() modules", "index.html#autotoc_md85", null ],
+        [ "Legacy modules: a better way", "index.html#autotoc_md86", null ]
       ] ],
-      [ "Celestial coordinate systems (old vs. new)", "index.html#autotoc_md85", null ],
-      [ "Example usage", "index.html#autotoc_md87", [
-        [ "Calculating positions for a sidereal source", "index.html#autotoc_md88", [
-          [ "Specify the object of interest", "index.html#autotoc_md89", null ],
-          [ "Specify the observer location", "index.html#autotoc_md90", null ],
-          [ "Specify the time of observation", "index.html#autotoc_md91", null ],
-          [ "Set up the observing frame", "index.html#autotoc_md92", null ],
-          [ "Calculate an apparent place on sky", "index.html#autotoc_md93", null ],
-          [ "Calculate azimuth and elevation angles at the observing location", "index.html#autotoc_md94", null ],
-          [ "Going in reverse...", "index.html#autotoc_md95", null ],
-          [ "Calculate rise, set, and transit times", "index.html#autotoc_md96", null ]
+      [ "Celestial coordinate systems (old vs. new)", "index.html#autotoc_md88", null ],
+      [ "Example usage", "index.html#autotoc_md90", [
+        [ "Calculating positions for a sidereal source", "index.html#autotoc_md91", [
+          [ "Specify the object of interest", "index.html#autotoc_md92", null ],
+          [ "Specify the observer location", "index.html#autotoc_md93", null ],
+          [ "Specify the time of observation", "index.html#autotoc_md94", null ],
+          [ "Set up the observing frame", "index.html#autotoc_md95", null ],
+          [ "Calculate an apparent place on sky", "index.html#autotoc_md96", null ],
+          [ "Calculate azimuth and elevation angles at the observing location", "index.html#autotoc_md97", null ],
+          [ "Going in reverse...", "index.html#autotoc_md98", null ],
+          [ "Calculate rise, set, and transit times", "index.html#autotoc_md99", null ]
         ] ],
-        [ "Calculating positions for a Solar-system source", "index.html#autotoc_md97", [
-          [ "Planets and/or ephemeris type objects", "index.html#autotoc_md98", null ],
-          [ "Solar-system objects with Keplerian orbital parameters", "index.html#autotoc_md99", null ],
-          [ "Approximate planet and Moon orbitals", "index.html#autotoc_md100", null ]
+        [ "Calculating positions for a Solar-system source", "index.html#autotoc_md100", [
+          [ "Planets and/or ephemeris type objects", "index.html#autotoc_md101", null ],
+          [ "Solar-system objects with Keplerian orbital parameters", "index.html#autotoc_md102", null ],
+          [ "Approximate planet and Moon orbitals", "index.html#autotoc_md103", null ]
         ] ],
-        [ "Coordinate and velocity transforms (change of coordinate system)", "index.html#autotoc_md101", null ]
+        [ "Coordinate and velocity transforms (change of coordinate system)", "index.html#autotoc_md104", null ]
       ] ],
-      [ "Incorporating Solar-system ephemeris data or services", "index.html#autotoc_md103", [
-        [ "CALCEPH integration", "index.html#autotoc_md104", null ],
-        [ "NAIF CSPICE toolkit integration", "index.html#autotoc_md105", null ],
-        [ "Universal ephemeris data / service integration", "index.html#autotoc_md106", null ]
+      [ "Incorporating Solar-system ephemeris data or services", "index.html#autotoc_md106", [
+        [ "CALCEPH integration", "index.html#autotoc_md107", null ],
+        [ "NAIF CSPICE toolkit integration", "index.html#autotoc_md108", null ],
+        [ "Universal ephemeris data / service integration", "index.html#autotoc_md109", null ]
       ] ],
-      [ "Notes on precision", "index.html#autotoc_md107", [
-        [ "Prerequisites to precise results", "index.html#autotoc_md108", null ]
+      [ "Notes on precision", "index.html#autotoc_md110", [
+        [ "Prerequisites to precise results", "index.html#autotoc_md111", null ]
       ] ],
-      [ "Tips and tricks", "index.html#autotoc_md110", [
-        [ "SuperNOVAS and C++", "index.html#autotoc_md111", null ],
-        [ "Reduced accuracy shortcuts", "index.html#autotoc_md112", null ],
-        [ "Multi-threaded calculations", "index.html#autotoc_md113", null ],
-        [ "Physical units", "index.html#autotoc_md114", null ],
-        [ "String times and angles", "index.html#autotoc_md115", null ],
-        [ "String dates", "index.html#autotoc_md116", null ]
+      [ "Tips and tricks", "index.html#autotoc_md113", [
+        [ "SuperNOVAS and C++", "index.html#autotoc_md114", null ],
+        [ "Reduced accuracy shortcuts", "index.html#autotoc_md115", null ],
+        [ "Multi-threaded calculations", "index.html#autotoc_md116", null ],
+        [ "Physical units", "index.html#autotoc_md117", null ],
+        [ "String times and angles", "index.html#autotoc_md118", null ],
+        [ "String dates", "index.html#autotoc_md119", null ]
       ] ],
-      [ "Runtime debug support", "index.html#autotoc_md118", null ],
-      [ "Representative benchmarks", "index.html#autotoc_md120", null ],
-      [ "SuperNOVAS added features", "index.html#autotoc_md122", [
-        [ "New functionality highlights", "index.html#autotoc_md123", null ],
-        [ "Refinements to the NOVAS C API", "index.html#autotoc_md124", null ]
+      [ "Runtime debug support", "index.html#autotoc_md121", null ],
+      [ "Representative benchmarks", "index.html#autotoc_md123", null ],
+      [ "SuperNOVAS added features", "index.html#autotoc_md125", [
+        [ "New functionality highlights", "index.html#autotoc_md126", null ],
+        [ "Refinements to the NOVAS C API", "index.html#autotoc_md127", null ]
       ] ],
-      [ "Release schedule", "index.html#autotoc_md126", null ]
+      [ "Release schedule", "index.html#autotoc_md129", null ]
     ] ],
     [ "Changelog", "md__2github_2workspace_2CHANGELOG.html", [
-      [ "[1.5.0-rc8] - 2025-10-22", "md__2github_2workspace_2CHANGELOG.html#autotoc_md18", [
+      [ "[1.5.0] - 2025-10-29", "md__2github_2workspace_2CHANGELOG.html#autotoc_md18", [
         [ "Fixed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md19", null ],
         [ "Added", "md__2github_2workspace_2CHANGELOG.html#autotoc_md20", null ],
         [ "Removed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md21", null ],
@@ -176,7 +179,7 @@ var NAVTREEINDEX =
 "annotated.html",
 "group__observer.html#gab07d86d425d68a62e94e965dd36b7a32",
 "group__time.html#ggaa8cfc18bfdf8ebd0198065c9d07e3bbaa90f19bf1771802f4ad20cf14660c8322",
-"solsys-calceph_8c.html"
+"planets_8c.html#aacc6a0daf29b8bdc18f46647a94694d3"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

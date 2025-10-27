@@ -193,6 +193,9 @@ accommodate JPL NAIF codes, for which 16-bit storage is insufficient.
 
  - [Build SuperNOVAS using GNU make](#gnu-build)
  - [Build SuperNOVAS using CMake](#cmake-build)
+ - [Install SuperNOVAS via `vcpkg`](#vcpkg-port)
+ - [Linux packages](#linux-packages)
+ - [Homebrew package](#homebrew)
 
 <a name="gnu-build"></a>
 ### Build SuperNOVAS using GNU make
@@ -316,7 +319,7 @@ The __SuperNOVAS__ CMake build supports the following options (in addition to th
  - `BUILD_EXAMPLES=ON|OFF` (default: ON) - Build the included examples
  - `BUILD_TESTING=ON|OFF` (default: ON - Build regression tests
  - `BUILD_BENCHMARK=ON|OFF` (default: OFF - Build benchmarking programs 
- - `ENABLE_CALCEPH=ON|OFF` (default: OFF) - Optional CALCEPH ephemeris plugin support. Requires CALCEPH package.
+ - `ENABLE_CALCEPH=ON|OFF` (default: OFF) - Optional CALCEPH ephemeris plugin support. Requires `calceph` package.
  - `ENABLE_CSPICE=ON|OFF` (default: OFF) - Optional CSPICE ephemeris plugin support. Requires `cspice` library 
    installed.
 
@@ -359,6 +362,75 @@ the `Runtime` component:
 ```bash
   $ cmake --install build --component Runtime --prefix /usr/local
 ```
+
+
+<a name="vcpkg-port"></a>
+### Install SuperNOVAS via `vcpkg`
+
+As of version 1.5, SuperNOVAS is available through the [vcpkg](https://vcpkg.io/en/) registry. The `vcpkg` port 
+supports a wide range of platforms, including Linux, Windows, MacOS, and Android -- for both `arm64` and `x64` 
+architectures (and in case of Windows also `x86`). It is effectively the same as the CMake build (above), only with 
+more simplicity, convenience, and dependency resolution.
+
+
+You can install the core SuperNOVAS library with `vcpkg` as:
+
+```bash
+  $ vcpkg install supernovas
+```
+
+Or, including the `solsys-calceph` plugin library as:
+
+```bash
+  $ vcpkg install supernovas[solsys-calceph]
+```
+
+The latter will also install the `calceph` library dependency, as needed.
+
+
+
+<a name="linux-packages"></a>
+### Linux packages
+
+SuperNOVAS is packaged for both Debian and Fedora / EPEL Linux distributions, and derivatives based on these (Ubuntu, 
+Mint, RHEL, CentOS Stream, Alma Linux, Rocky Linux, Oracle Linux...).
+
+
+On Debian-based platforms you might install all components via:
+
+```bash
+  $ sudo apt-get install libsupernovas1 libsolsys-calceph1 libsupernovas-doc libsupernovas-dev
+```
+
+And or Fedora / EPEL based distributions as:
+
+```bash
+  $ sudo dnf install supernovas supernovas-solsys-calceph supernovas-doc supernovas-devel
+```
+
+In both cases the first package is the runtime library, the second is the runtime library for the `solsys-calceph`
+plugin, the third is documentation, and the last one is the files needed for application development.
+
+
+__NOTE__
+
+> cycle, whereas the Fedora / EPEL packages are usually fully up-to-date (i.e. in `stable`) within a week of a new
+> SuperNOVAS release. Somewhat newer Debian versions may be found in `testing`, but even that tends to lag behind the 
+> `stable` Fedora / EPEL updates.
+
+
+<a name="homebrew"></a>
+### Homebrew package
+
+As of version 1.5, there is also a [Homebrew](https://brew.sh/) package through the maintainer's own Tap, which 
+includes the `solsys-calceph` plugin by default.
+
+
+```bash
+  $ brew tap attipaci/pub
+  $ brew install supernovas
+```
+
 
 -----------------------------------------------------------------------------
 
