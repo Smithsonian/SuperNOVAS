@@ -432,10 +432,11 @@ plugin, the third is documentation, and the last one is the files needed for app
 
 </details>
 
-> [!NOTE] The turnaround time for Debian packages is quite slow, and typically follows the 6-month Debian release 
-> cycle, whereas the Fedora / EPEL packages are usually fully up-to-date (i.e. in `stable`) within a week of a new
-> SuperNOVAS release. Somewhat newer Debian versions may be found in `testing`, but even that tends to lag behind the 
-> `stable` Fedora / EPEL updates.
+> [!NOTE] 
+> The turnaround time for Debian packages is quite slow, and typically follows the 6-month Debian release cycle, 
+> whereas the Fedora / EPEL packages are usually fully up-to-date (i.e. in `stable`) within a week of a new SuperNOVAS 
+> release. Somewhat newer Debian versions may be found in `testing`, but even that tends to lag behind the `stable` 
+> Fedora / EPEL updates.
 
 
 <a name="homebrew"></a>
