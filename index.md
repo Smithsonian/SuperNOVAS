@@ -1,5 +1,5 @@
 ---
-excerpt: SuperNOVAS is a light-weight, high-precision astrometry C/C++ library. It is a fork of NOVAS C 3.1.
+excerpt: SuperNOVAS is a light-weight, high-precision astrometry C/C++ library, based on NOVAS C 3.1.
 ---
 
 <img src="/SuperNOVAS/resources/CfA-logo.png" alt="CfA logo" width="400" height="67" align="right"><br clear="all">
@@ -30,11 +30,6 @@ repository on GitHub.
 
 This site contains various online resources that support the library:
 
- 
-__Downloads__
-
- - [Releases](https://github.com/Smithsonian/SuperNOVAS/releases) from GitHub
-
 
 __Documentation__
 
@@ -45,20 +40,22 @@ __Documentation__
  - [Community Forum](https://github.com/Smithsonian/SuperNOVAS/discussions) &ndash; ask a question, provide feedback, or 
    check announcements.
 
+ 
+__Downloads__
+
+ - [Releases](https://github.com/Smithsonian/SuperNOVAS/releases) from GitHub
+
 
 __Linux Packages__
 
+SuperNOVAS is also available in packaged for for Fedora / EPEL and Debian-based Linux distros. It has the following 
+package structure, which allows non-bloated installations of just the parts that are needed for the particular use 
+case(s):
 
-SuperNOVAS is also available in packaged for for both RPM and Debian-based Linux distros. It has the following package
-structure, which allows non-bloated installations of just the parts that are needed for the particular use case(s):
 
-
- | __Fedora RPM__                        |  __Debian package__                          |
+ | __Fedora / EPEL RPM__                 |  __Debian package__                          |
  |---------------------------------------|----------------------------------------------|
  | `supernovas`                          | `libsupernovas1`                             |
- | `supernovas-cio-data`                 | `libsupernovas-cio-data`                     |
- | `supernovas-solsys1`                  | `libsolsys1_1`                               |
- | `supernovas-solsys2`                  | `libsolsys2_1`                               |
  | `supernovas-solsys-calceph`           | `libsolsys-calceph1`                         |
  | `supernovas-devel`                    | `libsupernovas-dev`                          |
  | `supernovas-doc`                      | `libsupernovas-doc`                          |
@@ -68,4 +65,28 @@ The differences in package naming are due to the different naming policies for R
 RPM and Debian packages provide identical contents and features.
  
 
- 
+__vcpkg Registry__
+
+You can install the core SuperNOVAS library with `vcpkg` on Linux, MacOS, Windows, and Android as:
+
+```bash
+  $ vcpkg install supernovas
+```
+
+Or, including the `solsys-calceph` plugin library as:
+
+```bash
+  $ vcpkg install supernovas[solsys-calceph]
+```
+
+__Homebrew__ 
+
+Or, install via the Homebrew package manager (MacOS and Linux) through the maintainer's own Tap, including the 
+`solsys-calceph` plugin:
+
+```bash
+  $ brew tap attipaci/pub
+  $ brew install supernovas
+```
+
+
