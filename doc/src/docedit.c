@@ -91,9 +91,7 @@ static int make_headless_readme() {
 
 static int make_undecorated_readme() {
   FILE *in, *out;
-  char docpath[1024] = {'\0'};
   char line[16384] = {'\0'};
-  int head = 1;
 
   in = openfile(outpath, "README.md", "r");
   if(!in) return -1;
