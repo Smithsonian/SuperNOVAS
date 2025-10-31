@@ -180,7 +180,7 @@ target_include_directories(core PUBLIC
 
 # Link with math libs as necessary
 if(MATH_LIB)
-    target_link_libraries(core PRIVATE ${MATH})
+    target_link_libraries(core ${MATH})
 endif()
 
 # ----------------------------------------------------------------------------
@@ -208,7 +208,7 @@ function(solsys_plugin EPHEM_LIB_NAME)
     
     find_library(EPHEM_LIBRARY ${EPHEM_LIB_NAME} REQUIRED)
     
-    target_link_libraries(solsys-${EPHEM_LIB_NAME} PRIVATE
+    target_link_libraries(solsys-${EPHEM_LIB_NAME}
         supernovas::core
         ${EPHEM_LIBRARY}
         ${MATH}
