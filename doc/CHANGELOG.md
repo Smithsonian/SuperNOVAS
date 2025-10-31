@@ -7,6 +7,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [Unreleased]
+
+### Changed
+
+ - CMake libraries (targets) built with transitive dependencies.
+
+
 ## [1.5.0] - 2025-10-29
 
 Feature release. Some new functions, enhanced precision, improved portability (including Windows and Android), C++ 
