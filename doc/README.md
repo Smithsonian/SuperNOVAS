@@ -414,9 +414,10 @@ plugin, the third is documentation, and the last one is the files needed for app
 
 __NOTE__
 
-> cycle, whereas the Fedora / EPEL packages are usually fully up-to-date (i.e. in `stable`) within a week of a new
-> SuperNOVAS release. Somewhat newer Debian versions may be found in `testing`, but even that tends to lag behind the 
-> `stable` Fedora / EPEL updates.
+> The turnaround time for Debian packages is quite slow, and typically follows the 6-month Debian release cycle, 
+> whereas the Fedora / EPEL packages are usually fully up-to-date (i.e. in `stable`) within a week of a new SuperNOVAS 
+> release. Somewhat newer Debian versions may be found in `testing`, but even that tends to lag behind the `stable` 
+> Fedora / EPEL updates.
 
 
 <a name="homebrew"></a>
@@ -1890,7 +1891,7 @@ Below is a non-exhaustive overview new features added by __SuperNOVAS__ on top o
    reference ellipsoid of choice (e.g. GRS80 or WGS84).
    
  - Transformations of site coordinates and Earth orientation parameters between different ITRF realizations (e.g.
-   ITRF2000 snd ITRF2014).
+   ITRF2000 and ITRF2014).
    
  - Functions to calculate the rate at which an observer's clock ticks differently from a standard astronomical
    timescale, due to the gravitational potential around the observer and the observer's movement.
@@ -1909,6 +1910,7 @@ Below is a non-exhaustive overview new features added by __SuperNOVAS__ on top o
 Many __SuperNOVAS__ changes are focused on improving the usability and promote best coding practices so that both
 the library and your application will be safer, and less prone to nagging errors. Below is a detailed listing of
 the principal ways __SuperNOVAS__ has improved on the original NOVAS C library in these respects.
+
 
  - Changed to [support for calculations in parallel threads](#multi-threading) by making cached results thread-local.
    This works using the C11 standard `_Thread_local`, or the C23 `thread_local`, or else the earlier GNU C &gt;= 3.3 
