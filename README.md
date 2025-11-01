@@ -582,6 +582,7 @@ A better way to recycle your old planet and ephemeris calculator modules may be 
 application can specify these functions as the provider at runtime.
 
 <details>
+
 E.g.:
 
 ```c
@@ -1371,23 +1372,28 @@ considerations before that level of accuracy is reached. (Click on the wedge nex
 the details.)
 
 <details><summary>The IAU 2000/2006 conventions and methods</summary>
+
 High precision calculations will generally require that you use __SuperNOVAS__ with the new IAU standard quantities 
 and methods. The old ways were simply not suited for precision much below the milliarcsecond level. In particular, 
 Earth orientation parameters (EOP) should be applied only for converting between TIRS and ITRS systems, and defined 
 either with `novas_make_frame()` or else with `wobble()`. The old ways of incorporating (global) offsets in TOD 
 coordinates via `cel_pole()` should be avoided.
+
 </details>
  
 <details><summary>Gravitational effects</summary>
+
 Calculations much below the milliarcsecond level will require accounting for gravitational bending around massive 
 Solar-system bodies, and hence will require you to provide a high-precision ephemeris provider for the major planets. 
 Without it, there is no guarantee of achieving precision below the milli-arcsecond level in general, especially when 
 observing near the Sun or massive planets (e.g. observing Jupiter's or Saturn's moons, near conjunction with their 
 host planet). Therefore, some functions will return with an error, if used with `NOVAS_FULL_ACCURACY` in the absence 
 of a suitable high-precision planetary ephemeris provider.
+
 </details>
 
 <details><summary>Solar-system ephemeris</summary>
+
 Precise calculations for Solar-system sources requires precise ephemeris data for both the target object as well as 
 for Earth, and the Sun. For the highest precision calculations you also need positions for all major planets to 
 calculate gravitational deflection precisely. By default, __SuperNOVAS__ can only provide approximate positions for 
@@ -1395,9 +1401,11 @@ the Earth and Sun (see `earth_sun_calc()`) at the tens of arcsecond level. You w
 __SuperNOVAS__ with a suitable ephemeris source (such as CALCEPH, or the CSPICE toolkit from JPL) to obtain precise 
 positions for Solar-system bodies. See the [section further above](#solarsystem) for more information how you can do 
 that.
+
 </details>
 
 <details><summary>Earth orientation parameters (EOP)</summary> 
+
 Calculating precise positions for any Earth-based observations requires precise knowledge of Earth orientation 
 parameters (EOP) at the time of observation. Earth's pole is subject to predictable precession and nutation, but also 
 small irregular and diurnal variations in the orientation of the rotational axis and the rotation period (a.k.a. polar 
@@ -1411,9 +1419,11 @@ leap-seconds (UTC-TAI). For sub-milliarcsecond accuracy the values published by 
 passing to the likes of `novas_set_time()` or `novas_make_frame()`. At the micro-arcsecond (&mu;as) level, you will 
 need to ensure also that the EOP values are provided for the same ITRF realization as the observer's location, e.g. 
 via `novas_itrf_transform_eop()`. 
+
 </details>
    
 <details><summary>Atmospheric refraction model</summary>
+
 Ground based observations are subject to atmospheric refraction. __SuperNOVAS__ offers the option to include 
 refraction corrections with a set of atmospheric models. Estimating refraction accurately requires local weather 
 parameters (pressure, temperature, and humidity), which may be be specified within the `on_surface` data structure 
@@ -1421,6 +1431,7 @@ alongside the observer location. A standard radio refraction model is included a
 implementation of the wavelength-dependent IAU refraction model (`novas_wave_refraction()` since version 1.4) based on 
 the SOFA `iauRefco()` function. If none of the supplied options satisfies your needs, you may also implement your own 
 refraction correction to use.
+
 </details>
 
 ------------------------------------------------------------------------------
@@ -1658,6 +1669,7 @@ Sometimes your input dates are represented in various other formats. You can hav
 dates using the `novas_parse_date_format()` and `novas_timescale_for_string()` functions.
 
 <details>
+
 E.g.,
 
 ```c
@@ -1940,7 +1952,7 @@ Below is a non-exhaustive overview new features added by __SuperNOVAS__ on top o
    reference ellipsoid of choice (e.g. GRS80 or WGS84).
    
  - Transformations of site coordinates and Earth orientation parameters between different ITRF realizations (e.g.
-   ITRF2000 snd ITRF2014).
+   ITRF2000 and ITRF2014).
    
  - Functions to calculate the rate at which an observer's clock ticks differently from a standard astronomical
    timescale, due to the gravitational potential around the observer and the observer's movement.
@@ -1962,6 +1974,7 @@ the library and your application will be safer, and less prone to nagging errors
 the principal ways __SuperNOVAS__ has improved on the original NOVAS C library in these respects.
 
 <details>
+
  - Changed to [support for calculations in parallel threads](#multi-threading) by making cached results thread-local.
    This works using the C11 standard `_Thread_local`, or the C23 `thread_local`, or else the earlier GNU C &gt;= 3.3 
    standard `__thread` modifier. You can also set the preferred thread-local keyword for your compiler by passing it 
