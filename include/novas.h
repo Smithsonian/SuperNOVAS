@@ -3423,6 +3423,8 @@ double novas_gmst_prec(double jd_tdb);
 double novas_cio_gcrs_ra(double jd_tdb);
 void novas_set_max_iter(int n);
 
+int novas_print_decimal(double value, int decimals, char *str, int len);
+
 #if __cplusplus || __STDC_VERSION__ >= 200809L
 #  ifndef _POSIX_C_SOURCE
 #    define _POSIX_C_SOURCE 200809L ///< for snprintf
