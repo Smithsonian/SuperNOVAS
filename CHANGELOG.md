@@ -9,7 +9,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Fixed
+
+ - #270: `novas_print_dms()` gave incorrect representations of negative angles, whereby the negative sign was repeated
+   in the minutes and seconds components also. 
+
 ### Changed
+
+ - #271: Changed `novas_sep()` to use the more accurate halversine formula instead of the law of cosines.
 
  - CMake libraries (targets) built with transitive dependencies.
 
