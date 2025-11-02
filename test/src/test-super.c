@@ -3912,6 +3912,9 @@ static int test_print_dms() {
   if(!is_ok("print_dms:sep:-1", novas_print_dms(deg, -1, 3, buf, sizeof(buf)) < 0)) n++;
   if(!is_ok("print_dms:sep:-1:check", strcmp(buf, " 120:34:57.000"))) n++;
 
+  if(!is_ok("print_dms:neg", novas_print_dms(-deg, NOVAS_SEP_COLONS, 3, buf, sizeof(buf)) < 0)) n++;
+  if(!is_ok("print_dms:neg:check", strcmp(buf, "-120:34:57.000"))) n++;
+
   if(!is_ok("print_dms:decimals:6", novas_print_dms(deg, NOVAS_SEP_COLONS, 6, buf, sizeof(buf)) < 0)) n++;
   if(!is_ok("print_dms:decimals:6:check", strcmp(buf, " 120:34:56.999999"))) n++;
 
@@ -3923,6 +3926,7 @@ static int test_print_dms() {
 
   if(!is_ok("print_dms:decimals:-1", novas_print_dms(deg, NOVAS_SEP_COLONS, -1, buf, sizeof(buf)) < 0)) n++;
   if(!is_ok("print_dms:decimals:-1:check", strcmp(buf, " 120:34:57"))) n++;
+
 
   return n;
 }

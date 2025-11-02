@@ -548,10 +548,12 @@ double d_light(const double *pos_src, const double *pos_body) {
  * @sa novas_equ_sep(), novas_sun_angle(), novas_moon_angle()
  */
 double novas_sep(double lon1, double lat1, double lon2, double lat2) {
-  double c = sin(lat1 * DEGREE) * sin(lat2 * DEGREE) + cos(lat1 * DEGREE) * cos(lat2 * DEGREE) * cos((lon1 - lon2) * DEGREE);
-  double c2 = c * c;
-  // Ensure that argument to sqrt() is not negative given rounding errors.
-  return atan2(c2 < 1.0 ? sqrt(1.0 - c2) : 0.0, c) / DEGREE;
+  // Using the haversine formula.
+  double shdlon = sin(0.5 * (lon1 - lon2) * DEGREE);
+  double shdlat = sin(0.5 * (lat1 - lat2) * DEGREE);
+
+  double a = shdlat * shdlat + cos(lat1 * DEGREE) * cos(lat1 * DEGREE) * shdlon * shdlon;
+  return 2.0 * atan2(sqrt(a), a > 1.0 ? 0.0 : sqrt(1.0 - a)) / DEGREE;
 }
 
 /**
@@ -750,7 +752,13 @@ int novas_print_dms(double degrees, enum novas_separator_type sep, int decimals,
       sprintf(fmt, "%%4d%%s%%02d%%s%%02d%%s");
 
     degrees = remainder(degrees, DEG360);
-    breakdown(degrees, decimals, &d, &m, &s, &ss);
+    if(degrees < 0.0) {
+      breakdown(-degrees, decimals, &d, &m, &s, &ss);
+      d = -d;
+    }
+    else {
+      breakdown(degrees, decimals, &d, &m, &s, &ss);
+    }
 
     switch(sep) {
       case NOVAS_SEP_UNITS:
