@@ -72,9 +72,6 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 # Debug postfix for libraries
 set(CMAKE_DEBUG_POSTFIX d)
 
-# Position Independent Code for shared libs
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-
 # Build time locations for sub-configs
 link_directories(${CMAKE_BINARY_DIR}/lib)
 set(supernovas_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/include)
@@ -167,10 +164,6 @@ add_library(supernovas::core ALIAS core)
 set_target_properties(core PROPERTIES
     VERSION ${PROJECT_VERSION}
     SOVERSION ${PROJECT_VERSION_MAJOR}
-    POSITION_INDEPENDENT_CODE ON
-    EXPORT_NAME supernovas
-    OUTPUT_NAME supernovas
-    CLEAN_DIRECT_OUTPUT ON
 )
 
 target_include_directories(core PUBLIC
@@ -196,7 +189,6 @@ function(solsys_plugin EPHEM_LIB_NAME)
     set_target_properties(${PLUGIN} PROPERTIES
         VERSION ${PROJECT_VERSION}
         SOVERSION ${PROJECT_VERSION_MAJOR}
-        POSITION_INDEPENDENT_CODE ON
     )
     
     if(CMAKE_USE_PTHREADS_INIT)
