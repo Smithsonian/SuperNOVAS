@@ -9,12 +9,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+Upcoming bug fix release.
+
 ### Fixed
+
+ - #272: `CMakeLists.txt` exported the `core` target by another name of `supernovas`, which messed up the CMake package dependencies and also vpkg. Fixed by not renaming `core` target. 
 
  - #270: `novas_print_dms()` gave incorrect representations of negative angles, whereby the negative sign was repeated
    in the minutes and seconds components also. 
 
 ### Changed
+
+ - #272: Removed `CLEAN_DIRECT_OUTPUT` from `CMakeLists.txt`. It's an option that is no longer needed or used (since 2009).
 
  - #271: Changed `novas_sep()` to use the more accurate halversine formula instead of the law of cosines.
 

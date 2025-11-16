@@ -168,9 +168,6 @@ set_target_properties(core PROPERTIES
     VERSION ${PROJECT_VERSION}
     SOVERSION ${PROJECT_VERSION_MAJOR}
     POSITION_INDEPENDENT_CODE ON
-    EXPORT_NAME supernovas
-    OUTPUT_NAME supernovas
-    CLEAN_DIRECT_OUTPUT ON
 )
 
 target_include_directories(core PUBLIC
