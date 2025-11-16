@@ -515,17 +515,9 @@ Add the appropriate bits from below to the `CMakeLists.txt` file of your applica
 
 ```cmake
   find_package(supernovas REQUIRED)
-  target_link_libraries(my-application PRIVATE supernovas)
+  target_include_directories(my-application PRIVATE ${supernovas_INCLUDE_DIRS})
+  target_link_libraries(my-application PRIVATE ${supernovas_LIBRARIES})
 ```
-
-Or, to include ephemeris support via the CALCEPH library (`solsys-calceph` component) also: 
-
-```cmake
-  find_package(supernovas REQUIRED COMPONENTS solsys-calceph)
-  target_link_libraries(my-application PRIVATE supernovas solsys-calceph)
-```
-
-Similarly, for ephemeris support via CSPICE you can use the `solsys-cspice` component.
 
 </details>
 

@@ -20,6 +20,8 @@ Upcoming bug fix release.
 
 ### Changed
 
+ - #273: Updated `README.md` CMake snippet for building against the `supernovas` package.
+
  - #273: Removed unnecessary `POSITION_INDEPENDENT_CODE` from `CMakeLists.txt`. (It's automatic for shared libraries.)
 
  - #273: Removed `CLEAN_DIRECT_OUTPUT` from `CMakeLists.txt`. It's an option that is no longer needed or used (since 2009).
