@@ -16,7 +16,7 @@ Upcoming bug fix release.
  - #270: `novas_print_dms()` gave incorrect representations of negative angles, whereby the negative sign was repeated
    in the minutes and seconds components also. 
 
- - #272: `CMakeLists.txt` exported the `core` target by another name of `supernovas`, which messed up the CMake package dependencies and also vpkg. Fixed by not renaming `core` target. (thanks to prookion).
+ - #272: `CMakeLists.txt` exported the `core` target by another name of `supernovas`, which messed up the CMake package dependencies and also vcpkg. Fixed by not renaming `core` target. (thanks to prookion).
 
 ### Changed
 
