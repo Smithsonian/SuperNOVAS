@@ -20,7 +20,9 @@ Upcoming bug fix release.
 
 ### Changed
 
- - #272: Removed `CLEAN_DIRECT_OUTPUT` from `CMakeLists.txt`. It's an option that is no longer needed or used (since 2009).
+ - #273: Removed unnecessary `POSITION_INDEPENDENT_CODE` from `CMakeLists.txt`. (It's automatic for shared libraries.)
+
+ - #273: Removed `CLEAN_DIRECT_OUTPUT` from `CMakeLists.txt`. It's an option that is no longer needed or used (since 2009).
 
  - #271: Changed `novas_sep()` to use the more accurate halversine formula instead of the law of cosines.
 
