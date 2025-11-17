@@ -30,6 +30,9 @@ Upcoming bug fix release.
 
  - #273: Updated `README.md` CMake snippet for building against the `supernovas` package.
 
+ - CMake: `cmake_minimum_required()` to include upper bound 4.0, in preparation to CMake 4.0 (see 
+   https://fedoraproject.org/wiki/Changes/CMake4.0 for more explanation).
+
  - CMake libraries (targets) built with transitive dependencies.
 
 
