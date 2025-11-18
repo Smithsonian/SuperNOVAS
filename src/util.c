@@ -552,7 +552,7 @@ double novas_sep(double lon1, double lat1, double lon2, double lat2) {
   double shdlon = sin(0.5 * (lon1 - lon2) * DEGREE);
   double shdlat = sin(0.5 * (lat1 - lat2) * DEGREE);
 
-  double a = shdlat * shdlat + cos(lat1 * DEGREE) * cos(lat1 * DEGREE) * shdlon * shdlon;
+  double a = shdlat * shdlat + cos(lat1 * DEGREE) * cos(lat2 * DEGREE) * shdlon * shdlon;
   return 2.0 * atan2(sqrt(a), a > 1.0 ? 0.0 : sqrt(1.0 - a)) / DEGREE;
 }
 
