@@ -19,6 +19,8 @@ Upcoming bug fix release.
  - #272: `CMakeLists.txt` exported the `core` target by another name of `supernovas`, which messed up the CMake 
    package dependencies and also __vcpkg__. Fixed by not renaming `core` target. (thanks to prookion).
 
+ - #275: Error in `novas_sep()` formula. (thanks to prookyon)
+
 ### Changed
 
  - #271: Changed `novas_sep()` to use the more accurate halversine formula instead of the law of cosines.
