@@ -38,6 +38,9 @@ Upcoming bug fix release.
  - #276: Improved Lunar orbital modeling in `novas_make_moon_orbit()`, by updating to ELP200-85 model, and including 
    the leading Solar perturbation terms for a typical accuracy at at 10 arcmin level for a day or so around the
    reference epoch of the orbital parameters.
+   
+ - `novas_sep()` to use the Vincenty formula for calculating distances on a sphere, which is accurate for all 
+   locations, unlike the law of cosines or the haversine formula used previously.
 
  - CMake: `cmake_minimum_required()` to include upper bound 4.0, in preparation to CMake 4.0 (see 
    https://fedoraproject.org/wiki/Changes/CMake4.0 for more explanation).
