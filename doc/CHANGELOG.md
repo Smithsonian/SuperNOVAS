@@ -19,6 +19,8 @@ Upcoming bug fix release.
  - #272: `CMakeLists.txt` exported the `core` target by another name of `supernovas`, which messed up the CMake 
    package dependencies and also __vcpkg__. Fixed by not renaming `core` target. (thanks to prookion).
 
+ - #275: Error in `novas_sep()` formula. (thanks to prookyon)
+
 ### Changed
 
  - #271: Changed `novas_sep()` to use the more accurate halversine formula instead of the law of cosines.
@@ -29,6 +31,9 @@ Upcoming bug fix release.
  - #273: Removed unnecessary `POSITION_INDEPENDENT_CODE` from `CMakeLists.txt`. (It's automatic for shared libraries.)
 
  - #273: Updated `README.md` CMake snippet for building against the `supernovas` package.
+
+ - CMake: `cmake_minimum_required()` to include upper bound 4.0, in preparation to CMake 4.0 (see 
+   https://fedoraproject.org/wiki/Changes/CMake4.0 for more explanation).
 
  - CMake libraries (targets) built with transitive dependencies.
 
