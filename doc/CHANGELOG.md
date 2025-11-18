@@ -17,9 +17,12 @@ Upcoming bug fix release.
    in the minutes and seconds components also. 
 
  - #272: `CMakeLists.txt` exported the `core` target by another name of `supernovas`, which messed up the CMake 
-   package dependencies and also __vcpkg__. Fixed by not renaming `core` target. (thanks to prookion).
+   package dependencies and also __vcpkg__. Fixed by not renaming `core` target. (thanks to prookyon).
 
  - #275: Error in `novas_sep()` formula. (thanks to prookyon)
+ 
+ - #276: Wrong eccentricity value in `novas_make_moon_orbit()`, resulting in errors up to a few degrees in the Moon's 
+   orbital modeling. (thanks to prookyon)
 
 ### Changed
 
@@ -31,6 +34,10 @@ Upcoming bug fix release.
  - #273: Removed unnecessary `POSITION_INDEPENDENT_CODE` from `CMakeLists.txt`. (It's automatic for shared libraries.)
 
  - #273: Updated `README.md` CMake snippet for building against the `supernovas` package.
+
+ - #276: Improved Lunar orbital modeling in `novas_make_moon_orbit()`, by updating to ELP200-85 model, and including 
+   the leading Solar perturbation terms for a typical accuracy at at 10 arcmin level for a day or so around the
+   reference epoch of the orbital parameters.
 
  - CMake: `cmake_minimum_required()` to include upper bound 4.0, in preparation to CMake 4.0 (see 
    https://fedoraproject.org/wiki/Changes/CMake4.0 for more explanation).
