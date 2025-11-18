@@ -1271,10 +1271,11 @@ typedef struct novas_orbital {
   double jd_tdb;                      ///< [day] Barycentri Dynamical Time (TDB) based Julian date of the parameters.
   double a;                           ///< [AU] semi-major axis
   double e;                           ///< eccentricity
-  double omega;                       ///< [deg] argument of periapsis / perihelion, at the reference time
-  double Omega;                       ///< [deg] argument of ascending node on the reference plane, at the reference time
+  double omega;                       ///< [deg] argument of periapsis / perihelion, at the reference time. I.e., distance
+                                      ///<       of apsis from ascending node.
+  double Omega;                       ///< [deg] argument of ascending node on the reference plane, at the reference time.
   double i;                           ///< [deg] inclination of orbit to the reference plane
-  double M0;                          ///< [deg] mean anomaly at the reference time
+  double M0;                          ///< [deg] mean anomaly at the reference time. I.e., time from periapsis as a periodic angle.
   double n;                           ///< [deg/day] mean daily motion, i.e. (_GM_/_a_<sup>3</sup>)<sup>1/2</sup> for the central body,
   ///< or 360/T, where T is orbital period in days.
   double apsis_period;                ///< [day] Precession period of the apsis, if known.

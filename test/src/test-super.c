@@ -2679,7 +2679,7 @@ static int test_orbit_place() {
   if(!is_ok("orbit_place:j2000", novas_orbit_posvel(tjd, &orbit, NOVAS_FULL_ACCURACY, p1, NULL))) n++;
   else {
     gcrs_to_j2000(p1, p1);
-    equ2ecl_vec(NOVAS_JD_J2000, NOVAS_TRUE_EQUATOR, NOVAS_FULL_ACCURACY, p1, p1);
+    equ2ecl_vec(NOVAS_JD_J2000, NOVAS_MEAN_EQUATOR, NOVAS_FULL_ACCURACY, p1, p1);
     if(!is_ok("orbit_place:j2000:check", check_equal_pos(p1, p0, 1e-8))) n++;
   }
 
