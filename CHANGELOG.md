@@ -17,7 +17,7 @@ Upcoming bug fix release.
    in the minutes and seconds components also. 
 
  - #272: `CMakeLists.txt` exported the `core` target by another name of `supernovas`, which messed up the CMake 
-   package dependencies and also __vcpkg__. Fixed by not renaming `core` target. (thanks to prookion).
+   package dependencies and also __vcpkg__. Fixed by not renaming `core` target. (thanks to prookyon).
 
  - #275: Error in `novas_sep()` formula. (thanks to prookyon)
  
