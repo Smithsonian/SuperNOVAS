@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [Unreleased]
+## [1.5.1-rc1] - 2025-11-19
 
 Upcoming bug fix release.
 
@@ -17,7 +17,7 @@ Upcoming bug fix release.
    in the minutes and seconds components also. 
 
  - #272: `CMakeLists.txt` exported the `core` target by another name of `supernovas`, which messed up the CMake 
-   package dependencies and also __vcpkg__. Fixed by not renaming `core` target. (thanks to prookyon).
+   package dependencies and also __vcpkg__. Fixed by not renaming `core` target.
 
  - #275: Error in `novas_sep()` formula. (thanks to prookyon)
  
@@ -40,7 +40,7 @@ Upcoming bug fix release.
    reference epoch of the orbital parameters.
    
  - `novas_sep()` to use the Vincenty formula for calculating distances on a sphere, which is accurate for all 
-   locations, unlike the law of cosines or the haversine formula used previously.
+   locations, unlike the law of cosines or the haversine formula used previousl. 
 
  - CMake: `cmake_minimum_required()` to include upper bound 4.0, in preparation to CMake 4.0 (see 
    https://fedoraproject.org/wiki/Changes/CMake4.0 for more explanation).
