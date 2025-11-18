@@ -534,7 +534,26 @@ double d_light(const double *pos_src, const double *pos_body) {
 }
 
 /**
- * Returns the angular separation of two locations on a sphere.
+ * Returns the angular separation of two locations on a sphere. It uses the Vincenty formula for
+ * accurate results across all locations on the sphere.
+ *
+ * NOTES:
+ * <ol>
+ * <li>Prior to version 1.5, this function used the law of cosines, which is imprecise for
+ * nearby locations</li>
+ * <li>In version 1.5, this function used the haversine formula, albeit with an error in the
+ * implementation. The haversine formula is accurate for nearby locations, but has rounding
+ * errors for antipodal locations.</li>
+ * <li>From version 1.5.1, this function uses the Vincenty formula, which is accurate for all
+ * locations on the sphere.</li>
+ * </ol>
+ *
+ * REFERENCES:
+ * <ol>
+ * <li> Vincenty, Thaddeus. "Direct and Inverse Solutions of Geodesics on the Ellipsoid with
+ * Application of Nested Equations", Survey Review. 23 (176), Directorate of Overseas Surveys,
+ * doi:10.1179/sre.1975.23.176.88.</li>
+ * </ol>
  *
  * @param lon1    [deg] longitude of first location
  * @param lat1    [deg] latitude of first location
@@ -548,12 +567,16 @@ double d_light(const double *pos_src, const double *pos_body) {
  * @sa novas_equ_sep(), novas_sun_angle(), novas_moon_angle()
  */
 double novas_sep(double lon1, double lat1, double lon2, double lat2) {
-  // Using the haversine formula.
-  double shdlon = sin(0.5 * (lon1 - lon2) * DEGREE);
-  double shdlat = sin(0.5 * (lat1 - lat2) * DEGREE);
+  const double cp1 = cos(lat1 * DEGREE);
+  const double cp2 = cos(lat2 * DEGREE);
+  const double sp1 = sin(lat1 * DEGREE);
+  const double sp2 = sin(lat2 * DEGREE);
+  const double cdl = cos((lon1 - lon2) * DEGREE);
 
-  double a = shdlat * shdlat + cos(lat1 * DEGREE) * cos(lat2 * DEGREE) * shdlon * shdlon;
-  return 2.0 * atan2(sqrt(a), a > 1.0 ? 0.0 : sqrt(1.0 - a)) / DEGREE;
+  const double a = cp2 * sin((lon1 - lon2) * DEGREE);
+  const double b = cp1 * sp2 - sp1 * cp2 * cdl;
+
+  return atan2(sqrt(a*a + b * b), sp1 * sp2 + cp1 * cp2 * cdl) / DEGREE;
 }
 
 /**
