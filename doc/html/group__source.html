@@ -316,7 +316,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:gaf0137aa791dd29278904e53498fb9515"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a catalog entry, such as a star or a distant galaxy, with a name and coordinates.  <br /></td></tr>
 <tr class="separator:gaf0137aa791dd29278904e53498fb9515"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad6e6c7f6dc2745030e3fd4d407e982bd" id="r_gad6e6c7f6dc2745030e3fd4d407e982bd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gad6e6c7f6dc2745030e3fd4d407e982bd">novas_make_moon_orbit</a> (double jd_tdb, <a class="el" href="structnovas__orbital.html">novas_orbital</a> *restrict orbit)</td></tr>
-<tr class="memdesc:gad6e6c7f6dc2745030e3fd4d407e982bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the current orbital elements for the Moon relative to the geocenter for the specified epoch of observation.  <br /></td></tr>
+<tr class="memdesc:gad6e6c7f6dc2745030e3fd4d407e982bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets 'current` orbital elements for the Moon relative to the geocenter for the specified epoch of observation.  <br /></td></tr>
 <tr class="separator:gad6e6c7f6dc2745030e3fd4d407e982bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga63b094e813d8b752a6f3344419e80031" id="r_ga63b094e813d8b752a6f3344419e80031"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga63b094e813d8b752a6f3344419e80031">novas_make_planet_orbit</a> (enum <a class="el" href="#ga219df36b21dc4476656e708d14d08045">novas_planet</a> id, double jd_tdb, <a class="el" href="structnovas__orbital.html">novas_orbital</a> *restrict orbit)</td></tr>
 <tr class="memdesc:ga63b094e813d8b752a6f3344419e80031"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get approximate current heliocentric orbital elements for the major planets.  <br /></td></tr>
@@ -1758,12 +1758,13 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Gets the current orbital elements for the Moon relative to the geocenter for the specified epoch of observation. </p>
+<p>Gets 'current` orbital elements for the Moon relative to the geocenter for the specified epoch of observation. </p>
+<p>The orbit includes the most dominant Solar perturbations to produce results with an accuracy at the tens of arcminutes level for within a day of the reference time argument for the orbit. It is based on the ELP2000-85 model, but omitting most of the perturbation series.</p>
 <p>REFERENCES: </p><ol>
 <li>
 Chapront, J. et al., 2002, A&amp;A 387, 700–709 </li>
 <li>
-Chapront-Touze, M, and Chapront, J. 1983, Astronomy and Astrophysics (ISSN 0004-6361), vol. 124, no. 1, July 1983, p. 50-62. </li>
+Chapront-Touze, M, and Chapront, J. 1988, Astronomy and Astrophysics, vol. 190, p. 342-352. </li>
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1777,7 +1778,7 @@ Chapront-Touze, M, and Chapront, J. 1983, Astronomy and Astrophysics (ISSN 0004-
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#ga63b094e813d8b752a6f3344419e80031" title="Get approximate current heliocentric orbital elements for the major planets.">novas_make_planet_orbit()</a>, <a class="el" href="#ga3c5e215babeeba078ca7b3e9be42e555" title="Sets a celestial object to be a Solar-system orbital body.">make_orbital_object()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="#gabc8f275a2d431e59a1ec9e276abaca1a">NOVAS_AU</a>, <a class="el" href="#gga219df36b21dc4476656e708d14d08045adc941f5a3613952d6d6102281e70e5c0">NOVAS_EARTH</a>, <a class="el" href="group__time.html#ga31bf4a08940bfa3e97ae6a1abee80422">NOVAS_JD_J2000</a>, <a class="el" href="#ga85243a6b9eee259d3fb84ee1a587e065">NOVAS_ORBIT_INIT</a>, and <a class="el" href="novas_8h.html#a4912c64aec0c943b7985db6cb61ff83a">TWOPI</a>.</p>
+<p class="reference">References <a class="el" href="#gabc8f275a2d431e59a1ec9e276abaca1a">NOVAS_AU</a>, <a class="el" href="#gga219df36b21dc4476656e708d14d08045adc941f5a3613952d6d6102281e70e5c0">NOVAS_EARTH</a>, <a class="el" href="group__solar-system.html#gga9ee18ab5f8fdc009913c11f04026122fac0d0495aebd235ecd346b8932cc1943e">NOVAS_ECLIPTIC_PLANE</a>, <a class="el" href="group__equatorial.html#gga7ba038ea34eb901ccfb8f785708c651ead110200de7f232d9110467c0862733d9">NOVAS_J2000</a>, <a class="el" href="group__time.html#ga31bf4a08940bfa3e97ae6a1abee80422">NOVAS_JD_J2000</a>, <a class="el" href="group__util.html#ga0a84af1a760ed2aaa01dd93e9e22bdf1">NOVAS_KM</a>, <a class="el" href="#ga85243a6b9eee259d3fb84ee1a587e065">NOVAS_ORBIT_INIT</a>, and <a class="el" href="novas_8h.html#a4912c64aec0c943b7985db6cb61ff83a">TWOPI</a>.</p>
 
 </div>
 </div>
@@ -1831,7 +1832,7 @@ E.M. Standish and J.G. Williams 1992. </li>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 (<code>errno</code> set to <code>EINVAL</code>).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.4 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#gad6e6c7f6dc2745030e3fd4d407e982bd" title="Gets the current orbital elements for the Moon relative to the geocenter for the specified epoch of o...">novas_make_moon_orbit()</a>, <a class="el" href="group__apparent.html#ga4cb01609f76b0ff8487817b9446a3a62" title="Calculates an approximate apparent location on sky for a major planet, Sun, Moon, Earth-Moon Barycent...">novas_approx_sky_pos()</a>, <a class="el" href="group__geometric.html#ga9ead627eed7fabd8583f1353e89f42e7" title="Returns the approximate geometric heliocentric orbital positions and velocities for the major planets...">novas_approx_heliocentric()</a>, <a class="el" href="#ga3c5e215babeeba078ca7b3e9be42e555" title="Sets a celestial object to be a Solar-system orbital body.">make_orbital_object()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#gad6e6c7f6dc2745030e3fd4d407e982bd" title="Gets &#39;current` orbital elements for the Moon relative to the geocenter for the specified epoch of obs...">novas_make_moon_orbit()</a>, <a class="el" href="group__apparent.html#ga4cb01609f76b0ff8487817b9446a3a62" title="Calculates an approximate apparent location on sky for a major planet, Sun, Moon, Earth-Moon Barycent...">novas_approx_sky_pos()</a>, <a class="el" href="group__geometric.html#ga9ead627eed7fabd8583f1353e89f42e7" title="Returns the approximate geometric heliocentric orbital positions and velocities for the major planets...">novas_approx_heliocentric()</a>, <a class="el" href="#ga3c5e215babeeba078ca7b3e9be42e555" title="Sets a celestial object to be a Solar-system orbital body.">make_orbital_object()</a> </dd></dl>
 <p>Keplerian orbital elements at J2000 from Table 8.10.2 of E.M. Standish and J.G. Williams 1992, valid for 1800 AD to 2050 AD.</p>
 <p>Temporal evolution of the Keplerian orbital elements from Table 8.10.2 of E.M. Standish and J.G. Williams 1992, valid for 1800 AD to 2050 AD.</p>
 <p>Keplerian orbital elements at J2000 from Table 8.10.3 of E.M. Standish and J.G. Williams 1992, valid for 3000 BC to 3000 AD.</p>

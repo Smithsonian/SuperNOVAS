@@ -135,7 +135,7 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>jd_tdb</b></td></tr
 <tr class="separator:a0aefc536698706b7f8a15f23168c3486"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc4cda6fcbff8922621b0a08f911957d" id="r_adc4cda6fcbff8922621b0a08f911957d"><td class="memItemLeft" align="right" valign="top"><a id="adc4cda6fcbff8922621b0a08f911957d" name="adc4cda6fcbff8922621b0a08f911957d"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>M0</b></td></tr>
-<tr class="memdesc:adc4cda6fcbff8922621b0a08f911957d"><td class="mdescLeft">&#160;</td><td class="mdescRight">[deg] mean anomaly at the reference time <br /></td></tr>
+<tr class="memdesc:adc4cda6fcbff8922621b0a08f911957d"><td class="mdescLeft">&#160;</td><td class="mdescRight">[deg] mean anomaly at the reference time. I.e., time from periapsis as a periodic angle. <br /></td></tr>
 <tr class="separator:adc4cda6fcbff8922621b0a08f911957d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe63e991a7bf5d666068b15c9064428d" id="r_abe63e991a7bf5d666068b15c9064428d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abe63e991a7bf5d666068b15c9064428d">n</a></td></tr>
 <tr class="memdesc:abe63e991a7bf5d666068b15c9064428d"><td class="mdescLeft">&#160;</td><td class="mdescRight">[deg/day] mean daily motion, i.e.  <br /></td></tr>
@@ -146,11 +146,10 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>node_period</b></td
 <tr class="separator:abc96d50a65bae0b26750df2d93492fea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b5bf6735b7465aec5c931281d240737" id="r_a1b5bf6735b7465aec5c931281d240737"><td class="memItemLeft" align="right" valign="top"><a id="a1b5bf6735b7465aec5c931281d240737" name="a1b5bf6735b7465aec5c931281d240737"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>Omega</b></td></tr>
-<tr class="memdesc:a1b5bf6735b7465aec5c931281d240737"><td class="mdescLeft">&#160;</td><td class="mdescRight">[deg] argument of ascending node on the reference plane, at the reference time <br /></td></tr>
+<tr class="memdesc:a1b5bf6735b7465aec5c931281d240737"><td class="mdescLeft">&#160;</td><td class="mdescRight">[deg] argument of ascending node on the reference plane, at the reference time. <br /></td></tr>
 <tr class="separator:a1b5bf6735b7465aec5c931281d240737"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98ecc32b7ac0cf654d9f883cbe5cab35" id="r_a98ecc32b7ac0cf654d9f883cbe5cab35"><td class="memItemLeft" align="right" valign="top"><a id="a98ecc32b7ac0cf654d9f883cbe5cab35" name="a98ecc32b7ac0cf654d9f883cbe5cab35"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>omega</b></td></tr>
-<tr class="memdesc:a98ecc32b7ac0cf654d9f883cbe5cab35"><td class="mdescLeft">&#160;</td><td class="mdescRight">[deg] argument of periapsis / perihelion, at the reference time <br /></td></tr>
+<tr class="memitem:a98ecc32b7ac0cf654d9f883cbe5cab35" id="r_a98ecc32b7ac0cf654d9f883cbe5cab35"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a98ecc32b7ac0cf654d9f883cbe5cab35">omega</a></td></tr>
+<tr class="memdesc:a98ecc32b7ac0cf654d9f883cbe5cab35"><td class="mdescLeft">&#160;</td><td class="mdescRight">[deg] argument of periapsis / perihelion, at the reference time.  <br /></td></tr>
 <tr class="separator:a98ecc32b7ac0cf654d9f883cbe5cab35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ccd081fe6b1424bd644317068578775" id="r_a7ccd081fe6b1424bd644317068578775"><td class="memItemLeft" align="right" valign="top"><a id="a7ccd081fe6b1424bd644317068578775" name="a7ccd081fe6b1424bd644317068578775"></a>
 struct <a class="el" href="structnovas__orbital__system.html">novas_orbital_system</a>&#160;</td><td class="memItemRight" valign="bottom"><b>system</b></td></tr>
@@ -187,6 +186,23 @@ Low accuracy mean elements for planets from JPL Horizons: <a href="https://ssd.j
 
 <p>[deg/day] mean daily motion, i.e. </p>
 <p>(<em>GM</em>/_a_<sup>3</sup>)<sup>1/2</sup> for the central body, or 360/T, where T is orbital period in days. </p>
+
+</div>
+</div>
+<a id="a98ecc32b7ac0cf654d9f883cbe5cab35" name="a98ecc32b7ac0cf654d9f883cbe5cab35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98ecc32b7ac0cf654d9f883cbe5cab35">&#9670;&#160;</a></span>omega</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double omega</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>[deg] argument of periapsis / perihelion, at the reference time. </p>
+<p>I.e., distance of apsis from ascending node. </p>
 
 </div>
 </div>
