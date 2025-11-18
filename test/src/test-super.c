@@ -4087,6 +4087,58 @@ static int test_approx_sky_pos() {
   return n;
 }
 
+static int test_make_moon_orbit() {
+  int n = 0;
+
+  observer obs = {};
+  novas_timespec t = {};
+  novas_frame f = {};
+  novas_orbital moon_orbit = NOVAS_ORBIT_INIT;
+  object moon = {};
+  sky_pos pos = {};
+  double jd =  NOVAS_JD_J2000;
+
+  // Compare to JPL Horizons...
+  // 24.8E, 59.4N
+  make_gps_observer(59.4, 24.8, 0.0, &obs);
+
+  // 2000-01-01 12 UTC
+  novas_set_time(NOVAS_UTC, jd, 32, 0.0, &t);
+  novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &t, 0.0, 0.0, &f);
+  novas_make_moon_orbit(jd, &moon_orbit);
+  make_orbital_object("Moon", -1, &moon_orbit, &moon);
+  novas_sky_pos(&moon, &f, NOVAS_ICRS, &pos);
+
+  if(!is_equal("make_moon_orbit:2000:ra", 15.0 * pos.ra, 221.99023, 0.2)) n++;
+  if(!is_equal("make_moon_orbit:2000:dec", pos.dec, -11.67702, 0.2)) n++;
+
+  // 2025-01-16 0 UTC
+  jd = julian_date(2025, 1, 16, 0.0);
+  novas_set_time(NOVAS_UTC, jd, 37, 0.0, &t);
+  novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &t, 0.0, 0.0, &f);
+  novas_make_moon_orbit(jd, &moon_orbit);
+  make_orbital_object("Moon", -1, &moon_orbit, &moon);
+  novas_sky_pos(&moon, &f, NOVAS_ICRS, &pos);
+
+  if(!is_equal("make_moon_orbit:2025:ra", 15.0 * pos.ra, 144.25406, 0.2)) n++;
+  if(!is_equal("make_moon_orbit:2025:dec", pos.dec, 16.90456, 0.2)) n++;
+
+
+  // 2050-07-01 0 UTC
+  jd = julian_date(2050, 7, 1, 0.0);
+  novas_set_time(NOVAS_UTC, jd, 37, 0.0, &t);
+  novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &t, 0.0, 0.0, &f);
+  novas_make_moon_orbit(jd, &moon_orbit);
+  make_orbital_object("Moon", -1, &moon_orbit, &moon);
+  novas_sky_pos(&moon, &f, NOVAS_ICRS, &pos);
+
+  if(!is_equal("make_moon_orbit:2050:ra", 15.0 * pos.ra, 227.18480, 0.2)) n++;
+  if(!is_equal("make_moon_orbit:2050:dec", pos.dec, -18.48617, 0.2)) n++;
+
+
+  return n;
+}
+
 static int test_moon_phase() {
   int n = 0;
 
@@ -4827,6 +4879,7 @@ int main(int argc, char *argv[]) {
 
   if(test_approx_heliocentric()) n++;
   if(test_approx_sky_pos()) n++;
+  if(test_make_moon_orbit()) n++;
   if(test_moon_phase()) n++;
   if(test_next_moon_phase()) n++;
 

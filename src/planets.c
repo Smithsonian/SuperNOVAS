@@ -275,9 +275,9 @@ int novas_make_planet_orbit(enum novas_planet id, double jd_tdb, novas_orbital *
 }
 
 /**
- * Gets 'current` orbital elements for the Moon relative to the geocenter for the specified
- * epoch of observation. The orbit includes the most dominant Solar perturbations to produce
- * results with an accuracy at the tens of arcmin level for within a day of the reference time
+ * Gets 'current` orbital elements for the Moon relative to the geocenter for the specified epoch
+ * of observation. The orbit includes the most dominant Solar perturbations to produce results
+ * with an accuracy at the tens of arcminutes level for within a day of the reference time
  * argument for the orbit. It is based on the ELP2000-85 model, but omitting most of the
  * perturbation series.
  *
