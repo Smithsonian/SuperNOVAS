@@ -173,15 +173,15 @@ static int orbit2gcrs(double jd_tdb, const novas_orbital_system *sys, enum novas
         jd = NOVAS_JD_J2000;
         break;
       case NOVAS_J2000:
-        eq = NOVAS_TRUE_EQUATOR;
+        eq = NOVAS_MEAN_EQUATOR;
         jd = NOVAS_JD_J2000;
+        break;
+      case NOVAS_MOD:
+        eq = NOVAS_MEAN_EQUATOR;
         break;
       case NOVAS_TOD:
       case NOVAS_CIRS:
         eq = NOVAS_TRUE_EQUATOR;
-        break;
-      case NOVAS_MOD:
-        eq = NOVAS_MEAN_EQUATOR;
         break;
       default:
         return novas_error(-1, EINVAL, fn, "invalid reference system: %d", sys->type);

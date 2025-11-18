@@ -275,14 +275,17 @@ int novas_make_planet_orbit(enum novas_planet id, double jd_tdb, novas_orbital *
 }
 
 /**
- * Gets the current orbital elements for the Moon relative to the geocenter for the specified epoch
- * of observation.
+ * Gets 'current` orbital elements for the Moon relative to the geocenter for the specified
+ * epoch of observation. The orbit includes the most dominant Solar perturbations to produce
+ * results with an accuracy at the tens of arcmin level for within a day of the reference time
+ * argument for the orbit. It is based on the ELP2000-85 model, but omitting most of the
+ * perturbation series.
  *
  * REFERENCES:
  * <ol>
  *  <li>Chapront, J. et al., 2002, A&A 387, 700–709</li>
- *  <li>Chapront-Touze, M, and Chapront, J. 1983, Astronomy and Astrophysics (ISSN 0004-6361),
- *      vol. 124, no. 1, July 1983, p. 50-62.</li>
+ *  <li>Chapront-Touze, M, and Chapront, J. 1988, Astronomy and Astrophysics,
+ *      vol. 190, p. 342-352.</li>
  * </ol>
  *
  * @param jd_tdb      [day] Barycentric Dynamical Time (TDB) based Julian Date.
@@ -296,7 +299,7 @@ int novas_make_planet_orbit(enum novas_planet id, double jd_tdb, novas_orbital *
  */
 int novas_make_moon_orbit(double jd_tdb, novas_orbital *restrict orbit) {
   novas_orbital def = NOVAS_ORBIT_INIT;
-  double t, dot;
+  double t, dot, D, l1;
 
   if(!orbit)
     return novas_error(-1, EINVAL, "novas_make_moon_orbit", "output orbital is NULL");
@@ -305,42 +308,62 @@ int novas_make_moon_orbit(double jd_tdb, novas_orbital *restrict orbit) {
   memcpy(orbit, &def, sizeof(novas_orbital));
 
   orbit->system.center = NOVAS_EARTH;
+  orbit->system.plane = NOVAS_ECLIPTIC_PLANE;
 
   // Values expressed for instant
   orbit->jd_tdb = jd_tdb;
 
   t = (jd_tdb - NOVAS_JD_J2000) / JULIAN_CENTURY_DAYS;
 
-  // From Chapront-Touze, M, and Chapront, J. 1983, A&A, 124, 1, p. 50-62.
-  // ELP2000 model.
-  orbit->i = 5.128121856; // 2 Gamma
-  orbit->e = 0.01670924 + t * (-0.42037954e-4 - t * 0.122196e-6);
+  // Mean inclination (leading latitude term of ELP02 series)
+  orbit->i = 5.128167;
 
-  // From Chapront, J. et al., 2002, A&A 387, 700–709
-  orbit->M0 = 218.316632833333 + t * (481266.484259111 + t * (-0.0019083 + t * (1.8344e-06 - t * 8.8028e-09)));    // W1
-  orbit->omega = 83.3532366111111 + t * (4067.61675844444 + t * (-0.010629 + t * (-1.25131e-5 + t * 5.91694e-8))); // W2
-  orbit->Omega = 125.044535138889 + t * (-1935.53330141667 + t * (0.00176647 + t * (2.1181e-6 - t * 9.9611e-9)));  // W3
+  // eccentricity (from the leading terms of the ELP03 series)
+  orbit->e = 0.0542994634645866;
 
-  // treat omega
-  orbit->M0 -= orbit->omega;
+  // Chapront-Touze & Chapront, 1988, A&A, 190, 342-352
+  // ELP2000-85 -- J2000 equinox
+  orbit->system.type = NOVAS_J2000;
+  orbit->M0 = 134.963411377778 + t * (477198.86763133 + t * (0.00899703 + t * (1.43475e-5 - t * 6.7972e-8)));       // l
+  orbit->omega = 83.3532429861111 + t * (4067.61673977778 + t * (-0.01063267 + t * (-1.25131e-5 + t * 5.9169e-8))); // w2
+  orbit->Omega = 125.044555044444 + t * (-1935.53315616667 + t * (0.0017672 + t * (2.1181e-6 - t * 9.9611e-9)));    // w3
+
+  // apsis from rising node (omega = Omega - omega_bar)
   orbit->omega -= orbit->Omega;
 
+  // Additional Delaunay args for principal perturbations.
+  D = 297.8502042 + t * (445267.111388889 + t * (-0.0016300 + t * (1.8319e-6 - t * 8.844e-8)));
+  D *= DEGREE;
+
+  l1 = 357.52910918333 + t * (35999.050290944 + t * (-0.00015358 + t * (4.08e-8)));
+  l1 *= DEGREE;
+
+  // Solar perturbations in longitude...
+  orbit->M0 += 1.274008503 * sin(2.0 * D - orbit->M0 * DEGREE);
+  orbit->M0 += 0.658308964 * sin(2.0 * D);
+  orbit->M0 -= 0.185122739 * sin(l1);
+
   // differentiate M0 above to get mean motion
-  orbit->n = 481266.484259111 + t * (-0.0038166 + t * (5.5032e-06 - t * 7.92252e-08));
+  orbit->n = 477198.86763133 + t * (0.001799406 + t * (4.30425e-6 - t * 2.71888e-7));
 
   // From Chapront-Touze, M, and Chapront, J. 1983, A&A, 124, 1, p. 50-62.
   // (n^2 a^3 = constant).
-  orbit->a = 3.84747980645e8 / NOVAS_AU * pow(481266.484259111 / orbit->n, 2.0 / 3.0);
+  orbit->a = 3.84747980645e8 / NOVAS_AU * pow(477198.86763133 / orbit->n, 2.0 / 3.0);
+  orbit->a -= 3699.10468 * NOVAS_KM / NOVAS_AU * cos(2.0 * D - orbit->M0 * DEGREE);
+  orbit->a -= 2955.96651 * NOVAS_KM / NOVAS_AU * cos(2.0 * D);
 
   orbit->n /= JULIAN_CENTURY_DAYS;
 
   // differentiate omega above to get apsis motion
-  dot = 4067.61675844444 + t * (-0.021258 + t * (-3.75393e-05 + t * 2.366776e-07));
+  dot = 4067.61673977778 + t * (-0.02126534 + t * (-3.75393e-05 + t * 2.36676e-07));
   orbit->apsis_period = JULIAN_CENTURY_DAYS * TWOPI / dot;
 
   // differentiate Omega above to get node motion
-  dot = -1935.53330141667 + t * (0.00353294 + t * (6.3543e-06 - t * 3.98444e-08));
+  dot = -1935.53315616667 + t * (0.0035344 + t * (6.3543e-06 - t * 3.98444e-08));
   orbit->node_period = JULIAN_CENTURY_DAYS * TWOPI / dot;
+
+  // apsis w.r.t. the node.
+  orbit->apsis_period -= orbit->node_period;
 
   return 0;
 }
