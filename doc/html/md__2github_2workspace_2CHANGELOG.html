@@ -107,13 +107,13 @@ $(function(){initNavTree('md__2github_2workspace_2CHANGELOG.html',''); initResiz
 <p>All notable changes to the <a href="https://github.com/Smithsonian/SuperNOVAS">SuperNOVAS</a> library will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.1.0/">Keep a Changelog</a>, and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <h1><a class="anchor" id="autotoc_md18"></a>
-[Unreleased]</h1>
+[1.5.1-rc1] - 2025-11-19</h1>
 <p>Upcoming bug fix release.</p>
 <h2><a class="anchor" id="autotoc_md19"></a>
 Fixed</h2>
 <ul>
 <li>#270: <code><a class="el" href="group__util.html#gad778a440540ed687572b78b675bebd60" title="Prints an angle in degrees as [-]ddd:mm:ss[.S...] into the specified buffer, with up to nanosecond pr...">novas_print_dms()</a></code> gave incorrect representations of negative angles, whereby the negative sign was repeated in the minutes and seconds components also.</li>
-<li>#272: <code>CMakeLists.txt</code> exported the <code>core</code> target by another name of <code>supernovas</code>, which messed up the CMake package dependencies and also <b>vcpkg</b>. Fixed by not renaming <code>core</code> target. (thanks to prookyon).</li>
+<li>#272: <code>CMakeLists.txt</code> exported the <code>core</code> target by another name of <code>supernovas</code>, which messed up the CMake package dependencies and also <b>vcpkg</b>. Fixed by not renaming <code>core</code> target.</li>
 <li>#275: Error in <code><a class="el" href="group__apparent.html#ga9f33de2b26a19a5e20827e9e918b3375" title="Returns the angular separation of two locations on a sphere.">novas_sep()</a></code> formula. (thanks to prookyon)</li>
 <li>#276: Wrong eccentricity value in <code><a class="el" href="group__source.html#gad6e6c7f6dc2745030e3fd4d407e982bd" title="Gets &#39;current` orbital elements for the Moon relative to the geocenter for the specified epoch of obs...">novas_make_moon_orbit()</a></code>, resulting in errors up to a few degrees in the Moon's orbital modeling. (thanks to prookyon)</li>
 </ul>
@@ -125,7 +125,7 @@ Changed</h2>
 <li>#273: Removed unnecessary <code>POSITION_INDEPENDENT_CODE</code> from <code>CMakeLists.txt</code>. (It's automatic for shared libraries.)</li>
 <li>#273: Updated <code>README.md</code> CMake snippet for building against the <code>supernovas</code> package.</li>
 <li>#276: Improved Lunar orbital modeling in <code><a class="el" href="group__source.html#gad6e6c7f6dc2745030e3fd4d407e982bd" title="Gets &#39;current` orbital elements for the Moon relative to the geocenter for the specified epoch of obs...">novas_make_moon_orbit()</a></code>, by updating to ELP200-85 model, and including the leading Solar perturbation terms for a typical accuracy at at 10 arcmin level for a day or so around the reference epoch of the orbital parameters.</li>
-<li><code><a class="el" href="group__apparent.html#ga9f33de2b26a19a5e20827e9e918b3375" title="Returns the angular separation of two locations on a sphere.">novas_sep()</a></code> to use the Vincenty formula for calculating distances on a sphere, which is accurate for all locations, unlike the law of cosines or the haversine formula used previously.</li>
+<li><code><a class="el" href="group__apparent.html#ga9f33de2b26a19a5e20827e9e918b3375" title="Returns the angular separation of two locations on a sphere.">novas_sep()</a></code> to use the Vincenty formula for calculating distances on a sphere, which is accurate for all locations, unlike the law of cosines or the haversine formula used previousl.</li>
 <li>CMake: <code>cmake_minimum_required()</code> to include upper bound 4.0, in preparation to CMake 4.0 (see <a href="https://fedoraproject.org/wiki/Changes/CMake4.0">https://fedoraproject.org/wiki/Changes/CMake4.0</a> for more explanation).</li>
 <li>CMake libraries (targets) built with transitive dependencies.</li>
 </ul>
