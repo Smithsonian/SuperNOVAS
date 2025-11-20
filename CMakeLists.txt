@@ -164,6 +164,7 @@ add_library(supernovas::core ALIAS core)
 set_target_properties(core PROPERTIES
     VERSION ${PROJECT_VERSION}
     SOVERSION ${PROJECT_VERSION_MAJOR}
+    OUTPUT_NAME supernovas
 )
 
 target_include_directories(core PUBLIC
