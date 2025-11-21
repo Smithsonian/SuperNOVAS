@@ -521,7 +521,7 @@ static int cat_to_icrs(cat_entry *restrict star, const char *restrict system) {
  *                      be used by year (e.g. "B1933.193" or "J2022.033"), or else the fixed value
  *                      listed. If 'B' or 'J' is ommitted in front of the epoch year, then Besselian
  *                      epochs are assumed prior to 1984.0, and Julian epochs after. (See
- *                      `novas_epoch() for more).
+ *                      `novas_epoch()` for more).
  * @param[out] source   Pointer to the celestial object data structure to be populated with
  *                      the corresponding ICRS catalog coordinates, after appying proper-motion
  *                      and precession corrections as appropriate.

@@ -58,7 +58,7 @@ namespace novas {
  * @deprecated    It is recommended that you use one of the more specific ways of initializing
  *                the observer data structure, e.g. with `make_itrf_observer()`,
  *                `make_gps_observer()`, `make_observer_at_site()`, `make_airborne_observer()`
- *                `make_solar_system_observer(), or `make_observer_at_geocenter()`. This function
+ *                `make_solar_system_observer()`, or `make_observer_at_geocenter()`. This function
  *                will be available for the foreseeable future also.
  *
  * Populates an 'observer' data structure given the parameters. The output data structure may

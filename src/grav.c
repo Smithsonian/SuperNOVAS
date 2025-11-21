@@ -46,7 +46,7 @@ int grav_bodies_full_accuracy = DEFAULT_GRAV_BODIES_FULL_ACCURACY;
  *
  * NOTES:
  * <ol>
- * <li>This function is called by `novas_sky_pos()` `novas_app_to_geom(), `novas_geom_to_app()`
+ * <li>This function is called by `novas_sky_pos()`, `novas_app_to_geom()`, `novas_geom_to_app()`
  * and `place()` to calculate gravitational deflections as appropriate for positioning sources
  * precisely. The gravitational deflection due to planets requires a planet calculator function to
  * be configured, e.g. via set_planet_provider_hp().
@@ -273,7 +273,7 @@ int grav_undo_planets(const double *pos_app, const double *pos_obs, const novas_
  * due to the Earth is included.
  *
  * he number of bodies used at full and reduced accuracy can be set by changing the
- * `grav_bodies_reduced_accuracy`, and `grav_bodies_full_accuracy` lobal variables.
+ * `grav_bodies_reduced_accuracy`, and `grav_bodies_full_accuracy` global variables.
  *
  * REFERENCES:
  * <ol>

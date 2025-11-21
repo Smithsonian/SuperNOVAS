@@ -272,7 +272,7 @@ double novas_standard_refraction(double jd_tt, const on_surface *loc, enum novas
 /**
  * Returns an optical refraction correction using the weather parameters defined for the observer
  * location. As such, make sure that temperature and pressure are defined, e.g. set after
- * calling e.g. `make_gps_site()`, `make_itrf_site(), `make_xyz_site()`, or similar call that
+ * calling e.g. `make_gps_site()`, `make_itrf_site()`, `make_xyz_site()`, or similar call that
  * initializes the observing site.
  *
  * @param jd_tt     [day] Terrestrial Time (TT) based Julian data of observation (unused in this

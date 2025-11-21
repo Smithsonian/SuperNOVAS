@@ -4,7 +4,7 @@
  *  Various convenience variants of the NOVAS C `place()` function. Using `place()` or one of its
  *  variants is disfavored in SuperNOVAS. Instead, the new frame-based approach is recommended,
  *  via `novas_sky_pos()` (for apparent positions, including aberration and gravitational
- *  deflection) or `novas_geom_posvel() (for geometric positions).
+ *  deflection) or `novas_geom_posvel()` (for geometric positions).
  *
  *  Some of the functions here have been deprecated also, since the new frame-based approach,
  *  introduced in v1.2, offers more versatile and transparent ways of calculating the same
