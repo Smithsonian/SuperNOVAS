@@ -4163,6 +4163,7 @@ static int test_moon_phase() {
   // New on 2025-05-27 03:02 UTC
   novas_set_time(NOVAS_UTC, novas_jd_from_date(NOVAS_ASTRONOMICAL_CALENDAR, 2025, 5, 27, 3.0 + 2.0 / 60.0), 37.0, 0.0, &ts);
   if(!is_equal("moon_phase:new", 0.0, novas_moon_phase(novas_get_time(&ts, NOVAS_TDB)), 7.5)) n++;
+  if(!is_equal("moon_phase:new:repeat", 0.0, novas_moon_phase(novas_get_time(&ts, NOVAS_TDB)), 7.5)) n++;
 
   // 1st on 2025-05-04 13:52 UTC
   novas_set_time(NOVAS_UTC, novas_jd_from_date(NOVAS_ASTRONOMICAL_CALENDAR, 2025, 5, 04, 13.0 + 52.0 / 60.0), 37.0, 0.0, &ts);
