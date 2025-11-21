@@ -76,7 +76,7 @@
 #define SUPERNOVAS_PATCHLEVEL     1
 
 /// Additional release information in version, e.g. "-1", or "-rc1", or empty string "" for releases.
-#define SUPERNOVAS_RELEASE_STRING "-rc1"
+#define SUPERNOVAS_RELEASE_STRING "-devel"
 
 /// \cond PRIVATE
 
@@ -3183,6 +3183,10 @@ int make_xyz_site(const double *restrict xyz, on_surface *restrict site);
 /// @ingroup observer
 int novas_set_default_weather(on_surface *site);
 
+// ---------------------- Added in 1.5.1 -------------------------
+
+/// @ingroup source
+int novas_make_moon_mean_orbit(double jd_tdb, novas_orbital *restrict orbit);
 
 
 // <================= END of SuperNOVAS API =====================>
@@ -3324,6 +3328,11 @@ double novas_gmst_prec(double jd_tdb);
 double novas_cio_gcrs_ra(double jd_tdb);
 void novas_set_max_iter(int n);
 
+/*
+int novas_Rx(double angle, double *v);
+int novas_Ry(double angle, double *v);
+int novas_Rz(double angle, double *v);
+*/
 
 /**
  * Deprecated.

@@ -459,7 +459,7 @@ int novas_make_moon_orbit(double jd_tdb, novas_orbital *restrict orbit) {
   */
 
   // [arcsec] Eccentric series for ecliptic longitude vs mean anomaly.
-  static float AE[8] = { 22639.55000, 769.02326, 36.12364, 1.93367, 0.11100, 0.00665, 0.00041, 0.00003 };
+  static const float AE[8] = { 22639.55000, 769.02326, 36.12364, 1.93367, 0.11100, 0.00665, 0.00041, 0.00003 };
 
   const double t = (jd_tdb - NOVAS_JD_J2000) / JULIAN_CENTURY_DAYS;
   double D, l1, l, F;
