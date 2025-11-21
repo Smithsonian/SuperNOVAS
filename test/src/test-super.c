@@ -4096,7 +4096,11 @@ static int test_make_moon_orbit() {
   novas_orbital moon_orbit = NOVAS_ORBIT_INIT;
   object moon = {};
   sky_pos pos = {};
-  double jd =  NOVAS_JD_J2000;
+  double jd = NOVAS_JD_J2000;
+
+  //double b0, b1, l0, l1;
+
+  const double tol = 0.2; // [deg]
 
   // Compare to JPL Horizons...
   // 24.8E, 59.4N
@@ -4109,8 +4113,13 @@ static int test_make_moon_orbit() {
   make_orbital_object("Moon", -1, &moon_orbit, &moon);
   novas_sky_pos(&moon, &f, NOVAS_ICRS, &pos);
 
-  if(!is_equal("make_moon_orbit:2000:ra", 15.0 * pos.ra, 221.99023, 0.2)) n++;
-  if(!is_equal("make_moon_orbit:2000:dec", pos.dec, -11.67702, 0.2)) n++;
+  if(!is_equal("make_moon_orbit:2000:ra", 15.0 * pos.ra, 221.99023, tol)) n++;
+  if(!is_equal("make_moon_orbit:2000:dec", pos.dec, -11.67702, tol)) n++;
+
+  //equ2ecl(jd, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, 221.99023 / 15.0, -11.67702, &b0, &l0);
+  //equ2ecl(jd, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, pos.ra, pos.dec, &b1, &l1);
+  //printf("### 2000:  %8.1f   %8.1f\n", (b1 - b0) * cos(l0 * DEGREE) * 3600.0, (l1 - l0) * 3600.0);
+
 
   // 2025-01-16 0 UTC
   jd = julian_date(2025, 1, 16, 0.0);
@@ -4120,8 +4129,12 @@ static int test_make_moon_orbit() {
   make_orbital_object("Moon", -1, &moon_orbit, &moon);
   novas_sky_pos(&moon, &f, NOVAS_ICRS, &pos);
 
-  if(!is_equal("make_moon_orbit:2025:ra", 15.0 * pos.ra, 144.25406, 0.2)) n++;
-  if(!is_equal("make_moon_orbit:2025:dec", pos.dec, 16.90456, 0.2)) n++;
+  if(!is_equal("make_moon_orbit:2025:ra", 15.0 * pos.ra, 144.25406, tol)) n++;
+  if(!is_equal("make_moon_orbit:2025:dec", pos.dec, 16.90456, tol)) n++;
+
+  //equ2ecl(jd, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, 144.25406 / 15.0, 16.90456, &b0, &l0);
+  //equ2ecl(jd, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, pos.ra, pos.dec, &b1, &l1);
+  //printf("### 2025:  %8.1f   %8.1f\n", (b1 - b0) * cos(l0 * DEGREE) * 3600.0, (l1 - l0) * 3600.0);
 
 
   // 2050-07-01 0 UTC
@@ -4132,9 +4145,12 @@ static int test_make_moon_orbit() {
   make_orbital_object("Moon", -1, &moon_orbit, &moon);
   novas_sky_pos(&moon, &f, NOVAS_ICRS, &pos);
 
-  if(!is_equal("make_moon_orbit:2050:ra", 15.0 * pos.ra, 227.18480, 0.2)) n++;
-  if(!is_equal("make_moon_orbit:2050:dec", pos.dec, -18.48617, 0.2)) n++;
+  if(!is_equal("make_moon_orbit:2050:ra", 15.0 * pos.ra, 227.18480, tol)) n++;
+  if(!is_equal("make_moon_orbit:2050:dec", pos.dec, -18.48617, tol)) n++;
 
+  //equ2ecl(jd, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, 227.18480 / 15.0, -18.48617, &b0, &l0);
+  //equ2ecl(jd, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, pos.ra, pos.dec, &b1, &l1);
+  //printf("### 2050:  %8.1f   %8.1f\n", (b1 - b0) * cos(l0 * DEGREE) * 3600.0, (l1 - l0) * 3600.0);
 
   return n;
 }
