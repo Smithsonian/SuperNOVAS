@@ -285,9 +285,10 @@ int novas_make_planet_orbit(enum novas_planet id, double jd_tdb, novas_orbital *
  *
  * REFERENCES:
  * <ol>
- *  <li>Chapront, J. et al., 2002, A&A 387, 700–709</li>
+ *  <li>Chapront, J. et al., 2002, A&amp;A 387, 700–709</li>
  *  <li>Chapront-Touze, M, and Chapront, J. 1988, Astronomy and Astrophysics,
  *      vol. 190, p. 342-352.</li>
+ *  <li>Chapront J., Francou G., 2003, A&amp;A, 404, 735</li>
  * </ol>
  *
  * @param jd_tdb      [day] Barycentric Dynamical Time (TDB) based Julian Date.
@@ -301,7 +302,7 @@ int novas_make_planet_orbit(enum novas_planet id, double jd_tdb, novas_orbital *
  */
 int novas_make_moon_mean_orbit(double jd_tdb, novas_orbital *restrict orbit) {
   novas_orbital def = NOVAS_ORBIT_INIT;
-  double t, dot;
+  double W1, t, dot;
 
   if(!orbit)
     return novas_error(-1, EINVAL, "novas_make_moon_orbit", "output orbital is NULL");
@@ -323,12 +324,16 @@ int novas_make_moon_mean_orbit(double jd_tdb, novas_orbital *restrict orbit) {
   // eccentricity (from the leading terms of the ELP03 series)
   orbit->e = 0.0542994634645866;
 
-  // Chapront-Touze & Chapront, 1988, A&A, 190, 342-352
-  // ELP2000-85 -- J2000 equinox
+  // Chapront & Francou 2003
+  // ELP/MPP02
+  // https://cyrano-se.obspm.fr/pub/2_lunar_solutions/2_elpmpp02/elpmpp02.pdf
   orbit->system.type = NOVAS_J2000;
-  orbit->M0 = 134.963411377778 + t * (477198.86763133 + t * (0.00899703 + t * (1.43475e-5 - t * 6.7972e-8)));       // l
-  orbit->omega = 83.3532429861111 + t * (4067.61673977778 + t * (-0.01063267 + t * (-1.25131e-5 + t * 5.9169e-8))); // w2
-  orbit->Omega = 125.044555044444 + t * (-1935.53315616667 + t * (0.0017672 + t * (2.1181e-6 - t * 9.9611e-9)));    // w3
+
+  W1           = 218.3166543638889 + t * (481266.484371122 + t * (-0.00189111 + t * (1.8344e-6 - t * 8.803e-9)));    // W1
+  orbit->omega =  83.3532429861111 + t * (4067.61675475 + t * (-0.0106286 + t * (-1.25131e-5 + t * 5.9169e-8)));     // W2
+  orbit->Omega = 125.044555044444 + t * (-1935.53320508333 + t * (0.0017664 + t * (2.1181e-6 - t * 9.9611e-9)));     // W3
+
+  orbit->M0 = W1 - orbit->omega;
 
   // apsis from rising node (omega = Omega - omega_bar)
   orbit->omega -= orbit->Omega;
@@ -365,9 +370,10 @@ int novas_make_moon_mean_orbit(double jd_tdb, novas_orbital *restrict orbit) {
  *
  * REFERENCES:
  * <ol>
- *  <li>Chapront, J. et al., 2002, A&A 387, 700–709</li>
+ *  <li>Chapront, J. et al., 2002, A&amp;A 387, 700–709</li>
  *  <li>Chapront-Touze, M, and Chapront, J. 1988, Astronomy and Astrophysics,
  *      vol. 190, p. 342-352.</li>
+ *  <li>Chapront J., Francou G., 2003, A&amp;A, 404, 735</li>
  * </ol>
  *
  * @param jd_tdb      [day] Barycentric Dynamical Time (TDB) based Julian Date.
@@ -462,6 +468,7 @@ int novas_make_moon_orbit(double jd_tdb, novas_orbital *restrict orbit) {
   static const float AE[8] = { 22639.55000, 769.02326, 36.12364, 1.93367, 0.11100, 0.00665, 0.00041, 0.00003 };
 
   const double t = (jd_tdb - NOVAS_JD_J2000) / JULIAN_CENTURY_DAYS;
+  double W1, W2, W3, T, omega;
   double D, l1, l, F;
   double dE = 0.0, dL = 0.0;
   int i;
@@ -469,17 +476,22 @@ int novas_make_moon_orbit(double jd_tdb, novas_orbital *restrict orbit) {
   prop_error("novas_make_moon_orbit", novas_make_moon_mean_orbit(jd_tdb, orbit), 0);
 
   // Delaunay args for Solar perturbations.
-  // (Chapront-Touze & Chapront 1988, Table 5).
-  D = 297.8502042 + t * (445267.111388889 + t * (-0.0016300 + t * (1.8319e-6 - t * 8.844e-8)));
-  l1 = 357.52910918333 + t * (35999.050290944 + t * (-0.00015358 + t * (4.08e-8)));
-  l = 134.963411377778 + t * (477198.86763133 + t * (0.00899703 + t * (1.43475e-5 - t * 6.79722e-8)));
-  F = 93.2720993194444 + t * (483202.01752731 + t * (-0.00340292 + t * (-2.8361e-7 + t * 1.158e-9)));
+  // (Chapront & Francou 2003).
+  W1      = 218.3166543638889 + t * (481266.4843711222 + t * (-0.00189111  + t * ( 1.8344e-6  - t * 8.803e-9)));
+  W2      =  83.3532429861111 + t * (  4067.61675475   + t * (-0.0106286   + t * (-1.25131e-5 + t * 5.9169e-8)));
+  W3      = 125.0445550444444 + t * ( -1935.5332050833 + t * ( 0.0017664   + t * ( 2.1181e-6  - t * 9.9611e-9)));
+  T       = 100.4664274583333 + t * ( 35999.3728591667 + t * (-5.61e-6     + t * ( 2.5e-9     + t * 4.2e-11)));
+  omega   = 102.93734935      + t * (     0.3225676167 + t * ( 1.470181e-4 + t * (-3.2816e-8  + t * 3.16083e-9)));
+
+  D = W1 - T + 180.0;
+  F = W1 - W3;
+  l = W1 - W2;
+  l1 = T - omega;
 
   // Perturb longitude...
   for(i = 0; i < 24; i++) {
     const elp_coeffs *c = &clon[i];
     const double arg = (c->iD * D + c->il1 * l1 + c->il * l + c->iF * F) * DEGREE;
-
     dL += c->A * sin(arg);
   }
 
@@ -537,7 +549,7 @@ int novas_make_moon_orbit(double jd_tdb, novas_orbital *restrict orbit) {
  * <ol>
  *  <li>E.M. Standish and J.G. Williams 1992.</li>
  *  <li>https://ssd.jpl.nasa.gov/planets/approx_pos.html</li>
- *  <li>Chapront, J. et al., 2002, A&A 387, 700–709</li>
+ *  <li>Chapront, J. et al., 2002, A&amp;A 387, 700–709</li>
  *  <li>Chapront-Touze, M, and Chapront, J. 1983, Astronomy and Astrophysics (ISSN 0004-6361),
  *      vol. 124, no. 1, July 1983, p. 50-62.</li>
  * </ol>
@@ -643,7 +655,7 @@ int novas_approx_heliocentric(enum novas_planet id, double jd_tdb, double *restr
  * <ol>
  *  <li>E.M. Standish and J.G. Williams 1992.</li>
  *  <li>https://ssd.jpl.nasa.gov/planets/approx_pos.html</li>
- *  <li>Chapront, J. et al., 2002, A&A 387, 700–709</li>
+ *  <li>Chapront, J. et al., 2002, A&amp;A 387, 700–709</li>
  *  <li>Chapront-Touze, M, and Chapront, J. 1983, Astronomy and Astrophysics (ISSN 0004-6361),
  *      vol. 124, no. 1, July 1983, p. 50-62.</li>
  * </ol>
@@ -726,7 +738,7 @@ int novas_approx_sky_pos(enum novas_planet id, const novas_frame *restrict frame
  *      p. 507</li>
  *  <li>E.M. Standish and J.G. Williams 1992.</li>
  *  <li>https://ssd.jpl.nasa.gov/planets/approx_pos.html</li>
- *  <li>Chapront, J. et al., 2002, A&A 387, 700–709</li>
+ *  <li>Chapront, J. et al., 2002, A&amp;A 387, 700–709</li>
  *  <li>Chapront-Touze, M, and Chapront, J. 1983, Astronomy and Astrophysics (ISSN 0004-6361),
  *      vol. 124, no. 1, July 1983, p. 50-62.</li>
  * </ol>
@@ -792,7 +804,7 @@ double novas_moon_phase(double jd_tdb) {
  *      p. 507</li>
  *  <li>E.M. Standish and J.G. Williams 1992.</li>
  *  <li>https://ssd.jpl.nasa.gov/planets/approx_pos.html</li>
- *  <li>Chapront, J. et al., 2002, A&A 387, 700–709</li>
+ *  <li>Chapront, J. et al., 2002, A&amp;A 387, 700–709</li>
  *  <li>Chapront-Touze, M, and Chapront, J. 1983, Astronomy and Astrophysics (ISSN 0004-6361),
  *      vol. 124, no. 1, July 1983, p. 50-62.</li>
  * </ol>

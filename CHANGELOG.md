@@ -33,7 +33,7 @@ Upcoming bug fix release.
 
  - #273: Updated `README.md` CMake snippet for building against the `supernovas` package.
 
- - #276: Improved Lunar orbital modeling in `novas_make_moon_orbit()`, by updating to ELP200-85 model, and including 
+ - #276: Improved Lunar orbital modeling in `novas_make_moon_orbit()`, by updating to ELP/MPP02 model, and including 
    the leading Solar perturbation terms for a typical accuracy at the 10 arcmin level for a day or so around the
    reference epoch of the orbital parameters.
    

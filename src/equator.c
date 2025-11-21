@@ -608,7 +608,7 @@ int fund_args(double t, novas_delaunay_args *restrict a) {
  * <li>Hilton, J. L. et al. (2006), IAU WG report, Celest. Mech., 94, pp. 351-367.</li>
  * <li>Capitaine, N., P.T. Wallace and J. Chapront (2005), “Improvement of the IAU 2000 precession
  *     model.” Astronomy &amp; Astrophysics, Vol. 432, pp. 355–67.</li>
- * <li>Liu, J.-C., &amp; Capitaine, N. (2017), A&A 597, A83</li>
+ * <li>Liu, J.-C., &amp; Capitaine, N. (2017), A&amp;A 597, A83</li>
  * </ol>
  *
  * @param jd_tdb_in   [day] Barycentric Dynamic Time (TDB) based Julian date of the input
