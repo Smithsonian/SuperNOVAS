@@ -74,17 +74,18 @@ namespace novas {
 
 /**
  * Change _xyz_ vectors to the new polar orientation. &theta, &phi define the orientation of the
- * input pole in the output system.
+ * input pole in the output system. (The origin of the orbital system is at the rising node,
+ * defined by the angle &Omega; in the output system.
  *
  * @param in        input 3-vector in the original system (pole = z)
- * @param theta     [deg] polar angle of original pole in the new system
- * @param phi       [deg] azimuthal angle of original pole in the new system
+ * @param obl       [deg] Obliquity of input system in output system
+ * @param Omega     [deg] Argument of the ascending node in output system
  * @param[out] out  output 3-vector in the new (rotated) system. It may be the same vector as the
  *                  input.
  * @return          0
  *
  */
-static int change_pole(const double *in, double theta, double phi, double *out) {
+static int change_pole(const double *in, double obl, double Omega, double *out) {
   double x, y, z;
   double ca, sa, cb, sb;
 
@@ -92,17 +93,17 @@ static int change_pole(const double *in, double theta, double phi, double *out) 
   y = in[1];
   z = in[2];
 
-  theta *= DEGREE;
-  phi *= DEGREE;
+  obl *= DEGREE;
+  Omega *= DEGREE;
 
-  ca = cos(phi);
-  sa = sin(phi);
-  cb = cos(theta);
-  sb = sin(theta);
+  ca = cos(Omega);
+  sa = sin(Omega);
+  cb = cos(obl);
+  sb = sin(obl);
 
   out[0] = ca * x - sa * (cb * y + sb * z);
   out[1] = sa * x + ca * (cb * y - sb * z);
-  out[2] = sb * y + cb * z;
+  out[2] =                sb * y + cb * z;
 
   return 0;
 }
@@ -142,7 +143,9 @@ static int equ2gcrs(double jd_tdb, enum novas_reference_system sys, double *vec)
 }
 
 /**
- * Convert coordinates in an orbital system to GCRS equatorial coordinates
+ * Convert coordinates in an orbital system to GCRS equatorial coordinates. For orbits defined w.r.t.
+ * the ecliptic of date, but for a reference system based in J2000, the conversion includes transforming
+ * the mean ecliptic of date to the mean ecliptic of J2000, using Laskar 1986.
  *
  * @param jd_tdb        [day] Barycentric Dynamic Time (TDB) based Julian Date
  * @param sys           Orbital system specification
@@ -402,7 +405,7 @@ int novas_orbit_posvel(double jd_tdb, const novas_orbital *restrict orbit, enum 
  * </ol>
  *
  * @param type  Coordinate reference system in which `ra` and `dec` are defined (e.g. NOVAS_GCRS).
- * @param ra    [h] the R.A. of the pole of the oribtal reference plane.
+ * @param ra    [h] the R.A. of the pole of the orbital reference plane.
  * @param dec   [deg] the declination of the pole of the oribtal reference plane.
  * @param[out]  sys   Orbital system
  * @return      0 if successful, or else -1 (errno will be set to EINVAL) if the output `sys`

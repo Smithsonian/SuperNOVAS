@@ -47,9 +47,9 @@ namespace novas {
  *                    NOVAS_GCRS_EQUATOR(2), the input GCRS coordinates are converted to
  *                    J2000 ecliptic coordinates.
  * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
- * @param elon        [deg] Ecliptic longitude in degrees, referred to specified ecliptic and
+ * @param elon        [deg] Ecliptic longitude in degrees, referred to the specified ecliptic and
  *                    equinox of date.
- * @param elat        [deg] Ecliptic latitude in degrees, referred to specified ecliptic and
+ * @param elat        [deg] Ecliptic latitude in degrees, referred to the specified ecliptic and
  *                    equinox of date.
  * @param[out] ra     [h] Right ascension in hours, referred to specified equator and equinox
  *                    of date.
@@ -366,9 +366,9 @@ int equ2gal(double ra, double dec, double *restrict glon, double *restrict glat)
  *                    NOVAS_GCRS_EQUATOR(2), the input GCRS coordinates are converted to
  *                    J2000 ecliptic coordinates.
  * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
- * @param ra          [h] Right ascension in hours, referred to specified equator and equinox
+ * @param ra          [h] Right ascension in hours, referred to the specified equator and equinox
  *                    of date.
- * @param dec         [deg] Declination in degrees, referred to specified equator and equinox
+ * @param dec         [deg] Declination in degrees, referred to the specified equator and equinox
  *                    of date.
  * @param[out] elon   [deg] Ecliptic longitude in degrees, referred to specified ecliptic and
  *                    equinox of date.
@@ -421,8 +421,8 @@ short equ2ecl(double jd_tt, enum novas_equator_type coord_sys, enum novas_accura
  *                    is NOVAS_GCRS_EQUATOR[2])
  * @param coord_sys   The astrometric reference system type of the coordinates.
  * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
- * @param in          Position vector, referred to specified equator and equinox of date.
- * @param[out] out    Position vector, referred to specified ecliptic and equinox of date.
+ * @param in          Position vector, referred to the specified equator and equinox of date.
+ * @param[out] out    Position vector, referred to the specified ecliptic and equinox of date.
  *                    It can be the same vector as the input. If 'coord_sys' is
  *                    NOVAS_GCRS_EQUATOR(2), the input GCRS coordinates are converted to
  *                    J2000 ecliptic coordinates.
@@ -500,8 +500,8 @@ short equ2ecl_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
  *                    is NOVAS_GCRS_EQUATOR[2])
  * @param coord_sys   The astrometric reference system type of the coordinates
  * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
- * @param in          Position vector, referred to specified ecliptic and equinox of date.
- * @param[out] out    Position vector, referred to specified equator and equinox of date. It
+ * @param in          Position vector, referred to the specified ecliptic and equinox of date.
+ * @param[out] out    Position vector, referred to the specified equator and equinox of date. It
  *                    can be the same vector as the input.
  * @return            0 if successful, -1 if either vector argument is NULL or the accuracy
  *                    is invalid, or else 1 if the value of 'coord_sys' is invalid.

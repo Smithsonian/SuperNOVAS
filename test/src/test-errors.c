@@ -2485,6 +2485,16 @@ static int test_transform_geodetic() {
   return n;
 }
 
+static int test_rot() {
+  int n = 0;
+
+  if(check("rot:Rx", -1, novas_Rx(0.0, NULL))) n++;
+  if(check("rot:Ry", -1, novas_Ry(0.0, NULL))) n++;
+  if(check("rot:Rz", -1, novas_Rz(0.0, NULL))) n++;
+
+  return n;
+}
+
 int main(int argc, const char *argv[]) {
   int n = 0;
 
@@ -2696,6 +2706,8 @@ int main(int argc, const char *argv[]) {
   if(test_set_default_weather()) n++;
   if(test_itrf_transform_site()) n++;
   if(test_transform_geodetic()) n++;
+
+  if(test_rot()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");

@@ -4097,60 +4097,110 @@ static int test_make_moon_orbit() {
   object moon = {};
   sky_pos pos = {};
   double jd = NOVAS_JD_J2000;
+  double sumx = 0.0, sumy = 0.0, rms;
 
-  //double b0, b1, l0, l1;
+  double jpl[52][3] = { //
+          { 2451544.5,     216.67576,  -8.99703 },
+          { 2452264.5,     342.36276, -12.90842 },
+          { 2452984.5,     103.29512,  26.98992 },
+          { 2453704.5,     223.82514, -19.76069 },
+          { 2454424.5,     353.01741,  -1.12209 },
+          { 2455144.5,     129.95454,  17.06337 },
+          { 2455864.5,     259.20091, -22.57588 },
+          { 2456584.5,      23.47711,  10.95540 },
+          { 2457304.5,     152.92399,   8.41774 },
+          { 2458024.5,     273.71177, -19.44667 },
+          { 2458744.5,      35.78456,   9.29532 },
+          { 2459464.5,     167.05508,  10.92245 },
+          { 2460184.5,     293.21493, -26.87518 },
+          { 2460904.5,      61.34374,  26.00650 },
+          { 2461624.5,     193.47181, -10.99723 },
+          { 2462344.5,     322.31292, -10.82091 },
+          { 2463064.5,      85.59313,  20.85130 },
+          { 2463784.5,     206.16268,  -9.77217 },
+          { 2464504.5,     332.90633, -10.61694 },
+          { 2465224.5,     100.92869,  21.39741 },
+          { 2465944.5,     226.71784, -14.50273 },
+          { 2466664.5,       2.21811,  -3.01084 },
+          { 2467384.5,     136.57748,  20.96113 },
+          { 2468104.5,     254.81795, -27.49122 },
+          { 2468824.5,      16.62860,  12.48050 },
+          { 2469544.5,     143.11761,   9.40655 },
+          { 2470264.5,     265.50603, -19.10177 },
+          { 2470984.5,      35.42012,  10.39975 },
+          { 2471704.5,     168.33755,   7.67623 },
+          { 2472424.5,     299.37536, -22.22046 },
+          { 2473144.5,      66.54787,  22.38175 },
+          { 2473864.5,     191.10386,  -3.89302 },
+          { 2474584.5,     317.66613, -18.82552 },
+          { 2475304.5,      76.20722,  26.76212 },
+          { 2476024.5,     197.84292, -12.82374 },
+          { 2476744.5,     333.68438,  -5.50634 },
+          { 2477464.5,     106.16260,  17.55346 },
+          { 2478184.5,     232.74963, -13.92513 },
+          { 2478904.5,       5.10081,  -3.02749 },
+          { 2479624.5,     130.09104,  22.53349 },
+          { 2480344.5,     246.45525, -24.29337 },
+          { 2481064.5,      11.71903,   6.09685 },
+          { 2481784.5,     140.16308,  16.12728 },
+          { 2482504.5,     270.15019, -24.68580 },
+          { 2483224.5,      40.81044,  17.73999 },
+          { 2483944.5,     170.40302,   0.81585 },
+          { 2484664.5,     299.55050, -16.43272 },
+          { 2485384.5,      60.21242,  15.51971 },
+          { 2486104.5,     184.73889,   3.52971 },
+          { 2486824.5,     312.51612, -22.68359 },
+          { 2487544.5,      72.33317,  26.71028 },
+          { 2488264.5,     203.01589, -13.75745 }
+  };
 
   const double tol = 0.2; // [deg]
+  int i;
 
   // Compare to JPL Horizons...
-  // 24.8E, 59.4N
-  make_gps_observer(59.4, 24.8, 0.0, &obs);
+  make_observer_at_geocenter(&obs);
 
-  // 2000-01-01 12 UTC
-  novas_set_time(NOVAS_UTC, jd, 32, 0.0, &t);
-  novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &t, 0.0, 0.0, &f);
-  novas_make_moon_orbit(jd, &moon_orbit);
-  make_orbital_object("Moon", -1, &moon_orbit, &moon);
-  novas_sky_pos(&moon, &f, NOVAS_ICRS, &pos);
+  for(i = 0; i < 52; i++) {
+    double elon0, elon1, elat0, elat1, dlon, dlat;
 
-  if(!is_equal("make_moon_orbit:2000:ra", 15.0 * pos.ra, 221.99023, tol)) n++;
-  if(!is_equal("make_moon_orbit:2000:dec", pos.dec, -11.67702, tol)) n++;
+    jd = jpl[i][0];
 
-  //equ2ecl(jd, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, 221.99023 / 15.0, -11.67702, &b0, &l0);
-  //equ2ecl(jd, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, pos.ra, pos.dec, &b1, &l1);
-  //printf("### 2000:  %8.1f   %8.1f\n", (b1 - b0) * cos(l0 * DEGREE) * 3600.0, (l1 - l0) * 3600.0);
+    novas_set_time(NOVAS_UTC, jd, 32, 0.0, &t);
+    novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &t, 0.0, 0.0, &f);
+    novas_make_moon_orbit(jd, &moon_orbit);
+    make_orbital_object("Moon", -1, &moon_orbit, &moon);
+    novas_sky_pos(&moon, &f, NOVAS_ICRS, &pos);
+
+    if(!is_equal("make_moon_orbit:2000:ra", 15.0 * pos.ra, jpl[i][1], tol)) n++;
+    if(!is_equal("make_moon_orbit:2000:dec", pos.dec, jpl[i][2], tol)) n++;
+
+    equ2ecl(jd, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, jpl[i][1] / 15.0, jpl[i][2], &elon0, &elat0);
+    equ2ecl(jd, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, pos.ra, pos.dec, &elon1, &elat1);
+
+    dlon = (elon1 - elon0) * cos(elat0 * DEGREE) * 3600.0;
+    dlat = (elat1 - elat0) * 3600.0;
+
+    //printf("### %2d:  %10.3f   %10.3f\n", i, dlon, dlat);
+
+    sumx += dlon * dlon;
+    sumy += dlat * dlat;
+  }
+
+  rms = sqrt((sumx + sumy) / 20);
+
+  sumx = sqrt(sumx / 20);
+  sumy = sqrt(sumy / 20);
 
 
-  // 2025-01-16 0 UTC
-  jd = julian_date(2025, 1, 16, 0.0);
-  novas_set_time(NOVAS_UTC, jd, 37, 0.0, &t);
-  novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &t, 0.0, 0.0, &f);
-  novas_make_moon_orbit(jd, &moon_orbit);
-  make_orbital_object("Moon", -1, &moon_orbit, &moon);
-  novas_sky_pos(&moon, &f, NOVAS_ICRS, &pos);
 
-  if(!is_equal("make_moon_orbit:2025:ra", 15.0 * pos.ra, 144.25406, tol)) n++;
-  if(!is_equal("make_moon_orbit:2025:dec", pos.dec, 16.90456, tol)) n++;
+  if(rms > 500.0) {
+    printf("  ERROR! make_moon_orbit: RMS = %8.3f (x: %8.3f, y: %8.3f)\n", rms, sumx, sumy);
+    n++;
+  }
+  else {
+    printf("  ... make_moon_orbit: RMS = %8.3f (x: %8.3f, y: %8.3f)\n", rms, sumx, sumy);
+  }
 
-  //equ2ecl(jd, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, 144.25406 / 15.0, 16.90456, &b0, &l0);
-  //equ2ecl(jd, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, pos.ra, pos.dec, &b1, &l1);
-  //printf("### 2025:  %8.1f   %8.1f\n", (b1 - b0) * cos(l0 * DEGREE) * 3600.0, (l1 - l0) * 3600.0);
-
-
-  // 2050-07-01 0 UTC
-  jd = julian_date(2050, 7, 1, 0.0);
-  novas_set_time(NOVAS_UTC, jd, 37, 0.0, &t);
-  novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &t, 0.0, 0.0, &f);
-  novas_make_moon_orbit(jd, &moon_orbit);
-  make_orbital_object("Moon", -1, &moon_orbit, &moon);
-  novas_sky_pos(&moon, &f, NOVAS_ICRS, &pos);
-
-  if(!is_equal("make_moon_orbit:2050:ra", 15.0 * pos.ra, 227.18480, tol)) n++;
-  if(!is_equal("make_moon_orbit:2050:dec", pos.dec, -18.48617, tol)) n++;
-
-  //equ2ecl(jd, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, 227.18480 / 15.0, -18.48617, &b0, &l0);
-  //equ2ecl(jd, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, pos.ra, pos.dec, &b1, &l1);
-  //printf("### 2050:  %8.1f   %8.1f\n", (b1 - b0) * cos(l0 * DEGREE) * 3600.0, (l1 - l0) * 3600.0);
 
   return n;
 }
@@ -4773,6 +4823,51 @@ static int test_geodetic_transform_site() {
   return n;
 }
 
+static int test_Rx() {
+  int n = 0;
+
+  double p[3] = {1.0, -2.0, 3.0};
+  double angle = 19.5 * DEGREE;
+
+  novas_Rx(angle, p);
+
+  if(!is_equal("Rx:x", p[0], 1.0, 1e-15)) n++;
+  if(!is_equal("Rx:y", p[1], -2.0 * cos(angle) + 3.0 * sin(angle), 1e-15)) n++;
+  if(!is_equal("Rx:z", p[2], 2.0 * sin(angle) + 3.0 * cos(angle), 1e-15)) n++;
+
+  return n;
+}
+
+static int test_Ry() {
+  int n = 0;
+
+  double p[3] = {1.0, -2.0, 3.0};
+  double angle = 19.5 * DEGREE;
+
+  novas_Ry(angle, p);
+
+  if(!is_equal("Ry:x", p[0], 1.0 * cos(angle) - 3.0 * sin(angle) , 1e-15)) n++;
+  if(!is_equal("Ry:y", p[1], -2.0, 1e-15)) n++;
+  if(!is_equal("Ry:z", p[2], 1.0 * sin(angle) + 3.0 * cos(angle), 1e-15)) n++;
+
+  return n;
+}
+
+static int test_Rz() {
+  int n = 0;
+
+  double p[3] = {1.0, -2.0, 3.0};
+  double angle = 19.5 * DEGREE;
+
+  novas_Rz(angle, p);
+
+  if(!is_equal("Rz:x", p[0], 1.0 * cos(angle) - 2.0 * sin(angle), 1e-15)) n++;
+  if(!is_equal("Rz:y", p[1], -1.0 * sin(angle) - 2.0 * cos(angle), 1e-15)) n++;
+  if(!is_equal("Rz:z", p[2], 3.0, 1e-15)) n++;
+
+  return n;
+}
+
 int main(int argc, char *argv[]) {
   int n = 0;
 
@@ -4925,6 +5020,10 @@ int main(int argc, char *argv[]) {
   if(test_set_default_weather()) n++;
   if(test_itrf_transform_site()) n++;
   if(test_geodetic_transform_site()) n++;
+
+  if(test_Rx()) n++;
+  if(test_Ry()) n++;
+  if(test_Rz()) n++;
 
   n += test_dates();
 
