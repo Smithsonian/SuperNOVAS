@@ -1107,8 +1107,9 @@ enum novas_nutation_direction {
  * @ingroup solar-system
  */
 enum novas_reference_plane {
-  NOVAS_ECLIPTIC_PLANE = 0,     ///< the plane of the ecliptic
-  NOVAS_EQUATORIAL_PLANE        ///< The plane of the equator
+  NOVAS_ECLIPTIC_PLANE = 0,     ///< the plane of the ecliptic (J2000)
+  NOVAS_EQUATORIAL_PLANE,       ///< the plane of the equator
+  NOVAS_ECLIPTIC_OF_DATE        ///< the mean ecliptic plane of date @since 1.5.1
 };
 
 /**
@@ -3328,11 +3329,10 @@ double novas_gmst_prec(double jd_tdb);
 double novas_cio_gcrs_ra(double jd_tdb);
 void novas_set_max_iter(int n);
 
-/*
 int novas_Rx(double angle, double *v);
 int novas_Ry(double angle, double *v);
 int novas_Rz(double angle, double *v);
-*/
+
 
 /**
  * Deprecated.

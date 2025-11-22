@@ -142,7 +142,14 @@ static int equ2gcrs(double jd_tdb, enum novas_reference_system sys, double *vec)
 }
 
 /**
- * Convert coordinates in an orbital system to GCRS equatorial coordinates
+ * Convert coordinates in an orbital system to GCRS equatorial coordinates. For orbits defined w.r.t.
+ * the ecliptic of date, the conversion includes transforming the mean ecliptic of date to the mean
+ * ecliptic of J2000, using Laskar 1986.
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>Laskar J., 1986, A&amp;A, 157, 59</li>
+ * </ol>
  *
  * @param jd_tdb        [day] Barycentric Dynamic Time (TDB) based Julian Date
  * @param sys           Orbital system specification
@@ -162,9 +169,27 @@ static int orbit2gcrs(double jd_tdb, const novas_orbital_system *sys, enum novas
   if(sys->obl)
     change_pole(vec, sys->obl, sys->Omega, vec);
 
-  if(sys->plane == NOVAS_ECLIPTIC_PLANE) {
+  if(sys->plane == NOVAS_ECLIPTIC_OF_DATE) {
+    double t = (jd_tdb - NOVAS_JD_J2000) / JULIAN_CENTURY_DAYS;
+
+    // Transform from the mean ecliptic of date to the mean ecliptic of J2000
+    // Laskar 1986, A&A, 157, 59
+    if(fabs(t) > 1e-4) {
+      double P = t *  0.10180391e-4  + t * ( 0.47020439e-6 + t * (-0.5417367e-9 + t * (-0.2507948e-11 + t * 0.463486e-14)));
+      double Q = t * -0.113469002e-3 + t * ( 0.12372674e-6 + t * ( 0.1265417e-8 + t * (-0.1371808e-11 - t * 0.320334e-14)));
+
+      // Pole offsets are Q,P (x,y)
+      novas_Rx(P, vec);
+      novas_Ry(-Q, vec);
+    }
+
+  }
+
+  if(sys->plane == NOVAS_ECLIPTIC_PLANE || sys->plane == NOVAS_ECLIPTIC_OF_DATE) {
     enum novas_equator_type eq;
     double jd = jd_tdb;
+
+
 
     switch(sys->type) {
       case NOVAS_GCRS:
