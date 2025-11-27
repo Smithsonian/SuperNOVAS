@@ -39,7 +39,7 @@ jobs:
       CFLAGS: -O0
     steps:
 
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
 
     - name: install dependencies
       run: |
@@ -84,7 +84,7 @@ jobs:
           - arch: ppc64le
             distro: ubuntu_latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: uraimo/run-on-arch-action@v3
         name: Run regression tests
         with:
@@ -99,7 +99,7 @@ jobs:
     name: Test on MacOS
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Build and test on macOS
         run: make test
 
@@ -107,7 +107,7 @@ jobs:
     name: Test with CMake (Ubuntu)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       
 #      - name: Install libcalceph-dev
 #        run: |

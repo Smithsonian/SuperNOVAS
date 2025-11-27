@@ -42,7 +42,7 @@ jobs:
       FORTIFY: 3
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Set compiler
         run: echo "CC=${{ matrix.cc }}" >> $GITHUB_ENV
@@ -67,7 +67,7 @@ jobs:
 #  reverse-build:
 #    runs-on: ubuntu-latest
 #    steps:
-#    - uses: actions/checkout@v5
+#    - uses: actions/checkout@v6
 #    - name: Reverse order build
 #      run: make --shuffle=reverse
 
@@ -75,7 +75,7 @@ jobs:
 #    name: Build with CALCEPH support
 #    runs-on: ubuntu-latest
 #    steps:
-#      - uses: actions/checkout@v5
+#      - uses: actions/checkout@v6
 #
 #      - name: Install dependencies
 #        run: |
@@ -91,7 +91,7 @@ jobs:
     runs-on: ubuntu-latest
     name: FreeBSD
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Build on FreeBSD
         uses: vmactions/freebsd-vm@v1
