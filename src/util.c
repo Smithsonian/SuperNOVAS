@@ -267,7 +267,7 @@ void novas_tiny_rotate(const double *in, double ax, double ay, double az, double
 }
 
 /**
- * Sets the maximum number of iterations allowed for convergent inverese calculations.
+ * Sets the maximum number of iterations allowed for convergent inverse calculations.
  *
  * @param n   Maximum number of iterations allowed.
  *
@@ -277,6 +277,63 @@ void novas_tiny_rotate(const double *in, double ax, double ay, double az, double
 void novas_set_max_iter(int n) {
   novas_inv_max_iter = n;
 }
+
+static int novas_rot(double angle, double *x, double *y) {
+  const double s = sin(angle);
+  const double c = cos(angle);
+  const double x0 = *x;
+
+  *x =  c * x0 + s * (*y);
+  *y = -s * x0 + c * (*y);
+
+  return 0;
+}
+
+/**
+ * Rotates a vector around the _x_-axis, counter clockwise when looking out from
+ * the origin along _x_.
+ *
+ * @param angle       [rad] rotation angle
+ * @param[in,out] v   Vector to rotate
+ * @return            0 if successful, or else -1 if the vector argument is NULL
+ *                    (errno set to EINVAL).
+ */
+int novas_Rx(double angle, double *v) {
+  if(!v)
+    return novas_error(-1, EINVAL, "novas_Rx", "input/output vector is NULL");
+  return novas_rot(angle, &v[1], &v[2]);
+}
+
+/**
+ * Rotates a vector around the _y_-axis, counter clockwise when looking out from
+ * the origin along _y_.
+ *
+ * @param angle       [rad] rotation angle
+ * @param[in,out] v   Vector to rotate
+ * @return            0 if successful, or else -1 if the vector argument is NULL
+ *                    (errno set to EINVAL).
+ */
+int novas_Ry(double angle, double *v) {
+  if(!v)
+    return novas_error(-1, EINVAL, "novas_Ry", "input/output vector is NULL");
+  return novas_rot(angle, &v[2], &v[0]);
+}
+
+/**
+ * Rotates a vector around the _z_-axis, counter clockwise when looking out from
+ * the origin along _z_.
+ *
+ * @param angle       [rad] rotation angle
+ * @param[in,out] v   Vector to rotate
+ * @return            0 if successful, or else -1 if the vector argument is NULL
+ *                    (errno set to EINVAL).
+ */
+int novas_Rz(double angle, double *v) {
+  if(!v)
+    return novas_error(-1, EINVAL, "novas_Rz", "input/output vector is NULL");
+  return novas_rot(angle, &v[0], &v[1]);
+}
+
 
 /// \endcond PROTECTED
 

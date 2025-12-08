@@ -1108,7 +1108,7 @@ enum novas_nutation_direction {
  */
 enum novas_reference_plane {
   NOVAS_ECLIPTIC_PLANE = 0,     ///< the plane of the ecliptic
-  NOVAS_EQUATORIAL_PLANE        ///< The plane of the equator
+  NOVAS_EQUATORIAL_PLANE,       ///< the plane of the equator
 };
 
 /**
@@ -1215,12 +1215,13 @@ typedef struct novas_orbital_system {
   enum novas_planet center;          ///< major planet or barycenter at the center of the orbit.
   enum novas_reference_plane plane;  ///< reference plane NOVAS_ECLIPTIC_PLANE or NOVAS_EQUATORIAL_PLANE
   enum novas_reference_system type;  ///< the coordinate reference system used for the reference plane and orbitals.
-  ///< It must be a system, which does not co-rotate with Earth (i.e. not ITRS or
-  ///< TIRS).
-  double obl;                        ///< [rad] relative obliquity of orbital reference plane
-  ///<       (e.g. 90&deg; - &delta;<sub>pole</sub>)
-  double Omega;                      ///< [rad] relative argument of ascending node of the orbital reference plane
-  ///<       (e.g. &alpha;<sub>pole</sub> + 90&deg;)
+                                     ///< It must be a system, which does not co-rotate with Earth (i.e. not ITRS or
+                                     ///< TIRS).
+  double obl;                        ///< [deg] relative obliquity of orbital reference plane
+                                     ///<       (e.g. 90&deg; - &delta;<sub>pole</sub>)
+  double Omega;                      ///< [deg] relative argument of ascending node of the orbital reference plane
+                                     ///<       (e.g. &alpha;<sub>pole</sub> + 90&deg;). It is also the reference
+                                     ///<       longitude of the orbit defined in this system.
 } novas_orbital_system;
 
 
@@ -1280,10 +1281,14 @@ typedef struct novas_orbital {
   ///< or 360/T, where T is orbital period in days.
   double apsis_period;                ///< [day] Precession period of the apsis, if known.
   double node_period;                 ///< [day] Precession period of the ascending node, if known.
+
+  // TODO Add tidal perturbation terms for orbits in potential gradients, e.g. for improved Moon orbital model.
+  // double tide_angle;               ///< [deg] Tidal direction, measured from ascending node.
+  // double elongation;               ///< Tidal elongation as fraction of major axis.
 } novas_orbital;
 
 /**
- * Initializer for novas_orbital for heliocentric orbits using GCRS ecliptic pqrametrization.
+ * Initializer for novas_orbital for heliocentric orbits using GCRS ecliptic parametrization.
  *
  * @hideinitializer
  * @author Attila Kovacs
@@ -3328,11 +3333,10 @@ double novas_gmst_prec(double jd_tdb);
 double novas_cio_gcrs_ra(double jd_tdb);
 void novas_set_max_iter(int n);
 
-/*
 int novas_Rx(double angle, double *v);
 int novas_Ry(double angle, double *v);
 int novas_Rz(double angle, double *v);
-*/
+
 
 /**
  * Deprecated.

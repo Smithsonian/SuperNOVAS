@@ -33,9 +33,9 @@ Upcoming bug fix release.
 
  - #273: Updated `README.md` CMake snippet for building against the `supernovas` package.
 
- - #276: Improved Lunar orbital modeling in `novas_make_moon_orbit()`, by updating to ELP/MPP02 model, and including 
-   the leading Solar perturbation terms for a typical accuracy at the 10 arcmin level for a day or so around the
-   reference epoch of the orbital parameters.
+ - #276, #280: Improved Lunar orbital modeling in `novas_make_moon_orbit()`, by using the leading terms from the 
+   ELP/MPP02 model, for a typical accuracy at the 10 arcmin level for a day or so around the reference epoch of the 
+   orbital parameters.
    
  - `novas_sep()` to use the Vincenty formula for calculating distances on a sphere, which is accurate for all 
    locations, unlike the law of cosines or the haversine formula used previously. 
@@ -45,6 +45,11 @@ Upcoming bug fix release.
 
  - CMake libraries (targets) built with transitive dependencies.
 
+### Added
+
+ - Added `NOVAS_ECLIPTIC_OF_DATE` orbital reference plane to `novas_reference_plane` enum. The existing 
+   `NOVAS_ECLIPTIC_PLANE` value now specifically refers to the mean ecliptic plane of J2000. Laskar 1986 is used for
+   converting the mean ecliptic of date to the mean ecliptic of J2000 before conversion to equatorial coordinates.
 
 ## [1.5.0] - 2025-10-29
 

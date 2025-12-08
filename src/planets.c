@@ -277,11 +277,11 @@ int novas_make_planet_orbit(enum novas_planet id, double jd_tdb, novas_orbital *
 /**
  * Gets mean orbital elements for the Moon relative to the geocenter for the specified epoch
  * of observation. It is based on the ELP2000-85 model, but not including the perturbation
- * series. As such it has accuracy at the degree-level only, however it is 'valid' for
+ * series. As such it has accuracy at the few degrees level only, however it is 'valid' for
  * long-term projections (i.e. for years around the orbit's reference epoch).
  *
- * For the short-term , `novas_make_moon_orbit()` can provide more precise predictions for up to
- * a day or so around the reference epoch of the orbit.
+ * For the short-term , `novas_make_moon_orbit()` can provide somewhat more accurate
+ * predictions for up to a day or so around the reference epoch of the orbit.
  *
  * REFERENCES:
  * <ol>
@@ -289,6 +289,7 @@ int novas_make_planet_orbit(enum novas_planet id, double jd_tdb, novas_orbital *
  *  <li>Chapront-Touze, M, and Chapront, J. 1988, Astronomy and Astrophysics,
  *      vol. 190, p. 342-352.</li>
  *  <li>Chapront J., Francou G., 2003, A&amp;A, 404, 735</li>
+ *  <li>Laskar J., 1986, A&amp;A, 157, 59</li>
  * </ol>
  *
  * @param jd_tdb      [day] Barycentric Dynamical Time (TDB) based Julian Date.
@@ -312,6 +313,7 @@ int novas_make_moon_mean_orbit(double jd_tdb, novas_orbital *restrict orbit) {
 
   orbit->system.center = NOVAS_EARTH;
   orbit->system.plane = NOVAS_ECLIPTIC_PLANE;
+  orbit->system.type = NOVAS_J2000;
 
   // Values expressed for instant
   orbit->jd_tdb = jd_tdb;
@@ -319,19 +321,17 @@ int novas_make_moon_mean_orbit(double jd_tdb, novas_orbital *restrict orbit) {
   t = (jd_tdb - NOVAS_JD_J2000) / JULIAN_CENTURY_DAYS;
 
   // Mean inclination (leading latitude term of ELP02 series)
-  orbit->i = 5.128167;
+  orbit->i = 5.12816666666667;
 
-  // eccentricity (from the leading terms of the ELP03 series)
+  // eccentricity (from the leading term of the ELP03 series)
   orbit->e = 0.0542994634645866;
 
   // Chapront & Francou 2003
   // ELP/MPP02
   // https://cyrano-se.obspm.fr/pub/2_lunar_solutions/2_elpmpp02/elpmpp02.pdf
-  orbit->system.type = NOVAS_J2000;
-
-  W1           = 218.3166543638889 + t * (481266.484371122 + t * (-0.00189111 + t * (1.8344e-6 - t * 8.803e-9)));    // W1
-  orbit->omega =  83.3532429861111 + t * (4067.61675475 + t * (-0.0106286 + t * (-1.25131e-5 + t * 5.9169e-8)));     // W2
-  orbit->Omega = 125.044555044444 + t * (-1935.53320508333 + t * (0.0017664 + t * (2.1181e-6 - t * 9.9611e-9)));     // W3
+  W1           = 218.316654363889 + t * (481266.4843711222 + t * (-0.0018912 + t * ( 1.8344e-6  - t * 8.803e-9)));   // W1
+  orbit->omega =  83.353242986111 + t * (  4067.61675475   + t * (-0.0106286 + t * (-1.25131e-5 + t * 5.9169e-8)));  // W2
+  orbit->Omega = 125.044555044444 + t * ( -1935.5332050833 + t * ( 0.0017664 + t * ( 2.1181e-6  - t * 9.9611e-9)));  // W3
 
   orbit->M0 = W1 - orbit->omega;
 
@@ -339,7 +339,7 @@ int novas_make_moon_mean_orbit(double jd_tdb, novas_orbital *restrict orbit) {
   orbit->omega -= orbit->Omega;
 
   // differentiate M0 above to get mean motion
-  orbit->n = 477198.86763133 + t * (0.001799406 + t * (4.30425e-6 - t * 2.71888e-7));
+  orbit->n = 477198.867616372 + t * (0.001747498 + t * (4.30425e-6 - t * 2.71888e-7));
 
   // From Chapront-Touze, M, and Chapront, J. 1983, A&A, 124, 1, p. 50-62.
   // (n^2 a^3 = constant).
@@ -348,31 +348,54 @@ int novas_make_moon_mean_orbit(double jd_tdb, novas_orbital *restrict orbit) {
   orbit->n /= JULIAN_CENTURY_DAYS;
 
   // differentiate omega above to get apsis motion
-  dot = 4067.61673977778 + t * (-0.02126534 + t * (-3.75393e-05 + t * 2.36676e-07));
+  dot = 4067.61675475 + t * (-0.0212572 + t * (-3.75393e-05 + t * 2.36676e-07));
   orbit->apsis_period = JULIAN_CENTURY_DAYS * TWOPI / dot;
 
   // differentiate Omega above to get node motion
-  dot = -1935.53315616667 + t * (0.0035344 + t * (6.3543e-06 - t * 3.98444e-08));
+  dot = -1935.53320508333 + t * (0.0035328 + t * (6.3543e-06 - t * 3.98444e-08));
   orbit->node_period = JULIAN_CENTURY_DAYS * TWOPI / dot;
 
   // apsis w.r.t. the node.
   orbit->apsis_period -= orbit->node_period;
 
+  // Transform from the mean ecliptic of date to the mean ecliptic of J2000
+  // Laskar 1986, A&A, 157, 59
+  if(fabs(t) > 1e-4) {
+    double P = t *   0.10180391e-4 + t * ( 0.47020439e-6 + t * (-0.5417367e-9 + t * (-0.2507948e-11 + t * 0.463486e-14)));
+    double Q = t * -0.113469002e-3 + t * ( 0.12372674e-6 + t * ( 0.1265417e-8 + t * (-0.1371808e-11 - t * 0.320334e-14)));
+    double pole[3] = {0.0};
+    double dOmega;
+
+    pole[1] = -sin(orbit->i * DEGREE);
+    pole[2] =  cos(orbit->i * DEGREE);
+
+    novas_Rx(-P, pole);
+    novas_Ry(Q, pole);
+
+    orbit->i = atan2(sqrt(pole[0] * pole[0] + pole[1] * pole[1]), pole[2]) / DEGREE;
+    dOmega = atan2(pole[0], -pole[1]) / DEGREE;
+
+    orbit->Omega += dOmega;
+    orbit->omega -= dOmega;
+  }
+
   return 0;
 }
 
 /**
- * Gets `current` orbital elements for the Moon relative to the geocenter for the specified epoch
- * of observation. The orbit includes the most dominant Solar perturbations to produce results
- * with an accuracy at the tens of arcminutes level for within a day of the reference time
- * argument for the orbit. It is based on the ELP2000-85 model, but omitting most of the
- * perturbation series.
+ * Gets an approximation of the `current` Keplerian orbital elements for the Moon relative to the
+ * geocenter for the specified epoch of observation. The orbit includes the most dominant Solar
+ * perturbation terms to produce results with an accuracy at the ~10 arcmin level for +- 0.5 days
+ * around the reference time argument for the orbit. It is based on the ELP/MPP02 model.
+ *
+ * While, the ELP model itself can be highly precise, the Moon's orbit is far from Keplerian, and
+ * so any attempt to describe it in purely Keplerian terms is inherently flawed, which is the
+ * reason for the generally poor accuracy of this model.
  *
  * REFERENCES:
  * <ol>
  *  <li>Chapront, J. et al., 2002, A&amp;A 387, 700–709</li>
- *  <li>Chapront-Touze, M, and Chapront, J. 1988, Astronomy and Astrophysics,
- *      vol. 190, p. 342-352.</li>
+ *  <li>Chapront-Touze, M, and Chapront, J. 1988, Astronomy and Astrophysics, vol. 190, p. 342-352.</li>
  *  <li>Chapront J., Francou G., 2003, A&amp;A, 404, 735</li>
  * </ol>
  *
@@ -394,114 +417,218 @@ int novas_make_moon_orbit(double jd_tdb, novas_orbital *restrict orbit) {
     float A;        // [arcsec,km] amplitude
   } elp_coeffs;
 
+
   // From ELP01: https://cyrano-se.obspm.fr/pub/2_lunar_solutions/1_elp82b/elp_series/ELP01
-  static const elp_coeffs clon[24] = {
-    {  0,  0,  0,  2,     -411.60287 }, //
+  static const elp_coeffs clon[8] = {
+    {  0,  0,  1,  2,      -45.10032 }, //
     {  0,  0,  1, -2,       39.53393 }, //
-    {  0,  0,  1,  2,      -45.1003  }, //
-    {  0,  1, -1,  0,     -147.32654 }, //
-    {  0,  1,  0,  0,     -666.44186 }, //
-    {  0,  1,  1,  0,     -109.38419 }, //
     {  1,  0, -1,  0,      -18.58467 }, //
-    {  1,  0,  0,  0,     -124.98806 }, //
-    {  1,  1,  0,  0,       17.95512 }, //
-    {  2, -1, -1,  0,      205.44315 }, //
-    {  2, -1,  0,  0,      164.73458 }, //
-    {  2, -1,  1,  0,       14.53078 }, //
-    {  2,  0, -3,  0,       13.19400 }, //
-    {  2,  0, -2,  0,      211.65487 }, //
-    {  2,  0, -1,  0,     4586.43061 }, //
     {  2,  0,  0, -2,       55.17801 }, //
-    {  2,  0,  0,  0,     2369.91227 }, //
-    {  2,  0,  1,  0,      191.95575 }, //
     {  2,  0,  2,  0,       14.37964 }, //
-    {  2,  1, -1,  0,      -28.39810 }, //
-    {  2,  1,  0,  0,      -24.35910 }, //
     {  4,  0, -2,  0,       30.77247 }, //
-    {  4,  0, -1,  0,       38.42974 }, //
-    {  4,  0,  0,  0,       13.89903 }  //
+    {  2,  2, -1,  0,       -9.36601 },  //
+
+    // Principal terms not included
+    // (These degrade the Keplerian model)
+    //{  0,  0,  0,  2,     -411.60287 }, //
+    //{  2,  0, -2,  0,      211.65487 }, // T
+    //{  2,  0, -3,  0,       13.19400 }, //
+
+    // The following elongate the orbit, and are at least partly degenerate with eccentric
+    // deformation...
+    //{  0,  1,  1,  0,     -109.38419 }, // E
+    //{  0,  1, -1,  0,     -147.32654 }, // E-
+    //{  2,  0, -1,  0,     4586.43061 }, // E
+    //{  2,  0,  1,  0,      191.95575 }, // E
+    //{  2,  1, -1,  0,      -28.39810 }  // E?
+    //{  2, -1,  1,  0,       14.53078 }, // E
+    //{  2, -1, -1,  0,      205.44315 }, // E
+    //{  4,  0, -1,  0,       38.42974 }, // E
   };
 
-  /*
+  // From ELP01: https://cyrano-se.obspm.fr/pub/2_lunar_solutions/1_elp82b/elp_series/ELP01
+  static const elp_coeffs comega[7] = {
+    {  0,  1,  0,  0,     -666.44186 },
+    {  1,  0,  0,  0,     -124.98806 }, //
+    {  1,  1,  0,  0,       17.95512 }, //
+    {  2,  0,  0,  0,     2369.91227 }, //
+    {  2,  1,  0,  0,      -24.35910 }, //
+    {  2, -1,  0,  0,      164.73458 }, //
+    {  4,  0,  0,  0,       13.89903 }, //
+  };
+
   // From ELP02: https://cyrano-se.obspm.fr/pub/2_lunar_solutions/1_elp82b/elp_series/ELP02
-  static const elp_coeffs clat[12] = {
-    {  0,  0,  1, -1,      999.70079 }, //
-    {  0,  0,  1,  1,     1010.17430 }, //
+  static const elp_coeffs clat[7] = {
     {  0,  0,  2, -1,       31.75985 }, //
-    {  0,  0,  2,  1,       61.91229 }, //
-    {  2, -1,  0, -1,       29.57794 }, //
-    {  2,  0, -1, -1,      166.57528 }, //
-    {  2,  0, -1,  1,      199.48515 }, //
     {  2,  0,  0, -1,      623.65783 }, //
-    {  2,  0,  0,  1,      117.26161 }, //
-    {  2,  0,  1, -1,       33.35743 }, //
-    {  2,  0,  1,  1,       15.12165 }, //
-    {  2,  1,  0, -1,      -12.09470 }  //
+    {  2,  0,  1, -1,       33.35743 }, // *
+    {  2,  1,  0, -1,      -12.09470 }, //
+    {  0,  1,  1, -1,       -5.07614 }, // *
+    {  0,  1,  1,  1,       -5.31151 }, //
+    {  2,  0,  1,  1,       15.12165 }  //
+
+    // Principal terms not included
+    // (These degrade the Keplerian model)
+    //{  0,  0,  1, -1,      999.70079 }, // *
+    //{  0,  0,  1,  1,     1010.17430 }, //
+    //{  0,  0,  2,  1,       61.91229 }, //
+    //{  2, -1,  0, -1,       29.57794 }, // ?
+    //{  2,  0, -1, -1,      166.57528 }, //
+    //{  2,  0, -1,  1,      199.48515 }, // *
+    //{  2,  0,  0,  1,      117.26161 }, //
+  };
+
+
+  // From ELP03: https://cyrano-se.obspm.fr/pub/2_lunar_solutions/1_elp82b/elp_series/ELP03
+  static const elp_coeffs ce[12] = {
+    {  0,  1, -1,  0,     0.0}, //-129.62476 }, // E
+    {  0,  1,  1,  0,      104.75896 }, // E
+    {  2,  0, -1,  0,    -3699.10468 }, // E
+    {  2,  0,  1,  0,     -170.73274 }, // E
+    {  2,  1, -1,  0,       24.20935 }, // E
+    {  2, -1,  1,  0,      -12.83185 }, // E
+    {  2, -1, -1,  0,     -152.14314 }, // E
+    {  4,  0, -1,  0,      -34.78245 }, // E
+
+    // Tidal terms, which we crudely approximate with elliptical flattening
+    {  2, -1, -2,  0,       10.05654 }, // T
+    {  2,  0, -2,  0,      246.15768 }, // T
+    {  2,  0,  2,  0,      -10.44472 }, // T
+    {  4,  0, -2,  0,      -21.63627 }  // T
+
+    // Principal terms not included
+    // (These degrade the Keplerian model)
   };
 
   // From ELP03: https://cyrano-se.obspm.fr/pub/2_lunar_solutions/1_elp82b/elp_series/ELP03
-  static const elp_coeffs cdis[20] = {
-    {  0,  1, -1,  0,     -129.62476 }, //
+  static const elp_coeffs cdis[7] = {
     {  0,  1,  0,  0,       48.89010 }, //
-    {  0,  1,  1,  0,      104.75896 }, //
     {  1,  0,  0,  0,      108.74265 }, //
     {  1,  1,  0,  0,      -16.67533 }, //
-    {  2, -1, -2,  0,       10.05654 }, //
-    {  2, -1, -1,  0,     -152.14314 }, //
     {  2, -1,  0,  0,     -204.59357 }, //
-    {  2, -1,  1,  0,      -12.83185 }, //
-    {  2,  0, -2,  0,      246.15768 }, //
-    {  2,  0, -1,  0,    -3699.10468 }, //
-    {  2,  0,  0, -2,       10.32129 }, //
     {  2,  0,  0,  0,    -2955.96651 }, //
-    {  2,  0,  1,  0,     -170.73274 }, //
-    {  2,  0,  2,  0,      -10.44472 }, //
-    {  2,  1, -1,  0,       24.20935 }, //
     {  2,  1,  0,  0,       30.82498 }, //
-    {  4,  0, -2,  0,      -21.63627 }, //
-    {  4,  0, -1,  0,      -34.78245 }, //
-    {  4,  0,  0,  0,      -11.64993 }  //
+    {  4,  0,  0,  0,      -11.64993 },  //
+
+    // Principal terms not included
+    // These terms are not consistent with a Keplerian orbit, with |iL| != 1
+    //{  2,  0,  0, -2,       10.32129 }, //
   };
-  */
 
   // [arcsec] Eccentric series for ecliptic longitude vs mean anomaly.
   static const float AE[8] = { 22639.55000, 769.02326, 36.12364, 1.93367, 0.11100, 0.00665, 0.00041, 0.00003 };
 
   const double t = (jd_tdb - NOVAS_JD_J2000) / JULIAN_CENTURY_DAYS;
   double W1, W2, W3, T, omega;
-  double D, l1, l, F;
-  double dE = 0.0, dL = 0.0;
+  double D, l1, l, F, M1;
+  double dE = 0.0, dL = 0.0, dL1 = 0.0, dY = 0.0, dOmega;
+  double pole[3] = {0.0}, E[2] = {0.0}, domega;
   int i;
 
   prop_error("novas_make_moon_orbit", novas_make_moon_mean_orbit(jd_tdb, orbit), 0);
 
   // Delaunay args for Solar perturbations.
   // (Chapront & Francou 2003).
-  W1      = 218.3166543638889 + t * (481266.4843711222 + t * (-0.00189111  + t * ( 1.8344e-6  - t * 8.803e-9)));
-  W2      =  83.3532429861111 + t * (  4067.61675475   + t * (-0.0106286   + t * (-1.25131e-5 + t * 5.9169e-8)));
-  W3      = 125.0445550444444 + t * ( -1935.5332050833 + t * ( 0.0017664   + t * ( 2.1181e-6  - t * 9.9611e-9)));
-  T       = 100.4664274583333 + t * ( 35999.3728591667 + t * (-5.61e-6     + t * ( 2.5e-9     + t * 4.2e-11)));
-  omega   = 102.93734935      + t * (     0.3225676167 + t * ( 1.470181e-4 + t * (-3.2816e-8  + t * 3.16083e-9)));
+  W1      = 218.316654363889 + t * (481266.4843711222 + t * (-0.0018912   + t * ( 1.8344e-6  - t * 8.803e-9)));
+  W2      =  83.353242986111 + t * (  4067.61675475   + t * (-0.0106286   + t * (-1.25131e-5 + t * 5.9169e-8)));
+  W3      = 125.044555044444 + t * ( -1935.5332050833 + t * ( 0.0017664   + t * ( 2.1181e-6  - t * 9.9611e-9)));
+  T       = 100.466427458333 + t * ( 35999.3728591667 + t * (-5.61e-6     + t * ( 2.5e-9     + t * 4.2e-11)));
+  omega   = 102.93734935     + t * (     0.3225676167 + t * ( 1.470181e-4 + t * (-3.2816e-8  + t * 3.16083e-9)));
 
-  D = W1 - T + 180.0;
-  F = W1 - W3;
-  l = W1 - W2;
-  l1 = T - omega;
+  D = (W1 - T + 180.0) * DEGREE;
+  F = (W1 - W3) * DEGREE;
+  l = (W1 - W2) * DEGREE;
+  l1 = (T - omega) * DEGREE;
 
   // Perturb longitude...
-  for(i = 0; i < 24; i++) {
+  for(i = 0; i < 7; i++) {
     const elp_coeffs *c = &clon[i];
-    const double arg = (c->iD * D + c->il1 * l1 + c->il * l + c->iF * F) * DEGREE;
+    const double arg = (c->iD * D + c->il1 * l1 + c->il * l + c->iF * F);
     dL += c->A * sin(arg);
+    dL1 = c->il * c->A * cos(arg);   // dL/dl * dl/dt = dL / dt
   }
 
   // Calculate the ecliptic vs mean longitude differential for eccentric orbit.
   for(i = 0; i < 8; i++)
-    dE += (i + 1) * AE[i] * cos((i + 1) * l * DEGREE);
+    dE += (i + 1) * AE[i] * cos((i + 1) * l);
   dE *= ARCSEC;
 
   // Project longitude perturbation into orbital mean anomaly.
-  orbit->M0 += dL / (1.0 + dE) / 3600.0;
+  orbit->M0 += (dL / 3600.0) * (1.0 + dE);
+
+  // dl / dt - d(W1 - W2) / dt
+  M1      = 477198.867616372 + t * (0.0087374 + t * (1.43475e-05 - t * 6.7972e-08));
+
+  // Projected local current mean motion.
+  orbit->n += (dL1 * ARCSEC) * (1.0 + dE) * (M1 / 3600.0) / JULIAN_CENTURY_DAYS;
+
+  // Perturb omega (apsis location vs node)
+  dL = 0.0;
+  for(i = 0; i < 7; i++) {
+    const elp_coeffs *c = &comega[i];
+    double arg = (c->iD * D + c->il1 * l1); // (semi)annual variations only...
+    dL += c->A * sin(arg);
+  }
+
+  // Project longitude perturbation into shift in periapsis.
+  orbit->omega += (dL / 3600.0);
+
+  pole[1] = -sin(orbit->i * DEGREE);
+  pole[2] =  cos(orbit->i * DEGREE);
+
+  // Perturb pole...
+  for(i = 0; i < 7; i++) {
+    const elp_coeffs *c = &clat[i];
+
+    if(c->il) {
+      double arg = (c->iD * D + c->il1 * l1 + c->il * l + c->iF * F);
+      dY += c->A * sin(arg);
+    }
+    else {
+      double arg = (c->iD * D + c->il1 * l1);
+      novas_Rz(arg, pole);
+      novas_Rx(c->A * ARCSEC, pole);
+      novas_Rz(-arg, pole);
+    }
+  }
+
+  novas_Rz(F, pole);
+  novas_Ry(dY * ARCSEC, pole);
+  novas_Rz(-F, pole);
+
+  orbit->i = atan2(sqrt(pole[0] * pole[0] + pole[1] * pole[1]), pole[2]) / DEGREE;
+  dOmega = atan2(pole[0], -pole[1]) / DEGREE;
+
+  orbit->Omega += dOmega;
+  orbit->omega -= dOmega;
+
+  // Perturb eccentricity
+  E[0] = -orbit->e * orbit->a * NOVAS_AU;
+
+  for(i = 0; i < 12; i ++) {
+    const elp_coeffs *c = &ce[i];
+    double arg = -(c->iD * D + c->il1 * l1); // (semi)annual variations only...
+    double A = c->A * NOVAS_KM;
+
+    if(abs(c->il) == 2)
+      A = -2.0 * A;       // Tidal terms as excess eccentricity (a crude approximation...)
+
+    E[0] -= A * cos(arg);
+    E[1] -= A * sin(arg);
+  }
+
+  orbit->e = sqrt(E[0] * E[0] + E[1] * E[1]) / (orbit->a * NOVAS_AU);
+  domega = -atan2(-E[1], -E[0]) / DEGREE;
+
+  orbit->omega += domega;
+  orbit->M0 -= domega;
+
+  // Perturb mean distance
+  for(i = 0; i < 7; i++) {
+    const elp_coeffs *c = &cdis[i];
+    double arg = (c->iD * D + c->il1 * l1); // (semi)annual variations only...
+    orbit->a += c->A * NOVAS_KM / NOVAS_AU * cos(arg);
+  }
 
   return 0;
 }
