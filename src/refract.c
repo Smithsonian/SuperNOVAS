@@ -303,7 +303,7 @@ double novas_optical_refraction(double jd_tt, const on_surface *loc, enum novas_
  *
  * It uses the weather parameters defined for the location, including humidity. As such, make sure
  * the weather data is fully defined, and that the humidity was explicitly set after calling e.g.
- * `make_gps_site()`, `make_itrf_site(), `make_xyz_site()`, or similar call that initializes the
+ * `make_gps_site()`, `make_itrf_site()`, `make_xyz_site()`, or similar call that initializes the
  * observing site.
  *
  * Adapted from FORTAN code provided by Berman &amp; Rockwell 1976.
@@ -438,7 +438,7 @@ int novas_refract_wavelength(double microns) {
  *
  * The function uses the weather parameters defined for the location, including humidity. As such,
  * make sure the weather data is fully defined, and that the humidity was explicitly set after
- * calling e.g. `make_gps_site()`, `make_itrf_site(), `make_xyz_site()`, or similar call that
+ * calling e.g. `make_gps_site()`, `make_itrf_site()`, `make_xyz_site()`, or similar call that
  * initializes the observing site.
  *
  * According to the documentation of SOFA's `iauRefco()` function, the model has the following

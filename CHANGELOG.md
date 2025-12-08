@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [Unreleased]
+## [1.5.1-rc2] - 2025-12-08
 
 Upcoming bug fix release.
 
@@ -45,11 +45,6 @@ Upcoming bug fix release.
 
  - CMake libraries (targets) built with transitive dependencies.
 
-### Added
-
- - Added `NOVAS_ECLIPTIC_OF_DATE` orbital reference plane to `novas_reference_plane` enum. The existing 
-   `NOVAS_ECLIPTIC_PLANE` value now specifically refers to the mean ecliptic plane of J2000. Laskar 1986 is used for
-   converting the mean ecliptic of date to the mean ecliptic of J2000 before conversion to equatorial coordinates.
 
 ## [1.5.0] - 2025-10-29
 

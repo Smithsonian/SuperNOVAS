@@ -49,7 +49,6 @@ static void replace(const char *str, const char *from, const char *to) {
 
 static int make_headless_readme() {
   FILE *in, *out;
-  char docpath[1024] = {'\0'};
   char line[16384] = {'\0'};
   int head = 1;
 
