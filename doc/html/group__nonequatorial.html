@@ -288,8 +288,8 @@ Functions</h2></td></tr>
     <tr><td class="paramdir"></td><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date. (Unused if 'coord_sys' is NOVAS_GCRS_EQUATOR[2]) </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">coord_sys</td><td>The astrometric reference system of the coordinates. If 'coord_sys' is <a class="el" href="group__earth.html#gga2eff9980cb9db96ab41fb564c1b5c014a1248329939f130a4bef0d3ef9ed95c66" title="Geocentric Celestial Reference System (GCRS) equator.">NOVAS_GCRS_EQUATOR(2)</a>, the input GCRS coordinates are converted to J2000 ecliptic coordinates. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">elon</td><td>[deg] Ecliptic longitude in degrees, referred to specified ecliptic and equinox of date. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">elat</td><td>[deg] Ecliptic latitude in degrees, referred to specified ecliptic and equinox of date. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">elon</td><td>[deg] Ecliptic longitude in degrees, referred to the specified ecliptic and equinox of date. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">elat</td><td>[deg] Ecliptic latitude in degrees, referred to the specified ecliptic and equinox of date. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">ra</td><td>[h] Right ascension in hours, referred to specified equator and equinox of date. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">dec</td><td>[deg] Declination in degrees, referred to specified equator and equinox of date.</td></tr>
   </table>
@@ -345,8 +345,8 @@ Functions</h2></td></tr>
     <tr><td class="paramdir"></td><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date. (Unused if 'coord_sys' is NOVAS_GCRS_EQUATOR[2]) </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">coord_sys</td><td>The astrometric reference system type of the coordinates </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">in</td><td>Position vector, referred to specified ecliptic and equinox of date. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>Position vector, referred to specified equator and equinox of date. It can be the same vector as the input. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">in</td><td>Position vector, referred to the specified ecliptic and equinox of date. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>Position vector, referred to the specified equator and equinox of date. It can be the same vector as the input. </td></tr>
   </table>
   </dd>
 </dl>
@@ -408,8 +408,8 @@ Functions</h2></td></tr>
     <tr><td class="paramdir"></td><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date. (Unused if 'coord_sys' is NOVAS_GCRS_EQUATOR[2]) </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">coord_sys</td><td>The astrometric reference system of the coordinates. If 'coord_sys' is <a class="el" href="group__earth.html#gga2eff9980cb9db96ab41fb564c1b5c014a1248329939f130a4bef0d3ef9ed95c66" title="Geocentric Celestial Reference System (GCRS) equator.">NOVAS_GCRS_EQUATOR(2)</a>, the input GCRS coordinates are converted to J2000 ecliptic coordinates. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">ra</td><td>[h] Right ascension in hours, referred to specified equator and equinox of date. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">dec</td><td>[deg] Declination in degrees, referred to specified equator and equinox of date. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">ra</td><td>[h] Right ascension in hours, referred to the specified equator and equinox of date. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">dec</td><td>[deg] Declination in degrees, referred to the specified equator and equinox of date. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">elon</td><td>[deg] Ecliptic longitude in degrees, referred to specified ecliptic and equinox of date. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">elat</td><td>[deg] Ecliptic latitude in degrees, referred to specified ecliptic and equinox of date. </td></tr>
   </table>
@@ -463,8 +463,8 @@ Functions</h2></td></tr>
     <tr><td class="paramdir"></td><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date. (Unused if 'coord_sys' is NOVAS_GCRS_EQUATOR[2]) </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">coord_sys</td><td>The astrometric reference system type of the coordinates. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">in</td><td>Position vector, referred to specified equator and equinox of date. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>Position vector, referred to specified ecliptic and equinox of date. It can be the same vector as the input. If 'coord_sys' is <a class="el" href="group__earth.html#gga2eff9980cb9db96ab41fb564c1b5c014a1248329939f130a4bef0d3ef9ed95c66" title="Geocentric Celestial Reference System (GCRS) equator.">NOVAS_GCRS_EQUATOR(2)</a>, the input GCRS coordinates are converted to J2000 ecliptic coordinates. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">in</td><td>Position vector, referred to the specified equator and equinox of date. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>Position vector, referred to the specified ecliptic and equinox of date. It can be the same vector as the input. If 'coord_sys' is <a class="el" href="group__earth.html#gga2eff9980cb9db96ab41fb564c1b5c014a1248329939f130a4bef0d3ef9ed95c66" title="Geocentric Celestial Reference System (GCRS) equator.">NOVAS_GCRS_EQUATOR(2)</a>, the input GCRS coordinates are converted to J2000 ecliptic coordinates. </td></tr>
   </table>
   </dd>
 </dl>

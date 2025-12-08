@@ -2,6 +2,7 @@ var planets_8c =
 [
     [ "novas_approx_heliocentric", "group__geometric.html#ga9ead627eed7fabd8583f1353e89f42e7", null ],
     [ "novas_approx_sky_pos", "group__apparent.html#ga4cb01609f76b0ff8487817b9446a3a62", null ],
+    [ "novas_make_moon_mean_orbit", "group__source.html#gac5bba418b7f5ebad8a9b44cc7644c99a", null ],
     [ "novas_make_moon_orbit", "group__source.html#gad6e6c7f6dc2745030e3fd4d407e982bd", null ],
     [ "novas_make_planet_orbit", "group__source.html#ga63b094e813d8b752a6f3344419e80031", null ],
     [ "novas_moon_phase", "group__apparent.html#ga2dbdafd6b07f079815ae52d00e142861", null ],

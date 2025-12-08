@@ -117,6 +117,7 @@ var group__source =
     [ "naif_to_novas_planet", "group__source.html#ga1c4b3f67a3b82808dd16ae43dfaf0f86", null ],
     [ "novas_case_sensitive", "group__source.html#ga8f832afe92680a11c3489aaa224ac2e2", null ],
     [ "novas_init_cat_entry", "group__source.html#gaf0137aa791dd29278904e53498fb9515", null ],
+    [ "novas_make_moon_mean_orbit", "group__source.html#gac5bba418b7f5ebad8a9b44cc7644c99a", null ],
     [ "novas_make_moon_orbit", "group__source.html#gad6e6c7f6dc2745030e3fd4d407e982bd", null ],
     [ "novas_make_planet_orbit", "group__source.html#ga63b094e813d8b752a6f3344419e80031", null ],
     [ "novas_orbit_posvel", "group__source.html#ga4510a3235a693f122899983901211c30", null ],

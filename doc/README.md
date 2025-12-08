@@ -866,7 +866,7 @@ observation:
 Here `xp` and `yp` are small (sub-arcsec level) corrections to Earth orientation. Values for these are are published 
 in the [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html). These values should be 
 interpolated for the time of observation, but should NOT be corrected for libration and ocean tides 
-(`novas_make_frame() will apply such corrections as appropriate for full accuracy frames). The Earth orientation 
+(`novas_make_frame()` will apply such corrections as appropriate for full accuracy frames). The Earth orientation 
 parameters (EOP) are needed only when converting positions from the celestial CIRS (or TOD) frame to the Earth-fixed 
 ITRS (or PEF) frames. You may ignore these and set zeroes if not interested in Earth-fixed calculations or if 
 sub-arcsecond precision is not required. 

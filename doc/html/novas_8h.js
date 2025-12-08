@@ -428,6 +428,7 @@ var novas_8h =
     [ "novas_los_to_xyz", "group__nonequatorial.html#ga601d246673742cf72a5dbe1449c97560", null ],
     [ "novas_lsr_to_ssb_vel", "group__spectral.html#gaad80bf94be2efc36c340994829df8207", null ],
     [ "novas_make_frame", "group__frame.html#gadc72577f99a7b076b23e0e44ddbca838", null ],
+    [ "novas_make_moon_mean_orbit", "group__source.html#gac5bba418b7f5ebad8a9b44cc7644c99a", null ],
     [ "novas_make_moon_orbit", "group__source.html#gad6e6c7f6dc2745030e3fd4d407e982bd", null ],
     [ "novas_make_planet_orbit", "group__source.html#ga63b094e813d8b752a6f3344419e80031", null ],
     [ "novas_make_transform", "group__frame.html#ga4d179c8573319fc25c775ce56ba055dc", null ],
