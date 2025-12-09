@@ -2030,6 +2030,7 @@ static int test_cio_location() {
   int n = 0;
 
   double loc = 0.0, loc1 = 0.0;
+  short sys = -1;
 
   if(!is_ok("cio_location:set_path:NULL", set_cio_locator_file(NULL))) n++;
 
@@ -2037,6 +2038,13 @@ static int test_cio_location() {
   loc1 = novas_cio_gcrs_ra(NOVAS_JD_J2000 + 0.1);
 
   if(!is_equal("cio_location:tdb:check", loc, loc1, 1e-8)) n++;
+
+  if(!is_ok("cio_location:acc:full", cio_location(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, &loc, &sys))) n++;
+  if(!is_ok("cio_location:acc:reduced", cio_location(NOVAS_JD_J2000, NOVAS_REDUCED_ACCURACY, &loc1, &sys))) n++;
+  if(!is_equal("cio_location:acc:check", loc, loc1, 1e-7)) n++;
+
+  if(!is_ok("cio_location:tdb+", cio_location(NOVAS_JD_J2000 + 0.001, NOVAS_REDUCED_ACCURACY, &loc1, &sys))) n++;
+  if(!is_equal("cio_location:tdb+:check", loc, loc1, 1e-7)) n++;
 
   return n;
 }
