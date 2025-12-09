@@ -902,6 +902,10 @@ static int test_make_cat_object_sys() {
   if(!is_equal("make_cat_object_sys:icrs:check:ra", obj.star.ra, source.star.ra, 1e-9)) n++;
   if(!is_equal("make_cat_object_sys:icrs:check:dec", obj.star.dec, source.star.dec, 1e-9)) n++;
 
+  if(!is_ok("make_cat_object_sys:fk6", make_cat_object_sys(&source.star, "FK6", &obj))) n++;
+  if(!is_equal("make_cat_object_sys:icrs:check:ra", obj.star.ra, source.star.ra, 1e-9)) n++;
+  if(!is_equal("make_cat_object_sys:icrs:check:dec", obj.star.dec, source.star.dec, 1e-9)) n++;
+
   if(!is_ok("make_cat_object_sys:j2000", make_cat_object_sys(&source.star, "J2000", &obj))) n++;
   transform_cat(CHANGE_J2000_TO_ICRS, 0.0, &source.star, 0.0, NOVAS_SYSTEM_ICRS, &icrs);
   if(!is_equal("make_cat_object_sys:j2000:check:ra", obj.star.ra, icrs.ra, 1e-9)) n++;
@@ -1491,6 +1495,9 @@ static int test_cio_basis() {
   if(!is_ok("cio_basis:check:x", check_equal_pos(x0, x1, 1e-11))) return 1;
   if(!is_ok("cio_basis:check:y", check_equal_pos(y0, y1, 1e-11))) return 1;
   if(!is_ok("cio_basis:check:z", check_equal_pos(z0, z1, 1e-11))) return 1;
+
+  if(!is_ok("cio_basis:reduced", cio_basis(tdb, h, sys, NOVAS_REDUCED_ACCURACY, x0, y0, z0))) return 1;
+  if(!is_ok("cio_basis:tdb+1", cio_basis(tdb + 1.0, h, sys, NOVAS_REDUCED_ACCURACY, x0, y0, z0))) return 1;
 
   return 0;
 }
