@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [1.5.1-rc2] - 2025-12-08
+## [Unreleased]
 
 Upcoming bug fix release.
 
@@ -42,6 +42,8 @@ Upcoming bug fix release.
 
  - CMake: `cmake_minimum_required()` to include current version upper bound of 4.2, in preparation to CMake 4.0 (see 
    https://fedoraproject.org/wiki/Changes/CMake4.0 for more explanation).
+
+ - Fix unclosed clode blocks in Doxygen markup (causes errors in latest Doxygen).
 
  - CMake libraries (targets) built with transitive dependencies.
 

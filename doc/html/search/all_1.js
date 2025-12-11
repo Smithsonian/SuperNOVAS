@@ -18,12 +18,9 @@ var searchData=
   ['1_204_201_202025_2007_2021_15',['[1.4.1] - 2025-07-21',['../md__2github_2workspace_2CHANGELOG.html#autotoc_md30',1,'']]],
   ['1_204_202_202025_2008_2025_16',['[1.4.2] - 2025-08-25',['../md__2github_2workspace_2CHANGELOG.html#autotoc_md27',1,'']]],
   ['1_205_200_202025_2010_2029_17',['[1.5.0] - 2025-10-29',['../md__2github_2workspace_2CHANGELOG.html#autotoc_md21',1,'']]],
-  ['1_205_201_20rc2_202025_2012_2008_18',['[1.5.1-rc2] - 2025-12-08',['../md__2github_2workspace_2CHANGELOG.html#autotoc_md18',1,'']]],
-  ['1_20issues_19',['Fixed NOVAS C 3.1 issues',['../index.html#autotoc_md73',1,'']]],
-  ['1_20rc2_202025_2012_2008_20',['[1.5.1-rc2] - 2025-12-08',['../md__2github_2workspace_2CHANGELOG.html#autotoc_md18',1,'']]],
-  ['10_2028_21',['[1.1.1] - 2024-10-28',['../md__2github_2workspace_2CHANGELOG.html#autotoc_md50',1,'']]],
-  ['10_2029_22',['[1.5.0] - 2025-10-29',['../md__2github_2workspace_2CHANGELOG.html#autotoc_md21',1,'']]],
-  ['12_2008_23',['[1.5.1-rc2] - 2025-12-08',['../md__2github_2workspace_2CHANGELOG.html#autotoc_md18',1,'']]],
-  ['13_24',['[1.0.1] - 2024-05-13',['../md__2github_2workspace_2CHANGELOG.html#autotoc_md57',1,'']]],
-  ['15_25',['15',['../md__2github_2workspace_2CHANGELOG.html#autotoc_md46',1,'[1.2.0] - 2025-01-15'],['../md__2github_2workspace_2CHANGELOG.html#autotoc_md42',1,'[1.3.0] - 2025-04-15']]]
+  ['1_20issues_18',['Fixed NOVAS C 3.1 issues',['../index.html#autotoc_md73',1,'']]],
+  ['10_2028_19',['[1.1.1] - 2024-10-28',['../md__2github_2workspace_2CHANGELOG.html#autotoc_md50',1,'']]],
+  ['10_2029_20',['[1.5.0] - 2025-10-29',['../md__2github_2workspace_2CHANGELOG.html#autotoc_md21',1,'']]],
+  ['13_21',['[1.0.1] - 2024-05-13',['../md__2github_2workspace_2CHANGELOG.html#autotoc_md57',1,'']]],
+  ['15_22',['15',['../md__2github_2workspace_2CHANGELOG.html#autotoc_md46',1,'[1.2.0] - 2025-01-15'],['../md__2github_2workspace_2CHANGELOG.html#autotoc_md42',1,'[1.3.0] - 2025-04-15']]]
 ];

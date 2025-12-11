@@ -367,7 +367,7 @@ the `Runtime` component:
 <a name="vcpkg-port"></a>
 ### Install SuperNOVAS via `vcpkg`
 
-As of version 1.5, SuperNOVAS is available through the [vcpkg](https://vcpkg.io/en/) registry. The `vcpkg` port 
+As of version 1.5, __SuperNOVAS__ is available through the [vcpkg](https://vcpkg.io/en/) registry. The `vcpkg` port 
 supports a wide range of platforms, including Linux, Windows, MacOS, and Android -- for both `arm64` and `x64` 
 architectures (and in case of Windows also `x86`). It is effectively the same as the CMake build (above), only with 
 more simplicity, convenience, and dependency resolution.
@@ -392,8 +392,8 @@ The latter will also install the `calceph` library dependency, as needed.
 <a name="linux-packages"></a>
 ### Linux packages
 
-SuperNOVAS is packaged for both Debian and Fedora / EPEL Linux distributions, and derivatives based on these (Ubuntu, 
-Mint, RHEL, CentOS Stream, Alma Linux, Rocky Linux, Oracle Linux...).
+__SuperNOVAS__ is packaged for both Debian and Fedora / EPEL Linux distributions, and derivatives based on these 
+(Ubuntu, Mint, RHEL, CentOS Stream, Alma Linux, Rocky Linux, Oracle Linux etc.).
 
 
 On Debian-based platforms you might install all components via:
