@@ -52,7 +52,7 @@ distclean: distclean-local
 .PHONY: analyze
 analyze:
 	@echo "   [analyze]"
-	@cppcheck $(CPPFLAGS) $(CHECKOPTS) $(SRC)
+	@cppcheck $(CPPFLAGS) -DCPPCHECK=1 $(CHECKOPTS) $(SRC)
 
 # Static code analysis viacat Facebook's infer
 .PHONY: infer
