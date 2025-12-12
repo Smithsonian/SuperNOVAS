@@ -3196,13 +3196,25 @@ int novas_make_moon_mean_orbit(double jd_tdb, novas_orbital *restrict orbit);
 
 // ---------------------- Added in 1.6.0 -------------------------
 
-
 // in system.c
 /// @ingroup observer
 int novas_itrs_to_enu(const double *itrf, double lon, double lat, double *enu);
 
 /// @ingroup observer
 int novas_enu_to_itrs(const double *enu, double lon, double lat, double *itrf);
+
+int novas_moon_elp_posvel(const novas_frame *restrict frame, enum novas_reference_system sys, double *restrict pos, double *restrict vel);
+
+int novas_moon_elp_posvel_fp(const novas_timespec *restrict time, const on_surface *restrict obs, double limit,
+        enum novas_reference_system sys, double *restrict pos, double *restrict vel);
+
+int novas_moon_elp_sky_pos(const novas_frame *restrict frame, enum novas_reference_system sys, sky_pos *restrict pos);
+
+int novas_moon_elp_sky_pos_fp(const novas_timespec *restrict time, const on_surface *restrict obs, double limit,
+        enum novas_reference_system sys, sky_pos *restrict pos);
+
+int novas_moon_elp_ecl_pos(double jd_tdb, double limit, double *pos);
+
 
 
 // <================= END of SuperNOVAS API =====================>
