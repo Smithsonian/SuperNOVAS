@@ -4177,6 +4177,7 @@ static int test_make_moon_orbit() {
 
   for(i = 0; i < 52; i++) {
     double elon0, elon1, elat0, elat1, dlon, dlat;
+    char label[80] = {'\0'};
 
     jd = jpl[i][0];
 
@@ -4186,8 +4187,11 @@ static int test_make_moon_orbit() {
     make_orbital_object("Moon", -1, &moon_orbit, &moon);
     novas_sky_pos(&moon, &f, NOVAS_ICRS, &pos);
 
-    if(!is_equal("make_moon_orbit:2000:ra", 15.0 * pos.ra, jpl[i][1], tol)) n++;
-    if(!is_equal("make_moon_orbit:2000:dec", pos.dec, jpl[i][2], tol)) n++;
+    sprintf(label, "make_moon_orbit:%.2f:ra", 2000.0 + (jd - NOVAS_JD_J2000) / 365.25);
+    if(!is_equal(label, 15.0 * pos.ra, jpl[i][1], tol)) n++;
+
+    sprintf(label, "make_moon_orbit:%.2f:dec", 2000.0 + (jd - NOVAS_JD_J2000) / 365.25);
+    if(!is_equal(label, pos.dec, jpl[i][2], tol)) n++;
 
     equ2ecl(jd, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, jpl[i][1] / 15.0, jpl[i][2], &elon0, &elat0);
     equ2ecl(jd, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, pos.ra, pos.dec, &elon1, &elat1);
@@ -4201,10 +4205,10 @@ static int test_make_moon_orbit() {
     sumy += dlat * dlat;
   }
 
-  rms = sqrt((sumx + sumy) / 20);
+  rms = sqrt((sumx + sumy) / 52);
 
-  sumx = sqrt(sumx / 20);
-  sumy = sqrt(sumy / 20);
+  sumx = sqrt(sumx / 52);
+  sumy = sqrt(sumy / 52);
 
 
 
