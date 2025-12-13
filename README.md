@@ -210,6 +210,7 @@ accommodate JPL NAIF codes, for which 16-bit storage is insufficient.
  - [Install SuperNOVAS via `vcpkg`](#vcpkg-port)
  - [Linux packages](#linux-packages)
  - [Homebrew package](#homebrew)
+ - [Nix package](#nix)
 
 <a name="gnu-build"></a>
 ### Build SuperNOVAS using GNU make
@@ -472,11 +473,9 @@ Install to your profile with
 Or include in your Nix build of other software with
 
 ```nix
-   nativeBuildInputs = with pkgs; [supernovas];
+  nativeBuildInputs = with pkgs; [supernovas];
 ```
 
-
- 
 </details>
 
 -----------------------------------------------------------------------------
