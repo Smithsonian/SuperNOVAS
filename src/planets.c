@@ -361,8 +361,8 @@ int novas_make_moon_mean_orbit(double jd_tdb, novas_orbital *restrict orbit) {
   // Transform from the mean ecliptic of date to the mean ecliptic of J2000
   // Laskar 1986, A&A, 157, 59
   if(fabs(t) > 1e-4) {
-    double P = t *   0.10180391e-4 + t * ( 0.47020439e-6 + t * (-0.5417367e-9 + t * (-0.2507948e-11 + t * 0.463486e-14)));
-    double Q = t * -0.113469002e-3 + t * ( 0.12372674e-6 + t * ( 0.1265417e-8 + t * (-0.1371808e-11 - t * 0.320334e-14)));
+    double P = t * (  0.10180391e-4 + t * ( 0.47020439e-6 + t * (-0.5417367e-9 + t * (-0.2507948e-11 + t * 0.463486e-14))));
+    double Q = t * (-0.113469002e-3 + t * ( 0.12372674e-6 + t * ( 0.1265417e-8 + t * (-0.1371808e-11 - t * 0.320334e-14))));
     double pole[3] = {0.0};
     double dOmega;
 
