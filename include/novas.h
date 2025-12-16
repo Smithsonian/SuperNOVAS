@@ -3202,7 +3202,7 @@ int novas_moon_elp_posvel_fp(const novas_timespec *restrict time, const on_surfa
 
 int novas_moon_elp_sky_pos(const novas_frame *restrict frame, enum novas_reference_system sys, sky_pos *restrict pos);
 
-int novas_moon_elp_sky_pos_fp(const novas_timespec *restrict time, const on_surface *restrict obs, double limit,
+int novas_moon_elp_sky_pos_fp(const novas_timespec *restrict time, const on_surface *restrict obs, const double *restrict v_ground, double limit,
         enum novas_reference_system sys, sky_pos *restrict pos);
 
 int novas_moon_elp_ecl_pos(double jd_tdb, double limit, double *pos);
