@@ -276,9 +276,10 @@ int novas_make_planet_orbit(enum novas_planet id, double jd_tdb, novas_orbital *
 
 /**
  * Gets mean orbital elements for the Moon relative to the geocenter for the specified epoch
- * of observation. It is based on the ELP2000-85 model, but not including the perturbation
- * series. As such it has accuracy at the few degrees level only, however it is 'valid' for
- * long-term projections (i.e. for years around the orbit's reference epoch).
+ * of observation. It is based on the secular parameters of the ELP2000-85 model, but does not
+ * include the harmonic series and the perturbation terms. As such it has accuracy at the few
+ * degrees level only, however it is 'valid' for long-term projections (i.e. for years around the
+ * orbit's reference epoch) at that coarse level.
  *
  * For the short-term , `novas_make_moon_orbit()` can provide somewhat more accurate
  * predictions for up to a day or so around the reference epoch of the orbit.
@@ -385,12 +386,13 @@ int novas_make_moon_mean_orbit(double jd_tdb, novas_orbital *restrict orbit) {
 /**
  * Gets an approximation of the `current` Keplerian orbital elements for the Moon relative to the
  * geocenter for the specified epoch of observation. The orbit includes the most dominant Solar
- * perturbation terms to produce results with an accuracy at the ~10 arcmin level for +- 0.5 days
- * around the reference time argument for the orbit. It is based on the ELP/MPP02 model.
+ * perturbation terms to produce results with an accuracy at the ~10 arcmin level near (+- 0.5
+ * days) the reference time argument of the orbit. The perturbed orbit is based on the ELP/MPP02
+ * model.
  *
- * While, the ELP model itself can be highly precise, the Moon's orbit is far from Keplerian, and
- * so any attempt to describe it in purely Keplerian terms is inherently flawed, which is the
- * reason for the generally poor accuracy of this model.
+ * While, the ELP/MPP02 model itself can be highly precise, the Moon's orbit is strongly
+ * non-Keplerian, and so any attempt to describe it in purely Keplerian terms is inherently flawed,
+ * which is the reason for the generally poor accuracy of this model.
  *
  * REFERENCES:
  * <ol>
@@ -426,7 +428,8 @@ int novas_make_moon_orbit(double jd_tdb, novas_orbital *restrict orbit) {
     {  2,  0,  0, -2,       55.17801 }, //
     {  2,  0,  2,  0,       14.37964 }, //
     {  4,  0, -2,  0,       30.77247 }, //
-    {  2,  2, -1,  0,       -9.36601 },  //
+    {  2,  1, -1,  0,      -28.39810 }, //
+    {  2,  2, -1,  0,       -9.36601 }  //
 
     // Principal terms not included
     // (These degrade the Keplerian model)
@@ -440,7 +443,6 @@ int novas_make_moon_orbit(double jd_tdb, novas_orbital *restrict orbit) {
     //{  0,  1, -1,  0,     -147.32654 }, // E-
     //{  2,  0, -1,  0,     4586.43061 }, // E
     //{  2,  0,  1,  0,      191.95575 }, // E
-    //{  2,  1, -1,  0,      -28.39810 }  // E?
     //{  2, -1,  1,  0,       14.53078 }, // E
     //{  2, -1, -1,  0,      205.44315 }, // E
     //{  4,  0, -1,  0,       38.42974 }, // E
@@ -454,7 +456,7 @@ int novas_make_moon_orbit(double jd_tdb, novas_orbital *restrict orbit) {
     {  2,  0,  0,  0,     2369.91227 }, //
     {  2,  1,  0,  0,      -24.35910 }, //
     {  2, -1,  0,  0,      164.73458 }, //
-    {  4,  0,  0,  0,       13.89903 }, //
+    {  4,  0,  0,  0,       13.89903 }  //
   };
 
   // From ELP02: https://cyrano-se.obspm.fr/pub/2_lunar_solutions/1_elp82b/elp_series/ELP02
@@ -480,8 +482,7 @@ int novas_make_moon_orbit(double jd_tdb, novas_orbital *restrict orbit) {
 
 
   // From ELP03: https://cyrano-se.obspm.fr/pub/2_lunar_solutions/1_elp82b/elp_series/ELP03
-  static const elp_coeffs ce[12] = {
-    {  0,  1, -1,  0,     0.0}, //-129.62476 }, // E
+  static const elp_coeffs ce[11] = {
     {  0,  1,  1,  0,      104.75896 }, // E
     {  2,  0, -1,  0,    -3699.10468 }, // E
     {  2,  0,  1,  0,     -170.73274 }, // E
@@ -498,6 +499,7 @@ int novas_make_moon_orbit(double jd_tdb, novas_orbital *restrict orbit) {
 
     // Principal terms not included
     // (These degrade the Keplerian model)
+    //{  0,  1, -1,  0,     -129.62476 }, // E
   };
 
   // From ELP03: https://cyrano-se.obspm.fr/pub/2_lunar_solutions/1_elp82b/elp_series/ELP03
@@ -508,7 +510,7 @@ int novas_make_moon_orbit(double jd_tdb, novas_orbital *restrict orbit) {
     {  2, -1,  0,  0,     -204.59357 }, //
     {  2,  0,  0,  0,    -2955.96651 }, //
     {  2,  1,  0,  0,       30.82498 }, //
-    {  4,  0,  0,  0,      -11.64993 },  //
+    {  4,  0,  0,  0,      -11.64993 }  //
 
     // Principal terms not included
     // These terms are not consistent with a Keplerian orbit, with |iL| != 1
@@ -541,7 +543,7 @@ int novas_make_moon_orbit(double jd_tdb, novas_orbital *restrict orbit) {
   l1 = (T - omega) * DEGREE;
 
   // Perturb longitude...
-  for(i = 0; i < 7; i++) {
+  for(i = 0; i < 8; i++) {
     const elp_coeffs *c = &clon[i];
     const double arg = (c->iD * D + c->il1 * l1 + c->il * l + c->iF * F);
     dL += c->A * sin(arg);
@@ -579,17 +581,8 @@ int novas_make_moon_orbit(double jd_tdb, novas_orbital *restrict orbit) {
   // Perturb pole...
   for(i = 0; i < 7; i++) {
     const elp_coeffs *c = &clat[i];
-
-    if(c->il) {
-      double arg = (c->iD * D + c->il1 * l1 + c->il * l + c->iF * F);
-      dY += c->A * sin(arg);
-    }
-    else {
-      double arg = (c->iD * D + c->il1 * l1);
-      novas_Rz(arg, pole);
-      novas_Rx(c->A * ARCSEC, pole);
-      novas_Rz(-arg, pole);
-    }
+    double arg = (c->iD * D + c->il1 * l1 + c->il * l + c->iF * F);
+    dY += c->A * sin(arg);
   }
 
   novas_Rz(F, pole);
@@ -605,7 +598,7 @@ int novas_make_moon_orbit(double jd_tdb, novas_orbital *restrict orbit) {
   // Perturb eccentricity
   E[0] = -orbit->e * orbit->a * NOVAS_AU;
 
-  for(i = 0; i < 12; i ++) {
+  for(i = 0; i < 11; i ++) {
     const elp_coeffs *c = &ce[i];
     double arg = -(c->iD * D + c->il1 * l1); // (semi)annual variations only...
     double A = c->A * NOVAS_KM;
