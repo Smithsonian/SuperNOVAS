@@ -43,7 +43,7 @@ Upcoming bug fix release.
  - CMake: `cmake_minimum_required()` to include current version upper bound of 4.2, in preparation to CMake 4.0 (see 
    https://fedoraproject.org/wiki/Changes/CMake4.0 for more explanation).
 
- - Fix unclosed clode blocks in Doxygen markup (causes errors in latest Doxygen).
+ - Fix unclosed code blocks in Doxygen markup (causes errors in latest Doxygen).
 
  - CMake libraries (targets) built with transitive dependencies.
 
