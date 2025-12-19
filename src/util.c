@@ -24,7 +24,6 @@ namespace novas {
 #  endif
 #endif
 
-
 /// \cond PRIVATE
 #define MAX_SECONDS_DECIMALS      9                 ///< Maximum decimal places for seconds in HMS/DMS formats
 /// \endcond

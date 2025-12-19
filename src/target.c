@@ -1025,7 +1025,7 @@ int transform_hip(const cat_entry *hipparcos, cat_entry *hip_2000) {
   // Set up a "scratch" catalog entry containing Hipparcos data in
   // "NOVAS units."
   scratch = *hipparcos;
-  strcpy(scratch.catalog, "SCR");
+  strncpy(scratch.catalog, "SCR", sizeof(scratch.catalog));
 
   // Convert right ascension from degrees to hours.
   scratch.ra /= 15.0;
