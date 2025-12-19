@@ -877,15 +877,14 @@ int novas_approx_sky_pos(enum novas_planet id, const novas_frame *restrict frame
  */
 double novas_moon_phase(double jd_tdb) {
   static const char *fn = "novas_moon_phase";
-
   static THREAD_LOCAL double last_tdb = NAN, last_phase;
-
-  if(novas_time_equals(jd_tdb, last_tdb))
-    return last_phase;
 
   novas_orbital orbit = NOVAS_ORBIT_INIT;
   double pos[3] = {0.0};
   double he, hm;
+
+  if(novas_time_equals(jd_tdb, last_tdb))
+    return last_phase;
 
   // EMB pos around Sun
   prop_nan(fn, novas_make_planet_orbit(NOVAS_EMB, jd_tdb, &orbit));
