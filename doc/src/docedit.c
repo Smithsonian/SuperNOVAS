@@ -26,7 +26,7 @@ static FILE *openfile(const char *path, const char *name, const char *mode) {
   char filename[1024] = {'\0'};
   FILE *fp;
 
-  snprintf(filename, sizeof(filename), "%s" PATH_SEP "%s", path, name);
+  sprintf(filename, "%s" PATH_SEP "%s", path, name);
   fp = fopen(filename, mode);
   if(!fp) fprintf(stderr, "ERROR! opening %s: %s", filename, strerror(errno));
   return fp;

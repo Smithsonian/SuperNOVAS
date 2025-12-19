@@ -32,7 +32,6 @@ namespace novas {
 #  endif
 #endif
 
-
 /// \cond PRIVATE
 #define DTA         (32.184 / DAY)        ///< [day] TT - TAI time difference
 #define GPS2TAI     (19.0 / DAY)          ///< [day] TAI - GPS time difference

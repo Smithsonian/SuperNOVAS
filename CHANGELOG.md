@@ -36,6 +36,8 @@ Upcoming bug fix release.
  - #276, #280: Improved Lunar orbital modeling in `novas_make_moon_orbit()`, by using the leading terms from the 
    ELP/MPP02 model, for a typical accuracy at the 10 arcmin level for a day or so around the reference epoch of the 
    orbital parameters.
+
+ - #284: Change `strcpy()` calls to the safer `strncpy()`. (thanks to ChooseAfferoGPL)
    
  - `novas_sep()` to use the Vincenty formula for calculating distances on a sphere, which is accurate for all 
    locations, unlike the law of cosines or the haversine formula used previously. 

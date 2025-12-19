@@ -137,7 +137,7 @@ static int test_cspice_planet() {
   if(!is_ok("cspice_planet:phobos:byname", ephemeris(jd2, &phobos, NOVAS_BARYCENTER, NOVAS_REDUCED_ACCURACY, pos0, vel0))) return -1;
   if(!is_ok("cspice_planet:phobos:match", check_equal_pos(pos, pos0, 1e-6))) return 1;
 
-  strcpy(phobos.name, "Bad");
+  strncpy(phobos.name, "Bad", sizeof(phobos.name));
   if(check("cspice_planet:bad:name", 21, ephemeris(jd2, &phobos, NOVAS_BARYCENTER, NOVAS_REDUCED_ACCURACY, pos0, vel0))) return -1;
 
   phobos.number = 2025;
