@@ -196,6 +196,7 @@ accommodate JPL NAIF codes, for which 16-bit storage is insufficient.
  - [Install SuperNOVAS via `vcpkg`](#vcpkg-port)
  - [Linux packages](#linux-packages)
  - [Homebrew package](#homebrew)
+ - [Nix package](#nix)
 
 <a name="gnu-build"></a>
 ### Build SuperNOVAS using GNU make
@@ -430,6 +431,27 @@ includes the `solsys-calceph` plugin by default.
 ```bash
   $ brew tap attipaci/pub
   $ brew install supernovas
+```
+
+
+<a name="nix"></a>
+### Nix package
+
+As of version 1.5, there is also a [Nix](https://nixos.org/) [package](https://search.nixos.org/packages?channel=unstable&show=supernovas&query=supernovas).
+This declarative and determinstic package manager can be used on every linux distribution as well as MacOS.
+The default package includes the `solsys-calceph` plugin, but can be overriden by changing `withCalceph`.
+
+
+Install to your profile with
+
+```bash
+  $ nix profile add nixpkgs#supernovas
+```
+
+Or include in your Nix build of other software with
+
+```nix
+  nativeBuildInputs = with pkgs; [supernovas];
 ```
 
 

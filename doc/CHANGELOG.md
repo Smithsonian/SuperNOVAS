@@ -7,9 +7,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [Unreleased]
+## [1.5.1] - 2026-01-02
 
-Upcoming bug fix release.
+Bug fix release.
 
 ### Fixed
 
@@ -36,11 +36,13 @@ Upcoming bug fix release.
  - #276, #280: Improved Lunar orbital modeling in `novas_make_moon_orbit()`, by using the leading terms from the 
    ELP/MPP02 model, for a typical accuracy at the 10 arcmin level for a day or so around the reference epoch of the 
    orbital parameters.
+
+ - #284: Changed `strcpy()` calls to the safer `strncpy()`. (thanks to ChooseAfferoGPL)
    
- - `novas_sep()` to use the Vincenty formula for calculating distances on a sphere, which is accurate for all 
+ - `novas_sep()` now uses the Vincenty formula for calculating distances on a sphere, which is accurate for all 
    locations, unlike the law of cosines or the haversine formula used previously. 
 
- - CMake: `cmake_minimum_required()` to include current version upper bound of 4.2, in preparation to CMake 4.0 (see 
+ - CMake: `cmake_minimum_required()` now includes current version upper bound of 4.2, in preparation to CMake 4.0 (see 
    https://fedoraproject.org/wiki/Changes/CMake4.0 for more explanation).
 
  - Fix unclosed code blocks in Doxygen markup (causes errors in latest Doxygen).

@@ -1762,7 +1762,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Gets mean orbital elements for the Moon relative to the geocenter for the specified epoch of observation. </p>
-<p>It is based on the ELP2000-85 model, but not including the perturbation series. As such it has accuracy at the few degrees level only, however it is 'valid' for long-term projections (i.e. for years around the orbit's reference epoch).</p>
+<p>It is based on the secular parameters of the ELP2000-85 model, but does not include the harmonic series and the perturbation terms. As such it has accuracy at the few degrees level only, however it is 'valid' for long-term projections (i.e. for years around the orbit's reference epoch) at that coarse level.</p>
 <p>For the short-term , <code><a class="el" href="#gad6e6c7f6dc2745030e3fd4d407e982bd" title="Gets an approximation of the current Keplerian orbital elements for the Moon relative to the geocente...">novas_make_moon_orbit()</a></code> can provide somewhat more accurate predictions for up to a day or so around the reference epoch of the orbit.</p>
 <p>REFERENCES: </p><ol>
 <li>
@@ -1810,8 +1810,8 @@ Laskar J., 1986, A&amp;A, 157, 59 </li>
 </div><div class="memdoc">
 
 <p>Gets an approximation of the <code>current</code> Keplerian orbital elements for the Moon relative to the geocenter for the specified epoch of observation. </p>
-<p>The orbit includes the most dominant Solar perturbation terms to produce results with an accuracy at the ~10 arcmin level for +- 0.5 days around the reference time argument for the orbit. It is based on the ELP/MPP02 model.</p>
-<p>While, the ELP model itself can be highly precise, the Moon's orbit is far from Keplerian, and so any attempt to describe it in purely Keplerian terms is inherently flawed, which is the reason for the generally poor accuracy of this model.</p>
+<p>The orbit includes the most dominant Solar perturbation terms to produce results with an accuracy at the ~10 arcmin level near (+- 0.5 days) the reference time argument of the orbit. The perturbed orbit is based on the ELP/MPP02 model.</p>
+<p>While, the ELP/MPP02 model itself can be highly precise, the Moon's orbit is strongly non-Keplerian, and so any attempt to describe it in purely Keplerian terms is inherently flawed, which is the reason for the generally poor accuracy of this model.</p>
 <p>REFERENCES: </p><ol>
 <li>
 Chapront, J. et al., 2002, A&amp;A 387, 700–709 </li>

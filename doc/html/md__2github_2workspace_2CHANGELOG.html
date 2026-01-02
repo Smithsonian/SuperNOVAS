@@ -107,8 +107,8 @@ $(function(){initNavTree('md__2github_2workspace_2CHANGELOG.html',''); initResiz
 <p>All notable changes to the <a href="https://github.com/Smithsonian/SuperNOVAS">SuperNOVAS</a> library will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.1.0/">Keep a Changelog</a>, and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <h1><a class="anchor" id="autotoc_md18"></a>
-[Unreleased]</h1>
-<p>Upcoming bug fix release.</p>
+[1.5.1] - 2026-01-02</h1>
+<p>Bug fix release.</p>
 <h2><a class="anchor" id="autotoc_md19"></a>
 Fixed</h2>
 <ul>
@@ -124,9 +124,10 @@ Changed</h2>
 <li>#273: Removed unnecessary <code>POSITION_INDEPENDENT_CODE</code> from <code>CMakeLists.txt</code>. (It's automatic for shared libraries.)</li>
 <li>#273: Updated <code>README.md</code> CMake snippet for building against the <code>supernovas</code> package.</li>
 <li>#276, #280: Improved Lunar orbital modeling in <code><a class="el" href="group__source.html#gad6e6c7f6dc2745030e3fd4d407e982bd" title="Gets an approximation of the current Keplerian orbital elements for the Moon relative to the geocente...">novas_make_moon_orbit()</a></code>, by using the leading terms from the ELP/MPP02 model, for a typical accuracy at the 10 arcmin level for a day or so around the reference epoch of the orbital parameters.</li>
-<li><code><a class="el" href="group__apparent.html#ga9f33de2b26a19a5e20827e9e918b3375" title="Returns the angular separation of two locations on a sphere.">novas_sep()</a></code> to use the Vincenty formula for calculating distances on a sphere, which is accurate for all locations, unlike the law of cosines or the haversine formula used previously.</li>
-<li>CMake: <code>cmake_minimum_required()</code> to include current version upper bound of 4.2, in preparation to CMake 4.0 (see <a href="https://fedoraproject.org/wiki/Changes/CMake4.0">https://fedoraproject.org/wiki/Changes/CMake4.0</a> for more explanation).</li>
-<li>Fix unclosed clode blocks in Doxygen markup (causes errors in latest Doxygen).</li>
+<li>#284: Changed <code>strcpy()</code> calls to the safer <code>strncpy()</code>. (thanks to ChooseAfferoGPL)</li>
+<li><code><a class="el" href="group__apparent.html#ga9f33de2b26a19a5e20827e9e918b3375" title="Returns the angular separation of two locations on a sphere.">novas_sep()</a></code> now uses the Vincenty formula for calculating distances on a sphere, which is accurate for all locations, unlike the law of cosines or the haversine formula used previously.</li>
+<li>CMake: <code>cmake_minimum_required()</code> now includes current version upper bound of 4.2, in preparation to CMake 4.0 (see <a href="https://fedoraproject.org/wiki/Changes/CMake4.0">https://fedoraproject.org/wiki/Changes/CMake4.0</a> for more explanation).</li>
+<li>Fix unclosed code blocks in Doxygen markup (causes errors in latest Doxygen).</li>
 <li>CMake libraries (targets) built with transitive dependencies.</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md21"></a>
