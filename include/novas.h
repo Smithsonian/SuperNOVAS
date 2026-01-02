@@ -70,13 +70,13 @@
 #define SUPERNOVAS_MAJOR_VERSION  1
 
 /// API minor version
-#define SUPERNOVAS_MINOR_VERSION  5
+#define SUPERNOVAS_MINOR_VERSION  6
 
 /// Integer sub version of the release
-#define SUPERNOVAS_PATCHLEVEL     1
+#define SUPERNOVAS_PATCHLEVEL     0
 
 /// Additional release information in version, e.g. "-1", or "-rc1", or empty string "" for releases.
-#define SUPERNOVAS_RELEASE_STRING ""
+#define SUPERNOVAS_RELEASE_STRING "-devel"
 
 /// \cond PRIVATE
 
