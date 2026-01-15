@@ -56,6 +56,7 @@
 #include "novas.h"
 /// \endcond
 
+
 #if __cplusplus
 #  ifdef NOVAS_NAMESPACE
 namespace novas {
@@ -66,6 +67,9 @@ namespace novas {
 
 /// \cond PRIVATE
 #ifdef USER_SOLSYS
+extern short solarsystem(double jd_tdb, short body, short origin, double *restrict position, double *restrict velocity);
+extern short solarsystem_hp(const double jd_tdb[restrict 2], short body, short origin, double *restrict position, double *restrict velocity);
+
 static short solarsystem_adapter(double jd_tdb, enum novas_planet body, enum novas_origin origin,
         double *restrict position, double *restrict velocity) {
   return solarsystem(jd_tdb, (short) body, (short) origin, position, velocity);
@@ -282,7 +286,7 @@ short ephemeris(const double *restrict jd_tdb, const object *restrict body, enum
     return novas_error(-1, EINVAL, fn, "NULL output pointer: pos=%p, vel=%p", pos, vel);
 
   // Check the value of 'origin'.
-  if(origin < 0 || origin >= NOVAS_ORIGIN_TYPES)
+  if((unsigned) origin >= NOVAS_ORIGIN_TYPES)
     return novas_error(1, EINVAL, fn, "invalid origin type: %d", origin);
 
   // Invoke the appropriate ephemeris access software depending upon the
