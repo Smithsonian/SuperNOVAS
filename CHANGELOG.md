@@ -18,6 +18,8 @@ Upcoming feature release.
 
 ### Changed
 
+ - Use more precise matrix from Liu et al. (2011) for equatorial / galactic conversions. 
+
 
 ## [1.5.1] - 2026-01-02
 
