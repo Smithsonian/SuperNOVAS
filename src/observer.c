@@ -526,7 +526,7 @@ int make_in_space(const double *sc_pos, const double *sc_vel, in_space *loc) {
  *
  * @param location    Current geodetic location, e.g. as populated with `make_gps_site()` or
  *                    similar.
- * @param vel         [km/s] Surface velocity.
+ * @param itrs_vel    [km/s] Surface velocity (in ITRS).
  * @param[out] obs    Pointer to data structure to populate.
  * @return            0 if successful, or -1 if the output argument is NULL.
  *
@@ -537,14 +537,16 @@ int make_in_space(const double *sc_pos, const double *sc_vel, in_space *loc) {
  *
  * @since 1.1
  * @author Attila Kovacs
+ *
+ * @sa novas_enu_to_itrs()
  */
-int make_airborne_observer(const on_surface *location, const double *vel, observer *obs) {
+int make_airborne_observer(const on_surface *location, const double *itrs_vel, observer *obs) {
   in_space motion = IN_SPACE_INIT;
 
-  if(!vel)
+  if(!itrs_vel)
     return novas_error(-1, EINVAL, "make_airborne_observer", "NULL velocity");
 
-  memcpy(motion.sc_vel, vel, sizeof(motion.sc_vel));
+  memcpy(motion.sc_vel, itrs_vel, sizeof(motion.sc_vel));
 
   prop_error("make_airborne_observer", make_observer(NOVAS_AIRBORNE_OBSERVER, location, &motion, obs), 0);
   return 0;

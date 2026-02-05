@@ -15,6 +15,9 @@ Upcoming feature release.
 
 ### Added
 
+ - Added `novas_enu_to_itrs()` and `novas_itrs_to_enu()` functions to help convert between local East-North-Up (ENU)
+   coordinates and ITRS. ENU is a natural local cartesian coordinate system of an observer at or near the Earth's 
+   surface.
 
 ### Changed
 

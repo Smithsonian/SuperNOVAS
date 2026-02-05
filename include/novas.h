@@ -3194,6 +3194,17 @@ int novas_set_default_weather(on_surface *site);
 int novas_make_moon_mean_orbit(double jd_tdb, novas_orbital *restrict orbit);
 
 
+// ---------------------- Added in 1.6.0 -------------------------
+
+
+// in system.c
+/// @ingroup observer
+int novas_itrs_to_enu(const double *itrf, double lon, double lat, double *enu);
+
+/// @ingroup observer
+int novas_enu_to_itrs(const double *enu, double lon, double lat, double *itrf);
+
+
 // <================= END of SuperNOVAS API =====================>
 
 

@@ -2495,6 +2495,28 @@ static int test_rot() {
   return n;
 }
 
+static int test_enu_to_itrs() {
+  int n = 0;
+
+  double v[3] = {0.0};
+
+  if(check("enu_to_itrs:enu", -1, novas_enu_to_itrs(NULL, 0.0, 0.0, v))) n++;
+  if(check("enu_to_itrs:itrf", -1, novas_enu_to_itrs(v, 0.0, 0.0, NULL))) n++;
+
+  return n;
+}
+
+static int test_itrs_to_enu() {
+  int n = 0;
+
+  double v[3] = {0.0};
+
+  if(check("itrs_to_enu:itrs", -1, novas_itrs_to_enu(NULL, 0.0, 0.0, v))) n++;
+  if(check("itrs_to_enu:enu", -1, novas_itrs_to_enu(v, 0.0, 0.0, NULL))) n++;
+
+  return n;
+}
+
 int main(int argc, const char *argv[]) {
   int n = 0;
 
@@ -2708,6 +2730,9 @@ int main(int argc, const char *argv[]) {
   if(test_transform_geodetic()) n++;
 
   if(test_rot()) n++;
+
+  if(test_enu_to_itrs()) n++;
+  if(test_itrs_to_enu()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");

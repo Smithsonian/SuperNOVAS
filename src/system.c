@@ -924,6 +924,84 @@ int novas_uvw_to_xyz(const double *uvw, double ha, double dec, double *xyz) {
 }
 
 /**
+ * Converts an ITRF position vector to a local East-North-Up (ENU) vector at the
+ * specified site.
+ *
+ * @param itrf        _xyz_ position vector in ITRF.
+ * @param lon         [deg] ITRF longitude of site.
+ * @param lat         [deg] ITRF latitude of site.
+ * @param[out] enu    output East-North-Up (ENU) vector. It may be the same vector as the input.
+ * @return            0 if successful, or else -1 if either pointer argument is NULL (errno will be
+ *                    set to EINVAL).
+ *
+ * @sa novas_enu_to_itrf()
+ */
+int novas_itrs_to_enu(const double *itrf, double lon, double lat, double *enu) {
+  static const char *fn = "novas_itrs_to_enu";
+
+  double x, y, z;
+
+  if(!itrf)
+    return novas_error(-1, EINVAL, fn, "input ITRF vector is NULL");
+  if(!enu)
+    return novas_error(-1, EINVAL, fn, "output ENU vector is NULL");
+
+  x = itrf[0];
+  y = itrf[1];
+  z = itrf[2];
+
+  double slon = sin(lon * DEGREE);
+  double clon = cos(lon * DEGREE);
+  double slat = sin(lat * DEGREE);
+  double clat = cos(lat * DEGREE);
+
+  enu[0] = -slon * x + clon * y;
+  enu[1] = -slat * (clon * x + slon * y) + clat * z;
+  enu[2] =  clat * (clon * x + slon * y) + slat * z;
+
+  return 0;
+}
+
+/**
+ * Converts an  East-North-Up (ENU) vector at the specified site to an ITRF vector.
+ *
+ * @param enu         input East-North-Up (ENU) vector.
+ * @param lon         [deg] ITRF longitude of site.
+ * @param lat         [deg] ITRF latitude of site.
+ * @param[out] itrf   output ITRF vector. It may be the same vector as the input.
+ * @return            0 if successful, or else -1 if either pointer argument is NULL (errno will be
+ *                    set to EINVAL).
+ *
+ * @sa novas_itrf_to_enu()
+ */
+int novas_enu_to_itrs(const double *enu, double lon, double lat, double *itrf) {
+  static const char *fn = "novas_itrs_to_enu";
+
+  double E, N, U;
+
+  if(!enu)
+    return novas_error(-1, EINVAL, fn, "input ENU vector is NULL");
+  if(!itrf)
+    return novas_error(-1, EINVAL, fn, "output ITRF vector is NULL");
+
+  E = enu[0];
+  N = enu[1];
+  U = enu[2];
+
+  double slon = sin(lon * DEGREE);
+  double clon = cos(lon * DEGREE);
+  double slat = sin(lat * DEGREE);
+  double clat = cos(lat * DEGREE);
+
+  itrf[0] = -slon * E - clon * (slat * N - clat * U);
+  itrf[1] =  clon * E - slon * (slat * N - clat * U);
+  itrf[2] =  clat * N + slat * U;
+
+  return 0;
+}
+
+
+/**
  * Returns the Parallactic Angle (PA) calculated for a horizontal Az/El location of the
  * sky. The PA is the angle between the local horizontal coordinate directions and the local
  * true-of-date equatorial coordinate directions at the given location. The polar wobble is not
