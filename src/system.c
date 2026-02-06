@@ -940,6 +940,7 @@ int novas_itrs_to_enu(const double *itrf, double lon, double lat, double *enu) {
   static const char *fn = "novas_itrs_to_enu";
 
   double x, y, z;
+  double slon, clon, slat, clat;
 
   if(!itrf)
     return novas_error(-1, EINVAL, fn, "input ITRF vector is NULL");
@@ -950,10 +951,10 @@ int novas_itrs_to_enu(const double *itrf, double lon, double lat, double *enu) {
   y = itrf[1];
   z = itrf[2];
 
-  double slon = sin(lon * DEGREE);
-  double clon = cos(lon * DEGREE);
-  double slat = sin(lat * DEGREE);
-  double clat = cos(lat * DEGREE);
+  slon = sin(lon * DEGREE);
+  clon = cos(lon * DEGREE);
+  slat = sin(lat * DEGREE);
+  clat = cos(lat * DEGREE);
 
   enu[0] = -slon * x + clon * y;
   enu[1] = -slat * (clon * x + slon * y) + clat * z;
@@ -978,6 +979,7 @@ int novas_enu_to_itrs(const double *enu, double lon, double lat, double *itrf) {
   static const char *fn = "novas_itrs_to_enu";
 
   double E, N, U;
+  double slon, clon, slat, clat;
 
   if(!enu)
     return novas_error(-1, EINVAL, fn, "input ENU vector is NULL");
@@ -988,10 +990,10 @@ int novas_enu_to_itrs(const double *enu, double lon, double lat, double *itrf) {
   N = enu[1];
   U = enu[2];
 
-  double slon = sin(lon * DEGREE);
-  double clon = cos(lon * DEGREE);
-  double slat = sin(lat * DEGREE);
-  double clat = cos(lat * DEGREE);
+  slon = sin(lon * DEGREE);
+  clon = cos(lon * DEGREE);
+  slat = sin(lat * DEGREE);
+  clat = cos(lat * DEGREE);
 
   itrf[0] = -slon * E - clon * (slat * N - clat * U);
   itrf[1] =  clon * E - slon * (slat * N - clat * U);
