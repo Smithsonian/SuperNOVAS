@@ -11,10 +11,10 @@
 
 The NOVAS C astrometry library, made better.
 
- - [API documentation](https://smithsonian.github.io/SuperNOVAS/doc/html/files.html)
- - [SuperNOVAS pages](https://smithsonian.github.io/SuperNOVAS) on github.io 
+ - [API documentation](https://sigmyne.github.io/SuperNOVAS/doc/html/files.html)
+ - [SuperNOVAS pages](https://sigmyne.github.io/SuperNOVAS) on github.io 
 
-[SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/) is a C/C++ astronomy software library, providing 
+[SuperNOVAS](https://github.com/Sigmyne/SuperNOVAS/) is a C/C++ astronomy software library, providing 
 high-precision astrometry such as one might need for running an observatory, a precise planetarium program, or for
 analyzing astronomical datasets. It started as a fork of the Naval Observatory Vector Astrometry Software 
 ([NOVAS](https://aa.usno.navy.mil/software/novas_info)) C version 3.1, but since then it has grown into its own, 
@@ -59,13 +59,13 @@ __SuperNOVAS__ is a fork of the The Naval Observatory Vector Astrometry Software
 The primary goal of __SuperNOVAS__ is to improve on the original NOVAS C library via:
 
  - Fixing [outstanding issues](#fixed-issues).
- - Improved [API documentation](https://smithsonian.github.io/SuperNOVAS/doc/html/files.html).
+ - Improved [API documentation](https://sigmyne.github.io/SuperNOVAS/doc/html/files.html).
  - [Faster calculations](#benchmarks).
  - [New features](#added-functionality).
  - [Refining the API](#api-changes) to promote best programming practices.
  - [Thread-safe calculations](#multi-threading).
  - [Debug mode](#debug-support) with informative error tracing.
- - [Regression testing](https://codecov.io/gh/Smithsonian/SuperNOVAS) and continuous integration on GitHub.
+ - [Regression testing](https://codecov.io/gh/Sigmyne/SuperNOVAS) and continuous integration on GitHub.
 
 At the same time, __SuperNOVAS__ aims to be fully backward compatible with the intended functionality of the upstream 
 NOVAS C library, such that it can be used as a _build-time_ replacement for NOVAS in your application without having 
@@ -73,9 +73,9 @@ to change existing (functional) code you may have written for NOVAS C.
 
 __SuperNOVAS__ is really quite easy to use. Its new API is just as simple and intuitive as that of __astropy__ (or so 
 we strive for it to be), and it is similarly well documented also (see the 
-[API documentation](https://smithsonian.github.io/SuperNOVAS/doc/html/files.html)). You can typically achieve the 
+[API documentation](https://sigmyne.github.io/SuperNOVAS/doc/html/files.html)). You can typically achieve the 
 same results with 
-[similar lines of code](https://github.com/Smithsonian/SuperNOVAS/blob/main/doc/SuperNOVAS_vs_astropy.md) 
+[similar lines of code](https://github.com/Sigmyne/SuperNOVAS/blob/main/doc/SuperNOVAS_vs_astropy.md) 
 with __SuperNOVAS__ as with __astropy__, notwithstanding a little more involved error handling at every step (due to 
 the lack of `try / except` style constructs in C).
  
@@ -83,11 +83,11 @@ __SuperNOVAS__ is currently based on NOVAS C version 3.1. We plan to rebase __Su
 release of the NOVAS C library, if new releases become available.
  
 __SuperNOVAS__ is maintained by [Attila Kovács](https://github.com/attipaci) at the Center for Astrophysics \| Harvard 
-&amp; Smithsonian, and it is available through the [Smithsonian/SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS) 
+&amp; Sigmyne, and it is available through the [Sigmyne/SuperNOVAS](https://github.com/Sigmyne/SuperNOVAS) 
 repository on GitHub.
 
 Outside contributions are very welcome. See
-[how you can contribute](https://smithsonian.github.io/SuperNOVAS/doc/CONTRIBUTING.html) on how you can make __SuperNOVAS__ 
+[how you can contribute](https://sigmyne.github.io/SuperNOVAS/doc/CONTRIBUTING.html) on how you can make __SuperNOVAS__ 
 even better.
 
 ### Related links
@@ -97,7 +97,7 @@ even better.
    from JPL and/or in INPOP 2.0/3.0 format.
  - [NAIF SPICE toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html) for integrating Solar-system ephemerides
    from JPL.
- - [Smithsonian/cspice-sharedlib](https://github.com/Smithsonian/cspice-sharedlib) for building CSPICE as a shared
+ - [Sigmyne/cspice-sharedlib](https://github.com/Sigmyne/cspice-sharedlib) for building CSPICE as a shared
    library for dynamic linking.
  - [IAU Minor Planet Center](https://www.minorplanetcenter.net/iau/mpc.html) provides up-to-date orbital elements
    for asteroids, comets, and near-Earth objects (NEOs), including newly discovered objects.
@@ -220,7 +220,7 @@ the necessary variables in the shell prior to invoking `make`. For example:
    `CSPICE_SUPPORT = 1` in `config.mk` or in the shell prior to the build. CSPICE integration will require an 
    accessible installation of the CSPICE development files (C headers, under a `cspice/` subfolder in the header 
    search path, and unversioned static or shared libraries depending on the needs of the build). You might want to 
-   check out the [Smithsonian/cspice-sharedlib](https://github.com/Smithsonian/cspice-sharedlib) repository for 
+   check out the [Sigmyne/cspice-sharedlib](https://github.com/Sigmyne/cspice-sharedlib) repository for 
    building CSPICE as a shared library.
    
  - If your compiler does not support the C11 standard and it is not GCC &gt;=3.3, but provides some nonstandard
@@ -673,7 +673,7 @@ NOVAS C approach remains viable also (albeit often less efficient).
 __NOTE__
 
 > You may find an equivalent legacy example showcasing the original NOVAS method in 
-> [`NOVAS-legacy.md`](https://github.com/Smithsonian/SuperNOVAS/blob/main/doc/NOVAS-legacy.md).
+> [`NOVAS-legacy.md`](https://github.com/Sigmyne/SuperNOVAS/blob/main/doc/NOVAS-legacy.md).
 
 <a name="sidereal-example"></a>
 ### Calculating positions for a sidereal source
@@ -1253,7 +1253,7 @@ active kernels with the `cspice_add_kernel()` and `cspice_remove_kernel()` funct
 
 Of course, you will need access to the CSPICE development files (C headers, installed under a `cspice/` directory 
 of an header search location, and the unversioned `libcspice.so` or `.a` library) for the build to succeed. You may 
-want to check out the [Smithsonian/cspice-sharedlib](https://github.com/Smithsonian/cspice-sharedlib) GitHub 
+want to check out the [Sigmyne/cspice-sharedlib](https://github.com/Sigmyne/cspice-sharedlib) GitHub 
 repository to help you build CSPICE with shared libraries and dynamically linked tools.
 
 Here is an example on how you might use CSPICE with __SuperNOVAS__ in your application code:
@@ -1790,7 +1790,7 @@ one minute.
 ### New functionality highlights
 
 Below is a non-exhaustive overview new features added by __SuperNOVAS__ on top of the existing NOVAS C API. See 
-[`CHANGELOG.md`](https://github.com/Smithsonian/SuperNOVAS/blob/main/CHANGELOG.md) for more details.
+[`CHANGELOG.md`](https://github.com/Sigmyne/SuperNOVAS/blob/main/CHANGELOG.md) for more details.
  
 <summary>New in v1.0</summary>
     
@@ -1962,7 +1962,7 @@ the principal ways __SuperNOVAS__ has improved on the original NOVAS C library i
    data modifications.
 
  - Many __SuperNOVAS__ functions allow `NULL` arguments, both for optional input values as well as outputs that are 
-   not required (see the [API Documentation](https://smithsonian.github.io/SuperNOVAS/doc/html/) for specifics).
+   not required (see the [API Documentation](https://sigmyne.github.io/SuperNOVAS/doc/html/) for specifics).
    This eliminates the need to declare dummy variables in your application code.
   
  - Many output values supplied via pointers are set to clearly invalid values in case of erroneous returns, such as
@@ -2054,7 +2054,7 @@ rolled out in bug-fix releases as long as they do not affect the existing API --
 bug-fix releases fully backwards compatible with their parent versions.
 
 In the weeks and month(s) preceding releases one or more _release candidates_ (e.g. `1.0.1-rc3`) will be published 
-temporarily on GitHub, under [Releases](https://github.com/Smithsonian/SuperNOVAS/releases), so that changes can be 
+temporarily on GitHub, under [Releases](https://github.com/Sigmyne/SuperNOVAS/releases), so that changes can be 
 tested by adopters before the releases are finalized. Please use due diligence to test such release candidates with 
 your code when they become available to avoid unexpected surprises when the finalized release is published. Release 
 candidates are typically available for one week only before they are superseded either by another, or by the finalized 

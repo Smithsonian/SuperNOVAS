@@ -55,9 +55,11 @@ var group__observer =
     [ "make_solar_system_observer", "group__observer.html#ga9c3f1a1bc3fd9ac6d211806913d2d529", null ],
     [ "make_xyz_site", "group__observer.html#ga9e3cbe310a40919ff94d2d530ffa74ee", null ],
     [ "novas_cartesian_to_geodetic", "group__observer.html#ga7479134485c298faa858d73ee0513a11", null ],
+    [ "novas_enu_to_itrs", "group__observer.html#ga2bfff0a80ee078a45bc4301cd1ad8299", null ],
     [ "novas_geodetic_to_cartesian", "group__observer.html#gab07d86d425d68a62e94e965dd36b7a32", null ],
     [ "novas_geodetic_transform_site", "group__observer.html#gadcd71f60a1f042af1eb7103134fad8c4", null ],
     [ "novas_itrf_transform", "group__observer.html#gafd98ed01148f1291018809d77785527f", null ],
     [ "novas_itrf_transform_site", "group__observer.html#gad252294c7d4b3e62609c21f7550e2d09", null ],
+    [ "novas_itrs_to_enu", "group__observer.html#ga8e7cb3d7902bbecdb9329bf584950367", null ],
     [ "novas_set_default_weather", "group__observer.html#ga0fc8f315f8606e09571ab49efb13baca", null ]
 ];

@@ -1,5 +1,11 @@
 var NAVTREEINDEX3 =
 {
+"place_8c.html#a0f307c2a37d594a68e99c5c8af6d50c9":[7,0,1,13,16],
+"place_8c.html#a1504058672e6e3cf24ce6b7189ede005":[7,0,1,13,13],
+"place_8c.html#a86e4f52e832879a33aefc28803e2690f":[7,0,1,13,18],
+"place_8c.html#a918c8244e44c69f1589d9f4bf5355d16":[7,0,1,13,15],
+"place_8c.html#aaf3d450c87f545acfa7ab7e2b6c229d9":[7,0,1,13,17],
+"place_8c.html#aaf51bf000e993807101a34adf423d36b":[7,0,1,13,6],
 "place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c":[7,0,1,13,7],
 "place_8c.html#acd56c41e811a002d6280b3b315730fbd":[7,0,1,13,5],
 "place_8c.html#ad465eafe65e3d701fc4bd57efa793a12":[7,0,1,13,10],

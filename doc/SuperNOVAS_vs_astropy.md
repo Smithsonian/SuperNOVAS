@@ -1,7 +1,7 @@
 # SuperNOVAS vs. astropy
 
 Nowadays __astropy__ is widely used in the astronomy community and it is known for its simplicity and elegance, but it 
-is rather slow ([putting it mildly](https://github.com/Smithsonian/SuperNOVAS#benchmarks)). In contrast, C is known to 
+is rather slow ([putting it mildly](https://github.com/Sigmyne/SuperNOVAS#benchmarks)). In contrast, C is known to 
 be fast, but it also has a bad reputation for being tedious and 'ugly'. However, below is a side-by-side comparison of 
 equivalent program snippets for calculating CIRS apparent positions in __astropy__ vs. __SuperNOVAS__ for Antares for a 
 given date and observer location:
