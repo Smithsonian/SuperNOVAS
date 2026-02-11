@@ -2,9 +2,9 @@
 excerpt: SuperNOVAS is a light-weight, high-precision astrometry C/C++ library, based on NOVAS C 3.1.
 ---
 
-<img src="/SuperNOVAS/resources/CfA-logo.png" alt="CfA logo" width="400" height="67" align="right"><br clear="all">
+<img src="/SuperNOVAS/resources/Sigmyne-logo-400x87.png" alt="CfA logo" width="400" height="87" align="right"><br clear="all">
 
-<img src="https://img.shields.io/github/v/release/Smithsonian/SuperNOVAS?label=github" class="badge" alt="GitHub release version" align="left">
+<img src="https://img.shields.io/github/v/release/Sigmyne/SuperNOVAS?label=github" class="badge" alt="GitHub release version" align="left">
 <img src="https://img.shields.io/fedora/v/supernovas?color=lightblue" class="badge" alt="Fedora package version" align="left">
 <img src="https://img.shields.io/debian/v/supernovas?color=lightblue" class="badge" alt="Debian package version" align="left">
 <img src="https://img.shields.io/ubuntu/v/supernovas?color=lightblue" class="badge" alt="Ubuntu package version" align="left">
@@ -24,9 +24,8 @@ __SuperNOVAS__ is entirely free to use without licensing restrictions. Its sourc
 standard, and hence should be suitable for old and new platforms alike. And, despite it being a light-weight library,
 it fully supports the IAU 2000/2006 standards for sub-microarcsecond position calculations. 
 
-__SuperNOVAS__ is maintained by [Attila Kovacs](https://github.com/attipaci) at the Center for Astrophysics \| Harvard 
-& Smithsonian, and it available via the [Smithsonian/SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/) 
-repository on GitHub.
+__SuperNOVAS__ is maintained by [Attila Kovacs](https://github.com/attipaci) (Sigmyne LLC), and it is freely available 
+via the [Sigmyne/SuperNOVAS](https://github.com/Sigmyne/SuperNOVAS/) repository on GitHub.
 
 This site contains various online resources that support the library:
 
@@ -36,14 +35,14 @@ __Documentation__
  - [User's guide](doc/README.md) (`README.md`)
  - [API Documentation](doc/html/files.html)
  - [History of changes](doc/CHANGELOG.md) (`CHANGELOG.md`)
- - [Issues](https://github.com/Smithsonian/SuperNOVAS/issues) affecting SuperNOVAS releases (past and/or present)
- - [Community Forum](https://github.com/Smithsonian/SuperNOVAS/discussions) &ndash; ask a question, provide feedback, or 
+ - [Issues](https://github.com/Sigmyne/SuperNOVAS/issues) affecting SuperNOVAS releases (past and/or present)
+ - [Community Forum](https://github.com/Sigmyne/SuperNOVAS/discussions) &ndash; ask a question, provide feedback, or 
    check announcements.
 
  
 __Downloads__
 
- - [Releases](https://github.com/Smithsonian/SuperNOVAS/releases) from GitHub
+ - [Releases](https://github.com/Sigmyne/SuperNOVAS/releases) from GitHub
 
 
 __Linux Packages__
