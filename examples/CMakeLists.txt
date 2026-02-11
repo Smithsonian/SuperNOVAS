@@ -14,7 +14,7 @@ if(NOT PROJECT_NAME)
     project(supernovas-examples 
         VERSION 1.5.0
         DESCRIPTION "SuperNOVAS example programs"
-        HOMEPAGE_URL "https://smithsonian.github.io/SuperNOVAS/"
+        HOMEPAGE_URL "https://sigmyne.github.io/SuperNOVAS/"
         LANGUAGES C
     )
     

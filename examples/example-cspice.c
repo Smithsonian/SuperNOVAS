@@ -15,7 +15,7 @@
  *  To compile CSPICE as a shared (.so) library, you may want to check out the GitHub
  *  repository:
  *
- *   - https://github.com/Smithsonian/cspice-sharedlib
+ *   - https://github.com/Sigmyne/cspice-sharedlib
  *
  *  Link with:
  *

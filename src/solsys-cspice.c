@@ -10,7 +10,7 @@
  *  this module is compiled only if `CSPICE_SUPPORT` is set to 1 prior to the build.
  *
  *  Before building SuperNOVAS against CSPICE, you might want to check out the
- *  `Smithsonian/cspice-sharedlib` repository on Github to facilitate the building of CSPICE
+ *  `Sigmyne/cspice-sharedlib` repository on Github to facilitate the building of CSPICE
  *  as a shared library instead of the static library built by the uptream distribution.
  *
  *  To use, simply include `novas-cspice.h` in your application source, load the requisite
@@ -47,7 +47,7 @@
  *  REFERENCES:
  *  <ol>
  *  <li>The NAIF CSPICE Toolkit: https://naif.jpl.nasa.gov/naif/toolkit.html</li>
- *  <li>the Smithsonian/cspice-sharedlib repository: https://github.com/Smithsonian/cspice-sharedlib</li>
+ *  <li>the Sigmyne/cspice-sharedlib repository: https://github.com/Sigmyne/cspice-sharedlib</li>
  *  </ol>
  *
  * @author Attila Kovacs

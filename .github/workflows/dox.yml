@@ -47,7 +47,7 @@ jobs:
   site-update:
     name: Update github pages
     needs: apidocs
-    if: github.repository_owner == 'Smithsonian' && (github.event_name == 'release' || github.event.pull_request.merged || contains(github.event.head_commit.message, 'site update'))
+    if: github.repository_owner == 'Sigmyne' && (github.event_name == 'release' || github.event.pull_request.merged || contains(github.event.head_commit.message, 'site update'))
 
     runs-on: ubuntu-latest
     steps:
@@ -101,7 +101,7 @@ jobs:
 
   changelog-update:
     name: Update CHANGELOG on github pages
-    if: github.repository_owner == 'Smithsonian' && (github.event.pull_request.merged || contains(github.event.head_commit.message, 'changelog update'))
+    if: github.repository_owner == 'Sigmyne' && (github.event.pull_request.merged || contains(github.event.head_commit.message, 'changelog update'))
 
     runs-on: ubuntu-latest
     steps:

@@ -7,7 +7,7 @@ project a little bit your own, by submitting pull requests with fixes and enhanc
 the typical steps for contributing to the project:
 
 1. Old or new __Issue__? Whether you just found a bug, or you are missing a much needed feature, start by checking 
-open (and closed) [Issues](https://github.com/Smithsonian/SuperNOVAS/issues). If an existing issue seems like a 
+open (and closed) [Issues](https://github.com/Sigmyne/SuperNOVAS/issues). If an existing issue seems like a 
 good match to yours, feel free to speak up, comment, or to offer help in resolving it. If you find no issues that 
 match, go ahead and create a new one.
 
@@ -48,6 +48,6 @@ this library a little bit better. There will be many who will appreciate it. :-)
 
 If at any point you have questions, or need feedback, don't be afraid to ask. You can put your questions into the 
 issue you found or created, or your pull-request, or as a Q&amp;A in 
-[Discussions](https://github.com/Smithsonian/SuperNOVAS/discussions).
+[Discussions](https://github.com/Sigmyne/SuperNOVAS/discussions).
 
 
