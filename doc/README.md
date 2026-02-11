@@ -79,9 +79,8 @@ the lack of `try / except` style constructs in C).
 __SuperNOVAS__ is currently based on NOVAS C version 3.1. We plan to rebase __SuperNOVAS__ to the latest upstream 
 release of the NOVAS C library, if new releases become available.
  
-__SuperNOVAS__ is maintained by [Attila Kovács](https://github.com/attipaci) at the Center for Astrophysics \| Harvard 
-&amp; Sigmyne, and it is available through the [Sigmyne/SuperNOVAS](https://github.com/Sigmyne/SuperNOVAS) 
-repository on GitHub.
+__SuperNOVAS__ is maintained by [Attila Kovács](https://github.com/attipaci) (Sigmyne, LLC), and it is available through 
+the [Sigmyne/SuperNOVAS](https://github.com/Sigmyne/SuperNOVAS) repository on GitHub.
 
 Outside contributions are very welcome. See
 [how you can contribute](https://sigmyne.github.io/SuperNOVAS/doc/CONTRIBUTING.html) on how you can make __SuperNOVAS__ 
