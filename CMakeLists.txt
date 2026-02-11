@@ -156,6 +156,7 @@ set(SUPERNOVAS_CORE_SOURCES
     src/ephemeris.c
     src/solsys3.c
     src/solsys-ephem.c
+    src/moon.c
 )
 
 add_library(core ${SUPERNOVAS_CORE_SOURCES})
