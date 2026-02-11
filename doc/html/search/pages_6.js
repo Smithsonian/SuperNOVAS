@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['vs_20astropy_0',['SuperNOVAS vs. astropy',['../md_SuperNOVAS__vs__astropy.html',1,'']]]
+  ['to_20supernovas_0',['Contributing to SuperNOVAS',['../md__2github_2workspace_2CONTRIBUTING.html',1,'']]]
 ];

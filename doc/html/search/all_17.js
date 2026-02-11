@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['s_20guide_0',['User&apos;s guide',['../index.html#autotoc_md71',1,'']]],
+  ['s_20guide_0',['User&apos;s guide',['../index.html',1,'']]],
   ['sc_5fpos_1',['sc_pos',['../structin__space.html#abc3736b39d63bfabf73a25e3b03b91d8',1,'in_space']]],
   ['sc_5fvel_2',['sc_vel',['../structin__space.html#a9615dabeef0c31f47546c8083b768257',1,'in_space']]],
   ['schedule_3',['Release schedule',['../index.html#autotoc_md137',1,'']]],
@@ -49,7 +49,7 @@ var searchData=
   ['sun_5feph_46',['sun_eph',['../solsys3_8c.html#a869ec4c9fe91668611c0cfcc6bf332cf',1,'solsys3.c']]],
   ['sun_5fpos_47',['sun_pos',['../structnovas__frame.html#a3d3fc00c5477b8f7a9b6593a748949d0',1,'novas_frame']]],
   ['sun_5fvel_48',['sun_vel',['../structnovas__frame.html#ae949db92ce7c56e4b5ada1b8f80002d3',1,'novas_frame']]],
-  ['supernovas_49',['SuperNOVAS',['../index.html#autotoc_md89',1,'Building your application with SuperNOVAS'],['../md__2github_2workspace_2CONTRIBUTING.html',1,'Contributing to SuperNOVAS'],['../index.html',1,'SuperNOVAS']]],
+  ['supernovas_49',['SuperNOVAS',['../index.html#autotoc_md89',1,'Building your application with SuperNOVAS'],['../md__2github_2workspace_2CONTRIBUTING.html',1,'Contributing to SuperNOVAS']]],
   ['supernovas_20added_20features_50',['SuperNOVAS added features',['../index.html#autotoc_md133',1,'']]],
   ['supernovas_20and_20c_51',['SuperNOVAS and C++',['../index.html#autotoc_md122',1,'']]],
   ['supernovas_20using_20cmake_52',['Build SuperNOVAS using CMake',['../index.html#autotoc_md83',1,'']]],

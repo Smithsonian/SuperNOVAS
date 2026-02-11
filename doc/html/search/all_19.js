@@ -6,7 +6,7 @@ var searchData=
   ['unreleased_3',['[Unreleased]',['../md__2github_2workspace_2CHANGELOG.html#autotoc_md18',1,'']]],
   ['up_20the_20observing_20frame_4',['Set up the observing frame',['../index.html#autotoc_md103',1,'']]],
   ['usage_5',['Example usage',['../index.html#autotoc_md98',1,'']]],
-  ['user_20s_20guide_6',['User&apos;s guide',['../index.html#autotoc_md71',1,'']]],
+  ['user_20s_20guide_6',['User&apos;s guide',['../index.html',1,'']]],
   ['using_20a_20gnu_20tt_20makefile_20tt_7',['Using a GNU &lt;tt&gt;Makefile&lt;/tt&gt;',['../index.html#autotoc_md90',1,'']]],
   ['using_20cmake_8',['Using CMake',['../index.html#autotoc_md91',1,'']]],
   ['using_20cmake_9',['Build SuperNOVAS using CMake',['../index.html#autotoc_md83',1,'']]],

@@ -28,5 +28,5 @@ var searchData=
   ['grav_5fundo_5fplanets_25',['grav_undo_planets',['../grav_8c.html#a1b107a24b9fadc79cc5df8c6f5505d16',1,'grav_undo_planets(const double *pos_app, const double *pos_obs, const novas_planet_bundle *restrict planets, double *out):&#160;grav.c'],['../novas_8h.html#a1b107a24b9fadc79cc5df8c6f5505d16',1,'grav_undo_planets(const double *pos_app, const double *pos_obs, const novas_planet_bundle *restrict planets, double *out):&#160;grav.c']]],
   ['grav_5fvec_26',['grav_vec',['../grav_8c.html#a08a008572e2746a70bec19739b5fb7e6',1,'grav_vec(const double *pos_src, const double *pos_obs, const double *pos_body, double rmass, double *out):&#160;grav.c'],['../novas_8h.html#a08a008572e2746a70bec19739b5fb7e6',1,'grav_vec(const double *pos_src, const double *pos_obs, const double *pos_body, double rmass, double *out):&#160;grav.c']]],
   ['gst_27',['gst',['../structnovas__frame.html#aef07d7946615098b170225edc81bd4a7',1,'novas_frame']]],
-  ['guide_28',['User&apos;s guide',['../index.html#autotoc_md71',1,'']]]
+  ['guide_28',['User&apos;s guide',['../index.html',1,'']]]
 ];

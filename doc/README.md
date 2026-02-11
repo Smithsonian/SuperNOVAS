@@ -1,6 +1,3 @@
-<img src="CfA-logo.png" alt="CfA logo" width="400" height="67" align="right"/>
-<br clear="all">
-
 # User's guide
 
 
