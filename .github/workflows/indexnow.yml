@@ -16,8 +16,8 @@ jobs:
       - name: IndexNow
         uses: bojieyang/indexnow-action@v2
         with:
-          sitemap-location: 'https://smithsonian.github.io/SuperNOVAS/sitemap.xml'
+          sitemap-location: 'https://sigmyne.github.io/SuperNOVAS/sitemap.xml'
           key: ${{ secrets.INDEXNOW_KEY }}
-          key-location: 'https://smithsonian.github.io/SuperNOVAS/${{ secrets.INDEXNOW_KEY }}.txt'
+          key-location: 'https://sigmyne.github.io/SuperNOVAS/${{ secrets.INDEXNOW_KEY }}.txt'
           limit: 200
 
