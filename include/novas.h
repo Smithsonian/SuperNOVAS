@@ -2131,10 +2131,10 @@ typedef int (*novas_ephem_provider)(const char *name, long id, double jd_tdb_hig
  *
  * @param jd_tt     [day] Terrestrial Time (TT) based Julian data of observation
  * @param loc       Pointer to structure defining the observer's location on earth, and local weather
- * @param type      Whether the input elevation is observed or astrometric: REFRACT_OBSERVED (-1) or
- *                  REFRACT_ASTROMETRIC (0).
+ * @param type      Whether the input elevation is observed or astrometric: NOVAS_REFRACT_OBSERVED (-1) or
+ *                  NOVAS_REFRACT_ASTROMETRIC (0).
  * @param el        [deg] Astrometric (unrefracted) source elevation
- * @return          [arcsec] Estimated refraction, or NAN if there was an error (it should
+ * @return          [deg] Estimated refraction, or NAN if there was an error (it should
  *                  also set errno to indicate the type of error).
  *
  * @since 1.1

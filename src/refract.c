@@ -282,7 +282,7 @@ double novas_standard_refraction(double jd_tt, const on_surface *loc, enum novas
  * @param type      Whether the input elevation is observed or astrometric: NOVAS_REFRACT_OBSERVED
  *                  (-1) or NOVAS_REFRACT_ASTROMETRIC (0).
  * @param el        [deg] Astrometric (unrefracted) source elevation
- * @return          [arcsec] Estimated refraction, or NAN if there was an error (it should also
+ * @return          [deg] Estimated refraction, or NAN if there was an error (it should also
  *                  set errno to indicate the type of error).
  *
  * @sa novas_wave_refraction(), novas_radio_refraction(), novas_standard_refraction()
