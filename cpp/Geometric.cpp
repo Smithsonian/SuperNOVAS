@@ -25,7 +25,7 @@ namespace supernovas {
  * @param system  equatorial coordinate reference_system, in which position and velocity vectors are defined
  */
 Geometric::Geometric(const Position& p, const Velocity& v, const Frame& frame, enum novas_reference_system system)
-          : _frame(frame), _pos(p), _vel(v), _system(Equinox::invalid()) {
+          : _frame(frame), _pos(p), _vel(v), _system(system) {
   static const char *fn = "Geometric()";
 
   if(!frame.is_valid())
@@ -38,8 +38,6 @@ Geometric::Geometric(const Position& p, const Velocity& v, const Frame& frame, e
     novas_set_errno(EINVAL, fn, "input velocity contains NAN coponent(s)");
   else
     _valid = true;
-
-  _system = Equinox::for_reference_system(system, frame.time().jd()).value();
 }
 
 /**
@@ -58,7 +56,22 @@ Geometric Geometric::operator>>(enum novas_reference_system system) const {
 }
 
 /**
- * Returns the observing frame for which these geometric coordinates were defined.
+ * Returns the observing frame for which these geometric c Geometric c(pos, vel, frame, NOVAS_CIRS);
+
+  opt = b.to_system(NOVAS_ITRS);
+  if(!test.check("to_itrs(site).has_value()", opt.has_value())) n++;
+  else {
+    Geometric c1 = opt.value();
+
+    novas_make_transform(frame._novas_frame(), NOVAS_CIRS, NOVAS_ITRS, &T);
+    novas_transform_vector(pos._array(), &T, pos1);
+    novas_transform_vector(vel._array(), &T, vel1);
+
+    if(!test.equals("to_itrs().system()", c1.system().system_type(), NOVAS_ITRS)) n++;
+    if(!test.check("to_itrs(site).position()", c1.position() == Position(pos1))) n++;
+    if(!test.check("to_itrs(site).velocity()", c1.velocity() == Velocity(vel1))) n++;
+  }
+ * oordinates were defined.
  *
  * @return    a reference to the observing frame (observer location and time of observation)
  *
@@ -75,7 +88,7 @@ const Frame& Geometric::frame() const {
  *
  * @sa position(), velocity(), equatorial()
  */
-const Equinox& Geometric::system() const {
+enum novas_reference_system Geometric::system_type() const {
   return _system;
 }
 
@@ -101,7 +114,22 @@ const Velocity& Geometric::velocity() const {
   return _vel;
 }
 
-/**
+/** Geometric c(pos, vel, frame, NOVAS_CIRS);
+
+  opt = b.to_system(NOVAS_ITRS);
+  if(!test.check("to_itrs(site).has_value()", opt.has_value())) n++;
+  else {
+    Geometric c1 = opt.value();
+
+    novas_make_transform(frame._novas_frame(), NOVAS_CIRS, NOVAS_ITRS, &T);
+    novas_transform_vector(pos._array(), &T, pos1);
+    novas_transform_vector(vel._array(), &T, vel1);
+
+    if(!test.equals("to_itrs().system()", c1.system().system_type(), NOVAS_ITRS)) n++;
+    if(!test.check("to_itrs(site).position()", c1.position() == Position(pos1))) n++;
+    if(!test.check("to_itrs(site).velocity()", c1.velocity() == Velocity(vel1))) n++;
+  }
+ *
  * Returns the geometric equatorial coordinates, in the system in which the geometric positions
  * and velocities were defined. Note, that these coordinates are phyisical, and not what an observer
  * would perceive at the time of observation, because:
@@ -117,7 +145,8 @@ const Velocity& Geometric::velocity() const {
  * @sa Apparent::equatorial(), ecliptic(), galactic(), position(), velocity()
  */
 Equatorial Geometric::equatorial() const {
-  return Equatorial(_pos, _system);
+  std::optional<Equinox> opt = Equinox::from_system_type(_system, _frame.time().jd());
+  return opt.has_value() ? Equatorial(_pos, opt.value()) : Equatorial::invalid();
 }
 
 /**
@@ -162,14 +191,15 @@ Geometric Geometric::to_system(const novas::novas_frame *f, enum novas::novas_re
   novas_transform T = {};
   double p[3] = {0.0}, v[3] = {0.0};
 
-  if(novas_make_transform(f, _system.reference_system(), system, &T) != 0) {
+  if(novas_make_transform(f, _system, system, &T) != 0) {
     novas_trace_invalid("Geometric::to_system");
     return Geometric::invalid();
   }
+
   novas_transform_vector(_pos._array(), &T, p);
   novas_transform_vector(_vel._array(), &T, v);
 
-  return Geometric(Position(p), Velocity(v), _frame, _system.reference_system());
+  return Geometric(Position(p), Velocity(v), _frame, system);
 }
 
 
@@ -185,7 +215,7 @@ Geometric Geometric::to_system(const novas::novas_frame *f, enum novas::novas_re
  * @sa operator>>(), to_icrs(), to_j2000(), to_mod(), to_tod(), to_cirs(), to_tirs(), to_itrs()
  */
 Geometric Geometric::to_system(enum novas_reference_system system) const {
-  if(system == _system.reference_system())
+  if(system == _system)
     return *this;
 
   if(system == NOVAS_ITRS)
@@ -204,7 +234,7 @@ Geometric Geometric::to_system(enum novas_reference_system system) const {
  * @sa to_system(), to_j2000(), to_mod(), to_tod(), to_cirs(), to_tirs(), to_itrs()
  */
 Geometric Geometric::to_icrs() const {
-  return to_system(novas::NOVAS_ICRS);
+  return to_system(NOVAS_ICRS);
 }
 
 /**
@@ -217,7 +247,7 @@ Geometric Geometric::to_icrs() const {
  * @sa to_system(), to_icrs(), to_mod(), to_tod(), to_cirs(), to_tirs(), to_itrs()
  */
 Geometric Geometric::to_j2000() const {
-  return to_system(novas::NOVAS_J2000);
+  return to_system(NOVAS_J2000);
 }
 
 /**
@@ -230,7 +260,7 @@ Geometric Geometric::to_j2000() const {
  * @sa to_system(), to_icrs(), to_j2000(), to_tod(), to_cirs(), to_tirs(), to_itrs()
  */
 Geometric Geometric::to_mod() const {
-  return to_system(novas::NOVAS_MOD);
+  return to_system(NOVAS_MOD);
 }
 
 /**
@@ -243,7 +273,7 @@ Geometric Geometric::to_mod() const {
  * @sa to_system(), to_icrs(), to_j2000(), to_mod(), to_cirs(), to_tirs(), to_itrs()
  */
 Geometric Geometric::to_tod() const {
-  return to_system(novas::NOVAS_TOD);
+  return to_system(NOVAS_TOD);
 }
 
 /**
@@ -257,7 +287,7 @@ Geometric Geometric::to_tod() const {
  * @sa to_system(), to_icrs(), to_j2000(), to_mod(), to_tod(), to_tirs(), to_itrs()
  */
 Geometric Geometric::to_cirs() const {
-  return to_system(novas::NOVAS_CIRS);
+  return to_system(NOVAS_CIRS);
 }
 
 /**
@@ -271,7 +301,7 @@ Geometric Geometric::to_cirs() const {
  * @sa to_system(), to_icrs(), to_j2000(), to_mod(), to_tod(), to_cirs(), to_itrs()
  */
 Geometric Geometric::to_tirs() const {
-  return to_system(novas::NOVAS_TIRS);
+  return to_system(NOVAS_TIRS);
 }
 
 /**
@@ -287,7 +317,7 @@ Geometric Geometric::to_tirs() const {
  * @sa to_system(), to_icrs(), to_j2000(), to_mod(), to_tod(), to_cirs(), to_tirs()
  */
 std::optional<Geometric> Geometric::to_itrs(const EOP& eop) const {
-  if(_system.reference_system() == NOVAS_ITRS)
+  if(_system == NOVAS_ITRS)
     return Geometric(*this);
 
   // Apply specified EOP to frame
@@ -311,7 +341,7 @@ std::optional<Geometric> Geometric::to_itrs(const EOP& eop) const {
 
   // Or, use observer's EOP
   if(_frame.observer().is_geodetic())
-    return to_system(NOVAS_ITRS);
+    return to_itrs(dynamic_cast<const GeodeticObserver &>(_frame.observer()).eop());
 
   // Or, we can't really convert to ITRS
   novas_set_errno(EINVAL, "Geometric::to_itrs()", "Needs valid EOP for non geodetic observer frame");

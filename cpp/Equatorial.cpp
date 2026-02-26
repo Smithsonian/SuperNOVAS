@@ -170,7 +170,7 @@ Equatorial Equatorial::operator>>(const Equinox& system) const {
  *
  * @return    the coordinate reference system (type and epoch).
  *
- * @sa reference_system()
+ * @sa system_type()
  */
 const Equinox& Equatorial::system() const {
   return _sys;
@@ -183,8 +183,8 @@ const Equinox& Equatorial::system() const {
  *
  * @sa system()
  */
-enum novas::novas_reference_system Equatorial::reference_system() const {
-  return _sys.reference_system();
+enum novas::novas_reference_system Equatorial::system_type() const {
+  return _sys.system_type();
 }
 
 /**
@@ -217,7 +217,7 @@ Equatorial Equatorial::to_system(const Equinox& system) const {
   radec2vector(ra().hours(), dec().deg(), 1.0, p);
 
   // Convert to ICRS...
-  switch(_sys.reference_system()) {
+  switch(_sys.system_type()) {
     case NOVAS_GCRS:
     case NOVAS_ICRS:
       break;
@@ -238,7 +238,7 @@ Equatorial Equatorial::to_system(const Equinox& system) const {
   }
 
   // Convert from ICRS to output system...
-  switch(system.reference_system()) {
+  switch(system.system_type()) {
     case NOVAS_GCRS:
     case NOVAS_ICRS:
       break;
@@ -440,7 +440,7 @@ Ecliptic Equatorial::to_ecliptic() const {
   double r = ra().hours();
   double d = dec().deg();
 
-  if(_sys.reference_system() == NOVAS_CIRS)
+  if(_sys.system_type() == NOVAS_CIRS)
     r -= ira_equinox(_sys.jd(), NOVAS_TRUE_EQUINOX, NOVAS_FULL_ACCURACY);
 
   equ2ecl(_sys.jd(), _sys.equator_type(), NOVAS_FULL_ACCURACY, r, d, &lon, &lat);

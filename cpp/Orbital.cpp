@@ -72,7 +72,7 @@ Planet OrbitalSystem::center() const {
  *
  * @return    the obliquity of the orbital system relative to the reference plane.
  *
- * @sa ascending_node(), pole(), reference_system()
+ * @sa ascending_node(), pole(), system_type()
  */
 Angle OrbitalSystem::obliquity() const {
   return Angle(_system.obl);
@@ -86,7 +86,7 @@ Angle OrbitalSystem::obliquity() const {
  * @return    the ascending node's distance from the vernal equinox in the orbital
  *            reference plane.
  *
- * @sa obliquity(), pole(), reference_system()
+ * @sa obliquity(), pole(), system_type()
  */
 Angle OrbitalSystem::ascending_node() const {
   return Angle(_system.Omega);
@@ -99,7 +99,7 @@ Angle OrbitalSystem::ascending_node() const {
  *
  * @sa obliquity(), ascending_node(), pole(),
  */
-enum novas_reference_system OrbitalSystem::reference_system() const {
+enum novas_reference_system OrbitalSystem::system_type() const {
   return _system.type;
 }
 
@@ -109,7 +109,7 @@ enum novas_reference_system OrbitalSystem::reference_system() const {
  *
  * @return    The spherical location of the orbital system pole, in the reference plane.
  *
- * @sa reference_system(), obliquity(), ascending_node()
+ * @sa system_type(), obliquity(), ascending_node()
  */
 Spherical OrbitalSystem::pole() const {
   return Spherical(_system.Omega - Constant::half_pi, Constant::half_pi - _system.obl);
@@ -129,7 +129,7 @@ Spherical OrbitalSystem::pole() const {
 OrbitalSystem& OrbitalSystem::orientation(double obliquity_rad, double ascending_node_rad, const Equinox& system) {
   static const char *fn = "OrbitalSystem::orinetation";
 
-  _system.type = system.reference_system();
+  _system.type = system.system_type();
   _system.obl = obliquity_rad;
   _system.Omega = ascending_node_rad;
 

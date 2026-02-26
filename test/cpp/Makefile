@@ -13,8 +13,8 @@ CPP_OBJECTS = $(subst .cpp,.opp, $(subst $(CPP_SRC)/,obj/, $(CPP_SOURCES)))
 TESTS = AngleTest TimeAngleTest IntervalTest DistanceTest SpeedTest TemperatureTest PressureTest \
 	EOPTest SphericalTest CalendarTest PositionTest GalacticTest EclipticTest WeatherTest \
 	VelocityTest EquinoxTest VectorTest CatalogEntryTest OrbitalTest EquatorialTest \
-	TemperatureTest SiteTest ObserverTest TimeTest FrameTest SourceTest HorizontalTest \
-	ApparentTest
+	TemperatureTest SiteTest ObserverTest TimeTest FrameTest SourceTest PlanetTest HorizontalTest \
+	ApparentTest GeometricTest
 
 .PHONY: build
 build: libnovas++.a $(TESTS)

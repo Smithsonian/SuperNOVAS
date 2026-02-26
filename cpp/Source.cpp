@@ -168,16 +168,19 @@ static const EOP& extract_eop(const Frame &frame) {
 std::optional<Time> Source::rises_above(const Angle& el, const Frame &frame, RefractionModel ref, const Weather& weather) const {
   static const char *fn = "Source::rises_above";
 
-  double eld = el.deg();
   if(frame.observer().is_geodetic()) {
-    if(ref)
-      eld = Horizontal(0.0, el.rad()).to_unrefracted(ref, weather, frame.time()).elevation().deg();
+    novas_frame f = *frame._novas_frame();
+    on_surface *s = &f.observer.on_surf;
 
-    Time t = Time(novas_check_nan(fn, novas_rises_above(eld, &_object, frame._novas_frame(), NULL)), extract_eop(frame));
+    s->temperature = weather.temperature().celsius();
+    s->pressure = weather.pressure().mbar();
+    s->humidity = weather.humidity();
+
+    Time t = Time(novas_check_nan(fn, novas_rises_above(el.deg(), &_object, &f, ref)), extract_eop(frame));
     return t;
   }
 
-  novas_set_errno(ENOSYS, fn, "Cannot calculate rises time for a non-geodetic observer.");
+  novas_set_errno(ENOSYS, fn, "Cannot calculate rise time for a non-geodetic observer.");
   return std::nullopt;
 }
 
@@ -224,16 +227,20 @@ std::optional<Time> Source::transits(const Frame &frame) const {
 std::optional<Time> Source::sets_below(const Angle& el, const Frame &frame, RefractionModel ref, const Weather& weather) const {
   static const char *fn = "Source::sets_below";
 
-  double eld = el.deg();
   if(frame.observer().is_geodetic()) {
-    if(ref)
-      eld = Horizontal(0.0, el.rad()).to_unrefracted(ref, weather, frame.time()).elevation().deg();
+    novas_frame f = *frame._novas_frame();
+    on_surface *s = &f.observer.on_surf;
+
+    s->temperature = weather.temperature().celsius();
+    s->pressure = weather.pressure().mbar();
+    s->humidity = weather.humidity();
+
     return Time(
-          novas_check_nan("Source::sets_below", novas_sets_below(eld, &_object, frame._novas_frame(), NULL)),
-          extract_eop(frame));
+            novas_check_nan("Source::sets_below", novas_sets_below(el.deg(), &_object, &f, ref)),
+            extract_eop(frame));
   }
 
-  novas_set_errno(ENOSYS, fn, "Cannot calculate transit time for a non-geodetic observer.");
+  novas_set_errno(ENOSYS, fn, "Cannot calculate setting time for a non-geodetic observer.");
   return std::nullopt;
 }
 

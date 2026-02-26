@@ -32,6 +32,8 @@ int main() {
   c = CatalogSource(ce);
   if(!test.equals("name(catalog) sensitive", c.name(), "Test")) n++;
 
+  Planet sun = Planet(NOVAS_SUN);
+
   const object *o = c._novas_object();
   if(!test.equals("_novas_object(catalog) type", o->type, NOVAS_CATALOG_OBJECT)) n++;
   if(!test.equals("_novas_object(catalog) name", std::string(o->name), "Test")) n++;
@@ -40,22 +42,65 @@ int main() {
   EOP eop(37, 0.0, 0.0, 0.0);
 
   Frame frame(Observer::on_earth(site, eop), Time::j2000(), NOVAS_REDUCED_ACCURACY);
+  Frame gc(Observer::at_geocenter(), Time::j2000(), NOVAS_REDUCED_ACCURACY);
 
   if(!test.check("observer.is_geodetic()", Observer::on_earth(site, eop).is_geodetic())) n++;
   if(!test.check("frame.is_valid()", frame.is_valid())) n++;
   if(!test.check("frame.observer().is_geodetic()", frame.observer().is_geodetic())) n++;
 
+  if(!test.equals("sun_angle()", c.sun_angle(frame).deg(), novas_sun_angle(o, frame._novas_frame()), 1e-13)) n++;
+  if(!test.equals("moon_angle()", c.moon_angle(frame).deg(), novas_moon_angle(o, frame._novas_frame()), 1e-13)) n++;
+  if(!test.equals("angle_to()", c.angle_to(sun, frame).deg(), novas_object_sep(o, sun._novas_object(), frame._novas_frame()), 1e-13)) n++;
+
   if(!test.equals("rises_above(catalog)",
           c.rises_above(Angle(20.0 * Unit::deg), frame).value().jd(),
           novas_rises_above(20.0, c._novas_object(), frame._novas_frame(), NULL), 1e-7)) n++;
+  if(!test.equals("rises_above(Sun)",
+          sun.rises_above(Angle(20.0 * Unit::deg), frame).value().jd(),
+          novas_rises_above(20.0, sun._novas_object(), frame._novas_frame(), NULL), 1e-7)) n++;
+  if(!test.equals("rises_above(refract)",
+          c.rises_above(Angle(20.0 * Unit::deg), frame, novas_standard_refraction, Weather::guess(site)).value().jd(),
+          novas_rises_above(20.0, c._novas_object(), frame._novas_frame(), novas_standard_refraction), 1e-7)) n++;
+  if(!test.check("rises_above(gc)", !c.rises_above(Angle(20.0 * Unit::deg), gc).has_value())) n++;
 
   if(!test.equals("sets_below(catalog)",
           c.sets_below(Angle(20.0 * Unit::deg), frame).value().jd(),
           novas_sets_below(20.0, c._novas_object(), frame._novas_frame(), NULL), 1e-7)) n++;
+  if(!test.equals("sets_below(Sun)",
+          sun.sets_below(Angle(20.0 * Unit::deg), frame).value().jd(),
+          novas_sets_below(20.0, sun._novas_object(), frame._novas_frame(), NULL), 1e-7)) n++;
+  if(!test.equals("sets_below(refract)",
+          c.sets_below(Angle(20.0 * Unit::deg), frame, novas_standard_refraction, Weather::guess(site)).value().jd(),
+          novas_sets_below(20.0, c._novas_object(), frame._novas_frame(), novas_standard_refraction), 1e-7)) n++;
+  if(!test.check("sets_below(gc)", !c.sets_below(Angle(20.0 * Unit::deg), gc).has_value())) n++;
 
   if(!test.equals("transits(catalog)",
           c.transits(frame).value().jd(),
           novas_transit_time(c._novas_object(), frame._novas_frame()), 1e-7)) n++;
+  if(!test.equals("transits(Sun)",
+          sun.transits(frame).value().jd(),
+          novas_transit_time(sun._novas_object(), frame._novas_frame()), 1e-7)) n++;
+  if(!test.check("transits(gc)", !c.transits(gc).has_value())) n++;
+
+  sky_pos tod = {};
+  novas_sky_pos(o, frame._novas_frame(), NOVAS_TOD, &tod);
+  Apparent app = c.apparent(frame);
+  if(!test.check("apparent()", app.is_valid())) n++;
+  if(!test.equals("apparent().ra()", app.equatorial().ra().hours(), tod.ra, 1e-13)) n++;
+  if(!test.equals("apparent().dec()", app.equatorial().dec().deg(), tod.dec, 1e-12)) n++;
+  if(!test.equals("apparent().radial_velocity()", app.radial_velocity().km_per_s(), tod.rv, 1e-13)) n++;
+  if(!test.check("apparent(invalid)", !Planet((enum novas_planet) -1).apparent(gc).is_valid())) n++;
+
+  double p[3] = {0.0}, v[3] = {0.0};
+
+
+  novas_geom_posvel(sun._novas_object(), frame._novas_frame(), NOVAS_TOD, p, v);
+  Geometric geom = sun.geometric(frame, NOVAS_TOD);
+  if(!test.check("geometric(TOD)", geom.is_valid())) n++;
+  if(!test.check("geometric(TOD).position()", geom.position() == Position(p, Unit::AU))) n++;
+  if(!test.check("geometric(TOD).velocity()", geom.velocity() == Velocity(v, Unit::AU / Unit::day))) n++;
+  if(!test.check("geometric(invalid)", !Planet((enum novas_planet) -1).geometric(frame).is_valid())) n++;
+
 
   std::cout << "Source.cpp: " << (n > 0 ? "FAILED" : "OK") << "\n";
   return n;

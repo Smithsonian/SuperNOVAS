@@ -27,13 +27,13 @@ int main() {
   if(!test.check("System::is_valid(orientation)", s.is_valid())) n++;
   if(!test.equals("System::obliquity()", s.obliquity().deg(), 1.0, 1e-15)) n++;
   if(!test.equals("System::ascending_node()", s.ascending_node().deg(), -2.0, 1e-15)) n++;
-  if(!test.equals("System::reference_system()", s.reference_system(), NOVAS_ICRS)) n++;
+  if(!test.equals("System::system_type()", s.system_type(), NOVAS_ICRS)) n++;
 
   s.pole(Spherical(-92.0 * Unit::deg, 89.0 * Unit::deg), Equinox::j2000());
   if(!test.check("System::is_valid(pole)", s.is_valid())) n++;
   if(!test.equals("System::obliquity(pole)", s.obliquity().deg(), 1.0, 1e-12)) n++;
   if(!test.equals("System::ascending_node(pole)", s.ascending_node().deg(), -2.0, 1e-12)) n++;
-  if(!test.equals("System::reference_system(pole)", s.reference_system(), NOVAS_J2000)) n++;
+  if(!test.equals("System::reference_system(pole)", s.system_type(), NOVAS_J2000)) n++;
   if(!test.equals("System::pole().longitude()", s.pole().longitude().deg(), -92.0, 1e-12)) n++;
   if(!test.equals("System::pole().latitude()", s.pole().latitude().deg(), 89.0, 1e-12)) n++;
 

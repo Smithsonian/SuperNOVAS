@@ -220,7 +220,7 @@ double Equinox::mjd() const {
  *
  * @return      the coordinate reference system type
  */
-enum novas_reference_system Equinox::reference_system() const {
+enum novas_reference_system Equinox::system_type() const {
   return _system;
 }
 
@@ -230,7 +230,7 @@ enum novas_reference_system Equinox::reference_system() const {
  * @return    the type of equator used in this equatorial system.
  */
 enum novas_equator_type Equinox::equator_type() const {
-  switch(reference_system()) {
+  switch(system_type()) {
     case NOVAS_GCRS:
     case NOVAS_ICRS:
       return NOVAS_GCRS_EQUATOR;
@@ -347,7 +347,7 @@ std::optional<Equinox> Equinox::from_string(const std::string& name) {
  * @return          an optional containing the corresponding valid equatorial system, or else
  *                  `std::nullopt`.
  */
-std::optional<Equinox> Equinox::for_reference_system(enum novas::novas_reference_system system, double jd_tt) {
+std::optional<Equinox> Equinox::from_system_type(enum novas::novas_reference_system system, double jd_tt) {
   static const char *fn = "Equatorial::for_reference_system";
 
   if(system == NOVAS_GCRS || system == NOVAS_ICRS || system == NOVAS_J2000) {

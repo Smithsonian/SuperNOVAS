@@ -281,7 +281,7 @@ public:
 
   const std::string& name() const;
 
-  enum novas::novas_reference_system reference_system() const;
+  enum novas::novas_reference_system system_type() const;
 
   enum novas::novas_equator_type equator_type() const;
 
@@ -295,7 +295,7 @@ public:
 
   static std::optional<Equinox> from_string(const std::string& name);
 
-  static std::optional<Equinox> for_reference_system(enum novas::novas_reference_system system, double jd_tt = NOVAS_JD_J2000);
+  static std::optional<Equinox> from_system_type(enum novas::novas_reference_system system, double jd_tt = NOVAS_JD_J2000);
 
   static Equinox mod(double jd_tt);
 
@@ -802,7 +802,7 @@ public:
 
   const Equinox& system() const;
 
-  enum novas::novas_reference_system reference_system() const;
+  enum novas::novas_reference_system system_type() const;
 
   Angle distance_to(const Equatorial& other) const;
 
@@ -1925,7 +1925,7 @@ public:
 
   Spherical pole() const;
 
-  enum novas::novas_reference_system reference_system() const;
+  enum novas::novas_reference_system system_type() const;
 
   OrbitalSystem& orientation(double obliquity_rad, double node_rad, const Equinox& system = Equinox::icrs());
 
@@ -2179,10 +2179,10 @@ public:
  */
 class Geometric : public Validating {
 private:
-  Frame _frame;                             ///< stored frame data
-  Position _pos;                            ///< stored geometric position w.r.t. observer
-  Velocity _vel;                            ///< stored geometric velocity w.r.t. observer
-  Equinox _system;                          ///< stored coordinate reference system type
+  Frame _frame;                               ///< stored frame data
+  Position _pos;                              ///< stored geometric position w.r.t. observer
+  Velocity _vel;                              ///< stored geometric velocity w.r.t. observer
+  enum novas::novas_reference_system _system; ///< stored coordinate reference system type
 
   Geometric to_system(const novas::novas_frame *f, enum novas::novas_reference_system system) const;
 
@@ -2193,7 +2193,7 @@ public:
 
   const Frame& frame() const;
 
-  const Equinox& system() const;
+  enum novas::novas_reference_system system_type() const;
 
   const Position& position() const;
 

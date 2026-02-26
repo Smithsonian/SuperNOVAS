@@ -9,7 +9,6 @@
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
 /// \endcond
 
-
 #include "supernovas.h"
 
 using namespace novas;
@@ -179,7 +178,7 @@ Horizontal Horizontal::to_refracted(RefractionModel ref, const Weather& weather,
   on_surface loc = {};
   use_weather(weather, &loc);
   double del = ref ? ref(time.jd(), &loc, NOVAS_REFRACT_ASTROMETRIC, elevation().deg()) : 0.0;
-  return Horizontal(longitude().rad(), latitude().rad() + del * Unit::arcsec);
+  return Horizontal(longitude().rad(), latitude().rad() + del * Unit::deg);
 }
 
 /**
@@ -198,7 +197,7 @@ Horizontal Horizontal::to_unrefracted(RefractionModel ref, const Weather& weathe
   on_surface loc = {};
   use_weather(weather, &loc);
   double del = ref ? ref(time.jd(), &loc, NOVAS_REFRACT_OBSERVED, elevation().deg()) : 0.0;
-  return Horizontal(longitude().rad(), latitude().rad() - del * Unit::arcsec);
+  return Horizontal(longitude().rad(), latitude().rad() - del * Unit::deg);
 }
 
 /**
