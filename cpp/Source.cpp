@@ -383,10 +383,6 @@ Angle Source::angle_to(const Source& source, const Frame& frame) const {
 }
 
 
-std::string Source::to_string() const {
-  return "Source type " + std::to_string(_object.type);
-}
-
 /**
  * Enables or disabled case-sensitive treatment of source names. It only affect sources that are
  * instantiated after the change has been made.

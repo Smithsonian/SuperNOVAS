@@ -75,7 +75,7 @@ class Frame;
 class Apparent;
 class Geometric;
 class Evolution;
-class Track;
+template <class CoordType> class Track;
 class   HorizontalTrack;
 class   EquatorialTrack;
 
@@ -1680,7 +1680,7 @@ public:
   /// @ingroup tracking
   std::optional<HorizontalTrack> horizontal_track(const Frame &frame, novas::RefractionModel ref = NULL, const Weather& weather = Weather::standard()) const;
 
-  virtual std::string to_string() const; // TODO
+  virtual std::string to_string() const = 0;
 
   static void set_case_sensitive(bool value);
 };
@@ -2307,12 +2307,15 @@ public:
   static const Evolution stationary(double value);
 };
 
+
+
 /**
  * Approximate trajectory of a source in spherical coordinates, using a local quadratic
  * approximation around a time instant, in some coordinate system.
  *
  * @sa HorizontalTrack, EquatorialTrack
  */
+template <class CoordType>
 class Track : public Validating {
 private:
   Time _ref_time;
@@ -2327,6 +2330,8 @@ protected:
 
   Track(const novas::novas_track *track, const Interval& range);
 
+  virtual ~Track() {}
+
   Angle unchecked_longitude(const Time& time) const;
 
   Angle unchecked_latitude(const Time& time) const;
@@ -2334,6 +2339,7 @@ protected:
   Distance unchecked_distance(const Time& time) const;
 
 public:
+
   const Time& reference_time() const;
 
   bool is_valid_at(const Time& time) const;
@@ -2355,6 +2361,8 @@ public:
   std::optional<Speed> radial_velocity_at(const Time& time) const;
 
   double redshift_at(const Time& time) const;
+
+  virtual std::optional<CoordType> projected_at(const Time& time) const = 0;
 };
 
 /**
@@ -2367,15 +2375,15 @@ public:
  * @sa Apparent::horizontal(), EquatorialTrack
  * @ingroup tracking nonequatorial
  */
-class HorizontalTrack : public Track {
-
+class HorizontalTrack : public Track<Horizontal> {
+private:
   HorizontalTrack(const novas::novas_track *track, const Interval& range);
 
 public:
   HorizontalTrack(const Time& ref_time, const Interval& range,
           const Evolution& azimuth, const Evolution& elevation, const Evolution& distance = Evolution::stationary(NOVAS_DEFAULT_DISTANCE));
 
-  std::optional<Horizontal> projected_at(const Time& time) const;
+  std::optional<Horizontal> projected_at(const Time& time) const override;
 
   static HorizontalTrack from_novas_track(const novas::novas_track *track, const Interval& range);
 };
@@ -2390,7 +2398,7 @@ public:
  * @sa Apparent::equatorial(), HorizontalTrack
  * @ingroup tracking apparent
  */
-class EquatorialTrack : public Track {
+class EquatorialTrack : public Track<Equatorial> {
 private:
   Equinox _system;    ///< equatorial coordinate reference system
 
@@ -2400,7 +2408,7 @@ public:
   EquatorialTrack(const Equinox& system, const Time& ref_time, const Interval& range,
           const Evolution& ra, const Evolution& dec, const Evolution& distance = Evolution::stationary(NOVAS_DEFAULT_DISTANCE));
 
-  std::optional<Equatorial> projected_at(const Time& time) const;
+  std::optional<Equatorial> projected_at(const Time& time) const override;
 
   static EquatorialTrack from_novas_track(const Equinox& system, const novas::novas_track *track, const Interval& range);
 };

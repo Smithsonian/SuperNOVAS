@@ -9,6 +9,7 @@
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
 /// \endcond
 
+#include <cmath>
 #include "supernovas.h"
 
 using namespace novas;
@@ -92,7 +93,7 @@ static const novas_track _default_track = {};
  * @param lat       the time evolution of the latitude (in whatever coordinate system)
  * @param r         the time evolution of distance.
  */
-Track::Track(const Time& ref_time, const Interval& range, const Evolution& lon, const Evolution& lat, const Evolution& r)
+template<class CoordType> Track<CoordType>::Track(const Time& ref_time, const Interval& range, const Evolution& lon, const Evolution& lat, const Evolution& r)
 : _ref_time(ref_time), _range(range), _lon(lon), _lat(lat), _r(r) {
 
   // TODO validation
@@ -109,7 +110,7 @@ Track::Track(const Time& ref_time, const Interval& range, const Evolution& lon, 
  *
  * @sa HorizontalTrack(), EquatorialTrack()
  */
-Track::Track(const novas_track *track, const Interval& range)
+template<class CoordType> Track<CoordType>::Track(const novas_track *track, const Interval& range)
 : _ref_time(&track->time), _range(range),
   _lon(Evolution(track->pos.lon * Unit::deg, track->rate.lon * Unit::deg / Unit::sec, track->accel.lon * Unit::deg / (Unit::sec * Unit::sec))),
   _lat(Evolution(track->pos.lat * Unit::deg, track->rate.lat * Unit::deg / Unit::sec, track->accel.lat * Unit::deg / (Unit::sec * Unit::sec))),
@@ -126,7 +127,7 @@ Track::Track(const novas_track *track, const Interval& range)
  *
  * @sa longitude_at(), latitude_evolution(), distance_evolution()
  */
-const Evolution& Track::longitude_evolution() const {
+template<class CoordType> const Evolution& Track<CoordType>::longitude_evolution() const {
   return _lon;
 }
 
@@ -137,7 +138,7 @@ const Evolution& Track::longitude_evolution() const {
  *
  * @sa latitude_at(), longitude_evolution(), distance_evolution()
  */
-const Evolution& Track::latitude_evolution() const {
+template<class CoordType> const Evolution& Track<CoordType>::latitude_evolution() const {
   return _lat;
 }
 
@@ -148,7 +149,7 @@ const Evolution& Track::latitude_evolution() const {
  *
  * @sa distance_at(), longitude_evolution(), latitude_evolution()
  */
-const Evolution& Track::distance_evolution() const {
+template<class CoordType> const Evolution& Track<CoordType>::distance_evolution() const {
   return _r;
 }
 
@@ -162,7 +163,7 @@ const Evolution& Track::distance_evolution() const {
  *
  * @sa reference_time(), range()
  */
-bool Track::is_valid_at(const Time& time) const {
+template<class CoordType> bool Track<CoordType>::is_valid_at(const Time& time) const {
   return (time - _ref_time).seconds() <= _range.seconds();
 }
 
@@ -173,7 +174,7 @@ bool Track::is_valid_at(const Time& time) const {
  *
  * @sa range(), is_valid()
  */
-const Time& Track::reference_time() const {
+template<class CoordType> const Time& Track<CoordType>::reference_time() const {
   return _ref_time;
 }
 
@@ -186,7 +187,7 @@ const Time& Track::reference_time() const {
  *
  * @sa reference_time(), is_valid()
  */
-const Interval& Track::range() const {
+template<class CoordType> const Interval& Track<CoordType>::range() const {
   return _range;
 }
 
@@ -199,7 +200,7 @@ const Interval& Track::range() const {
  *
  * @sa unchecked_latitude(), unchecked_distance()
  */
-Angle Track::unchecked_longitude(const Time& time) const {
+template<class CoordType> Angle Track<CoordType>::unchecked_longitude(const Time& time) const {
   return Angle(_lon.value(time - _ref_time));
 }
 
@@ -212,7 +213,7 @@ Angle Track::unchecked_longitude(const Time& time) const {
  *
  * @sa unchecked_longitude(), unchecked_distance()
  */
-Angle Track::unchecked_latitude(const Time& time) const {
+template<class CoordType> Angle Track<CoordType>::unchecked_latitude(const Time& time) const {
   return Angle(_lat.value(time - _ref_time));
 }
 
@@ -225,7 +226,7 @@ Angle Track::unchecked_latitude(const Time& time) const {
  *
  * @sa unchecked_longitude(), unchecked_latitude()
  */
-Distance Track::unchecked_distance(const Time& time) const {
+template<class CoordType> Distance Track<CoordType>::unchecked_distance(const Time& time) const {
   return Distance(_r.value(time - _ref_time));
 }
 
@@ -238,9 +239,10 @@ Distance Track::unchecked_distance(const Time& time) const {
  *
  * @sa latitude_at(), distance_at(), radial_velocity_at(), redshift_at()
  */
-std::optional<Angle> Track::longitude_at(const Time& time) const {
+template<class CoordType> std::optional<Angle> Track<CoordType>::longitude_at(const Time& time) const {
   if(is_valid_at(time))
     return unchecked_longitude(time);
+  novas_set_errno(ERANGE, "Track::longitude_at", "requested time is outside the trajectory valifity range");
   return std::nullopt;
 }
 
@@ -253,9 +255,10 @@ std::optional<Angle> Track::longitude_at(const Time& time) const {
  *
  * @sa longitude_at(), distance_at(), radial_velocity_at(), redshift_at()
  */
-std::optional<Angle> Track::latitude_at(const Time& time) const {
+template<class CoordType> std::optional<Angle> Track<CoordType>::latitude_at(const Time& time) const {
   if(is_valid_at(time))
     return unchecked_latitude(time);
+  novas_set_errno(ERANGE, "Track::latitude_at", "requested time is outside the trajectory valifity range");
   return std::nullopt;
 }
 
@@ -268,8 +271,11 @@ std::optional<Angle> Track::latitude_at(const Time& time) const {
  *
  * @sa longitude_at(), latitude_at(), distance_at(), radial_velocity_at()
  */
-double Track::redshift_at(const Time& time) const {
-  return is_valid_at(time) ? novas_v2z(radial_velocity_at(time).value().km_per_s()) : NAN;
+template<class CoordType> double Track<CoordType>::redshift_at(const Time& time) const {
+  if(is_valid_at(time))
+    return novas_v2z(radial_velocity_at(time).value().km_per_s());
+  novas_set_errno(ERANGE, "Track::redshift_at", "requested time is outside the trajectory valifity range");
+  return nan("");
 }
 
 /**
@@ -281,9 +287,10 @@ double Track::redshift_at(const Time& time) const {
  *
  * @sa longitude_at(), latitude_at(), radial_velocity_at(), redshift_at()
  */
-std::optional<Distance> Track::distance_at(const Time& time) const {
+template<class CoordType> std::optional<Distance> Track<CoordType>::distance_at(const Time& time) const {
   if(is_valid_at(time))
     return unchecked_distance(time);
+  novas_set_errno(ERANGE, "Track::distance_at", "requested time is outside the trajectory valifity range");
   return std::nullopt;
 }
 
@@ -296,9 +303,10 @@ std::optional<Distance> Track::distance_at(const Time& time) const {
  *
  * @sa longitude(), latitude(), distance(), redshift_at()
  */
-std::optional<Speed> Track::radial_velocity_at(const Time& time) const {
+template<class CoordType> std::optional<Speed> Track<CoordType>::radial_velocity_at(const Time& time) const {
   if(is_valid_at(time))
     return Speed(_r.rate(time - _ref_time));
+  novas_set_errno(ERANGE, "Track::radial_velocity_at", "requested time is outside the trajectory valifity range");
   return std::nullopt;
 }
 
@@ -342,6 +350,7 @@ HorizontalTrack::HorizontalTrack(const Time& ref_time, const Interval& range,
 std::optional<Horizontal> HorizontalTrack::projected_at(const Time& time) const {
   if(is_valid_at(time))
     return Horizontal(unchecked_longitude(time), unchecked_latitude(time));
+  novas_set_errno(ERANGE, "HorizontalTrack::projected_at", "requested time is outside the trajectory valifity range");
   return std::nullopt;
 }
 
@@ -377,6 +386,7 @@ HorizontalTrack HorizontalTrack::from_novas_track(const novas_track *track, cons
 std::optional<Equatorial> EquatorialTrack::projected_at(const Time& time) const {
   if(is_valid_at(time))
     return Equatorial(unchecked_longitude(time), unchecked_latitude(time), _system);
+  novas_set_errno(ERANGE, "EquatorialTrack::projected_at", "requested time is outside the trajectory valifity range");
   return std::nullopt;
 }
 

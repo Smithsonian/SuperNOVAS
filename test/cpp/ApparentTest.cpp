@@ -64,7 +64,7 @@ int main() {
   Apparent cirs2 = Apparent::cirs(Angle(p.ra * Unit::hour_angle), Angle(p.dec * Unit::deg), frame, Speed(p.rv * Unit::km / Unit::s));
   if(!test.check("cirs(Angle...)", cirs2.cirs() == cirs.cirs())) n++;
 
-  Apparent::from_tod_sky_pos(p, frame);
+  if(!test.check("from_to_sky_pos()", Apparent::from_tod_sky_pos(p, frame).is_valid())) n++;
 
   sky_pos p1 = p; p1.ra = NAN;
   if(!test.check("invalid p.ra", !Apparent::from_tod_sky_pos(p1, frame).is_valid())) n++;
