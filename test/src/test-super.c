@@ -4031,8 +4031,11 @@ static int test_approx_heliocentric() {
 
 
   // Check that both Pluto and its barycenter process
-  if(!is_ok("approx_heliocentric:neptune:2050", novas_approx_heliocentric(NOVAS_PLUTO, 2469936.0, pos, vel))) n++;
-  if(!is_ok("approx_heliocentric:neptune:2050", novas_approx_heliocentric(NOVAS_PLUTO_BARYCENTER, 2469936.0, pos0, vel0))) n++;
+  if(!is_ok("approx_heliocentric:pluto:2050", novas_approx_heliocentric(NOVAS_PLUTO, 2469936.0, pos, vel))) n++;
+  if(!is_ok("approx_heliocentric:pluto_bary:2050", novas_approx_heliocentric(NOVAS_PLUTO_BARYCENTER, 2469936.0, pos0, vel0))) n++;
+
+  if(!is_ok("approx_heliocentric:pluto/bary:2050:pos", check_equal_pos(pos, pos0, 2e-2))) n++;
+  if(!is_ok("approx_heliocentric:pluto/bary:2050:vel", check_equal_pos(vel, vel0, 1e-2))) n++;
 
   return n;
 }
