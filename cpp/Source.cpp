@@ -250,6 +250,76 @@ std::optional<Time> Source::sets_below(const Angle& el, const Frame &frame, Refr
 }
 
 /**
+ * Returns the time when the source rises above the specified elevation next for an located on or
+ * near Earth's surface. The returned value may also be NAN if the source does not cross the
+ * specified elevation theshold within a day of the specified time of observation, or if any
+ * of the parameters are invalid.
+ *
+ * @param el        elevation threshold angle
+ * @param frame     observing frame (observer location and the lower bound for the returned time).
+ * @param ref       atmospheric refraction model to assume
+ * @param weather   local weather parameters for the refraction calculation
+ * @return          the next time the source rises above the specified elevation after the frame's
+ *                  observing time. It may be NAN if the source does not cross (rises above or
+ *                  sets below) the elevation threshold within a day of the specified time of
+ *                  observation.
+ *
+ * @sa sets_below(), transits()
+ */
+Time Source::rises_above(const Angle& el, const GeodeticFrame &frame, RefractionModel ref, const Weather& weather) const {
+  std::optional<Time> opt = rises_above(el, static_cast<Frame>(frame), ref, weather);
+  if(opt.has_value())
+    return opt.value();
+
+  novas_trace_invalid("Source::rises_above");
+  return Time::invalid();
+}
+
+/**
+ * Returns the time when the source transits for an observer located on or near Earth's surface.
+ *
+ * @param frame     observing frame (observer location and the lower bound for the returned time).
+ * @return          the next time the source transits after the frame's observing time.
+ *
+ * @sa sets_below(), transits()
+ */
+Time Source::transits(const GeodeticFrame &frame) const {
+  std::optional<Time> opt = transits(static_cast<Frame>(frame));
+  if(opt.has_value())
+    return opt.value();
+
+  novas_trace_invalid("Source::transits");
+  return Time::invalid();
+}
+
+/**
+ * Returns the time when the source sets below the specified elevation next for an observer
+ * located on or near Earth's surface. The returned value may also be NAN if the source does not
+ * cross the specified elevation theshold within a day of the specified time of observation,
+ * or if any of the parameters are invalid.
+ *
+ * @param el        elevation threshold angle
+ * @param frame     observing frame (observer location and the lower bound for the returned time).
+ * @param ref       atmospheric refraction model to assume
+ * @param weather   local weather parameters for the refraction calculation
+ * @return          the next time the source sets the specified elevation after the frame's
+ *                  observing time. It may be NAN if the source does not cross (rises above or
+ *                  sets below) the elevation threshold within a day of the specified time of
+ *                  observation.
+ *
+ * @sa rises_above(), transits()
+ */
+Time Source::sets_below(const Angle& el, const GeodeticFrame &frame, RefractionModel ref, const Weather& weather) const {
+  std::optional<Time> opt = sets_below(el, static_cast<Frame>(frame), ref, weather);
+  if(opt.has_value())
+    return opt.value();
+
+  novas_trace_invalid("Source::sets_below");
+  return Time::invalid();
+}
+
+
+/**
  * Returns the short-term equatorial trajectory of this source on the observer's sky, which can be used for
  * extrapolating its apparent position in the near-term to avoid the repeated full-fledged position
  * calculation, which may be expensive. The equatorial trajectory may also be used to provide telescope
@@ -481,10 +551,10 @@ double SolarSystemSource::solar_illumination(const Frame& frame) const {
  *
  * @sa helio_rate(), solar_power()
  */
-Distance SolarSystemSource::helio_distance(const Time& time) const {
+Coordinate SolarSystemSource::helio_distance(const Time& time) const {
   double d = novas_helio_dist(time.jd(NOVAS_TDB), &_object, NULL);
   novas_check_nan("SolarSystemSource::helio_distance", d);
-  return Distance(d * Unit::au);
+  return Coordinate(d * Unit::au);
 }
 
 /**
@@ -625,12 +695,12 @@ int Planet::de_number() const {
  *
  * @sa mass()
  */
-Distance Planet::mean_radius() const {
+Coordinate Planet::mean_radius() const {
   static const double r[] = NOVAS_PLANET_RADII_INIT;
   if(!is_valid())
-    return Distance(NAN);
+    return Coordinate(NAN);
 
-  return Distance(r[_object.number]);
+  return Coordinate(r[_object.number]);
 }
 
 /**

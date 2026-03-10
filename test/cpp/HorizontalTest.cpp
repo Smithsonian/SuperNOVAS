@@ -50,16 +50,16 @@ int main() {
   if(!test.check("to_unrefracted(NULL)", a.to_unrefracted(NULL) == a)) n++;
 
   std::optional<Apparent> opt = a.to_apparent(Observer::at_geocenter().reduced_accuracy_frame_at(Time::j2000()),
-          Speed(Unit::km / Unit::s), Distance(Unit::pc));
+          Speed(Unit::km / Unit::s), Coordinate(Unit::pc));
   if(!test.check("to_apparent(geocentric)", !opt.has_value())) n++;
 
-  opt = a.to_apparent(Frame::invalid(), Speed(Unit::km / Unit::s), Distance(Unit::pc));
+  opt = a.to_apparent(Frame::invalid(), Speed(Unit::km / Unit::s), Coordinate(Unit::pc));
   if(!test.check("to_apparent(Frame invalid).has_value()", !opt.has_value())) n++;
 
   EOP eop(32, 0.1, 0.2 * Unit::arcsec, 0.3 * Unit::arcsec);
   Frame frame = Observer::on_earth(site, eop).reduced_accuracy_frame_at(Time::j2000());
 
-  opt = a.to_apparent(frame, Speed(Unit::km / Unit::s), Distance(Unit::pc));
+  opt = a.to_apparent(frame, Speed(Unit::km / Unit::s), Coordinate(Unit::pc));
   if(!test.check("to_apparent().has_value()", opt.has_value())) n++;
 
   sky_pos p = {};
@@ -67,6 +67,23 @@ int main() {
   novas_hor_to_app(frame._novas_frame(), a.azimuth().deg(), a.elevation().deg(), NULL, NOVAS_TOD, &p.ra, &p.dec);
   if(!test.equals("to_apparent() R.A.", tod.equatorial().ra().hours(), p.ra, 1e-10)) n++;
   if(!test.equals("to_apparent() Dec", tod.equatorial().dec().deg(), p.dec, 1e-9)) n++;
+
+  GeodeticFrame gf = Observer::on_earth(site, eop).reduced_accuracy_frame_at(Time::j2000());
+  tod = a.to_apparent(gf, Speed(Unit::km / Unit::s), Coordinate(Unit::pc));
+  if(!test.check("to_apparent(geodetic)", tod.is_valid())) n++;
+  if(!test.equals("to_apparent(geodetic) R.A.", tod.equatorial().ra().hours(), p.ra, 1e-10)) n++;
+  if(!test.equals("to_apparent(geodetic) Dec", tod.equatorial().dec().deg(), p.dec, 1e-9)) n++;
+
+  tod = a.to_apparent(gf, Speed(NAN), Coordinate(Unit::pc));
+  if(!test.check("to_apparent(geodetic speed NAN)", !tod.is_valid())) n++;
+
+  tod = a.to_apparent(gf, Speed(NAN), Coordinate(Unit::pc));
+  if(!test.check("to_apparent(geodetic speed NAN)", !tod.is_valid())) n++;
+
+  novas_frame *nf = (novas_frame *) gf._novas_frame();
+  nf->observer.where = NOVAS_OBSERVER_AT_GEOCENTER;
+  tod = a.to_apparent(gf, Speed(Unit::km / Unit::s), Coordinate(Unit::pc));
+  if(!test.check("to_apparent(geodetic frame invalid)", !tod.is_valid())) n++;
 
   Horizontal b(a);
   if(!test.check("operator==()", b == a)) n++;

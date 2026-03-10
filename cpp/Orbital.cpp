@@ -213,6 +213,44 @@ OrbitalSystem& OrbitalSystem::pole(const Spherical& coords, const Equinox& syste
 }
 
 /**
+ * Instantiates a new Keplerian orbital in this orbital system and the basic circular orbital
+ * parameters. You can further specify the parameters for elliptical orbits using a builder
+ * pattern after instantiation.
+ *
+ * @param jd_tdb            [day] reference date of the orbital parameters as a Barycentric
+ *                          Dynamical Time (TDB) based Julian date
+ * @param semi_major_m      [m] semi-major axis (circular radius) of the orbit
+ * @param mean_anomaly_rad  [rad] Mean anomaly (circular longitude) of the object at the reference
+ *                          time, in the orbital system.
+ * @param period_s          [s] orbital period.
+ *
+ * @sa with_mean_motion(), eccentricity(), inclination(), pole(), node_period(), node_rate()
+ *     apsis_period(), apsis_rate()
+ */
+Orbital OrbitalSystem::orbit(double jd_tdb, double semi_major_m, double mean_anomaly_rad, double period_s) const {
+  return Orbital(*this, jd_tdb, semi_major_m, mean_anomaly_rad, period_s);
+}
+
+/**
+ * Instantiates a new Keplerian orbital in this orbital system and the basic circular orbital
+ * parameters. You can further specify the parameters for elliptical orbits using a builder
+ * pattern after instantiation.
+ *
+ * @param jd_tdb            reference time of the orbital parameters.
+ * @param semi_major_m      semi-major axis (circular radius) of the orbit
+ * @param mean_anomaly_rad  Mean anomaly (circular longitude) of the object at the reference time,
+ *                          in the orbital system.
+ * @param period_s          orbital period.
+ *
+ * @sa OrbotalSystem::orbit()
+ * @sa with_mean_motion(), eccentricity(), inclination(), pole(), node_period(), node_rate()
+ *     apsis_period(), apsis_rate()
+ */
+Orbital OrbitalSystem::orbit(const Time& ref_time, const Coordinate& semi_major, const Angle& mean_anomaly, const Interval& period) const {
+  return orbit(ref_time.jd(NOVAS_TDB), semi_major.m(), mean_anomaly.rad(), period.seconds());
+}
+
+/**
  * Returns a new equarial orbital system around the specified major planet, Sun, Moon, or
  * barycenter position. The new orbital system is assumed to be aligned with the equatorial
  * plane and coordinate system, until its orientation / pole is defined otherwise.
@@ -329,6 +367,7 @@ Orbital::Orbital(const novas_orbital *orbit) : _orbit(*orbit) {
  *                          time, in the orbital system.
  * @param period_s          [s] orbital period.
  *
+ * @sa OribtalSystem::orbit()
  * @sa with_mean_motion(), eccentricity(), inclination(), pole(), node_period(), node_rate()
  *     apsis_period(), apsis_rate()
  */
@@ -354,12 +393,14 @@ Orbital::Orbital(const OrbitalSystem& system, double jd_tdb, double semi_major_m
  *                          in the orbital system.
  * @param period_s          orbital period.
  *
+ * @sa OrbotalSystem::orbit()
  * @sa with_mean_motion(), eccentricity(), inclination(), pole(), node_period(), node_rate()
  *     apsis_period(), apsis_rate()
  */
-Orbital::Orbital(const OrbitalSystem& system, const Time& ref_time, const Distance& semi_major,
+Orbital::Orbital(const OrbitalSystem& system, const Time& ref_time, const Coordinate& semi_major,
         const Angle& mean_anomaly, const Interval& period)
 : Orbital(system, ref_time.jd(NOVAS_TDB), semi_major.m(), mean_anomaly.rad(), period.seconds()) {}
+
 
 /**
  * (<i>for internal use</i>) Returns the underlying NOVAS C data structure containing the orbital
@@ -394,8 +435,8 @@ double Orbital::reference_jd_tdb() const {
  *
  * @return    the semi-major axis (circular) radius of this orbit.
  */
-Distance Orbital::semi_major_axis() const {
-  return Distance(_orbit.a * Unit::au);
+Coordinate Orbital::semi_major_axis() const {
+  return Coordinate(_orbit.a * Unit::au);
 }
 
 /**
@@ -906,7 +947,7 @@ Orbital Orbital::with_mean_motion(const OrbitalSystem& system, double jd_tdb, do
  * @sa Orbital(), eccentricity(), inclination(), pole(), node_period(), node_rate()
  *     apsis_period(), apsis_rate()
  */
-Orbital Orbital::with_mean_motion(const OrbitalSystem& system, const Time& time, const Distance& a, const Angle& M0, double rad_per_sec) {
+Orbital Orbital::with_mean_motion(const OrbitalSystem& system, const Time& time, const Coordinate& a, const Angle& M0, double rad_per_sec) {
   return Orbital::with_mean_motion(system, time.jd(NOVAS_TDB), a.m(), M0.rad(), rad_per_sec);
 }
 

@@ -89,7 +89,7 @@ Angle Spherical::distance_to(const Spherical& other) const {
  *
  * @sa Position::to_spherical()
  */
-Position Spherical::xyz(const Distance& distance) const {
+Position Spherical::xyz(const Coordinate& distance) const {
   double pos[3];
   double xy = distance.m() * cos(_lat.rad());
 

@@ -91,20 +91,26 @@ int main() {
   OrbitalSystem xs = (OrbitalSystem::equatorial(Planet((novas_planet) -1)));
   s = (OrbitalSystem::equatorial());
 
-  if(!test.check("invalid(system)", !Orbital(xs, Time::j2000(), Distance(Unit::AU), Angle(0.0), Interval(Unit::yr)).is_valid())) n++;
-  if(!test.check("invalid(time)", !Orbital(s, Time::invalid(), Distance(Unit::AU), Angle(0.0), Interval(Unit::yr)).is_valid())) n++;
-  if(!test.check("invalid(a = NAN)", !Orbital(s, Time::j2000(), Distance(NAN), Angle(0.0), Interval(Unit::yr)).is_valid())) n++;
-  if(!test.check("invalid(a = 0)", !Orbital(s, Time::j2000(), Distance(0.0), Angle(0.0), Interval(Unit::yr)).is_valid())) n++;
-  if(!test.check("invalid(a < 0)", !Orbital(s, Time::j2000(), Distance(-Unit::AU), Angle(0.0), Interval(Unit::yr)).is_valid())) n++;
-  if(!test.check("invalid(M0 = NAN)", !Orbital(s, Time::j2000(), Distance(Unit::AU), Angle(NAN), Interval(Unit::yr)).is_valid())) n++;
-  if(!test.check("invalid(T = NAN)", !Orbital(s, Time::j2000(), Distance(Unit::AU), Angle(0.0), Interval(NAN)).is_valid())) n++;
-  if(!test.check("invalid(T = 0)", !Orbital(s, Time::j2000(), Distance(Unit::AU), Angle(0.0), Interval(0.0)).is_valid())) n++;
-  if(!test.check("invalid(T < 0)", !Orbital(s, Time::j2000(), Distance(Unit::AU), Angle(0.0), Interval(-1.0)).is_valid())) n++;
-  if(!test.check("invalid(n = 0)", !Orbital::with_mean_motion(s, Time::j2000(), Distance(Unit::AU), Angle(0.0), 0.0).is_valid())) n++;
+  if(!test.check("invalid(system)", !Orbital(xs, Time::j2000(), Coordinate(Unit::AU), Angle(0.0), Interval(Unit::yr)).is_valid())) n++;
+  if(!test.check("invalid(time)", !Orbital(s, Time::invalid(), Coordinate(Unit::AU), Angle(0.0), Interval(Unit::yr)).is_valid())) n++;
+  if(!test.check("invalid(a = NAN)", !Orbital(s, Time::j2000(), Coordinate(NAN), Angle(0.0), Interval(Unit::yr)).is_valid())) n++;
+  if(!test.check("invalid(a = 0)", !Orbital(s, Time::j2000(), Coordinate(0.0), Angle(0.0), Interval(Unit::yr)).is_valid())) n++;
+  if(!test.check("invalid(a < 0)", !Orbital(s, Time::j2000(), Coordinate(-Unit::AU), Angle(0.0), Interval(Unit::yr)).is_valid())) n++;
+  if(!test.check("invalid(M0 = NAN)", !Orbital(s, Time::j2000(), Coordinate(Unit::AU), Angle(NAN), Interval(Unit::yr)).is_valid())) n++;
+  if(!test.check("invalid(T = NAN)", !Orbital(s, Time::j2000(), Coordinate(Unit::AU), Angle(0.0), Interval(NAN)).is_valid())) n++;
+  if(!test.check("invalid(T = 0)", !Orbital(s, Time::j2000(), Coordinate(Unit::AU), Angle(0.0), Interval(0.0)).is_valid())) n++;
+  if(!test.check("invalid(T < 0)", !Orbital(s, Time::j2000(), Coordinate(Unit::AU), Angle(0.0), Interval(-1.0)).is_valid())) n++;
+  if(!test.check("invalid(n = 0)", !Orbital::with_mean_motion(s, Time::j2000(), Coordinate(Unit::AU), Angle(0.0), 0.0).is_valid())) n++;
 
+  Orbital o(s, Time::j2000(), Coordinate(Unit::AU), Angle(-1.0), Interval(Unit::yr));
+  if(!test.check("is_valid()", o.is_valid())) n++;
+  if(!test.equals("reference_jd_tdb()", o.reference_jd_tdb(), NOVAS_JD_J2000, 1e-6)) n++;
+  if(!test.equals("semi_major_axis()", o.semi_major_axis().au(), 1.0, 1e-15)) n++;
+  if(!test.equals("mean_anomaly()", o.reference_mean_anomaly().rad(), -1.0, 1e-15)) n++;
+  if(!test.equals("mean_motion()", o.mean_motion(), Constant::two_pi / Unit::yr, 1e-14 * o.mean_motion())) n++;
+  if(!test.equals("period()", o.period().years(), 1.0, 1e-15)) n++;
 
-
-  Orbital o(s, Time::j2000(), Distance(Unit::AU), Angle(-1.0), Interval(Unit::yr));
+  o = s.orbit(Time::j2000(), Coordinate(Unit::AU), Angle(-1.0), Interval(Unit::yr));
   if(!test.check("is_valid()", o.is_valid())) n++;
   if(!test.equals("reference_jd_tdb()", o.reference_jd_tdb(), NOVAS_JD_J2000, 1e-6)) n++;
   if(!test.equals("semi_major_axis()", o.semi_major_axis().au(), 1.0, 1e-15)) n++;

@@ -95,7 +95,7 @@ int main() {
     n++;
   }
 
-  Position xyz = a.xyz(Distance(10.0 * Unit::au));
+  Position xyz = a.xyz(Coordinate(10.0 * Unit::au));
   if(!test.equals("xyz().x()", xyz.x(), 10.0 * Unit::au * cos(a.latitude().rad()) * cos(a.longitude().rad()))) n++;
   if(!test.equals("xyz().y()", xyz.y(), 10.0 * Unit::au * cos(a.latitude().rad()) * sin(a.longitude().rad()))) n++;
   if(!test.equals("xyz().z()", xyz.z(), 10.0 * Unit::au * sin(a.latitude().rad()))) n++;

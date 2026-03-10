@@ -12,19 +12,19 @@
 
 
 int main() {
-  TestUtil test = TestUtil("Distance");
+  TestUtil test = TestUtil("Coordinate");
 
   int n = 0;
 
-  Distance x(NAN);
+  Coordinate x(NAN);
   if(!test.check("is_valid(NAN)", !x.is_valid())) n++;
   if(!test.check("isnan(NAN)", isnan(x.m()))) n++;
 
-  if(!test.check("is_valid(at_Gpc())", Distance::at_Gpc().is_valid())) n++;
-  if(!test.equals("at_Gpc()", Distance::at_Gpc().m(), Unit::Gpc, 1e-15)) n++;
-  if(!test.equals("zero()", Distance::zero().m(), 0.0, 0.0)) n++;
+  if(!test.check("is_valid(at_Gpc())", Coordinate::at_Gpc().is_valid())) n++;
+  if(!test.equals("at_Gpc()", Coordinate::at_Gpc().m(), Unit::Gpc, 1e-15)) n++;
+  if(!test.equals("zero()", Coordinate::zero().m(), 0.0, 0.0)) n++;
 
-  Distance a(1.0 * Unit::au);
+  Coordinate a(1.0 * Unit::au);
   if(!test.check("is_valid(1 AU)", a.is_valid())) n++;
   if(!test.equals("m()", a.m(), Unit::au)) n++;
   if(!test.equals("km()", a.km(), Unit::au / Unit::km, 1e-4)) n++;
@@ -35,31 +35,31 @@ int main() {
   if(!test.equals("Mpc()", a.Mpc(), Unit::au / Unit::Mpc, 1e-26)) n++;
   if(!test.equals("Gpc()", a.Gpc(), Unit::au / Unit::Gpc, 1e-29)) n++;
 
-  Distance b(1.0 * Unit::pc);
+  Coordinate b(1.0 * Unit::pc);
   if(!test.equals("pc(1 pc)", b.pc(), 1.0)) n++;
   if(!test.equals("parallax(1 pc)", b.parallax().arcsec(), 1.0, 1e-15)) n++;
 
-  Distance c = Distance::from_parallax(Angle(1.0 * Unit::mas));
+  Coordinate c = Coordinate::from_parallax(Angle(1.0 * Unit::mas));
   if(!test.check("is_valid(parallax = 1 mas)", c.is_valid())) n++;
   if(!test.equals("parallax(1 mas)", c.parallax().mas(), 1.0, 1e-15)) n++;
 
-  Distance d(-Unit::kpc);
+  Coordinate d(-Unit::kpc);
   if(!test.equals("kpc(-1 kpc)", d.kpc(), -1.0, 1e-15)) n++;
   if(!test.equals("abs(-1 kpc)", d.abs().kpc(), 1.0, 1e-15)) n++;
 
-  if(!test.equals("to_string(10 m)", Distance(10.0 * Unit::m).to_string(), "10.000 m")) n++;
-  if(!test.equals("to_string(10 km)", Distance(10.0 * Unit::km).to_string(), "10.000 km")) n++;
-  if(!test.equals("to_string(10000 km)", Distance(1e4 * Unit::km).to_string(), "10000.000 km")) n++;
-  if(!test.equals("to_string(10 AU)", Distance(10.0 * Unit::au).to_string(), "10.000 AU")) n++;
-  if(!test.equals("to_string(10 pc)", Distance(10.0 * Unit::pc).to_string(), "10.000 pc")) n++;
-  if(!test.equals("to_string(10 kpc)", Distance(10.0 * Unit::kpc).to_string(), "10.000 kpc")) n++;
-  if(!test.equals("to_string(10 Mpc)", Distance(10.0 * Unit::Mpc).to_string(), "10.000 Mpc")) n++;
-  if(!test.equals("to_string(10 Gpc)", Distance(10.0 * Unit::Gpc).to_string(), "10.000 Gpc")) n++;
+  if(!test.equals("to_string(10 m)", Coordinate(10.0 * Unit::m).to_string(), "10.000 m")) n++;
+  if(!test.equals("to_string(10 km)", Coordinate(10.0 * Unit::km).to_string(), "10.000 km")) n++;
+  if(!test.equals("to_string(10000 km)", Coordinate(1e4 * Unit::km).to_string(), "10000.000 km")) n++;
+  if(!test.equals("to_string(10 AU)", Coordinate(10.0 * Unit::au).to_string(), "10.000 AU")) n++;
+  if(!test.equals("to_string(10 pc)", Coordinate(10.0 * Unit::pc).to_string(), "10.000 pc")) n++;
+  if(!test.equals("to_string(10 kpc)", Coordinate(10.0 * Unit::kpc).to_string(), "10.000 kpc")) n++;
+  if(!test.equals("to_string(10 Mpc)", Coordinate(10.0 * Unit::Mpc).to_string(), "10.000 Mpc")) n++;
+  if(!test.equals("to_string(10 Gpc)", Coordinate(10.0 * Unit::Gpc).to_string(), "10.000 Gpc")) n++;
 
-  Distance e(-Constant::pi * Unit::kpc);
+  Coordinate e(-Constant::pi * Unit::kpc);
   if(!test.equals("to_string(decimals=0)", e.to_string(-1), e.to_string(0))) n++;
   if(!test.equals("to_string(decimals=17)", e.to_string(17), e.to_string(16))) n++;
 
-  std::cout << "Distance.cpp: " << (n > 0 ? "FAILED" : "OK") << "\n";
+  std::cout << "Coordinate.cpp: " << (n > 0 ? "FAILED" : "OK") << "\n";
   return n;
 }

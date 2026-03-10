@@ -70,7 +70,7 @@ int main() {
   if(!test.equals("distance_to()", c.distance_to(a).deg(),
           novas::novas_sep(c.longitude().deg(), c.latitude().deg(), a.longitude().deg(), a.latitude().deg()), 0.1 * Unit::uas)) n++;
 
-  Position xyz = a.xyz(Distance(10.0 * Unit::au));
+  Position xyz = a.xyz(Coordinate(10.0 * Unit::au));
   if(!test.equals("xyz().x()", xyz.x(), 10.0 * Unit::au * cos(a.latitude().rad()) * cos(a.longitude().rad()))) n++;
   if(!test.equals("xyz().y()", xyz.y(), 10.0 * Unit::au * cos(a.latitude().rad()) * sin(a.longitude().rad()))) n++;
   if(!test.equals("xyz().z()", xyz.z(), 10.0 * Unit::au * sin(a.latitude().rad()))) n++;

@@ -63,7 +63,7 @@ Site::Site(double longitude_rad, double latitude_rad, double altitude_m, enum no
  *
  * @sa from_xyz(), Site::from_GPS()
  */
-Site::Site(const Angle& longitude, const Angle& latitude, const Distance& altitude, enum novas::novas_reference_ellipsoid ellipsoid)
+Site::Site(const Angle& longitude, const Angle& latitude, const Coordinate& altitude, enum novas::novas_reference_ellipsoid ellipsoid)
 : Site(longitude.rad(), latitude.rad(), altitude.m(), ellipsoid) {}
 
 /**
@@ -99,7 +99,7 @@ Site::Site(const Position& xyz) {
  *
  * @sa from_xyz(), Site::from_GPS()
  */
-Site::Site(const std::string& longitude, const std::string& latitude, const Distance& altitude, enum novas::novas_reference_ellipsoid ellipsoid)
+Site::Site(const std::string& longitude, const std::string& latitude, const Coordinate& altitude, enum novas::novas_reference_ellipsoid ellipsoid)
 : Site(Angle(longitude), Angle(latitude), altitude, ellipsoid) {
 }
 
@@ -149,8 +149,8 @@ const Angle Site::latitude() const {
  * @sa longitude()
  * @sa latitude()
  */
-const Distance Site::altitude() const {
-  return Distance(_site.height * Unit::m);
+const Coordinate Site::altitude() const {
+  return Coordinate(_site.height * Unit::m);
 }
 
 /**
@@ -175,7 +175,7 @@ bool Site::equals(const Site& site, double tol_m) const {
  *
  * @sa operator==()
  */
-bool Site::equals(const Site& site, const Distance& tol) const {
+bool Site::equals(const Site& site, const Coordinate& tol) const {
   return equals(site, tol.m());
 }
 
@@ -328,7 +328,7 @@ Site Site::from_GPS(double longitude, double latitude, double altitude) {
  *
  * @sa Site(), from_xyz()
  */
-Site Site::from_GPS(const Angle& longitude, const Angle& latitude, const Distance& altitude) {
+Site Site::from_GPS(const Angle& longitude, const Angle& latitude, const Coordinate& altitude) {
   return from_GPS(longitude.rad(), latitude.rad(), altitude.m());
 }
 
@@ -343,7 +343,7 @@ Site Site::from_GPS(const Angle& longitude, const Angle& latitude, const Distanc
  *
  * @sa Site(), from_xyz(), Angle()
  */
-Site Site::from_GPS(const std::string& longitude, const std::string& latitude, const Distance& altitude) {
+Site Site::from_GPS(const std::string& longitude, const std::string& latitude, const Coordinate& altitude) {
   return from_GPS(Angle(longitude), Angle(latitude), altitude);
 }
 

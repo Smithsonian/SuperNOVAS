@@ -48,38 +48,38 @@ int main() {
   Equatorial a1 = a.to_j2000();
   gcrs_to_j2000(p0, p1);
   if(!test.equals("to_j2000() sys", a1.system_type(), NOVAS_J2000)) n++;
-  if(!test.check("to_j2000() pos", pos == a1.xyz(Distance(Unit::AU)))) {
-    std::cout << "### " << pos.to_string(12) << ", " << a1.xyz(Distance(Unit::pc)).to_string(12) << "\n";
+  if(!test.check("to_j2000() pos", pos == a1.xyz(Coordinate(Unit::AU)))) {
+    std::cout << "### " << pos.to_string(12) << ", " << a1.xyz(Coordinate(Unit::pc)).to_string(12) << "\n";
     n++;
   }
 
   a1 = a.to_mod(Time::b1950());
   gcrs_to_mod(NOVAS_JD_B1950, p0, p1);
   if(!test.equals("to_mod(B1950) sys", a1.system_type(), NOVAS_MOD)) n++;
-  if(!test.check("to_mod(B1950) pos", pos == a1.xyz(Distance(Unit::AU)))) n++;
+  if(!test.check("to_mod(B1950) pos", pos == a1.xyz(Coordinate(Unit::AU)))) n++;
   if(!test.check("to_mod(B1950).to_icrs()", a1.to_icrs() == a)) n++;
 
   a1 = a.to_mod_at_besselian_epoch(1950.0);
   if(!test.equals("to_mod(B1950) sys", a1.system_type(), NOVAS_MOD)) n++;
-  if(!test.check("to_mod(B1950) pos", pos == a1.xyz(Distance(Unit::AU)))) n++;
+  if(!test.check("to_mod(B1950) pos", pos == a1.xyz(Coordinate(Unit::AU)))) n++;
 
   a1 = a.to_cirs(Time::hip());
   gcrs_to_cirs(NOVAS_JD_HIP, NOVAS_FULL_ACCURACY, p0, p1);
   if(!test.equals("to_cirs(HIP) sys", a1.system_type(), NOVAS_CIRS)) n++;
-  if(!test.check("to_cirs(HIP) pos", pos == a1.xyz(Distance(Unit::AU)))) n++;
+  if(!test.check("to_cirs(HIP) pos", pos == a1.xyz(Coordinate(Unit::AU)))) n++;
   if(!test.check("to_cirs(HIP).to_icrs()", a1.to_icrs() == a)) n++;
 
 
   a1 = a.to_tod(Time::b1950());
   gcrs_to_tod(NOVAS_JD_B1950, NOVAS_FULL_ACCURACY, p0, p1);
   if(!test.equals("to_tod(B1950) sys", a1.system_type(), NOVAS_TOD)) n++;
-  if(!test.check("to_tod(B1950) pos", pos == a1.xyz(Distance(Unit::AU)))) n++;
+  if(!test.check("to_tod(B1950) pos", pos == a1.xyz(Coordinate(Unit::AU)))) n++;
   if(!test.check("to_tod(B1950).to_icrs()", a1.to_icrs() == a)) n++;
 
   a1 = a.to_hip();
   gcrs_to_mod(NOVAS_JD_HIP, p0, p1);
   if(!test.equals("to_hip() sys", a1.system_type(), NOVAS_MOD)) n++;
-  if(!test.check("to_hip() pos", pos == a1.xyz(Distance(Unit::AU)))) n++;
+  if(!test.check("to_hip() pos", pos == a1.xyz(Coordinate(Unit::AU)))) n++;
   if(!test.check("to_hip().to_icrs()", a1.to_icrs() == a)) n++;
 
 
@@ -141,7 +141,7 @@ int main() {
     n++;
   }
 
-  Position xyz = a.xyz(Distance(10.0 * Unit::au));
+  Position xyz = a.xyz(Coordinate(10.0 * Unit::au));
   if(!test.equals("xyz().x()", xyz.x(), 10.0 * Unit::au * cos(a.latitude().rad()) * cos(a.longitude().rad()))) n++;
   if(!test.equals("xyz().y()", xyz.y(), 10.0 * Unit::au * cos(a.latitude().rad()) * sin(a.longitude().rad()))) n++;
   if(!test.equals("xyz().z()", xyz.z(), 10.0 * Unit::au * sin(a.latitude().rad()))) n++;

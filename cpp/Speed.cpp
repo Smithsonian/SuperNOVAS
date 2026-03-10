@@ -40,7 +40,7 @@ Speed::Speed(double m_per_s) : _ms(m_per_s) {
  *
  * @sa from_redshift()
  */
-Speed::Speed(const Distance& d, const Interval& time) : _ms(d.m() / time.seconds()) {}
+Speed::Speed(const Coordinate& d, const Interval& time) : _ms(d.m() / time.seconds()) {}
 
 /**
  * Returns the signed scalar sum of this speed and the specified other speed, using the
@@ -204,8 +204,8 @@ double Speed::redshift() const {
  *
  * @sa operator*(), Velocity::travel()
  */
-Distance Speed::travel(double seconds) const {
-  return Distance(_ms * seconds);
+Coordinate Speed::travel(double seconds) const {
+  return Coordinate(_ms * seconds);
 }
 
 /**
@@ -216,7 +216,7 @@ Distance Speed::travel(double seconds) const {
  *
  * @sa operator*(), Velocity::travel()
  */
-Distance Speed::travel(const Interval& time) const {
+Coordinate Speed::travel(const Interval& time) const {
   return travel(time.seconds());
 }
 
@@ -228,7 +228,7 @@ Distance Speed::travel(const Interval& time) const {
  *
  * @sa travel()
  */
-Distance Speed::operator*(const Interval& time) const {
+Coordinate Speed::operator*(const Interval& time) const {
   return travel(time);
 }
 

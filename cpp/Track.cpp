@@ -10,6 +10,9 @@
 /// \endcond
 
 #include <cmath>
+#include <type_traits>
+
+
 #include "supernovas.h"
 
 using namespace novas;
@@ -96,6 +99,9 @@ static const novas_track _default_track = {};
 template<class CoordType> Track<CoordType>::Track(const Time& ref_time, const Interval& range, const Evolution& lon, const Evolution& lat, const Evolution& r)
 : _ref_time(ref_time), _range(range), _lon(lon), _lat(lat), _r(r) {
 
+  // make sure CoordType is a sublcass of Spherical
+  static_assert(std::is_base_of<Spherical, CoordType>::value, "CoordType is not a subclass of Spherical");
+
   // TODO validation
   _valid = true;
 }
@@ -115,6 +121,9 @@ template<class CoordType> Track<CoordType>::Track(const novas_track *track, cons
   _lon(Evolution(track->pos.lon * Unit::deg, track->rate.lon * Unit::deg / Unit::sec, track->accel.lon * Unit::deg / (Unit::sec * Unit::sec))),
   _lat(Evolution(track->pos.lat * Unit::deg, track->rate.lat * Unit::deg / Unit::sec, track->accel.lat * Unit::deg / (Unit::sec * Unit::sec))),
   _r(Evolution(track->pos.dist * Unit::au, track->rate.dist * Unit::au / Unit::sec, track->accel.dist * Unit::au / (Unit::sec * Unit::sec))) {
+
+  // make sure CoordType is a sublcass of Spherical
+  static_assert(std::is_base_of<Spherical, CoordType>::value, "CoordType is not a subclass of Spherical");
 
   // TODO validation
   _valid = (track != &_default_track);
@@ -226,8 +235,8 @@ template<class CoordType> Angle Track<CoordType>::unchecked_latitude(const Time&
  *
  * @sa unchecked_longitude(), unchecked_latitude()
  */
-template<class CoordType> Distance Track<CoordType>::unchecked_distance(const Time& time) const {
-  return Distance(_r.value(time - _ref_time));
+template<class CoordType> Coordinate Track<CoordType>::unchecked_distance(const Time& time) const {
+  return Coordinate(_r.value(time - _ref_time));
 }
 
 /**
@@ -287,7 +296,7 @@ template<class CoordType> double Track<CoordType>::redshift_at(const Time& time)
  *
  * @sa longitude_at(), latitude_at(), radial_velocity_at(), redshift_at()
  */
-template<class CoordType> std::optional<Distance> Track<CoordType>::distance_at(const Time& time) const {
+template<class CoordType> std::optional<Coordinate> Track<CoordType>::distance_at(const Time& time) const {
   if(is_valid_at(time))
     return unchecked_distance(time);
   novas_set_errno(ERANGE, "Track::distance_at", "requested time is outside the trajectory valifity range");

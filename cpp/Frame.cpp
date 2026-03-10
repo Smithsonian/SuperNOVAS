@@ -46,7 +46,7 @@ namespace supernovas {
  * In either case, you can obtain more information on why things went wrong, when they do, by
  * enabling debug mode is enabled via `novas_debug()` prior to constructing a Frame.
  *
- * @param obs         observer location (referenced)
+ * @param obs         observer location (copied)
  * @param time        time of observation
  * @param accuracy    (optional) NOVAS_FULL_ACCURACY (default) or NOVAS_REDUCED_ACCURACY.
  *
@@ -186,7 +186,7 @@ Geometric Frame::geometric(const Position& p, const Velocity& v, enum novas::nov
  * @return          an observing frame instance with the provided parameters, if possible,
  *                  or else `std::nullopt`.
  *
- * @sa reduced_accuracy(), Observer::frame_at()
+ * @sa reduced_accuracy(), SpaceBasedObserver::frame_at()
  * @sa set_planet_provider_hp(), novas_use_calceph(), novas_use_calceph_planets(), novas_use_cspice()
  */
 std::optional<Frame> Frame::create(const Observer& obs, const Time& time, enum novas::novas_accuracy accuracy) {
@@ -207,19 +207,21 @@ std::optional<Frame> Frame::create(const Observer& obs, const Time& time, enum n
  * Note, that the returned frame may be invalid, if the this observer or the time argument
  * themselves are invalid.
  *
+ * @param obs       Observer location
  * @param time      Astrometric time of observation
  * @return          A reduced accuracy observing frame for the specified time of observation.
  *
- * @sa create(), Observer::reduced_accuracy_frame_at()
+ * @sa create(), SpaceBasedObserver::reduced_accuracy_frame_at()
  */
 Frame Frame::reduced_accuracy(const Observer& obs, const Time& time) {
   return Frame(obs, time, NOVAS_REDUCED_ACCURACY);
 }
 
+
 /**
  * Returns a human-readable string representation of this observing frame.
  *
- * @return    a strin representation of this observing frame.
+ * @return    a string representation of this observing frame.
  */
 std::string Frame::to_string() const {
   return "Frame for " + _observer->to_string() + " at " + _time.to_string();
@@ -235,5 +237,102 @@ const Frame& Frame::invalid() {
   static const Frame _invalid = Frame(Observer::invalid(), Time::invalid(), (enum novas_accuracy) -1);
   return _invalid;
 }
+
+/**
+ * Instantiates a new observer frame, given a geodetic observer location and time of observation,
+ * and optionally the required accuracy. After the new frame is returned you should check that
+ * it's valid:
+ *
+ * ```c
+ *   GeodeticFrame f = GeodeticFrame(obs, time);
+ *   if(!f.is_valid()) {
+ *     // This did not work as expected...
+ *     ...
+ *   }
+ * ```
+ *
+ * The returned new frame may be invalid for multiple reasons, such as:
+ *
+ *  - the input observer or time is invalid.
+ *  - the accuracy parameter is outside of the enum range.
+ *  - SuperNOVAS had no suitable planet provider function for the given accuracy. (By default
+ *    SuperNOVAS has only a reduced accuracy Earth-Sun calculator configured.)
+ *  - The currently configured planet provider function, for the given accuracy, cannot provide
+ *    positions and velocities for the Earth, Sun, observer location, or one of the major planets
+ *    configured for gravitational deflection calculations.
+ *
+ * Alternatively, you might use the equivalent GeodeticFrame::create() instead to return a valid
+ * observing frame as an optional.
+ *
+ * In either case, you can obtain more information on why things went wrong, when they do, by
+ * enabling debug mode is enabled via `novas_debug()` prior to constructing a GeodeticFrame.
+ *
+ * @param obs         geodetic observer location (referenced)
+ * @param time        time of observation
+ * @param accuracy    (optional) NOVAS_FULL_ACCURACY (default) or NOVAS_REDUCED_ACCURACY.
+ *
+ * @sa create()
+ */
+GeodeticFrame::GeodeticFrame(const GeodeticObserver& obs, const Time& time, enum novas::novas_accuracy accuracy) :
+  Frame(obs, time, accuracy) {}
+
+
+/**
+ * Attempts to create a new observing frame instance for a given geodetic observer location, time
+ * of observation, and accuracy, if possible, or else returns `std::nullopt` if the frame could
+ * not be initialized completely. Note, that full accuracy frames require that you have configured
+ * an ephemeris provider for SuperNOVAS already. Otherwise, the returned optional will have no
+ * value.
+ *
+ * @param obs       geodetic observer location (copied).
+ * @param time      astrometric time of observation
+ * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1).
+ * @return          an observing frame instance with the provided parameters, if possible,
+ *                  or else `std::nullopt`.
+ *
+ * @sa reduced_accuracy(), GeodeticObserver::frame_at(), Frame::create()
+ * @sa set_planet_provider_hp(), novas_use_calceph(), novas_use_calceph_planets(), novas_use_cspice()
+ */
+std::optional<GeodeticFrame> GeodeticFrame::create(const GeodeticObserver& obs, const Time& time, enum novas::novas_accuracy accuracy) {
+  GeodeticFrame f = GeodeticFrame(obs, time, accuracy);
+  if(f.is_valid())
+    return f;
+  novas_trace_invalid("GeodeticFrame::create");
+  return std::nullopt;
+}
+
+/**
+ * Returns a reduced accuracy observing frame for the specified Earth surface based observer at
+ * the specified time. Reduced accuracy frames provide 1 mas accuracy typically, and do not
+ * require a planet provider to be configured. As such, they offer a simplest way for obtaining
+ * astrometric positions for catalog and orbital sources at the 1 mas level.
+ *
+ * Note, that the returned frame may be invalid, if the this observer or the time argument
+ * themselves are invalid.
+ *
+ * @param obs       Geodetic observer location
+ * @param time      Astrometric time of observation
+ * @return          A reduced accuracy observing frame for the specified time of observation.
+ *
+ * @sa GeodeticFrame::create(), GeodeticObserver::reduced_accuracy_frame_at(), Frame::reduced_accuracy()
+ */
+GeodeticFrame GeodeticFrame::reduced_accuracy(const GeodeticObserver& obs, const Time& time) {
+  GeodeticFrame f(obs, time, NOVAS_REDUCED_ACCURACY);
+  if(!f.is_valid())
+    novas_trace_invalid("GeodeticFrame::reduced_accuracy");
+  return f;
+}
+
+
+/**
+ * Returns a human-readable string representation of this observing frame.
+ *
+ * @return    a string representation of this observing frame.
+ */
+std::string GeodeticFrame::to_string() const {
+  return "Geodetic " + Frame::to_string();
+}
+
+
 
 } // namespace supernovas

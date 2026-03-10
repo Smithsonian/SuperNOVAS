@@ -204,8 +204,8 @@ double Apparent::redshift() const {
  *
  * @return the apparent distance of the source from the observer
  */
-Distance Apparent::distance() const {
-  return Distance(_pos.dis * Unit::au);
+Coordinate Apparent::distance() const {
+  return Coordinate(_pos.dis * Unit::au);
 }
 
 /**

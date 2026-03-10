@@ -114,8 +114,8 @@ Position Position::operator-(const Position& r) const {
  *
  * @return    the distance to the indicated position.
  */
-Distance Position::distance() const {
-  return Distance(abs());
+Coordinate Position::distance() const {
+  return Coordinate(abs());
 }
 
 /**
@@ -158,7 +158,7 @@ const Position& Position::origin() {
  * @return            a string representation of this position vector.
  */
 std::string Position::to_string(int decimals) const {
-  return "Position (" + Distance(x()).to_string(decimals) + ", " + Distance(y()).to_string(decimals) + ", " + Distance(z()).to_string(decimals) + ")";
+  return "Position (" + Coordinate(x()).to_string(decimals) + ", " + Coordinate(y()).to_string(decimals) + ", " + Coordinate(z()).to_string(decimals) + ")";
 }
 
 /**

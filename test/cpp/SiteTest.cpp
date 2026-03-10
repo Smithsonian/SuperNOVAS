@@ -16,14 +16,14 @@ int main() {
 
   int n = 0;
  
-  if(!test.check("invalid (lon = NAN)", !Site(Angle(NAN), Angle(1.0), Distance(60.0)).is_valid())) n++;
-  if(!test.check("invalid (lat = NAN)", !Site(Angle(-2.0), Angle(NAN), Distance(60.0)).is_valid())) n++;
-  if(!test.check("invalid (lat < -90)", !Site(Angle(-2.0), Angle(-90.1 * Unit::deg), Distance(60.0)).is_valid())) n++;
-  if(!test.check("invalid (lat > 90)", !Site(Angle(-2.0), Angle(90.1 * Unit::deg), Distance(60.0)).is_valid())) n++;
-  if(!test.check("invalid (alt = NAN)", !Site(Angle(-2.0), Angle(1.0), Distance(NAN)).is_valid())) n++;
-  if(!test.check("invalid (alt < -10km)", !Site(Angle(-2.0), Angle(1.0), Distance(-10.1 * Unit::km)).is_valid())) n++;
-  if(!test.check("invalid (alt > 100km)", !Site(Angle(-2.0), Angle(1.0), Distance(100.1 * Unit::km)).is_valid())) n++;
-  if(!test.check("invalid (ellipsoid = -1)", !Site(Angle(-2.0), Angle(1.0), Distance(60.0), (enum novas_reference_ellipsoid) -1).is_valid())) n++;
+  if(!test.check("invalid (lon = NAN)", !Site(Angle(NAN), Angle(1.0), Coordinate(60.0)).is_valid())) n++;
+  if(!test.check("invalid (lat = NAN)", !Site(Angle(-2.0), Angle(NAN), Coordinate(60.0)).is_valid())) n++;
+  if(!test.check("invalid (lat < -90)", !Site(Angle(-2.0), Angle(-90.1 * Unit::deg), Coordinate(60.0)).is_valid())) n++;
+  if(!test.check("invalid (lat > 90)", !Site(Angle(-2.0), Angle(90.1 * Unit::deg), Coordinate(60.0)).is_valid())) n++;
+  if(!test.check("invalid (alt = NAN)", !Site(Angle(-2.0), Angle(1.0), Coordinate(NAN)).is_valid())) n++;
+  if(!test.check("invalid (alt < -10km)", !Site(Angle(-2.0), Angle(1.0), Coordinate(-10.1 * Unit::km)).is_valid())) n++;
+  if(!test.check("invalid (alt > 100km)", !Site(Angle(-2.0), Angle(1.0), Coordinate(100.1 * Unit::km)).is_valid())) n++;
+  if(!test.check("invalid (ellipsoid = -1)", !Site(Angle(-2.0), Angle(1.0), Coordinate(60.0), (enum novas_reference_ellipsoid) -1).is_valid())) n++;
 
   double p[3] = {NOVAS_EARTH_RADIUS, 0.0, NAN};
   if(!test.check("invalid (xyz has NAN)", !Site(Position(p)).is_valid())) n++;
@@ -35,7 +35,7 @@ int main() {
   p[0] = NOVAS_EARTH_RADIUS + 100.1 * Unit::km;
   if(!test.check("invalid (xyz above)", !Site(Position(p)).is_valid())) n++;
 
-  Site a(Angle(-120.5 * Unit::deg), Angle(-75.25 * Unit::deg), Distance(60.0));
+  Site a(Angle(-120.5 * Unit::deg), Angle(-75.25 * Unit::deg), Coordinate(60.0));
   if(!test.check("is_valid()", a.is_valid())) n++;
   if(!test.equals("longitude()", a.longitude().deg(), -120.5, 1e-13)) n++;
   if(!test.equals("latitude()", a.latitude().deg(), -75.25, 1e-14)) n++;
@@ -45,11 +45,11 @@ int main() {
   novas_geodetic_to_cartesian(a.longitude().deg(), a.latitude().deg(), a.altitude().m(), NOVAS_GRS80_ELLIPSOID, xyz);
   if(!test.check("xyz()", a.xyz() == Position(xyz))) n++;
   if(!test.check("equals()", Site(Position(xyz)) == a)) n++;
-  if(!test.check("equals(Distance&)", Site(Position(xyz)).equals(a, Distance(Unit::mm)))) n++;
+  if(!test.check("equals(Coordinate&)", Site(Position(xyz)).equals(a, Coordinate(Unit::mm)))) n++;
   if(!test.check("operator==()", Site(Position(xyz)) == a)) n++;
   if(!test.check("operator!=()", !(Site(Position(xyz)) != a))) n++;
 
-  Site a1("W 120d 30m 00", "-75:15:00", Distance(60.0));
+  Site a1("W 120d 30m 00", "-75:15:00", Coordinate(60.0));
   if(!test.check("operator==(ITRS string)", a1 == a)) n++;
 
   novas_itrf_transform(2015, xyz, NULL, 1988, xyz, NULL);
@@ -67,11 +67,11 @@ int main() {
 
   if(!test.equals("to_string()", a.to_string(), "Site (W 120d 30m 00.000s, S  75d 15m 00.000s, altitude 60 m)")) n++;
 
-  Site b(Angle(-120.5 * Unit::deg), Angle(-75.25 * Unit::deg), Distance(60.0), NOVAS_WGS84_ELLIPSOID);
-  if(!test.check("from_GPS()", Site::from_GPS(Angle(-120.5 * Unit::deg), Angle(-75.25 * Unit::deg), Distance(60.0)) == b)) n++;
+  Site b(Angle(-120.5 * Unit::deg), Angle(-75.25 * Unit::deg), Coordinate(60.0), NOVAS_WGS84_ELLIPSOID);
+  if(!test.check("from_GPS()", Site::from_GPS(Angle(-120.5 * Unit::deg), Angle(-75.25 * Unit::deg), Coordinate(60.0)) == b)) n++;
   if(!test.check("GPS != ITRF", !b.equals(a, 0.1 * Unit::mm))) n++;
 
-  Site b1 = Site::from_GPS("120 30 00 W", "75 15 00 S", Distance(60.0));
+  Site b1 = Site::from_GPS("120 30 00 W", "75 15 00 S", Coordinate(60.0));
   if(!test.check("operator==(GPS string)", b1 == b)) n++;
 
   std::cout << "Site.cpp: " << (n > 0 ? "FAILED" : "OK") << "\n";

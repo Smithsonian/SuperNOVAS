@@ -210,7 +210,8 @@ Horizontal Horizontal::to_unrefracted(RefractionModel ref, const Weather& weathe
  * @param rv        [m/s] (optional) observed radial velocity, if any (default: 0.0).
  * @param distance  [m] (optional) apparent distance at which the observed light originated.
  * @return          the apparent equatorial place corresponding to these astrometric horizontal
- *                  coordinates on the sky.
+ *                  coordinates on the sky, or `std::nullopt` if the observing frame is not Earth
+ *                  surface based.
  *
  * @sa to_unrefracted(), Apparent::to_horizontal()
  */
@@ -228,9 +229,53 @@ std::optional<Apparent> Horizontal::to_apparent(const Frame& frame, double rv, d
 }
 
 /**
- * Converts these horizontal coordinates to an apparent place on the sky. Typically you should
- * call this on unrefracted (astrometric) horizontal coordinates. If starting with observed
- * (refracted) coordinates you should call to_unrefracted() first, before calling this function.
+ * Converts these horizontal coordinates to an apparent place on the sky for an observer on or
+ * near Earth's surface. Typically you should call this on unrefracted (astrometric) horizontal
+ * coordinates. If starting with observed (refracted) coordinates you should call to_unrefracted()
+ * first, before calling this function.
+ *
+ * @param frame     an Earth-based observing frame, defining the time of observation and the
+ *                  observer location, above (or slightly below) Earth's surface.
+ * @param rv        (optional) observed radial velocity, if any (default: 0.0).
+ * @param distance  (optional) apparent distance at which the observed light originated.
+ * @return          the apparent equatorial place corresponding to these astrometric horizontal
+ *                  coordinates on the sky, or `std::nullopt` if the observing frame is not Earth
+ *                  surface based.
+ *
+ * @sa to_unrefracted(), Apparent::to_horizontal()
+ */
+std::optional<Apparent> Horizontal::to_apparent(const Frame& frame, const Speed& rv, const Coordinate& distance) const {
+  return to_apparent(frame, rv.m_per_s(), distance.m());
+}
+
+/**
+ * Converts these horizontal coordinates to an apparent place on the sky for an observer on or
+ * near Earth's surface. Typically you should call this on unrefracted (astrometric) horizontal
+ * coordinates. If starting with observed (refracted) coordinates you should call to_unrefracted()
+ * first, before calling this function.
+ *
+ * @param frame     an Earth-based observing frame, defining the time of observation and the
+ *                  observer location, above (or slightly below) Earth's surface.
+ * @param rv        [m/s] (optional) observed radial velocity, if any (default: 0.0).
+ * @param distance  [m] (optional) apparent distance at which the observed light originated.
+ * @return          the apparent equatorial place corresponding to these astrometric horizontal
+ *                  coordinates on the sky.
+ *
+ * @sa to_unrefracted(), Apparent::to_horizontal()
+ */
+Apparent Horizontal::to_apparent(const GeodeticFrame& frame, double rv, double distance) const {
+  std::optional<Apparent> opt = to_apparent(static_cast<Frame>(frame), rv, distance);
+  if(opt.has_value())
+    return opt.value();
+  novas_trace_nan("Horizontal::to_apparent");
+  return Apparent::invalid();
+}
+
+/**
+ * Converts these horizontal coordinates to an apparent place on the sky for an observer on or
+ * near Earth's surface. Typically you should call this on unrefracted (astrometric) horizontal
+ * coordinates. If starting with observed (refracted) coordinates you should call to_unrefracted()
+ * first, before calling this function.
  *
  * @param frame     an Earth-based observing frame, defining the time of observation and the
  *                  observer location, above (or slightly below) Earth's surface.
@@ -241,7 +286,7 @@ std::optional<Apparent> Horizontal::to_apparent(const Frame& frame, double rv, d
  *
  * @sa to_unrefracted(), Apparent::to_horizontal()
  */
-std::optional<Apparent> Horizontal::to_apparent(const Frame& frame, const Speed& rv, const Distance& distance) const {
+Apparent Horizontal::to_apparent(const GeodeticFrame& frame, const Speed& rv, const Coordinate& distance) const {
   return to_apparent(frame, rv.m_per_s(), distance.m());
 }
 

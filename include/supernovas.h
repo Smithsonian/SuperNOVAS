@@ -4,7 +4,7 @@
  * @date Created  on Sep 29, 2025
  * @author Attila Kovacs
  * @since 1.6
- * @version 0.2.0
+ * @version 0.9.0
  *
  *  !!! Under construction !!!
  */
@@ -12,7 +12,7 @@
 #ifndef INCLUDE_SUPERMOVAS_H_
 #define INCLUDE_SUPERMOVAS_H_
 
-#define SUPERNOVAS_CPP_API_VERSION    0.2.0   ///< C++ API version (different from library version)
+#define SUPERNOVAS_CPP_API_VERSION    0.9.0   ///< C++ API version (different from library version)
 
 #if __cplusplus
 
@@ -40,7 +40,7 @@ class Vector;
 class   Position;
 class   Velocity;
 class Equinox;
-class Distance;
+class Coordinate;
 class Interval;
 class Angle;
 class   TimeAngle;
@@ -59,12 +59,13 @@ class Pressure;
 class Weather;
 class Site;
 class Observer;
+class   SpaceBasedObserver;
+class     SolarSystemObserver;
+class     GeocentricObserver;
 class   GeodeticObserver;
-class   GeocentricObserver;
-class   SolarSystemObserver;
 class CatalogEntry;
 class OrbitalSystem;
-class OrbitalSource;
+class Orbital;
 class Source;
 class   CatalogSource;
 class   SolarSystemSource;
@@ -72,6 +73,7 @@ class     Planet;
 class     EphemerisSource;
 class     OrbitalSource;
 class Frame;
+class   GeodeticFrame;
 class Apparent;
 class Geometric;
 class Evolution;
@@ -326,29 +328,19 @@ public:
 };
 
 /**
- * A scalar separation between two points in space. It may be signed, such that that the distance
- * from __A__ to __B__ is the negative of the distance __B__ to __A__, i.e.:
- *
- *  \| __A__ - __B__ \| = -\| __B__ - __A__ \|
- *
- * for two vector locations __A__ and __B__.
+ * A scalar coordinate or distance between two points in space.
  *
  * @sa Position
  * @ingroup util
  */
-class Distance : public Validating {
+class Coordinate : public Validating {
 private:
   double _meters;         ///< [m] stored distance
 
 public:
-  explicit Distance(double meters);
+  explicit Coordinate(double meters);
 
-  /**
-   * Returns the magnitude of this distance, as a unsigned distance.
-   *
-   * @return    The absolute value of the (possibly signed) distance value represented by this instance.
-   */
-  Distance abs() const;
+  Coordinate abs() const;
 
   double m() const;
 
@@ -370,11 +362,11 @@ public:
 
   std::string to_string(int decimals = 3) const;
 
-  static Distance from_parallax(const Angle& parallax);
+  static Coordinate from_parallax(const Angle& parallax);
 
-  static const Distance& zero();
+  static const Coordinate& zero();
 
-  static const Distance& at_Gpc();
+  static const Coordinate& at_Gpc();
 };
 
 /**
@@ -397,7 +389,7 @@ public:
 
   Interval operator-(const Interval& r) const;
 
-  Distance operator*(const Speed& v) const;
+  Coordinate operator*(const Speed& v) const;
 
   Position operator*(const Velocity& v) const;
 
@@ -593,7 +585,7 @@ public:
 Vector operator*(double factor, const Vector& v);
 
 /**
- * A 3D physical location vector in space.
+ * A 3D physical position vector in space.
  *
  * @sa Velocity, Geometric
  * @ingroup geometric
@@ -615,7 +607,7 @@ public:
 
   Position operator-(const Position &r) const;
 
-  Distance distance() const;
+  Coordinate distance() const;
 
   Position inv() const;
 
@@ -680,7 +672,7 @@ private:
 public:
   explicit Speed(double m_per_s);
 
-  Speed(const Distance& d, const Interval& time);
+  Speed(const Coordinate& d, const Interval& time);
 
   Speed operator+(const Speed& r) const;
 
@@ -713,11 +705,11 @@ public:
 
   double redshift() const;
 
-  Distance travel(double seconds) const;
+  Coordinate travel(double seconds) const;
 
-  Distance travel(const Interval& time) const;
+  Coordinate travel(const Interval& time) const;
 
-  Distance operator*(const Interval& time) const;
+  Coordinate operator*(const Interval& time) const;
 
   Velocity to_direction(const Vector& direction) const;
 
@@ -747,7 +739,7 @@ protected:
   }
 
 public:
-  virtual ~Spherical() {}; // something virtual to make class polymorphic for dynamic casting.
+  virtual ~Spherical() {};
 
   Spherical(double longitude_rad, double latitude_rad);
 
@@ -755,7 +747,7 @@ public:
 
   Spherical(const std::string& longitude, const std::string& latitude);
 
-  Position xyz(const Distance& distance) const;
+  Position xyz(const Coordinate& distance) const;
 
   const Angle& longitude() const;
 
@@ -1136,9 +1128,9 @@ public:
 
   Site(double longitude_rad, double latitude_rad, double altitude_m = 0.0, enum novas::novas_reference_ellipsoid ellipsoid = novas::NOVAS_GRS80_ELLIPSOID);
 
-  Site(const Angle& longitude, const Angle& latitude, const Distance& altitude = Distance::zero(), enum novas::novas_reference_ellipsoid ellipsoid = novas::NOVAS_GRS80_ELLIPSOID);
+  Site(const Angle& longitude, const Angle& latitude, const Coordinate& altitude = Coordinate::zero(), enum novas::novas_reference_ellipsoid ellipsoid = novas::NOVAS_GRS80_ELLIPSOID);
 
-  Site(const std::string& longitude, const std::string& latitude, const Distance& distance = Distance::zero(), enum novas::novas_reference_ellipsoid ellipsoid = novas::NOVAS_GRS80_ELLIPSOID);
+  Site(const std::string& longitude, const std::string& latitude, const Coordinate& altitude = Coordinate::zero(), enum novas::novas_reference_ellipsoid ellipsoid = novas::NOVAS_GRS80_ELLIPSOID);
 
   explicit Site(const Position& xyz);
 
@@ -1148,13 +1140,13 @@ public:
 
   const Angle latitude() const;
 
-  const Distance altitude() const;
+  const Coordinate altitude() const;
 
   Position xyz() const;
 
   bool equals(const Site& site, double tol_m = 1e-3) const;
 
-  bool equals(const Site& site, const Distance& tol) const;
+  bool equals(const Site& site, const Coordinate& tol) const;
 
   bool operator==(const Site& site) const;
 
@@ -1174,15 +1166,15 @@ public:
 
   static Site from_GPS(double longitude, double latitude, double altitude = 0.0);
 
-  static Site from_GPS(const Angle& longitude, const Angle& latitude, const Distance& altitude = Distance::zero());
+  static Site from_GPS(const Angle& longitude, const Angle& latitude, const Coordinate& altitude = Coordinate::zero());
 
-  static Site from_GPS(const std::string& longitude, const std::string& latitude, const Distance& altitude = Distance::zero());
+  static Site from_GPS(const std::string& longitude, const std::string& latitude, const Coordinate& altitude = Coordinate::zero());
 
   static const Site& invalid();
 };
 
 /**
- * An observer location. Both Earth-bound (geodetic sites, airborne, or Earth-orbit), and locations elsewhere in
+ * An abstract observer location. Both Earth-bound (geodetic sites, airborne, or Earth-orbit), and locations elsewhere in
  * the Solar-system are supported.
  *
  * @sa Frame
@@ -1211,12 +1203,6 @@ public:
 
   virtual std::string to_string() const;
 
-  /// @ingroup frame
-  std::optional<Frame> frame_at(const Time& time, enum novas::novas_accuracy accuracy = novas::NOVAS_FULL_ACCURACY) const;
-
-  /// @ingroup frame
-  Frame reduced_accuracy_frame_at(const Time& time) const;
-
   static GeodeticObserver on_earth(const Site& site, const EOP& eop);
 
   static GeodeticObserver moving_on_earth(const Site& site, const Velocity& itrs_vel, const EOP &eop);
@@ -1235,12 +1221,33 @@ public:
   static const Observer& invalid();
 };
 
+
+/**
+ * An abstract observer location in space.
+ *
+ * @sa Frame
+ * @ingroup observer
+ */
+class SpaceBasedObserver : public Observer {
+protected:
+  explicit SpaceBasedObserver(enum novas::novas_observer_place type, const Position& pos = Position::origin(),
+          const Velocity& vel = Velocity::stationary()) : Observer(type, Site::invalid(), pos, vel) {}
+
+public:
+  /// @ingroup frame
+  std::optional<Frame> frame_at(const Time& time, enum novas::novas_accuracy accuracy = novas::NOVAS_FULL_ACCURACY) const;
+
+  /// @ingroup frame
+  Frame reduced_accuracy_frame_at(const Time& time) const;
+
+};
+
 /**
  * An observer location at a geodetic (longitude, latitude, altitude) location at the surface or
  * above it (e.g. in an aircraft or balloon). The observer may be fixed at that location, or else
  * moving with some velocity over the ground.
  *
- * @sa GeocentricObserver
+ * @sa GeodeticFrame, GeocentricObserver
  * @ingroup observer
  */
 class GeodeticObserver : public Observer {
@@ -1270,6 +1277,12 @@ public:
 
   const EOP& eop() const;
 
+  /// @ingroup frame
+  std::optional<GeodeticFrame> frame_at(const Time& time, enum novas::novas_accuracy accuracy = novas::NOVAS_FULL_ACCURACY) const;
+
+  /// @ingroup frame
+  GeodeticFrame reduced_accuracy_frame_at(const Time& time) const;
+
   std::string to_string() const override;
 };
 
@@ -1280,7 +1293,7 @@ public:
  * @sa GeodeticObserver
  * @ingroup observer
  */
-class GeocentricObserver : public Observer {
+class GeocentricObserver : public SpaceBasedObserver {
 public:
   GeocentricObserver();
 
@@ -1303,7 +1316,7 @@ public:
  *
  * @ingroup observer
  */
-class SolarSystemObserver : public Observer {
+class SolarSystemObserver : public SpaceBasedObserver {
 public:
 
   SolarSystemObserver();
@@ -1596,7 +1609,7 @@ public:
  * (using the is_valid() method), or else use the static Frame::create() function to return an
  * optional.
  *
- * @sa Source
+ * @sa GeodeticFrame, Source
  * @ingroup frame
  */
 class Frame : public Validating {
@@ -1605,11 +1618,14 @@ private:
   Time _time;
   novas::novas_frame _frame = {}; ///< Stored frame data
 
-  Frame(const Observer& obs, const Time& time, enum novas::novas_accuracy accuracy = novas::NOVAS_FULL_ACCURACY);
-
   void diurnal_correct();
 
+protected:
+  Frame(const Observer& obs, const Time& time, enum novas::novas_accuracy accuracy = novas::NOVAS_FULL_ACCURACY);
+
 public:
+  virtual ~Frame() {};
+
   const novas::novas_frame* _novas_frame() const;
 
   const Observer& observer() const;
@@ -1622,7 +1638,7 @@ public:
 
   Geometric geometric(const Position& p, const Velocity& v, enum novas::novas_reference_system system = novas::NOVAS_TOD) const;
 
-  std::string to_string() const;
+  virtual std::string to_string() const;
 
   static std::optional<Frame> create(const Observer& obs, const Time& time, enum novas::novas_accuracy accuracy = novas::NOVAS_FULL_ACCURACY);
 
@@ -1632,7 +1648,29 @@ public:
 };
 
 /**
- * An astronomical source, or target of observation.
+ * An observing frame specifically for an observer located on or near Earth's surface. It is not
+ * necessary to have this kind of a frame for a geodetic observer, but it can make usage a little
+ * simpler for them than the generic frames, eliminating some optionals, and providing direct
+ * return values instead.
+ *
+ * @sa GeodeticObserver, Source
+ * @ingroup frame
+ */
+class GeodeticFrame : public Frame {
+protected:
+  GeodeticFrame(const GeodeticObserver& obs, const Time& time, enum novas::novas_accuracy accuracy = novas::NOVAS_FULL_ACCURACY);
+
+public:
+
+  std::string to_string() const override;
+
+  static std::optional<GeodeticFrame> create(const GeodeticObserver& obs, const Time& time, enum novas::novas_accuracy accuracy = novas::NOVAS_FULL_ACCURACY);
+
+  static GeodeticFrame reduced_accuracy(const GeodeticObserver& obs, const Time& time);
+};
+
+/**
+ * An abstract astronomical source, or target of observation.
  *
  * @sa CatalogSource, Planet, EphemerisSource, OrbitalSource
  * @ingroup source
@@ -1673,10 +1711,19 @@ public:
   Angle angle_to(const Source& source, const Frame& frame) const;
 
   /// @ingroup time
+  Time rises_above(const Angle& el, const GeodeticFrame &frame, novas::RefractionModel ref = NULL, const Weather& weather = Weather::standard()) const;
+
+  /// @ingroup time
   std::optional<Time> rises_above(const Angle& el, const Frame &frame, novas::RefractionModel ref = NULL, const Weather& weather = Weather::standard()) const;
 
   /// @ingroup time
+  Time transits(const GeodeticFrame &frame) const;
+
+  /// @ingroup time
   std::optional<Time> transits(const Frame &frame) const;
+
+  /// @ingroup time
+  Time sets_below(const Angle& el, const GeodeticFrame &frame, novas::RefractionModel ref = NULL, const Weather& weather = Weather::standard()) const;
 
   /// @ingroup time
   std::optional<Time> sets_below(const Angle& el, const Frame &frame, novas::RefractionModel ref = NULL, const Weather& weather = Weather::standard()) const;
@@ -1741,7 +1788,7 @@ public:
 
   double redshift() const;
 
-  Distance distance() const;
+  Coordinate distance() const;
 
   Angle parallax() const;
 
@@ -1757,7 +1804,7 @@ public:
 
   CatalogEntry& distance(double meters);
 
-  CatalogEntry& distance(const Distance& dist);
+  CatalogEntry& distance(const Coordinate& dist);
 
   CatalogEntry& v_lsr(double v_ms);
 
@@ -1803,7 +1850,7 @@ protected:
 
 public:
 
-  Distance helio_distance(const Time& time) const;
+  Coordinate helio_distance(const Time& time) const;
 
   Speed helio_rate(const Time& time) const;
 
@@ -1835,7 +1882,7 @@ public:
 
   int de_number() const;
 
-  Distance mean_radius() const;
+  Coordinate mean_radius() const;
 
   double mass() const;
 
@@ -1952,6 +1999,10 @@ public:
 
   OrbitalSystem& pole(const Spherical& coords, const Equinox& system = Equinox::icrs());
 
+  Orbital orbit(double jd_tdb, double semi_major_m, double mean_anomaly_rad, double period_s) const;
+
+  Orbital orbit(const Time& ref_time, const Coordinate& semi_major, const Angle& mean_anomaly, const Interval& period) const;
+
   static OrbitalSystem equatorial(const Planet& center = Planet::sun());
 
   static OrbitalSystem ecliptic(const Planet& center = Planet::sun());
@@ -1990,11 +2041,11 @@ private:
 public:
   Orbital(const OrbitalSystem& system, double jd_tdb, double semi_major_m, double mean_anomaly_rad, double period_s);
 
-  Orbital(const OrbitalSystem& system, const Time& ref_time, const Distance& semi_major, const Angle& mean_anomaly, const Interval& period);
+  Orbital(const OrbitalSystem& system, const Time& ref_time, const Coordinate& semi_major, const Angle& mean_anomaly, const Interval& period);
 
   static Orbital with_mean_motion(const OrbitalSystem& system, double jd_tdb, double a, double M0, double rad_per_s);
 
-  static Orbital with_mean_motion(const OrbitalSystem& system, const Time& time, const Distance& a, const Angle& M0, double rad_per_s);
+  static Orbital with_mean_motion(const OrbitalSystem& system, const Time& time, const Coordinate& a, const Angle& M0, double rad_per_s);
 
   const novas::novas_orbital * _novas_orbital() const;
 
@@ -2002,7 +2053,7 @@ public:
 
   double reference_jd_tdb() const;
 
-  Distance semi_major_axis() const;
+  Coordinate semi_major_axis() const;
 
   Angle reference_mean_anomaly() const;
 
@@ -2143,7 +2194,7 @@ public:
 
   double redshift() const;
 
-  Distance distance() const;
+  Coordinate distance() const;
 
   /// @ingroup equatorial
   Equatorial equatorial() const;
@@ -2290,7 +2341,13 @@ public:
   std::optional<Apparent> to_apparent(const Frame& frame, double rv = 0.0, double distance = Unit::Gpc) const;
 
   /// @ingroup apparent
-  std::optional<Apparent> to_apparent(const Frame& frame, const Speed& rv = Speed::stationary(), const Distance& distance = Distance::at_Gpc()) const;
+  std::optional<Apparent> to_apparent(const Frame& frame, const Speed& rv = Speed::stationary(), const Coordinate& distance = Coordinate::at_Gpc()) const;
+
+  /// @ingroup apparent
+  Apparent to_apparent(const GeodeticFrame& frame, double rv = 0.0, double distance = Unit::Gpc) const;
+
+  /// @ingroup apparent
+  Apparent to_apparent(const GeodeticFrame& frame, const Speed& rv = Speed::stationary(), const Coordinate& distance = Coordinate::at_Gpc()) const;
 
   std::string to_string(enum novas::novas_separator_type separator = novas::NOVAS_SEP_UNITS_AND_SPACES, int decimals = 3) const override;
 
@@ -2351,7 +2408,7 @@ protected:
 
   Angle unchecked_latitude(const Time& time) const;
 
-  Distance unchecked_distance(const Time& time) const;
+  Coordinate unchecked_distance(const Time& time) const;
 
 public:
 
@@ -2371,7 +2428,7 @@ public:
 
   std::optional<Angle> latitude_at(const Time& time) const;
 
-  std::optional<Distance> distance_at(const Time& time) const;
+  std::optional<Coordinate> distance_at(const Time& time) const;
 
   std::optional<Speed> radial_velocity_at(const Time& time) const;
 

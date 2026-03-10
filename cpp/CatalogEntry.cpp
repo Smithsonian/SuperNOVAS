@@ -255,8 +255,8 @@ double CatalogEntry::redshift() const {
  * @sa system(), parallax()
  * @sa ra(), dec(), radial_velocity(), v_lsr(), redshift()
  */
-Distance CatalogEntry::distance() const {
-  return Distance(Unit::kpc / _entry.parallax);
+Coordinate CatalogEntry::distance() const {
+  return Coordinate(Unit::kpc / _entry.parallax);
 }
 
 /**
@@ -406,7 +406,7 @@ CatalogEntry& CatalogEntry::distance(double meters) {
  * @sa parallax()
  * @sa system(), radial_velocity(), v_lsr(), redshift(), proper_motion(), catalog()
  */
-CatalogEntry& CatalogEntry::distance(const Distance& dist) {
+CatalogEntry& CatalogEntry::distance(const Coordinate& dist) {
   return distance(dist.m());
 }
 

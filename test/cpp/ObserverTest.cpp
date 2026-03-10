@@ -20,7 +20,7 @@ int main() {
 
 
   EOP eop(37, 0.15, 0.2 * Unit::arcsec, -0.3 * Unit::arcsec);
-  Site site(Angle(-2.0), Angle(1.0), Distance(75.0));
+  Site site(Angle(-2.0), Angle(1.0), Coordinate(75.0));
 
   Observer x = Observer::invalid();
   const Observer *copy;

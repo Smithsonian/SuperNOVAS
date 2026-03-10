@@ -48,11 +48,11 @@ int main() {
   // Define a high-z source.
 
   // 3c273: 12h29m6.6997s +2d3m8.598s (ICRS), z=0.158339
-  CatalogEntry e = CatalogEntry("3c273", Equatorial("12h29m6.6997s", "+2d3m8.598s"))
+  auto entry = CatalogEntry("3c273", Equatorial("12h29m6.6997s", "+2d3m8.598s"))
           .redshift(0.158339);
 
   // Define a source from the catalog coordinates
-  CatalogSource source(e);
+  auto source = entry.to_source();
 
 
   // -------------------------------------------------------------------------
@@ -62,7 +62,7 @@ int main() {
   // Specify the location we are observing from
   // 50.7374 deg N, 7.0982 deg E, 60m elevation (GPS / WGS84)
   // (You can set local weather parameters after...)
-  GeodeticObserver obs = Observer::on_earth(Site::from_GPS(50.7374, 7.0982, 60.0), eop);
+  auto obs = Observer::on_earth(Site::from_GPS(50.7374, 7.0982, 60.0), eop);
 
 
   // -------------------------------------------------------------------------
@@ -104,11 +104,9 @@ int main() {
 
   // -------------------------------------------------------------------------
   // Initialize the observing frame with the given observer location and
-  // time of observation
-  //
-  // Without a planet provider, we are stuck with reduced (mas) precisions
-  // only...
-  Frame frame = obs.reduced_accuracy_frame_at(t);
+  // time of observation. Without a planet provider, we are stuck with reduced
+  // (mas) precisions only...
+  auto frame = obs.reduced_accuracy_frame_at(t);
 
   // -------------------------------------------------------------------------
   // Calculate the precise apparent position.
@@ -132,7 +130,7 @@ int main() {
   Horizontal hor = opt.value().to_refracted(novas_optical_refraction, weather);
 
   // Let's print the calculated azimuth and elevation
-  std::cout << hor.to_string()) << "\n";
+  std::cout << hor.to_string() << "\n";
 
   return 0;
 }

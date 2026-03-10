@@ -21,16 +21,16 @@ namespace supernovas {
  * set a distance of 12.4 parsecs, you might simply write:
  *
  * ```c
- *   Distance d(12.4 * Unit::pc);
+ *   Coordinate d(12.4 * Unit::pc);
  * ```
  *
  * @param meters    [m] The initializing value.
  *
  * @sa zero(), at_Gpc()
  */
-Distance::Distance(double meters) : _meters(meters) {
+Coordinate::Coordinate(double meters) : _meters(meters) {
   if(isnan(meters))
-    novas::novas_set_errno(EINVAL, "Distance(double)", "input value is NAN");
+    novas::novas_set_errno(EINVAL, "Coordinate(double)", "input value is NAN");
   else
     _valid = true;
 }
@@ -38,10 +38,10 @@ Distance::Distance(double meters) : _meters(meters) {
 /**
  * Returns the absolute value of this distance.
  *
- * @return    the unsigned absolute value of this distance instance, as a distance itself.
+ * @return    the absolute value (length or distance) for this coordinate, as a coordinate itself.
  */
-Distance Distance::abs() const {
-  return Distance(fabs(_meters));
+Coordinate Coordinate::abs() const {
+  return Coordinate(fabs(_meters));
 }
 
 /**
@@ -51,7 +51,7 @@ Distance Distance::abs() const {
  *
  * @sa km(), au(), lyr(), pc(), kpc(), Mpc(), Gpc()
  */
-double Distance::m() const {
+double Coordinate::m() const {
   return _meters;
 }
 
@@ -62,7 +62,7 @@ double Distance::m() const {
  *
  * @sa m(), au(), lyr(), pc(), kpc(), Mpc(), Gpc()
  */
-double Distance::km() const {
+double Coordinate::km() const {
   return 1e-3 * _meters;
 }
 
@@ -73,7 +73,7 @@ double Distance::km() const {
  *
  * @sa m(), km(), lyr(), pc(), kpc(), Mpc(), Gpc()
  */
-double Distance::au() const {
+double Coordinate::au() const {
   return _meters / Unit::au;
 }
 
@@ -84,7 +84,7 @@ double Distance::au() const {
  *
  * @sa m(), km(), au(), pc(), kpc(), Mpc(), Gpc()
  */
-double Distance::lyr() const {
+double Coordinate::lyr() const {
   return _meters / Unit::lyr;
 }
 
@@ -95,7 +95,7 @@ double Distance::lyr() const {
  *
  * @sa m(), km(), au(), lyr(), kpc(), Mpc(), Gpc()
  */
-double Distance::pc() const {
+double Coordinate::pc() const {
   return _meters / Unit::pc;
 }
 
@@ -106,7 +106,7 @@ double Distance::pc() const {
  *
  * @sa m(), km(), au(), lyr(), pc(), Mpc(), Gpc()
  */
-double Distance::kpc() const {
+double Coordinate::kpc() const {
   return _meters / Unit::kpc;
 }
 
@@ -117,7 +117,7 @@ double Distance::kpc() const {
  *
  * @sa m(), km(), au(), lyr(), pc(), kpc(), Gpc()
  */
-double Distance::Mpc() const {
+double Coordinate::Mpc() const {
   return _meters / Unit::Mpc;
 }
 
@@ -128,7 +128,7 @@ double Distance::Mpc() const {
  *
  * @sa m(), km(), au(), lyr(), pc(), kpc(), Mpc()
  */
-double Distance::Gpc() const {
+double Coordinate::Gpc() const {
   return _meters / Unit::Gpc;
 }
 
@@ -139,7 +139,7 @@ double Distance::Gpc() const {
  *
  * @sa from_parallax()
  */
-Angle Distance::parallax() const {
+Angle Coordinate::parallax() const {
   return Angle(Unit::arcsec / pc());
 }
 
@@ -149,7 +149,7 @@ Angle Distance::parallax() const {
  *
  * @return    A human readable string representation of the distance and a unit specifier.
  */
-std::string Distance::to_string(int decimals) const {
+std::string Coordinate::to_string(int decimals) const {
   char fmt[20] = {'\0'};
   char s[40] = {'\0'};
 
@@ -206,10 +206,10 @@ std::string Distance::to_string(int decimals) const {
  *
  * @sa parallax()
  */
-Distance Distance::from_parallax(const Angle& parallax) {
+Coordinate Coordinate::from_parallax(const Angle& parallax) {
   if(!parallax.is_valid())
-    novas_set_errno(EINVAL, "Distance::from_parallax", "input parallax is invalid");
-  return Distance(Unit::pc / (parallax.arcsec()));
+    novas_set_errno(EINVAL, "Coordinate::from_parallax", "input parallax is invalid");
+  return Coordinate(Unit::pc / (parallax.arcsec()));
 }
 
 /**
@@ -217,8 +217,8 @@ Distance Distance::from_parallax(const Angle& parallax) {
  *
  * @return    A reference to a persistent standard zero distance instance.
  */
-const Distance& Distance::zero() {
-  static const Distance _zero = Distance(0.0);
+const Coordinate& Coordinate::zero() {
+  static const Coordinate _zero = Coordinate(0.0);
   return _zero;
 }
 
@@ -229,8 +229,8 @@ const Distance& Distance::zero() {
  *
  * @return    A reference to a persistent standard 1 Gpc distance instance.
  */
-const Distance& Distance::at_Gpc() {
-  static const Distance _at_Gpc = Distance(Unit::Gpc);
+const Coordinate& Coordinate::at_Gpc() {
+  static const Coordinate _at_Gpc = Coordinate(Unit::Gpc);
   return _at_Gpc;
 }
 

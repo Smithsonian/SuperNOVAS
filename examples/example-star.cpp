@@ -51,13 +51,13 @@ int main() {
   //
   // NOTE, here we set a barycentric radial velocity, but you can set LSR velocities or redshifts
   // also, instead.
-  CatalogEntry e = CatalogEntry("Antares", Equatorial("16h26m20.1918s", "-26d19m23.138s", Equinox::b1950()))
+  auto entry = CatalogEntry("Antares", Equatorial("16h26m20.1918s", "-26d19m23.138s", Equinox::b1950()))
           .proper_motion(-12.11 * Unit::mas / Unit::yr, -23.30 * Unit::mas / Unit::yr)
           .parallax(5.98 * Unit::mas)
           .radial_velocity(-3.4 * Unit::km / Unit::s);
 
   // Define a source from the catalog coordinates
-  CatalogSource source(e);
+  auto source = entry.to_source();
 
 
 
@@ -68,7 +68,7 @@ int main() {
   // Specify the location we are observing from
   // 50.7374 deg N, 7.0982 deg E, 60m elevation (GPS / WGS84)
   // (You can set local weather parameters after...)
-  GeodeticObserver obs = Observer::on_earth(Site::from_GPS(50.7374, 7.0982, 60.0), eop);
+  auto obs = Observer::on_earth(Site::from_GPS(50.7374, 7.0982, 60.0), eop);
 
 
   // -------------------------------------------------------------------------
@@ -110,11 +110,9 @@ int main() {
 
   // -------------------------------------------------------------------------
   // Initialize the observing frame with the given observer location and
-  // time of observation
-  //
-  // Without a planet provider, we are stuck with reduced (mas) precisions
-  // only...
-  Frame frame = obs.reduced_accuracy_frame_at(t);
+  // time of observation. Without a planet provider, we are stuck with reduced
+  // (mas) precisions only...
+  auto frame = obs.reduced_accuracy_frame_at(t);
 
   // -------------------------------------------------------------------------
   // Calculate the precise apparent position.
@@ -138,7 +136,7 @@ int main() {
   Horizontal hor = opt.value().to_refracted(novas_optical_refraction, weather);
 
   // Let's print the calculated azimuth and elevation
-  std::cout << hor.to_string()) << "\n";
+  std::cout << hor.to_string() << "\n";
 
   return 0;
 }

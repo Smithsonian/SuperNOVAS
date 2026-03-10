@@ -32,7 +32,7 @@ int main() {
   if(!test.check("equatorial()", a.equatorial() == Equatorial("12:00:00.00", "-30:00:00"))) n++;
   if(!test.check("system()", a.system() == Equinox::icrs())) n++;
 
-  a.distance(Distance(Unit::pc));
+  a.distance(Coordinate(Unit::pc));
   if(!test.equals("distance(1pc)", a.distance().m(), Unit::pc, 1e-15 * Unit::pc)) n++;
   if(!test.equals("parallax(1pc)", a.parallax().arcsec(), 1.0, 1e-15)) n++;
 
