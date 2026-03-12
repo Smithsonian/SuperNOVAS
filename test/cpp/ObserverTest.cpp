@@ -34,11 +34,11 @@ int main() {
 
   if(!test.check("invalid Site", !Observer::on_earth(Site::invalid(), eop).is_valid())) n++;
   if(!test.check("invalid Site (moving)", !Observer::moving_on_earth(Site::invalid(), Velocity::stationary(), eop).is_valid())) n++;
-  if(!test.check("invalid Site (moving ENU)", !Observer::moving_on_earth(Site::invalid(), eop, Speed(1.0), Angle(0.0)).is_valid())) n++;
+  if(!test.check("invalid Site (moving ENU)", !Observer::moving_on_earth(Site::invalid(), eop, ScalarVelocity(1.0), Angle(0.0)).is_valid())) n++;
   if(!test.check("invalid Velocity", !Observer::moving_on_earth(site, Velocity::invalid(), eop).is_valid())) n++;
-  if(!test.check("invalid speed", !Observer::moving_on_earth(site, eop, Speed(NAN), Angle(0.0)).is_valid())) n++;
-  if(!test.check("invalid direction", !Observer::moving_on_earth(site, eop, Speed(1.0), Angle(NAN)).is_valid())) n++;
-  if(!test.check("invalid vertial speed", !Observer::moving_on_earth(site, eop, Speed(1.0), Angle(0.0), Speed(NAN)).is_valid())) n++;
+  if(!test.check("invalid speed", !Observer::moving_on_earth(site, eop, ScalarVelocity(NAN), Angle(0.0)).is_valid())) n++;
+  if(!test.check("invalid direction", !Observer::moving_on_earth(site, eop, ScalarVelocity(1.0), Angle(NAN)).is_valid())) n++;
+  if(!test.check("invalid vertial speed", !Observer::moving_on_earth(site, eop, ScalarVelocity(1.0), Angle(0.0), ScalarVelocity(NAN)).is_valid())) n++;
   if(!test.check("invalid EOP", !Observer::on_earth(site, EOP::invalid()).is_valid())) n++;
   if(!test.check("invalid EOP (moving)", !Observer::moving_on_earth(site, Velocity::stationary(), EOP::invalid()).is_valid())) n++;
 
@@ -51,6 +51,8 @@ int main() {
   if(!test.equals("to_string(base)", Observer::invalid().to_string(),
           "Observer type -1")) n++;
 
+
+  test = TestUtil("GeodeticObserver");
   GeodeticObserver g1 = Observer::on_earth(site, eop);
   if(!test.check("is_valid(on_earth)", g1.is_valid())) n++;
   if(!test.equals("type(on_earth)", g1.type(), NOVAS_OBSERVER_ON_EARTH)) n++;
@@ -59,6 +61,8 @@ int main() {
   if(!test.check("site()", g1.site() == site)) n++;
   if(!test.check("velocity()", g1.itrs_velocity() == Velocity::stationary())) n++;
   if(!test.check("site()", g1.eop() == eop)) n++;
+  if(!test.check("frame_at(reduced)", g1.frame_at(Time::j2000(), NOVAS_REDUCED_ACCURACY).has_value())) n++;
+  if(!test.check("frame_at(full)", !g1.frame_at(Time::j2000(), NOVAS_FULL_ACCURACY).has_value())) n++;
   if(!test.equals("to_string(on_earth)", g1.to_string(),
           "GeodeticObserver at Site (W 114d 35m 29.612s, N  57d 17m 44.806s, altitude 75 m)")) n++;
 
@@ -82,7 +86,7 @@ int main() {
 
   double v_enu[3] = {1.0, -2.0, 3.0}, v_itrs[3] = {0.0};
   novas_enu_to_itrs(v_enu, site.longitude().deg(), site.latitude().deg(), v_itrs);
-  GeodeticObserver g3 = Observer::moving_on_earth(site, eop, Speed(hypot(v_enu[0], v_enu[1]) * Unit::km / Unit::s), Angle(atan2(v_enu[0], v_enu[1])), Speed(3.0 * Unit::km / Unit::s));
+  GeodeticObserver g3 = Observer::moving_on_earth(site, eop, ScalarVelocity(hypot(v_enu[0], v_enu[1]) * Unit::km / Unit::s), Angle(atan2(v_enu[0], v_enu[1])), ScalarVelocity(3.0 * Unit::km / Unit::s));
   if(!test.equals("type(moving ENU)", g3.type(), NOVAS_AIRBORNE_OBSERVER)) n++;
   if(!test.check("enu_velocity(moving ENU)", g3.enu_velocity() == Velocity(v_enu, Unit::km / Unit::s))) n++;
   if(!test.check("itrs_velocity(moving ENU)", g3.itrs_velocity() == Velocity(v_itrs, Unit::km / Unit::s))) n++;
@@ -96,6 +100,8 @@ int main() {
   if(!test.check("is_geodetic(gc)", !gc.is_geodetic())) n++;
   if(!test.check("geocentric_position(gc)", gc.geocentric_position() == Position::origin())) n++;
   if(!test.check("geocentric_velocity(gc)", gc.geocentric_velocity() == Velocity::stationary())) n++;
+  if(!test.check("frame_at(reduced)", gc.frame_at(Time::j2000(), NOVAS_REDUCED_ACCURACY).has_value())) n++;
+  if(!test.check("frame_at(full)", !gc.frame_at(Time::j2000(), NOVAS_FULL_ACCURACY).has_value())) n++;
   if(!test.equals("to_string(gc)", gc.to_string(), "Geocentric Observer")) n++;
 
 
@@ -105,6 +111,8 @@ int main() {
 
   o = gc._novas_observer();
   if(!test.check("_novas_observer(gc)", o != NULL && o->where == NOVAS_OBSERVER_AT_GEOCENTER)) n++;
+
+  test = TestUtil("GeocentricObserver");
 
   Position p1(10000.0 * Unit::km, 0.0, 0.0);
   GeocentricObserver o1 = Observer::in_earth_orbit(p1, v1);
@@ -123,11 +131,15 @@ int main() {
   if(!test.check("copy(orbit)", memcmp(copy->_novas_observer(), o1._novas_observer(), sizeof(observer)) == 0)) n++;
   delete copy;
 
+  test = TestUtil("SolarSystemObserver");
+
   SolarSystemObserver ssb = Observer::at_ssb();
   if(!test.check("is_valid(ssb)", ssb.is_valid())) n++;
   if(!test.equals("type(ssb)", ssb.type(), NOVAS_SOLAR_SYSTEM_OBSERVER)) n++;
   if(!test.check("is_geocentric(ssb)", !ssb.is_geocentric())) n++;
   if(!test.check("is_geodetic(ssb)", !ssb.is_geodetic())) n++;
+  if(!test.check("frame_at(reduced)", ssb.frame_at(Time::j2000(), NOVAS_REDUCED_ACCURACY).has_value())) n++;
+  if(!test.check("frame_at(full)", !ssb.frame_at(Time::j2000(), NOVAS_FULL_ACCURACY).has_value())) n++;
   if(!test.equals("to_string(ssb)", ssb.to_string(), "SolarSystemObserver at SSB")) n++;
 
   o = ssb._novas_observer();

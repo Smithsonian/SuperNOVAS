@@ -23,14 +23,23 @@ namespace supernovas {
  * Instantiate an time evolution set for a scalar quantity.
  *
  * @param pos     [?] momentary value
- * @param vel     [?/s] momentary rate of change in value
- * @param accel   [?/s<sup>2</sup>] momentary acceleration of value
+ * @param vel     [?/s] (optional) momentary rate of change in value (default: 0).
+ * @param accel   [?/s<sup>2</sup>] (optional) momentary acceleration of value (default: 0).
  */
 Evolution::Evolution(double pos, double vel, double accel)
 : _value(pos), _rate(vel), _accel(accel) {
-  // TODO validation
+  static const char *fn = "Evolution";
 
-  _valid = true;
+  errno = 0;
+
+  if(!isfinite(_value))
+    novas_set_errno(EINVAL, fn, "position is NAN or infinite");
+  if(!isfinite(_rate))
+      novas_set_errno(EINVAL, fn, "rate is NAN or infinite");
+  if(!isfinite(_accel))
+      novas_set_errno(EINVAL, fn, "acceleration is NAN or infinite");
+
+  _valid = (errno == 0);
 }
 
 /**
@@ -70,19 +79,32 @@ double Evolution::acceleration() const {
   return _accel;
 }
 
-/**
- * Returns a reference to a statically defined standard invalid time evolution. These invalid
- * evolutions may be used inside any object that is invalid itself.
- *
- * @return    a reference to a static standard invalid time evolution.
- */
-const Evolution& Evolution::zero() {
-  static const Evolution _zero = Evolution(0.0, 0.0);
-  return _zero;
+
+Evolution Evolution::stationary(double pos) {
+  return Evolution(pos);
 }
 
-
 static const novas_track _default_track = {};
+
+
+template<class CoordType> bool Track<CoordType>::validate() {
+  static const char *fn = "Track";
+
+  errno = 0;
+
+  if(!_ref_time.is_valid())
+    novas_set_errno(EINVAL, fn, "reference time is invalid");
+  if(!_range.is_valid())
+    novas_set_errno(EINVAL, fn, "validity range is invalid");
+  if(!_lon.is_valid())
+    novas_set_errno(EINVAL, fn, "longitude evolution is invalid");
+  if(!_lat.is_valid())
+    novas_set_errno(EINVAL, fn, "latitude evolution is invalid");
+  if(!_r.is_valid())
+    novas_set_errno(EINVAL, fn, "radial evolution is invalid");
+
+  return (errno == 0);
+}
 
 /**
  * Instantiates a local trajectory estimate for a source on sky, which can be used to extrapolate
@@ -100,10 +122,9 @@ template<class CoordType> Track<CoordType>::Track(const Time& ref_time, const In
 : _ref_time(ref_time), _range(range), _lon(lon), _lat(lat), _r(r) {
 
   // make sure CoordType is a sublcass of Spherical
-  static_assert(std::is_base_of<Spherical, CoordType>::value, "CoordType is not a subclass of Spherical");
+  static_assert(std::is_base_of<Spherical, CoordType>::value, "Track: CoordType is not a subclass of Spherical");
 
-  // TODO validation
-  _valid = true;
+  _valid = validate();
 }
 
 /**
@@ -125,9 +146,13 @@ template<class CoordType> Track<CoordType>::Track(const novas_track *track, cons
   // make sure CoordType is a sublcass of Spherical
   static_assert(std::is_base_of<Spherical, CoordType>::value, "CoordType is not a subclass of Spherical");
 
-  // TODO validation
-  _valid = (track != &_default_track);
+  if(track != &_default_track)
+    _valid = validate();
 }
+
+template class Track<Horizontal>;
+template class Track<Equatorial>;
+
 
 /**
  * Returns the longitudinal time evolution component of this trajectory.
@@ -173,7 +198,7 @@ template<class CoordType> const Evolution& Track<CoordType>::distance_evolution(
  * @sa reference_time(), range()
  */
 template<class CoordType> bool Track<CoordType>::is_valid_at(const Time& time) const {
-  return (time - _ref_time).seconds() <= _range.seconds();
+  return fabs((time - _ref_time).seconds()) <= _range.seconds();
 }
 
 /**
@@ -312,9 +337,9 @@ template<class CoordType> std::optional<Coordinate> Track<CoordType>::distance_a
  *
  * @sa longitude(), latitude(), distance(), redshift_at()
  */
-template<class CoordType> std::optional<Speed> Track<CoordType>::radial_velocity_at(const Time& time) const {
+template<class CoordType> std::optional<ScalarVelocity> Track<CoordType>::radial_velocity_at(const Time& time) const {
   if(is_valid_at(time))
-    return Speed(_r.rate(time - _ref_time));
+    return ScalarVelocity(_r.rate(time - _ref_time));
   novas_set_errno(ERANGE, "Track::radial_velocity_at", "requested time is outside the trajectory valifity range");
   return std::nullopt;
 }

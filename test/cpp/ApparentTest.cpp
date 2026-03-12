@@ -53,7 +53,7 @@ int main() {
   double ra_cirs = app_to_cirs_ra(frame.time().jd(), NOVAS_REDUCED_ACCURACY, p.ra);
   if(!test.check("cirs()", tod.cirs() == Equatorial(ra_cirs * Unit::hour_angle, p.dec * Unit::deg, Equinox::cirs(Time::j2000())))) n++;
 
-  Apparent tod2 = Apparent::tod(Angle(p.ra * Unit::hour_angle), Angle(p.dec * Unit::deg), frame, Speed(p.rv * Unit::km / Unit::s));
+  Apparent tod2 = Apparent::tod(Angle(p.ra * Unit::hour_angle), Angle(p.dec * Unit::deg), frame, ScalarVelocity(p.rv * Unit::km / Unit::s));
   if(!test.check("tod(Angle...)", tod2.equatorial() == tod.equatorial())) n++;
 
   Apparent cirs = Apparent::from_cirs_sky_pos(p, frame);
@@ -61,7 +61,7 @@ int main() {
   if(!test.check("cirs(CIRS)", cirs.cirs() == Equatorial(p.ra * Unit::hour_angle, p.dec * Unit::deg, Equinox::cirs(Time::j2000())))) n++;
   if(!test.check("equatorial(CIRS)", cirs.equatorial() == Equatorial(ra_tod * Unit::hour_angle, p.dec * Unit::deg, Equinox::tod(Time::j2000())))) n++;
 
-  Apparent cirs2 = Apparent::cirs(Angle(p.ra * Unit::hour_angle), Angle(p.dec * Unit::deg), frame, Speed(p.rv * Unit::km / Unit::s));
+  Apparent cirs2 = Apparent::cirs(Angle(p.ra * Unit::hour_angle), Angle(p.dec * Unit::deg), frame, ScalarVelocity(p.rv * Unit::km / Unit::s));
   if(!test.check("cirs(Angle...)", cirs2.cirs() == cirs.cirs())) n++;
 
   if(!test.check("from_to_sky_pos()", Apparent::from_tod_sky_pos(p, frame).is_valid())) n++;
@@ -76,10 +76,12 @@ int main() {
   if(!test.check("invalid p.rv", !Apparent::from_tod_sky_pos(p1, frame).is_valid())) n++;
 
   p1 = p; p1.rv = Constant::c + 1.0;
-  if(!test.check("invalid p.rv > c", !Apparent::from_tod_sky_pos(p1, frame).is_valid())) n++;
+  if(!test.check("from_to_sky_pos(p.rv > c)", !Apparent::from_tod_sky_pos(p1, frame).is_valid())) n++;
+  if(!test.check("from_cirs_sky_pos(p.rv > c)", !Apparent::from_cirs_sky_pos(p1, frame).is_valid())) n++;
 
   p1 = p; p1.dis = NAN;
-  if(!test.check("invalid p.dis", !Apparent::from_tod_sky_pos(p1, frame).is_valid())) n++;
+  if(!test.check("from_tod_sky_pos(invalid p.dis)", !Apparent::from_tod_sky_pos(p1, frame).is_valid())) n++;
+  if(!test.check("from_cirs_sky_pos(invalid p.dis)", !Apparent::from_cirs_sky_pos(p1, frame).is_valid())) n++;
 
   Site site(-15.0 * Unit::deg, 42.0 * Unit::deg, 268.0 * Unit::m);
   frame = Observer::on_earth(site, eop).reduced_accuracy_frame_at(Time::j2000());

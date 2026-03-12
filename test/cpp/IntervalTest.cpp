@@ -41,7 +41,7 @@ int main() {
 
   if(!test.equals("inv()", a.inv().minutes(), -1.0)) n++;
 
-  if(!test.equals("operator * (Speed)", (a * Speed(1.0)).m(), 60.0, 1e-12)) n++;
+  if(!test.equals("operator * (ScalarVelocity)", (a * ScalarVelocity(1.0)).m(), 60.0, 1e-12)) n++;
   if(!test.equals("operator * (Velocity)", (a * Velocity(1.0, -1.0, 0.0)).distance().m(), sqrt(2.0) * 60.0)) n++;
 
   Interval b(59.0 * Unit::sec);

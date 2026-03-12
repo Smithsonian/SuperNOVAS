@@ -70,7 +70,7 @@ int main() {
   a.proper_motion(-1.0 * Unit::mas / Unit::yr, 2.0 * Unit::mas / Unit::yr);
   if(!test.check("parallax(dec = OK)", a.is_valid())) n++;
 
-  a.radial_velocity(Speed(1.0 * Unit::km / Unit::s));
+  a.radial_velocity(ScalarVelocity(1.0 * Unit::km / Unit::s));
   if(!test.equals("radial_velocity(1 km/s)", a.radial_velocity().km_per_s(), 1.0, 1e-15)) n++;
   a.radial_velocity(NAN);
   if(!test.check("invalid(rv = NAN)", !a.is_valid())) n++;
@@ -82,7 +82,7 @@ int main() {
   if(!test.check("radial_velocity(OK)", a.is_valid())) n++;
 
 
-  a.v_lsr(Speed(1.0 * Unit::km / Unit::s));
+  a.v_lsr(ScalarVelocity(1.0 * Unit::km / Unit::s));
   if(!test.equals("v_lsr(1 km/s)", a.v_lsr().km_per_s(), 1.0, 1e-9)) n++;
   if(!test.equals("v_lsr() -> rv",
           novas_lsr_to_ssb_vel(a.system().epoch(), a.equatorial().ra().hours(), a.equatorial().dec().deg(), a.v_lsr().km_per_s()),
@@ -132,6 +132,7 @@ int main() {
   if(!test.equals("Antares.radial_velocity()", d.radial_velocity().km_per_s(), -3.4, 1e-15)) n++;
   if(!test.equals("Antares->promora", d._cat_entry()->promora, -12.11, 1e-14)) n++;
   if(!test.equals("Antares->promodec", d._cat_entry()->promodec, -23.30, 1e-14)) n++;
+  if(!test.equals("to_string()", d.to_string(), "CatalogEntry 'Antares': EQU 16h 26m 20.1918s   -26d 19m 23.138s  B1950, rv -3.400 km/s at 169.779 pc")) n++;
 
   CatalogEntry x = CatalogEntry(star, Equinox::invalid());
   if(!test.check("invalid(equinox)", !x.is_valid())) n++;
@@ -159,6 +160,7 @@ int main() {
 
   inv = star; inv.radialvelocity = NAN; x = CatalogEntry(inv, Equinox::b1950());
   if(!test.check("is_valid(radialvelocity = NAN)", !x.is_valid())) n++;
+
 
   std::cout << "CatalogEntry.cpp: " << (n > 0 ? "FAILED" : "OK") << "\n";
   return n;

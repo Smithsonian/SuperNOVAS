@@ -191,7 +191,7 @@ GeodeticObserver Observer::moving_on_earth(const Site& geodetic, const Velocity&
  *
  * @sa Site::enu_to_itrf()
  */
-GeodeticObserver Observer::moving_on_earth(const Site& site, const EOP& eop, const Speed& horizontal, const Angle& direction, const Speed& vertical) {
+GeodeticObserver Observer::moving_on_earth(const Site& site, const EOP& eop, const ScalarVelocity& horizontal, const Angle& direction, const ScalarVelocity& vertical) {
   GeodeticObserver o = GeodeticObserver(site, eop, horizontal, direction, vertical);
   if(!o.is_valid())
     novas_trace_invalid("Observer::on_earth");
@@ -478,7 +478,7 @@ GeodeticObserver::GeodeticObserver(const Site& site, const Velocity& vel, const 
  *
  * @sa Site::enu_to_itrf()
  */
-GeodeticObserver::GeodeticObserver(const Site& site, const EOP& eop, const Speed& horizontal, const Angle& direction, const Speed& vertical)
+GeodeticObserver::GeodeticObserver(const Site& site, const EOP& eop, const ScalarVelocity& horizontal, const Angle& direction, const ScalarVelocity& vertical)
 : GeodeticObserver(site, Velocity::stationary(), eop) {
   static const char *fn = "GeodeticObserver()";
 

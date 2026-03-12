@@ -44,7 +44,7 @@ class Coordinate;
 class Interval;
 class Angle;
 class   TimeAngle;
-class Speed;
+class ScalarVelocity;
 class Spherical;
 class   Horizontal;
 class   Equatorial;
@@ -389,7 +389,7 @@ public:
 
   Interval operator-(const Interval& r) const;
 
-  Coordinate operator*(const Speed& v) const;
+  Coordinate operator*(const ScalarVelocity& v) const;
 
   Position operator*(const Velocity& v) const;
 
@@ -642,7 +642,7 @@ public:
 
   bool operator!=(const Velocity& v) const;
 
-  Speed speed() const;
+  ScalarVelocity speed() const;
 
   Velocity inv() const;
 
@@ -665,33 +665,33 @@ public:
  * @sa Position
  * @ingroup util, spectral
  */
-class Speed : public Validating {
+class ScalarVelocity : public Validating {
 private:
   double _ms;       ///< [m/s] stored speed
 
 public:
-  explicit Speed(double m_per_s);
+  explicit ScalarVelocity(double m_per_s);
 
-  Speed(const Coordinate& d, const Interval& time);
+  ScalarVelocity(const Coordinate& d, const Interval& time);
 
-  Speed operator+(const Speed& r) const;
+  ScalarVelocity operator+(const ScalarVelocity& r) const;
 
-  Speed operator-(const Speed& r) const;
+  ScalarVelocity operator-(const ScalarVelocity& r) const;
 
-  bool equals(const Speed& speed, double tolerance = Unit::mm / Unit::sec) const;
+  bool equals(const ScalarVelocity& speed, double tolerance = Unit::mm / Unit::sec) const;
 
-  bool equals(const Speed& speed, const Speed& tolerance) const;
+  bool equals(const ScalarVelocity& speed, const ScalarVelocity& tolerance) const;
 
-  bool operator==(const Speed& speed) const;
+  bool operator==(const ScalarVelocity& speed) const;
 
-  bool operator!=(const Speed& speed) const;
+  bool operator!=(const ScalarVelocity& speed) const;
 
   /**
    * Returns the magnitude of this speed, as a unsigned speed.
    *
    * @return    The absolute value of the (possibly signed) speed value represented by this instance.
    */
-  Speed abs() const;
+  ScalarVelocity abs() const;
 
   double m_per_s() const;
 
@@ -715,9 +715,9 @@ public:
 
   std::string to_string(int decimals = 3) const;
 
-  static Speed from_redshift(double z);
+  static ScalarVelocity from_redshift(double z);
 
-  static const Speed& stationary();
+  static const ScalarVelocity& stationary();
 };
 
 /**
@@ -1207,8 +1207,8 @@ public:
 
   static GeodeticObserver moving_on_earth(const Site& site, const Velocity& itrs_vel, const EOP &eop);
 
-  static GeodeticObserver moving_on_earth(const Site& site, const EOP& eop, const Speed& horizontal, const Angle& direction,
-          const Speed& vertical = Speed::stationary());
+  static GeodeticObserver moving_on_earth(const Site& site, const EOP& eop, const ScalarVelocity& horizontal, const Angle& direction,
+          const ScalarVelocity& vertical = ScalarVelocity::stationary());
 
   static GeocentricObserver in_earth_orbit(const Position& pos, const Velocity& vel);
 
@@ -1239,7 +1239,6 @@ public:
 
   /// @ingroup frame
   Frame reduced_accuracy_frame_at(const Time& time) const;
-
 };
 
 /**
@@ -1262,8 +1261,8 @@ public:
 
   GeodeticObserver(const Site& site, const Velocity& itrs_vel, const EOP& eop);
 
-  GeodeticObserver(const Site& site, const EOP& eop, const Speed& horizontal, const Angle& direction,
-          const Speed& vertical = Speed::stationary());
+  GeodeticObserver(const Site& site, const EOP& eop, const ScalarVelocity& horizontal, const Angle& direction,
+          const ScalarVelocity& vertical = ScalarVelocity::stationary());
 
   const Observer *copy() const override;
 
@@ -1782,9 +1781,9 @@ public:
 
   Angle dec() const;
 
-  Speed v_lsr() const;
+  ScalarVelocity v_lsr() const;
 
-  Speed radial_velocity() const;
+  ScalarVelocity radial_velocity() const;
 
   double redshift() const;
 
@@ -1808,11 +1807,11 @@ public:
 
   CatalogEntry& v_lsr(double v_ms);
 
-  CatalogEntry& v_lsr(const Speed& v);
+  CatalogEntry& v_lsr(const ScalarVelocity& v);
 
   CatalogEntry& radial_velocity(double v_ms);
 
-  CatalogEntry& radial_velocity(const Speed& v);
+  CatalogEntry& radial_velocity(const ScalarVelocity& v);
 
   CatalogEntry& redshift(double z);
 
@@ -1852,7 +1851,7 @@ public:
 
   Coordinate helio_distance(const Time& time) const;
 
-  Speed helio_rate(const Time& time) const;
+  ScalarVelocity helio_rate(const Time& time) const;
 
   double solar_illumination(const Frame& frame) const;
 
@@ -2190,7 +2189,7 @@ public:
 
   Position xyz() const;
 
-  Speed radial_velocity() const;
+  ScalarVelocity radial_velocity() const;
 
   double redshift() const;
 
@@ -2215,11 +2214,11 @@ public:
 
   static Apparent cirs(double ra_rad, double dec_rad, const Frame& frame, double rv_ms = 0.0);
 
-  static Apparent cirs(const Angle& ra, const Angle& dec, const Frame& frame, const Speed& rv);
+  static Apparent cirs(const Angle& ra, const Angle& dec, const Frame& frame, const ScalarVelocity& rv);
 
   static Apparent tod(double ra_rad, double dec_rad, const Frame& frame, double rv_ms = 0.0);
 
-  static Apparent tod(const Angle& ra, const Angle& dec, const Frame& frame, const Speed& rv);
+  static Apparent tod(const Angle& ra, const Angle& dec, const Frame& frame, const ScalarVelocity& rv);
 
   static Apparent from_tod_sky_pos(novas::sky_pos pos, const Frame& frame);
 
@@ -2341,13 +2340,13 @@ public:
   std::optional<Apparent> to_apparent(const Frame& frame, double rv = 0.0, double distance = Unit::Gpc) const;
 
   /// @ingroup apparent
-  std::optional<Apparent> to_apparent(const Frame& frame, const Speed& rv = Speed::stationary(), const Coordinate& distance = Coordinate::at_Gpc()) const;
+  std::optional<Apparent> to_apparent(const Frame& frame, const ScalarVelocity& rv = ScalarVelocity::stationary(), const Coordinate& distance = Coordinate::at_Gpc()) const;
 
   /// @ingroup apparent
   Apparent to_apparent(const GeodeticFrame& frame, double rv = 0.0, double distance = Unit::Gpc) const;
 
   /// @ingroup apparent
-  Apparent to_apparent(const GeodeticFrame& frame, const Speed& rv = Speed::stationary(), const Coordinate& distance = Coordinate::at_Gpc()) const;
+  Apparent to_apparent(const GeodeticFrame& frame, const ScalarVelocity& rv = ScalarVelocity::stationary(), const Coordinate& distance = Coordinate::at_Gpc()) const;
 
   std::string to_string(enum novas::novas_separator_type separator = novas::NOVAS_SEP_UNITS_AND_SPACES, int decimals = 3) const override;
 
@@ -2366,7 +2365,7 @@ private:
   double _accel;    ///< [?/s<sup>2</sup>] momentary acceleration of scalar value
 
 public:
-  Evolution(double pos, double vel, double accel = 0.0);
+  explicit Evolution(double pos, double vel = 0.0, double accel = 0.0);
 
   double value(const Interval& offset = Interval::zero()) const;
 
@@ -2374,9 +2373,7 @@ public:
 
   double acceleration() const;
 
-  static const Evolution& zero();
-
-  static const Evolution stationary(double value);
+  static Evolution stationary(double pos);
 };
 
 
@@ -2395,6 +2392,8 @@ private:
   Evolution _lon;
   Evolution _lat;
   Evolution _r;
+
+  bool validate();
 
 protected:
 
@@ -2430,7 +2429,7 @@ public:
 
   std::optional<Coordinate> distance_at(const Time& time) const;
 
-  std::optional<Speed> radial_velocity_at(const Time& time) const;
+  std::optional<ScalarVelocity> radial_velocity_at(const Time& time) const;
 
   double redshift_at(const Time& time) const;
 

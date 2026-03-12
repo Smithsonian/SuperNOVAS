@@ -214,8 +214,8 @@ Angle CatalogEntry::dec() const {
  * @sa system(), radial_velocity(), redshift()
  * @sa ra(), dec(), distance(), parallax()
  */
-Speed CatalogEntry::v_lsr() const {
-  return Speed(novas_ssb_to_lsr_vel(_sys.epoch(), _entry.ra, _entry.dec, _entry.radialvelocity) * Unit::km / Unit::sec);
+ScalarVelocity CatalogEntry::v_lsr() const {
+  return ScalarVelocity(novas_ssb_to_lsr_vel(_sys.epoch(), _entry.ra, _entry.dec, _entry.radialvelocity) * Unit::km / Unit::sec);
 }
 
 /**
@@ -229,8 +229,8 @@ Speed CatalogEntry::v_lsr() const {
  * @sa ra(), dec(), distance(), parallax()
  *
  */
-Speed CatalogEntry::radial_velocity() const {
-  return Speed(_entry.radialvelocity * Unit::km / Unit::sec);
+ScalarVelocity CatalogEntry::radial_velocity() const {
+  return ScalarVelocity(_entry.radialvelocity * Unit::km / Unit::sec);
 }
 
 /**
@@ -450,7 +450,7 @@ CatalogEntry& CatalogEntry::v_lsr(double v_ms) {
  * @sa radial_velocity(), redshift()
  * @sa system(), distance(), parallax(), proper_motion(), catalog()
  */
-CatalogEntry& CatalogEntry::v_lsr(const Speed& v) {
+CatalogEntry& CatalogEntry::v_lsr(const ScalarVelocity& v) {
   return v_lsr(v.m_per_s());
 }
 
@@ -496,7 +496,7 @@ CatalogEntry& CatalogEntry::radial_velocity(double v_ms) {
  * @sa v_lsr(), redshift()
  * @sa system(), distance(), parallax(), proper_motion(), catalog()
  */
-CatalogEntry& CatalogEntry::radial_velocity(const Speed& v) {
+CatalogEntry& CatalogEntry::radial_velocity(const ScalarVelocity& v) {
   return radial_velocity(v.m_per_s());
 }
 
@@ -524,7 +524,7 @@ CatalogEntry& CatalogEntry::redshift(double z) {
 }
 
 std::string CatalogEntry::to_string(int decimals) const {
-  return "CatalogEntry '" + name() + "': " + equatorial().to_string(NOVAS_SEP_UNITS_AND_SPACES, decimals) + ", "
+  return "CatalogEntry '" + name() + "': " + equatorial().to_string(NOVAS_SEP_UNITS_AND_SPACES, decimals) + ", rv "
           + radial_velocity().to_string(decimals) + " at " + distance().to_string(decimals);
 }
 

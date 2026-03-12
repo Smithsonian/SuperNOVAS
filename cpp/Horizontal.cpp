@@ -244,7 +244,7 @@ std::optional<Apparent> Horizontal::to_apparent(const Frame& frame, double rv, d
  *
  * @sa to_unrefracted(), Apparent::to_horizontal()
  */
-std::optional<Apparent> Horizontal::to_apparent(const Frame& frame, const Speed& rv, const Coordinate& distance) const {
+std::optional<Apparent> Horizontal::to_apparent(const Frame& frame, const ScalarVelocity& rv, const Coordinate& distance) const {
   return to_apparent(frame, rv.m_per_s(), distance.m());
 }
 
@@ -286,7 +286,7 @@ Apparent Horizontal::to_apparent(const GeodeticFrame& frame, double rv, double d
  *
  * @sa to_unrefracted(), Apparent::to_horizontal()
  */
-Apparent Horizontal::to_apparent(const GeodeticFrame& frame, const Speed& rv, const Coordinate& distance) const {
+Apparent Horizontal::to_apparent(const GeodeticFrame& frame, const ScalarVelocity& rv, const Coordinate& distance) const {
   return to_apparent(frame, rv.m_per_s(), distance.m());
 }
 

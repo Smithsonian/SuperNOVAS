@@ -268,11 +268,9 @@ std::optional<Time> Source::sets_below(const Angle& el, const Frame &frame, Refr
  */
 Time Source::rises_above(const Angle& el, const GeodeticFrame &frame, RefractionModel ref, const Weather& weather) const {
   std::optional<Time> opt = rises_above(el, static_cast<Frame>(frame), ref, weather);
-  if(opt.has_value())
-    return opt.value();
-
-  novas_trace_invalid("Source::rises_above");
-  return Time::invalid();
+  if(!opt.value().is_valid())
+    novas_trace_invalid("Source::rises_above");
+  return opt.value();
 }
 
 /**
@@ -285,11 +283,9 @@ Time Source::rises_above(const Angle& el, const GeodeticFrame &frame, Refraction
  */
 Time Source::transits(const GeodeticFrame &frame) const {
   std::optional<Time> opt = transits(static_cast<Frame>(frame));
-  if(opt.has_value())
-    return opt.value();
-
-  novas_trace_invalid("Source::transits");
-  return Time::invalid();
+  if(!opt.value().is_valid())
+    novas_trace_invalid("Source::transits");
+  return opt.value();
 }
 
 /**
@@ -311,11 +307,9 @@ Time Source::transits(const GeodeticFrame &frame) const {
  */
 Time Source::sets_below(const Angle& el, const GeodeticFrame &frame, RefractionModel ref, const Weather& weather) const {
   std::optional<Time> opt = sets_below(el, static_cast<Frame>(frame), ref, weather);
-  if(opt.has_value())
-    return opt.value();
-
-  novas_trace_invalid("Source::sets_below");
-  return Time::invalid();
+  if(!opt.value().is_valid())
+    novas_trace_invalid("Source::sets_below");
+  return opt.value();
 }
 
 
@@ -566,11 +560,11 @@ Coordinate SolarSystemSource::helio_distance(const Time& time) const {
  *
  * @sa helio_distance()
  */
-Speed SolarSystemSource::helio_rate(const Time& time) const {
+ScalarVelocity SolarSystemSource::helio_rate(const Time& time) const {
   double r = NAN;
   novas_helio_dist(time.jd(NOVAS_TDB), &_object, &r);
   novas_check_nan("SolarSystemSource::helio_distance", r);
-  return Speed(r * Unit::au / Unit::day);
+  return ScalarVelocity(r * Unit::au / Unit::day);
 }
 
 /**

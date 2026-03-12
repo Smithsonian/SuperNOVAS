@@ -58,7 +58,7 @@ Interval::Interval(double seconds, enum novas_timescale timescale)
  * @param v   speed value
  * @return    the distance travelled under this time interval at the specified speed.
  */
-Coordinate Interval::operator*(const Speed& v) const {
+Coordinate Interval::operator*(const ScalarVelocity& v) const {
   return v.travel(*this);
 }
 

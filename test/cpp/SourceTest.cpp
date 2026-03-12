@@ -42,6 +42,8 @@ int main() {
   EOP eop(37, 0.0, 0.0, 0.0);
 
   Frame frame = Observer::on_earth(site, eop).reduced_accuracy_frame_at(Time::j2000());
+  GeodeticFrame gf = Observer::on_earth(site, eop).reduced_accuracy_frame_at(Time::j2000());
+  GeodeticFrame gfx = Observer::on_earth(site, eop).reduced_accuracy_frame_at(Time::invalid());
   Frame gc = Observer::at_geocenter().reduced_accuracy_frame_at(Time::j2000());
 
   if(!test.check("observer.is_geodetic()", Observer::on_earth(site, eop).is_geodetic())) n++;
@@ -52,6 +54,10 @@ int main() {
   if(!test.equals("moon_angle()", c.moon_angle(frame).deg(), novas_moon_angle(o, frame._novas_frame()), 1e-13)) n++;
   if(!test.equals("angle_to()", c.angle_to(sun, frame).deg(), novas_object_sep(o, sun._novas_object(), frame._novas_frame()), 1e-13)) n++;
 
+
+  if(!test.equals("rises_above(catalog/geo)",
+            c.rises_above(Angle(20.0 * Unit::deg), gf).jd(),
+            novas_rises_above(20.0, c._novas_object(), gf._novas_frame(), NULL), 1e-7)) n++;
   if(!test.equals("rises_above(catalog)",
           c.rises_above(Angle(20.0 * Unit::deg), frame).value().jd(),
           novas_rises_above(20.0, c._novas_object(), frame._novas_frame(), NULL), 1e-7)) n++;
@@ -62,7 +68,11 @@ int main() {
           c.rises_above(Angle(20.0 * Unit::deg), frame, novas_standard_refraction, Weather::guess(site)).value().jd(),
           novas_rises_above(20.0, c._novas_object(), frame._novas_frame(), novas_standard_refraction), 1e-7)) n++;
   if(!test.check("rises_above(gc)", !c.rises_above(Angle(20.0 * Unit::deg), gc).has_value())) n++;
+  if(!test.check("rises_above(invalid geo)", !c.rises_above(Angle(20.0 * Unit::deg), gfx).is_valid())) n++;
 
+  if(!test.equals("sets_below(catalog/geo)",
+          c.sets_below(Angle(20.0 * Unit::deg), gf).jd(),
+          novas_sets_below(20.0, c._novas_object(), gf._novas_frame(), NULL), 1e-7)) n++;
   if(!test.equals("sets_below(catalog)",
           c.sets_below(Angle(20.0 * Unit::deg), frame).value().jd(),
           novas_sets_below(20.0, c._novas_object(), frame._novas_frame(), NULL), 1e-7)) n++;
@@ -73,7 +83,11 @@ int main() {
           c.sets_below(Angle(20.0 * Unit::deg), frame, novas_standard_refraction, Weather::guess(site)).value().jd(),
           novas_sets_below(20.0, c._novas_object(), frame._novas_frame(), novas_standard_refraction), 1e-7)) n++;
   if(!test.check("sets_below(gc)", !c.sets_below(Angle(20.0 * Unit::deg), gc).has_value())) n++;
+  if(!test.check("sets_below(invalid geo)", !c.sets_below(Angle(20.0 * Unit::deg), gfx).is_valid())) n++;
 
+  if(!test.equals("transits(catalog/geo)",
+          c.transits(gf).jd(),
+          novas_transit_time(c._novas_object(), gf._novas_frame()), 1e-7)) n++;
   if(!test.equals("transits(catalog)",
           c.transits(frame).value().jd(),
           novas_transit_time(c._novas_object(), frame._novas_frame()), 1e-7)) n++;
@@ -81,6 +95,7 @@ int main() {
           sun.transits(frame).value().jd(),
           novas_transit_time(sun._novas_object(), frame._novas_frame()), 1e-7)) n++;
   if(!test.check("transits(gc)", !c.transits(gc).has_value())) n++;
+  if(!test.check("trasits(invalid geo)", !c.transits(gfx).is_valid())) n++;
 
   sky_pos tod = {};
   novas_sky_pos(o, frame._novas_frame(), NOVAS_TOD, &tod);

@@ -209,7 +209,7 @@ std::string Coordinate::to_string(int decimals) const {
 Coordinate Coordinate::from_parallax(const Angle& parallax) {
   if(!parallax.is_valid())
     novas_set_errno(EINVAL, "Coordinate::from_parallax", "input parallax is invalid");
-  return Coordinate(Unit::pc / (parallax.arcsec()));
+  return Coordinate(Unit::pc / (fabs(parallax.arcsec())));
 }
 
 /**

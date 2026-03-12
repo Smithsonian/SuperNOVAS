@@ -99,7 +99,7 @@ Apparent Apparent::cirs(double ra_rad, double dec_rad, const Frame& frame, doubl
  *
  * @sa tod()
  */
-Apparent Apparent::cirs(const Angle& ra, const Angle& dec, const Frame& frame, const Speed& rv) {
+Apparent Apparent::cirs(const Angle& ra, const Angle& dec, const Frame& frame, const ScalarVelocity& rv) {
   return cirs(ra.rad(), dec.rad(), frame, rv.m_per_s());
 }
 
@@ -131,7 +131,7 @@ Apparent Apparent::tod(double ra_rad, double dec_rad, const Frame& frame, double
  *
  * @sa cirs()
  */
-Apparent Apparent::tod(const Angle& ra, const Angle& dec, const Frame& frame, const Speed& rv) {
+Apparent Apparent::tod(const Angle& ra, const Angle& dec, const Frame& frame, const ScalarVelocity& rv) {
   return tod(ra.rad(), dec.rad(), frame, rv.m_per_s());
 }
 
@@ -178,8 +178,8 @@ Position Apparent::xyz() const {
  *
  * @sa redshift()
  */
-Speed Apparent::radial_velocity() const {
-  return Speed(_pos.rv * Unit::km / Unit::sec);
+ScalarVelocity Apparent::radial_velocity() const {
+  return ScalarVelocity(_pos.rv * Unit::km / Unit::sec);
 }
 
 /**

@@ -42,6 +42,7 @@ int main() {
   Coordinate c = Coordinate::from_parallax(Angle(1.0 * Unit::mas));
   if(!test.check("is_valid(parallax = 1 mas)", c.is_valid())) n++;
   if(!test.equals("parallax(1 mas)", c.parallax().mas(), 1.0, 1e-15)) n++;
+  if(!test.check("parallax(NAN)", !Coordinate::from_parallax(Angle(NAN)).is_valid())) n++;
 
   Coordinate d(-Unit::kpc);
   if(!test.equals("kpc(-1 kpc)", d.kpc(), -1.0, 1e-15)) n++;

@@ -23,6 +23,7 @@ int main() {
   if(!test.check("invalid vel", !x.velocity().is_valid())) n++;
   if(!test.equals("invalid system_type()", x.system_type(), -1)) n++;
   if(!test.check("invalid to_system()", !x.to_icrs().is_valid())) n++;
+  if(!test.check("invalid equatorial()", !x.equatorial().is_valid())) n++;
 
   Frame frame = Observer::at_geocenter().reduced_accuracy_frame_at(Time::j2000());
 

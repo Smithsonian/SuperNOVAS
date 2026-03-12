@@ -22,11 +22,11 @@ namespace supernovas {
  *
  * @sa from_redshift()
  */
-Speed::Speed(double m_per_s) : _ms(m_per_s) {
+ScalarVelocity::ScalarVelocity(double m_per_s) : _ms(m_per_s) {
   if(!isfinite(m_per_s))
-    novas_set_errno(EINVAL, "Speed(double)", "input value is NAN or infinite");
+    novas_set_errno(EINVAL, "ScalarVelocity(double)", "input value is NAN or infinite");
   else if(fabs(m_per_s) > Constant::c)
-    novas_set_errno(ERANGE, "Speed(double)", "input speed exceeds the speed of light: %g m/s", m_per_s);
+    novas_set_errno(ERANGE, "ScalarVelocity(double)", "input speed exceeds the speed of light: %g m/s", m_per_s);
   else
     _valid = true;
 }
@@ -40,7 +40,7 @@ Speed::Speed(double m_per_s) : _ms(m_per_s) {
  *
  * @sa from_redshift()
  */
-Speed::Speed(const Coordinate& d, const Interval& time) : _ms(d.m() / time.seconds()) {}
+ScalarVelocity::ScalarVelocity(const Coordinate& d, const Interval& time) : _ms(d.m() / time.seconds()) {}
 
 /**
  * Returns the signed scalar sum of this speed and the specified other speed, using the
@@ -51,8 +51,8 @@ Speed::Speed(const Coordinate& d, const Interval& time) : _ms(d.m() / time.secon
  *
  * @sa operator-()
  */
-Speed Speed::operator+(const Speed& r) const {
-  return Speed((beta() + r.beta()) / (1 + beta() * r.beta()) * Constant::c);
+ScalarVelocity ScalarVelocity::operator+(const ScalarVelocity& r) const {
+  return ScalarVelocity((beta() + r.beta()) / (1 + beta() * r.beta()) * Constant::c);
 }
 
 /**
@@ -64,8 +64,8 @@ Speed Speed::operator+(const Speed& r) const {
  *
  * @sa operator+()
  */
-Speed Speed::operator-(const Speed& r) const {
-  return Speed((beta() - r.beta()) / (1 + beta() * r.beta()) * Constant::c);
+ScalarVelocity ScalarVelocity::operator-(const ScalarVelocity& r) const {
+  return ScalarVelocity((beta() - r.beta()) / (1 + beta() * r.beta()) * Constant::c);
 }
 
 /**
@@ -78,7 +78,7 @@ Speed Speed::operator-(const Speed& r) const {
  *
  * @sa operator==(), operator!=()
  */
-bool Speed::equals(const Speed& speed, double tolerance) const {
+bool ScalarVelocity::equals(const ScalarVelocity& speed, double tolerance) const {
   return fabs(_ms - speed._ms) < fabs(tolerance);
 }
 
@@ -92,7 +92,7 @@ bool Speed::equals(const Speed& speed, double tolerance) const {
  *
  * @sa operator==(), operator!=()
  */
-bool Speed::equals(const Speed& speed, const Speed& tolerance) const {
+bool ScalarVelocity::equals(const ScalarVelocity& speed, const ScalarVelocity& tolerance) const {
   return equals(speed, tolerance.m_per_s());
 }
 
@@ -104,7 +104,7 @@ bool Speed::equals(const Speed& speed, const Speed& tolerance) const {
  *
  * @sa equals(), operator!=()
  */
-bool Speed::operator==(const Speed& speed) const {
+bool ScalarVelocity::operator==(const ScalarVelocity& speed) const {
   return equals(speed);
 }
 
@@ -117,7 +117,7 @@ bool Speed::operator==(const Speed& speed) const {
  *
  * @sa operator==()
  */
-bool Speed::operator!=(const Speed& speed) const {
+bool ScalarVelocity::operator!=(const ScalarVelocity& speed) const {
   return !equals(speed);
 }
 
@@ -126,8 +126,8 @@ bool Speed::operator!=(const Speed& speed) const {
  *
  * @return    the absolute value of this (possibly signed) speed.
  */
-Speed Speed::abs() const {
-  return Speed(fabs(_ms));
+ScalarVelocity ScalarVelocity::abs() const {
+  return ScalarVelocity(fabs(_ms));
 }
 
 /**
@@ -137,7 +137,7 @@ Speed Speed::abs() const {
  *
  * @sa km_per_s(), au_per_day(), beta(), Gamma(), redshift()
  */
-double Speed::m_per_s() const {
+double ScalarVelocity::m_per_s() const {
   return _ms;
 }
 
@@ -148,7 +148,7 @@ double Speed::m_per_s() const {
  *
  * @sa m_per_s(), au_per_day(), beta(), Gamma(), redshift()
  */
-double Speed::km_per_s() const {
+double ScalarVelocity::km_per_s() const {
   return 1e-3 * _ms;
 }
 
@@ -159,7 +159,7 @@ double Speed::km_per_s() const {
  *
  * @sa m_per_s(), km_per_s(), beta(), Gamma(), redshift()
  */
-double Speed::au_per_day() const {
+double ScalarVelocity::au_per_day() const {
   return _ms * Unit::day / Unit::au;
 }
 
@@ -170,7 +170,7 @@ double Speed::au_per_day() const {
  *
  * @sa m_per_s(), km_per_s(), au_per_day(), Gamma(), redshift()
  */
-double Speed::beta() const {
+double ScalarVelocity::beta() const {
   return _ms / Constant::c;
 }
 
@@ -181,7 +181,7 @@ double Speed::beta() const {
  *
  * @sa m_per_s(), km_per_s(), au_per_day(), redshift()
  */
-double Speed::Gamma() const {
+double ScalarVelocity::Gamma() const {
   return 1.0 / sqrt(1.0 - beta() * beta());
 }
 
@@ -192,7 +192,7 @@ double Speed::Gamma() const {
  *
  * @sa m_per_s(), km_per_s(), au_per_day(), Gamma()
  */
-double Speed::redshift() const {
+double ScalarVelocity::redshift() const {
   return novas_v2z(km_per_s());
 }
 
@@ -204,7 +204,7 @@ double Speed::redshift() const {
  *
  * @sa operator*(), Velocity::travel()
  */
-Coordinate Speed::travel(double seconds) const {
+Coordinate ScalarVelocity::travel(double seconds) const {
   return Coordinate(_ms * seconds);
 }
 
@@ -216,7 +216,7 @@ Coordinate Speed::travel(double seconds) const {
  *
  * @sa operator*(), Velocity::travel()
  */
-Coordinate Speed::travel(const Interval& time) const {
+Coordinate ScalarVelocity::travel(const Interval& time) const {
   return travel(time.seconds());
 }
 
@@ -228,7 +228,7 @@ Coordinate Speed::travel(const Interval& time) const {
  *
  * @sa travel()
  */
-Coordinate Speed::operator*(const Interval& time) const {
+Coordinate ScalarVelocity::operator*(const Interval& time) const {
   return travel(time);
 }
 
@@ -238,7 +238,7 @@ Coordinate Speed::operator*(const Interval& time) const {
  * @param decimals    (optional) the number of decimal places to print (default: 3)
  * @return            a new string containing a representation of this speed.
  */
-std::string Speed::to_string(int decimals) const {
+std::string ScalarVelocity::to_string(int decimals) const {
   char fmt[20] = {'\0'}, s[40] = {'\0'};
 
   snprintf(fmt, sizeof(fmt), "%%.%df", decimals);
@@ -255,7 +255,7 @@ std::string Speed::to_string(int decimals) const {
  * @return            a new velocity vector, in the specified direction and with the magnitude of
  *                    this speed.
  */
-Velocity Speed::to_direction(const Vector& direction) const {
+Velocity ScalarVelocity::to_direction(const Vector& direction) const {
   return Velocity(direction._array(), _ms / direction.abs());
 }
 
@@ -265,8 +265,8 @@ Velocity Speed::to_direction(const Vector& direction) const {
  * @param z   the redshift value.
  * @return    a scalar velocity instance corresponding to the specified redshift value.
  */
-Speed Speed::from_redshift(double z) {
-  return Speed(novas_z2v(z) * Unit::km / Unit::sec);
+ScalarVelocity ScalarVelocity::from_redshift(double z) {
+  return ScalarVelocity(novas_z2v(z) * Unit::km / Unit::sec);
 }
 
 /**
@@ -274,8 +274,8 @@ Speed Speed::from_redshift(double z) {
  *
  * @return    a reference to a static instance of zero speed.
  */
-const Speed& Speed::stationary() {
-  static const Speed _stationary = Speed(0.0);
+const ScalarVelocity& ScalarVelocity::stationary() {
+  static const ScalarVelocity _stationary = ScalarVelocity(0.0);
   return _stationary;
 }
 

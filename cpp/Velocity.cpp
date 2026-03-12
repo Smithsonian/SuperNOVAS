@@ -120,8 +120,8 @@ Velocity Velocity::operator-(const Velocity& r) const {
  *
  * @return    the speed (absolute value) of this velocity.
  */
-Speed Velocity::speed() const {
-  return Speed(abs());
+ScalarVelocity Velocity::speed() const {
+  return ScalarVelocity(abs());
 }
 
 /**
@@ -131,7 +131,7 @@ Speed Velocity::speed() const {
  * @return    the change in position of an object travelling at this velocity in the
  *            specified time interval.
  *
- * @sa operator*(), Speed:travel()
+ * @sa operator*(), ScalarVelocity:travel()
  */
 Position Velocity::travel(const Interval& t) const {
   return travel(t.seconds());
@@ -144,7 +144,7 @@ Position Velocity::travel(const Interval& t) const {
  * @return    the change in position of an object travelling at this velocity in the
  *            specified time interval.
  *
- * @sa operator*(), Speed:travel()
+ * @sa operator*(), ScalarVelocity:travel()
  */
 Position Velocity::travel(double seconds) const {
   return Position(x() * seconds, y() * seconds, z() * seconds);
@@ -157,7 +157,7 @@ Position Velocity::travel(double seconds) const {
  * @return    the change in position of an object travelling at this velocity in the
  *            specified time interval.
  *
- * @sa travel(),  Speed:travel()
+ * @sa travel(),  ScalarVelocity:travel()
  */
 Position Velocity::operator*(const Interval& t) const {
   return travel(t);
@@ -191,7 +191,7 @@ const Velocity& Velocity::stationary() {
  * @return            a new string with a representation of this velocity.
  */
 std::string Velocity::to_string(int decimals) const {
-  return "Velocity (" + Speed(x()).to_string(decimals) + ", " + Speed(y()).to_string(decimals) + ", " + Speed(z()).to_string(decimals) + ")";
+  return "Velocity (" + ScalarVelocity(x()).to_string(decimals) + ", " + ScalarVelocity(y()).to_string(decimals) + ", " + ScalarVelocity(z()).to_string(decimals) + ")";
 }
 
 /**
