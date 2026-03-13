@@ -135,7 +135,7 @@ CalendarDate Calendar::date(time_t t, long nanos) const {
  */
 CalendarDate Calendar::date(const struct timespec *ts) const {
   if(!ts) {
-    novas_set_errno(EINVAL, "Calendar::date", "input Julian Date is NAN");
+    novas_set_errno(EINVAL, "Calendar::date()", "input Julian Date is NAN");
     return date(NAN);
   }
   return date(ts->tv_sec, ts->tv_nsec);
@@ -517,7 +517,7 @@ const std::string& CalendarDate::short_day_name() const {
  */
 int CalendarDate::break_down(struct tm *tm) const {
   if(!tm)
-    return novas_error(-1, EINVAL, "Calendar::break_down", "output tm structure is NULL");
+    return novas_error(-1, EINVAL, "Calendar::break_down()", "output tm structure is NULL");
 
   // Start from a clear slate
   memset(tm, 0, sizeof(*tm));
@@ -635,7 +635,7 @@ std::string CalendarDate::to_date_string(enum novas_date_format fmt) const {
     case NOVAS_MDY:
       return std::to_string(_month) + "/" + std::to_string(_mday) + "/" + y;
     default:
-      novas_set_errno(EINVAL, "CalendarDate::date_string", "invalid format: %d", fmt);
+      novas_set_errno(EINVAL, "CalendarDate::date_string()", "invalid format: %d", fmt);
       return "<invalid date format>";
   }
 }

@@ -20,12 +20,12 @@ namespace supernovas {
 void Equatorial::validate() {
   static const char *fn = "Equatorial()";
 
-  if(!Spherical::is_valid())
-     novas_trace_invalid(fn);
+  if(!is_valid())
+    novas_trace_invalid(fn);
 
-  else if(!_sys.is_valid()) {
+  if(!_sys.is_valid()) {
+    novas_set_errno(EINVAL, fn, "invalid equatorial system: %s", _sys.to_string().c_str());
     _valid = false;
-    novas_set_errno(EINVAL, fn, "Invalid equatorial system: %s", _sys.to_string().c_str());
   }
 }
 
@@ -81,7 +81,8 @@ Equatorial::Equatorial(const Angle& ra, const Angle& dec, const Equinox &system)
  * @sa novas_str_hours(), novas_str_degrees() for details on string representation that can be parsed.
  */
 Equatorial::Equatorial(const std::string& ra, const std::string& dec, const Equinox &system)
-: Equatorial(TimeAngle(ra), Angle(dec), system) {}
+: Equatorial(TimeAngle(ra), Angle(dec), system) {
+}
 
 /**
  * Instantiates equatorial coordinates with the specified rectangular components
@@ -209,7 +210,7 @@ Angle Equatorial::distance_to(const Equatorial& other) const {
  *     to_tod(), to_cirs()
  */
 Equatorial Equatorial::to_system(const Equinox& system) const {
-  static const char *fn = "Equatorial::to_system";
+  static const char *fn = "Equatorial::to_system()";
 
   if(_sys == system)
     return Equatorial(*this);
@@ -438,7 +439,7 @@ Ecliptic Equatorial::to_ecliptic() const {
   double lon, lat;
 
   if(!is_valid()) {
-    novas_set_errno(ERANGE, "Equatorial::to_ecliptic", "invalid Equatorial instance");
+    novas_set_errno(ERANGE, "Equatorial::to_ecliptic()", "invalid Equatorial instance");
     return Ecliptic::invalid();
   }
 
@@ -462,7 +463,7 @@ Ecliptic Equatorial::to_ecliptic() const {
  */
 Galactic Equatorial::to_galactic() const {
   if(!is_valid()) {
-    novas_set_errno(ERANGE, "Equatorial::to_galactic", "invalid Equatorial instance");
+    novas_set_errno(ERANGE, "Equatorial::to_galactic()", "invalid Equatorial instance");
     return Galactic::invalid();
   }
 

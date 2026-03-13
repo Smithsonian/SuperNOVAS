@@ -30,7 +30,7 @@ namespace supernovas {
  */
 Coordinate::Coordinate(double meters) : _meters(meters) {
   if(isnan(meters))
-    novas::novas_set_errno(EINVAL, "Coordinate(double)", "input value is NAN");
+    novas::novas_set_errno(EINVAL, "Coordinate()", "input value is NAN");
   else
     _valid = true;
 }
@@ -208,7 +208,7 @@ std::string Coordinate::to_string(int decimals) const {
  */
 Coordinate Coordinate::from_parallax(const Angle& parallax) {
   if(!parallax.is_valid())
-    novas_set_errno(EINVAL, "Coordinate::from_parallax", "input parallax is invalid");
+    novas_set_errno(EINVAL, "Coordinate::from_parallax()", "input parallax is invalid");
   return Coordinate(Unit::pc / (fabs(parallax.arcsec())));
 }
 

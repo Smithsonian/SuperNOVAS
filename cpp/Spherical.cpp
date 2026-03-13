@@ -25,7 +25,7 @@ namespace supernovas {
  */
 Spherical::Spherical(double longitude_rad, double latitude_rad)
 : _lon(longitude_rad), _lat(latitude_rad) {
-  static const char *fn = "Spherical";
+  static const char *fn = "Spherical()";
 
   if(!isfinite(longitude_rad))
     novas_set_errno(EINVAL, fn, "input longitude is NAN or infinite");

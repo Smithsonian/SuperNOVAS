@@ -171,7 +171,7 @@ static const EOP& extract_eop(const Frame &frame) {
  * @sa sets_below(), transits()
  */
 std::optional<Time> Source::rises_above(const Angle& el, const Frame &frame, RefractionModel ref, const Weather& weather) const {
-  static const char *fn = "Source::rises_above";
+  static const char *fn = "Source::rises_above()";
 
   if(frame.observer().is_geodetic()) {
     novas_frame f = *frame._novas_frame();
@@ -200,11 +200,11 @@ std::optional<Time> Source::rises_above(const Angle& el, const Frame &frame, Ref
  * @sa sets_below(), transits()
  */
 std::optional<Time> Source::transits(const Frame &frame) const {
-  static const char *fn = "Source::transits";
+  static const char *fn = "Source::transits()";
 
   if(frame.observer().is_geodetic())
     return Time(
-          novas_check_nan("Source::transits", novas_transit_time(&_object, frame._novas_frame())),
+          novas_check_nan(fn, novas_transit_time(&_object, frame._novas_frame())),
           extract_eop(frame));
 
   novas_set_errno(ENOSYS, fn, "Cannot calculate transit time for a non-geodetic observer.");
@@ -230,7 +230,7 @@ std::optional<Time> Source::transits(const Frame &frame) const {
  * @sa rises_above(), transits()
  */
 std::optional<Time> Source::sets_below(const Angle& el, const Frame &frame, RefractionModel ref, const Weather& weather) const {
-  static const char *fn = "Source::sets_below";
+  static const char *fn = "Source::sets_below()";
 
   if(frame.observer().is_geodetic()) {
     novas_frame f = *frame._novas_frame();
@@ -241,7 +241,7 @@ std::optional<Time> Source::sets_below(const Angle& el, const Frame &frame, Refr
     s->humidity = weather.humidity();
 
     return Time(
-            novas_check_nan("Source::sets_below", novas_sets_below(el.deg(), &_object, &f, ref)),
+            novas_check_nan(fn, novas_sets_below(el.deg(), &_object, &f, ref)),
             extract_eop(frame));
   }
 
@@ -269,7 +269,7 @@ std::optional<Time> Source::sets_below(const Angle& el, const Frame &frame, Refr
 Time Source::rises_above(const Angle& el, const GeodeticFrame &frame, RefractionModel ref, const Weather& weather) const {
   std::optional<Time> opt = rises_above(el, static_cast<Frame>(frame), ref, weather);
   if(!opt.value().is_valid())
-    novas_trace_invalid("Source::rises_above");
+    novas_trace_invalid("Source::rises_above()");
   return opt.value();
 }
 
@@ -284,7 +284,7 @@ Time Source::rises_above(const Angle& el, const GeodeticFrame &frame, Refraction
 Time Source::transits(const GeodeticFrame &frame) const {
   std::optional<Time> opt = transits(static_cast<Frame>(frame));
   if(!opt.value().is_valid())
-    novas_trace_invalid("Source::transits");
+    novas_trace_invalid("Source::transits()");
   return opt.value();
 }
 
@@ -308,7 +308,7 @@ Time Source::transits(const GeodeticFrame &frame) const {
 Time Source::sets_below(const Angle& el, const GeodeticFrame &frame, RefractionModel ref, const Weather& weather) const {
   std::optional<Time> opt = sets_below(el, static_cast<Frame>(frame), ref, weather);
   if(!opt.value().is_valid())
-    novas_trace_invalid("Source::sets_below");
+    novas_trace_invalid("Source::sets_below()");
   return opt.value();
 }
 
@@ -387,7 +387,7 @@ std::optional<EquatorialTrack> Source::equatorial_track(const Frame &frame, cons
  * @sa equatorial_track()
  */
 std::optional<HorizontalTrack> Source::horizontal_track(const Frame &frame, novas::RefractionModel ref, const Weather& weather) const {
-  static const char *fn = "Source::horizontal_track";
+  static const char *fn = "Source::horizontal_track()";
 
   novas_track track = {};
 
@@ -421,7 +421,7 @@ std::optional<HorizontalTrack> Source::horizontal_track(const Frame &frame, nova
  * @sa moon_angle(), angle_to()
  */
 Angle Source::sun_angle(const Frame& frame) const {
-  return Angle(novas_check_nan("Source::sun_angle", novas_sun_angle(&_object, frame._novas_frame()) * Unit::deg));
+  return Angle(novas_check_nan("Source::sun_angle()", novas_sun_angle(&_object, frame._novas_frame()) * Unit::deg));
 }
 
 /**
@@ -434,7 +434,7 @@ Angle Source::sun_angle(const Frame& frame) const {
  * @sa sun_angle(), angle_to()
  */
 Angle Source::moon_angle(const Frame& frame) const {
-  return Angle(novas_check_nan("Source::moon_angle", novas_moon_angle(&_object, frame._novas_frame()) * Unit::deg));
+  return Angle(novas_check_nan("Source::moon_angle()", novas_moon_angle(&_object, frame._novas_frame()) * Unit::deg));
 }
 
 /**
@@ -448,7 +448,7 @@ Angle Source::moon_angle(const Frame& frame) const {
  * @sa sun_angle(), moon_angle()
  */
 Angle Source::angle_to(const Source& source, const Frame& frame) const {
-  return Angle(novas_check_nan("Source::angle_to", novas_object_sep(&_object, &source._object, frame._novas_frame()) * Unit::deg));
+  return Angle(novas_check_nan("Source::angle_to()", novas_object_sep(&_object, &source._object, frame._novas_frame()) * Unit::deg));
 }
 
 
@@ -533,7 +533,7 @@ std::string CatalogSource::to_string() const {
  * @sa solar_power()
  */
 double SolarSystemSource::solar_illumination(const Frame& frame) const {
-  return novas_check_nan("SolarSystemSource::solar_illumination", novas_solar_illum(&_object, frame._novas_frame()));
+  return novas_check_nan("SolarSystemSource::solar_illumination()", novas_solar_illum(&_object, frame._novas_frame()));
 }
 
 /**
@@ -547,7 +547,7 @@ double SolarSystemSource::solar_illumination(const Frame& frame) const {
  */
 Coordinate SolarSystemSource::helio_distance(const Time& time) const {
   double d = novas_helio_dist(time.jd(NOVAS_TDB), &_object, NULL);
-  novas_check_nan("SolarSystemSource::helio_distance", d);
+  novas_check_nan("SolarSystemSource::helio_distance()", d);
   return Coordinate(d * Unit::au);
 }
 
@@ -563,7 +563,7 @@ Coordinate SolarSystemSource::helio_distance(const Time& time) const {
 ScalarVelocity SolarSystemSource::helio_rate(const Time& time) const {
   double r = NAN;
   novas_helio_dist(time.jd(NOVAS_TDB), &_object, &r);
-  novas_check_nan("SolarSystemSource::helio_distance", r);
+  novas_check_nan("SolarSystemSource::helio_rate()", r);
   return ScalarVelocity(r * Unit::au / Unit::day);
 }
 
@@ -578,7 +578,7 @@ ScalarVelocity SolarSystemSource::helio_rate(const Time& time) const {
  * @sa helio_distance(), solar_illumination()
  */
 double SolarSystemSource::solar_power(const Time& time) const {
-  return novas_check_nan("SolarSystemSource::solar_power", novas_solar_power(time.jd(NOVAS_TDB), &_object));
+  return novas_check_nan("SolarSystemSource::solar_power()", novas_solar_power(time.jd(NOVAS_TDB), &_object));
 }
 
 
@@ -594,7 +594,7 @@ Planet::Planet(enum novas_planet number) : SolarSystemSource() {
   _object.number = number;
 
   if(make_planet(number, &_object) != 0)
-    novas_set_errno(EINVAL, "Planet::for_novas_id", "no planet for NOVAS id number: %d", number);
+    novas_set_errno(EINVAL, "Planet::for_novas_id()", "no planet for NOVAS id number: %d", number);
   else
     _valid = true;
 }
@@ -622,7 +622,7 @@ const Source *Planet::copy() const {
 std::optional<Planet> Planet::for_naif_id(long naif) {
   enum novas_planet num = naif_to_novas_planet(naif);
   if((unsigned) num >= NOVAS_PLANETS) {
-    novas_set_errno(EINVAL, "Planet::for_naif_id", "no planet with NAIF %d", naif);
+    novas_set_errno(EINVAL, "Planet::for_naif_id()", "no planet with NAIF %d", naif);
     return std::nullopt;
   }
   return Planet(num);
@@ -643,7 +643,7 @@ std::optional<Planet> Planet::for_naif_id(long naif) {
 std::optional<Planet> Planet::for_name(const std::string& name) {
   enum novas_planet num = novas_planet_for_name(name.c_str());
   if((unsigned) num >= NOVAS_PLANETS) {
-    novas_set_errno(EINVAL, "Planet::for_naif_id", "no planet with name '%s'", name.c_str());
+    novas_set_errno(EINVAL, "Planet::for_name()", "no planet with name '%s'", name.c_str());
     return std::nullopt;
   }
   return Planet(num);

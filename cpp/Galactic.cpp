@@ -22,7 +22,10 @@ namespace supernovas {
  * @param latitude_rad    [rad] galactic latitude coordinate
  */
 Galactic::Galactic(double longitude_rad, double latitude_rad)
-: Spherical(longitude_rad, latitude_rad) {}
+: Spherical(longitude_rad, latitude_rad) {
+  if(!is_valid())
+    novas_trace_invalid("Galactic()");
+}
 
 /**
  * Instantiates new galactic coordinates with the specified components.
@@ -31,7 +34,10 @@ Galactic::Galactic(double longitude_rad, double latitude_rad)
  * @param latitude    galactic latitude coordinate
  */
 Galactic::Galactic(const Angle& longitude, const Angle& latitude)
-: Spherical(longitude, latitude) {}
+: Spherical(longitude, latitude) {
+  if(!is_valid())
+    novas_trace_invalid("Galactic()");
+}
 
 /**
  * Instantiates galactic coordinates with the specified string representations of the longitude
@@ -62,7 +68,10 @@ Galactic::Galactic(const std::string& longitude, const std::string& latitude)
  * @param pos             _xyz_ position vector in the galactic coordinate system.
  */
 Galactic::Galactic(const Position& pos)
-: Spherical(pos.to_spherical()) {}
+: Spherical(pos.to_spherical()) {
+  if(!is_valid())
+    novas_trace_invalid("Galactic()");
+}
 
 /**
  * Checks if these galactic coordinates are the same as another, within the specified
@@ -80,8 +89,7 @@ bool Galactic::equals(const Galactic& other, double precision_rad) const {
 }
 
 /**
- * Checks if these galactic coordinates are the same as another, within the specified
- * precision.novas_set_errno(ERANGE, "Equatorial::to_ecliptic", "invalid equatorial instance");
+ * Checks if these galactic coordinates are the same as another, within the specified precision.
  *
  * @param other           the reference galactic coordinates
  * @param precision       (optional) precision for equality test (default: 1 &mu;as).
@@ -141,7 +149,7 @@ Angle Galactic::distance_to(const Galactic& other) const {
  */
 Equatorial Galactic::to_equatorial() const {
   if(!is_valid()) {
-    novas_set_errno(ERANGE, "Equatorial::to_ecliptic", "invalid Galactic instance");
+    novas_set_errno(ERANGE, "Equatorial::to_ecliptic()", "invalid Galactic instance");
     return Equatorial::invalid();
   }
 

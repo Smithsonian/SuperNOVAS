@@ -32,7 +32,7 @@ namespace supernovas {
  */
 Angle::Angle(double radians) : _rad(remainder(radians, Constant::two_pi)) {
   if(!isfinite(radians))
-    novas_set_errno(EINVAL, "Angle(double)", "input angle is NAN or infinite");
+    novas_set_errno(EINVAL, "Angle()", "input angle is NAN or infinite");
   else
     _valid = true;
 }
@@ -51,7 +51,7 @@ Angle::Angle(double radians) : _rad(remainder(radians, Constant::two_pi)) {
 Angle::Angle(const std::string& str) {
   _rad = novas_str_degrees(str.c_str()) * Unit::deg;
   if(!isfinite(_rad))
-    novas_set_errno(EINVAL, "Angle(std::string)", "invalid input angle: %s", str.c_str());
+    novas_set_errno(EINVAL, "Angle()", "invalid input angle: %s", str.c_str());
   else
     _valid = true;
 }

@@ -115,22 +115,7 @@ const Velocity& Geometric::velocity() const {
   return _vel;
 }
 
-/** Geometric c(pos, vel, frame, NOVAS_CIRS);
-
-  opt = b.to_system(NOVAS_ITRS);
-  if(!test.check("to_itrs(site).has_value()", opt.has_value())) n++;
-  else {
-    Geometric c1 = opt.value();
-
-    novas_make_transform(frame._novas_frame(), NOVAS_CIRS, NOVAS_ITRS, &T);
-    novas_transform_vector(pos._array(), &T, pos1);
-    novas_transform_vector(vel._array(), &T, vel1);
-
-    if(!test.equals("to_itrs().system()", c1.system().system_type(), NOVAS_ITRS)) n++;
-    if(!test.check("to_itrs(site).position()", c1.position() == Position(pos1))) n++;
-    if(!test.check("to_itrs(site).velocity()", c1.velocity() == Velocity(vel1))) n++;
-  }
- *
+/**
  * Returns the geometric equatorial coordinates, in the system in which the geometric positions
  * and velocities were defined. Note, that these coordinates are phyisical, and not what an observer
  * would perceive at the time of observation, because:

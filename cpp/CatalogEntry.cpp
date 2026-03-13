@@ -17,7 +17,7 @@ using namespace novas;
 namespace supernovas {
 
 void CatalogEntry::validate(const char *loc) {
-  const char *fn = "CatalogEntry::valdate";
+  const char *fn = "CatalogEntry::valdate()";
 
   errno = 0;
 
@@ -511,7 +511,7 @@ CatalogEntry& CatalogEntry::radial_velocity(const ScalarVelocity& v) {
  * @sa system(), distance(), parallax(), proper_motion(), catalog()
  */
 CatalogEntry& CatalogEntry::redshift(double z) {
-  static const char *fn = "CatalogEntry::redshift";
+  static const char *fn = "CatalogEntry::redshift()";
 
   if(novas_set_redshift(&_entry, z) != 0) {
     novas_trace_invalid(fn);

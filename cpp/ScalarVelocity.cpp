@@ -23,10 +23,12 @@ namespace supernovas {
  * @sa from_redshift()
  */
 ScalarVelocity::ScalarVelocity(double m_per_s) : _ms(m_per_s) {
+  static const char *fn = "ScalarVelocity()";
+
   if(!isfinite(m_per_s))
-    novas_set_errno(EINVAL, "ScalarVelocity(double)", "input value is NAN or infinite");
+    novas_set_errno(EINVAL, fn, "input value is NAN or infinite");
   else if(fabs(m_per_s) > Constant::c)
-    novas_set_errno(ERANGE, "ScalarVelocity(double)", "input speed exceeds the speed of light: %g m/s", m_per_s);
+    novas_set_errno(ERANGE, fn, "input speed exceeds the speed of light: %g m/s", m_per_s);
   else
     _valid = true;
 }

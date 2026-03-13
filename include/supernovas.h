@@ -2374,6 +2374,8 @@ public:
   double acceleration() const;
 
   static Evolution stationary(double pos);
+
+  static const Evolution& undefined();
 };
 
 
@@ -2392,12 +2394,13 @@ private:
   Evolution _lon;
   Evolution _lat;
   Evolution _r;
+  Evolution _z;
 
-  bool validate();
+  void validate();
 
 protected:
 
-  Track(const Time& ref_time, const Interval& range, const Evolution& lon, const Evolution& lat, const Evolution& r = Evolution::stationary(NOVAS_DEFAULT_DISTANCE));
+  Track(const Time& ref_time, const Interval& range, const Evolution& lon, const Evolution& lat, const Evolution& r, const Evolution& z);
 
   Track(const novas::novas_track *track, const Interval& range);
 
@@ -2408,6 +2411,8 @@ protected:
   Angle unchecked_latitude(const Time& time) const;
 
   Coordinate unchecked_distance(const Time& time) const;
+
+  double unchecked_redshift(const Time& time) const;
 
 public:
 
@@ -2422,6 +2427,8 @@ public:
   const Evolution& latitude_evolution() const;
 
   const Evolution& distance_evolution() const;
+
+  const Evolution& redshift_evolution() const;
 
   std::optional<Angle> longitude_at(const Time& time) const;
 
@@ -2441,7 +2448,8 @@ public:
  * approximation around a time instant. This may be used e.g., to control telescope drive systems
  * in horizontal mounts, by providing instantaneous positions, rate, and acceletation along the
  * azimuth and elevation axes. Or, one may use the trajectory to obtain interpolated instantaneous
- * Az/El positions, within the interval of validity, at very low computational cost.
+ * Az/El positions, distances, spectroscopic redshifts or radial velocities, within the interval of
+ * validity, at very low computational cost.
  *
  * @sa Apparent::horizontal(), EquatorialTrack
  * @ingroup tracking nonequatorial
@@ -2452,11 +2460,12 @@ private:
 
 public:
   HorizontalTrack(const Time& ref_time, const Interval& range,
-          const Evolution& azimuth, const Evolution& elevation, const Evolution& distance = Evolution::stationary(NOVAS_DEFAULT_DISTANCE));
+          const Evolution& azimuth, const Evolution& elevation, const Evolution& distance = Evolution::stationary(Unit::Gpc),
+          const Evolution& z = Evolution::undefined());
 
   std::optional<Horizontal> projected_at(const Time& time) const override;
 
-  static HorizontalTrack from_novas_track(const novas::novas_track *track, const Interval& range);
+  static std::optional<HorizontalTrack> from_novas_track(const novas::novas_track *track, const Interval& range);
 };
 
 /**
@@ -2464,7 +2473,8 @@ public:
  * approximation around a time instant. This may be used e.g., to control telescope drive systems
  * in equatorial mounts, by providing instantaneous positions, rate, and acceletation along the
  * R.A. and declination axes. Or, one may use the trajectory to obtain interpolated instantaneous
- * R.A./Dec positions, within the interval of validity, at very low computational cost.
+ * R.A./Dec positions, distances, spectroscopic redshifts or radial velocities within the interval
+ * of validity, at very low computational cost.
  *
  * @sa Apparent::equatorial(), HorizontalTrack
  * @ingroup tracking apparent
@@ -2477,11 +2487,12 @@ private:
 
 public:
   EquatorialTrack(const Equinox& system, const Time& ref_time, const Interval& range,
-          const Evolution& ra, const Evolution& dec, const Evolution& distance = Evolution::stationary(NOVAS_DEFAULT_DISTANCE));
+          const Evolution& ra, const Evolution& dec, const Evolution& distance = Evolution::stationary(Unit::Gpc),
+          const Evolution& z = Evolution::undefined());
 
   std::optional<Equatorial> projected_at(const Time& time) const override;
 
-  static EquatorialTrack from_novas_track(const Equinox& system, const novas::novas_track *track, const Interval& range);
+  static std::optional<EquatorialTrack> from_novas_track(const Equinox& system, const novas::novas_track *track, const Interval& range);
 };
 
 

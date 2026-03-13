@@ -10,6 +10,7 @@
 /// \endcond
 
 #include <cmath>
+#include <iostream>
 #include <type_traits>
 
 
@@ -28,16 +29,16 @@ namespace supernovas {
  */
 Evolution::Evolution(double pos, double vel, double accel)
 : _value(pos), _rate(vel), _accel(accel) {
-  static const char *fn = "Evolution";
+  static const char *fn = "Evolution()";
 
   errno = 0;
 
   if(!isfinite(_value))
     novas_set_errno(EINVAL, fn, "position is NAN or infinite");
   if(!isfinite(_rate))
-      novas_set_errno(EINVAL, fn, "rate is NAN or infinite");
+    novas_set_errno(EINVAL, fn, "rate is NAN or infinite");
   if(!isfinite(_accel))
-      novas_set_errno(EINVAL, fn, "acceleration is NAN or infinite");
+    novas_set_errno(EINVAL, fn, "acceleration is NAN or infinite");
 
   _valid = (errno == 0);
 }
@@ -84,11 +85,18 @@ Evolution Evolution::stationary(double pos) {
   return Evolution(pos);
 }
 
-static const novas_track _default_track = {};
+const Evolution& Evolution::undefined() {
+  static const Evolution _undefined(NAN, 0.0, 0.0);
+  return _undefined;
+}
 
 
-template<class CoordType> bool Track<CoordType>::validate() {
-  static const char *fn = "Track";
+template class Track<Horizontal>;
+template class Track<Equatorial>;
+
+
+template<class CoordType> void Track<CoordType>::validate() {
+  static const char *fn = "Track()";
 
   errno = 0;
 
@@ -103,7 +111,7 @@ template<class CoordType> bool Track<CoordType>::validate() {
   if(!_r.is_valid())
     novas_set_errno(EINVAL, fn, "radial evolution is invalid");
 
-  return (errno == 0);
+  _valid = (errno == 0);
 }
 
 /**
@@ -116,15 +124,28 @@ template<class CoordType> bool Track<CoordType>::validate() {
  *                  outside this interval will produce invalid data.
  * @param lon       the time evolution of the longitude (in whatever coordinate system)
  * @param lat       the time evolution of the latitude (in whatever coordinate system)
- * @param r         the time evolution of distance.
+ * @param r         the time evolution of distance (default: static 1 Gpc).
+ * @param z         time evolution of redshift, including gravitational effects.
+ *                  If it's only kinetic, then you can leave it undefined to let the
+ *                  distance evolution determine it automatically.
  */
-template<class CoordType> Track<CoordType>::Track(const Time& ref_time, const Interval& range, const Evolution& lon, const Evolution& lat, const Evolution& r)
-: _ref_time(ref_time), _range(range), _lon(lon), _lat(lat), _r(r) {
+template<class CoordType> Track<CoordType>::Track(const Time& ref_time, const Interval& range, const Evolution& lon, const Evolution& lat,
+        const Evolution& r, const Evolution& z)
+: _ref_time(ref_time), _range(range), _lon(lon), _lat(lat), _r(r), _z(z) {
 
   // make sure CoordType is a sublcass of Spherical
   static_assert(std::is_base_of<Spherical, CoordType>::value, "Track: CoordType is not a subclass of Spherical");
 
-  _valid = validate();
+  if(!_z.is_valid()) {
+    double dt = fabs(range.seconds());
+    double z0 = novas_v2z(_r.rate(Interval::zero()) / (Unit::km / Unit::s));
+    double zp = novas_v2z(_r.rate(Interval(dt)) / (Unit::km / Unit::s));
+    double zm = novas_v2z(_r.rate(Interval(-dt)) / (Unit::km / Unit::s));
+    double z1 = 0.5 * (zp - zm) / dt;
+    _z = Evolution(z0, z1);
+  }
+
+  validate();
 }
 
 /**
@@ -141,17 +162,14 @@ template<class CoordType> Track<CoordType>::Track(const novas_track *track, cons
 : _ref_time(&track->time), _range(range),
   _lon(Evolution(track->pos.lon * Unit::deg, track->rate.lon * Unit::deg / Unit::sec, track->accel.lon * Unit::deg / (Unit::sec * Unit::sec))),
   _lat(Evolution(track->pos.lat * Unit::deg, track->rate.lat * Unit::deg / Unit::sec, track->accel.lat * Unit::deg / (Unit::sec * Unit::sec))),
-  _r(Evolution(track->pos.dist * Unit::au, track->rate.dist * Unit::au / Unit::sec, track->accel.dist * Unit::au / (Unit::sec * Unit::sec))) {
+  _r(Evolution(track->pos.dist * Unit::au, track->rate.dist * Unit::au / Unit::sec, track->accel.dist * Unit::au / (Unit::sec * Unit::sec))),
+  _z(Evolution(track->pos.z, track->rate.z, track->accel.z)) {
 
   // make sure CoordType is a sublcass of Spherical
   static_assert(std::is_base_of<Spherical, CoordType>::value, "CoordType is not a subclass of Spherical");
 
-  if(track != &_default_track)
-    _valid = validate();
+  validate();
 }
-
-template class Track<Horizontal>;
-template class Track<Equatorial>;
 
 
 /**
@@ -159,7 +177,7 @@ template class Track<Equatorial>;
  *
  * @return    the longitudinal time evolution component.
  *
- * @sa longitude_at(), latitude_evolution(), distance_evolution()
+ * @sa longitude_at(), latitude_evolution(), distance_evolution(), redshift_evolution()
  */
 template<class CoordType> const Evolution& Track<CoordType>::longitude_evolution() const {
   return _lon;
@@ -170,7 +188,7 @@ template<class CoordType> const Evolution& Track<CoordType>::longitude_evolution
  *
  * @return    the latitudinal time evolution component.
  *
- * @sa latitude_at(), longitude_evolution(), distance_evolution()
+ * @sa latitude_at(), longitude_evolution(), distance_evolution(), redshift_evolution()
  */
 template<class CoordType> const Evolution& Track<CoordType>::latitude_evolution() const {
   return _lat;
@@ -181,10 +199,21 @@ template<class CoordType> const Evolution& Track<CoordType>::latitude_evolution(
  *
  * @return    the time evolution of distance.
  *
- * @sa distance_at(), longitude_evolution(), latitude_evolution()
+ * @sa distance_at(), redshift_evolution(), longitude_evolution(), latitude_evolution()
  */
 template<class CoordType> const Evolution& Track<CoordType>::distance_evolution() const {
   return _r;
+}
+
+/**
+ * Returns the redshift evolution in this trajectory.
+ *
+ * @return    the time evolution of redshift.
+ *
+ * @sa redshift_at(), radial_velocity_at(), longitude_evolution(), latitude_evolution(), distance_evolution()
+ */
+template<class CoordType> const Evolution& Track<CoordType>::redshift_evolution() const {
+  return _z;
 }
 
 /**
@@ -232,7 +261,7 @@ template<class CoordType> const Interval& Track<CoordType>::range() const {
  * @param time      astrometric time for which we want the extrapolated value.
  * @return          the momentary extrapolated longitude angle.
  *
- * @sa unchecked_latitude(), unchecked_distance()
+ * @sa unchecked_latitude(), unchecked_distance(), unchecked_redshift()
  */
 template<class CoordType> Angle Track<CoordType>::unchecked_longitude(const Time& time) const {
   return Angle(_lon.value(time - _ref_time));
@@ -245,7 +274,7 @@ template<class CoordType> Angle Track<CoordType>::unchecked_longitude(const Time
  * @param time      astrometric time for which we want the extrapolated value.
  * @return          the momentary extrapolated latitude angle.
  *
- * @sa unchecked_longitude(), unchecked_distance()
+ * @sa unchecked_longitude(), unchecked_distance(), unchecked_redshift()
  */
 template<class CoordType> Angle Track<CoordType>::unchecked_latitude(const Time& time) const {
   return Angle(_lat.value(time - _ref_time));
@@ -258,10 +287,23 @@ template<class CoordType> Angle Track<CoordType>::unchecked_latitude(const Time&
  * @param time      astrometric time for which we want the extrapolated value.
  * @return          the momentary extrapolated distance.
  *
- * @sa unchecked_longitude(), unchecked_latitude()
+ * @sa unchecked_redshift(), unchecked_longitude(), unchecked_latitude()
  */
 template<class CoordType> Coordinate Track<CoordType>::unchecked_distance(const Time& time) const {
   return Coordinate(_r.value(time - _ref_time));
+}
+
+/**
+ * Returns the momentary extrapolated redshift, without checking if the requested time is
+ * inside the range of validity.
+ *
+ * @param time      astrometric time for which we want the extrapolated value.
+ * @return          the momentary extrapolated redshift.
+ *
+ * @sa unchecked_distance(), unchecked_longitude(), unchecked_latitude()
+ */
+template<class CoordType> double Track<CoordType>::unchecked_redshift(const Time& time) const {
+  return _z.value(time - _ref_time);
 }
 
 /**
@@ -276,7 +318,7 @@ template<class CoordType> Coordinate Track<CoordType>::unchecked_distance(const 
 template<class CoordType> std::optional<Angle> Track<CoordType>::longitude_at(const Time& time) const {
   if(is_valid_at(time))
     return unchecked_longitude(time);
-  novas_set_errno(ERANGE, "Track::longitude_at", "requested time is outside the trajectory valifity range");
+  novas_set_errno(ERANGE, "Track::longitude_at()", "requested time is outside the trajectory valifity range");
   return std::nullopt;
 }
 
@@ -292,7 +334,7 @@ template<class CoordType> std::optional<Angle> Track<CoordType>::longitude_at(co
 template<class CoordType> std::optional<Angle> Track<CoordType>::latitude_at(const Time& time) const {
   if(is_valid_at(time))
     return unchecked_latitude(time);
-  novas_set_errno(ERANGE, "Track::latitude_at", "requested time is outside the trajectory valifity range");
+  novas_set_errno(ERANGE, "Track::latitude_at()", "requested time is outside the trajectory valifity range");
   return std::nullopt;
 }
 
@@ -307,8 +349,8 @@ template<class CoordType> std::optional<Angle> Track<CoordType>::latitude_at(con
  */
 template<class CoordType> double Track<CoordType>::redshift_at(const Time& time) const {
   if(is_valid_at(time))
-    return novas_v2z(radial_velocity_at(time).value().km_per_s());
-  novas_set_errno(ERANGE, "Track::redshift_at", "requested time is outside the trajectory valifity range");
+    return unchecked_redshift(time);
+  novas_set_errno(ERANGE, "Track::redshift_at()", "requested time is outside the trajectory valifity range");
   return nan("");
 }
 
@@ -324,7 +366,7 @@ template<class CoordType> double Track<CoordType>::redshift_at(const Time& time)
 template<class CoordType> std::optional<Coordinate> Track<CoordType>::distance_at(const Time& time) const {
   if(is_valid_at(time))
     return unchecked_distance(time);
-  novas_set_errno(ERANGE, "Track::distance_at", "requested time is outside the trajectory valifity range");
+  novas_set_errno(ERANGE, "Track::distance_at()", "requested time is outside the trajectory valifity range");
   return std::nullopt;
 }
 
@@ -339,8 +381,8 @@ template<class CoordType> std::optional<Coordinate> Track<CoordType>::distance_a
  */
 template<class CoordType> std::optional<ScalarVelocity> Track<CoordType>::radial_velocity_at(const Time& time) const {
   if(is_valid_at(time))
-    return ScalarVelocity(_r.rate(time - _ref_time));
-  novas_set_errno(ERANGE, "Track::radial_velocity_at", "requested time is outside the trajectory valifity range");
+    return ScalarVelocity(novas_z2v(unchecked_redshift(time)) * (Unit::km / Unit::s));
+  novas_set_errno(ERANGE, "Track::radial_velocity_at()", "requested time is outside the trajectory valifity range");
   return std::nullopt;
 }
 
@@ -352,7 +394,10 @@ template<class CoordType> std::optional<ScalarVelocity> Track<CoordType>::radial
  * @param range   time range of validity around the reference time of the trajectory.
  */
 HorizontalTrack::HorizontalTrack(const novas::novas_track *track, const Interval& range)
-: Track(track, range) {}
+: Track(track, range) {
+  if(!is_valid())
+    novas_trace_invalid("HorizontalTrack()");
+}
 
 /**
  * Instantiates a short-term horizontal source trajectory on sky for a given reference time,
@@ -362,13 +407,16 @@ HorizontalTrack::HorizontalTrack(const novas::novas_track *track, const Interval
  * @param range       time range of validity around the reference time for extrapolating.
  * @param azimuth     short-term time evolution of the azimuth coordinate.
  * @param elevation   short-term time evolution of the elevation coordinate.
- * @param distance    short-term time evolution of the distance coordinate.
+ * @param distance    (optional) short-term time evolution of distance (default: static at 1 Gpc).
+ * @param z           (optional) time evolution of redshift, including gravitational effects.
+ *                    If it's only kinetic, then you can leave it undefined to let the
+ *                    distance evolution determine it automatically.
  *
  * @sa from_novas_track(), EquatorialTrack::EquatorialTrack()
  */
 HorizontalTrack::HorizontalTrack(const Time& ref_time, const Interval& range,
-        const Evolution& azimuth, const Evolution& elevation, const Evolution& distance)
-: Track(ref_time, range, azimuth, elevation, distance) {}
+        const Evolution& azimuth, const Evolution& elevation, const Evolution& distance, const Evolution& z)
+: Track(ref_time, range, azimuth, elevation, distance, z) {}
 
 
 /**
@@ -384,7 +432,7 @@ HorizontalTrack::HorizontalTrack(const Time& ref_time, const Interval& range,
 std::optional<Horizontal> HorizontalTrack::projected_at(const Time& time) const {
   if(is_valid_at(time))
     return Horizontal(unchecked_longitude(time), unchecked_latitude(time));
-  novas_set_errno(ERANGE, "HorizontalTrack::projected_at", "requested time is outside the trajectory valifity range");
+  novas_set_errno(ERANGE, "HorizontalTrack::projected_at()", "requested time is outside the trajectory valifity range");
   return std::nullopt;
 }
 
@@ -399,12 +447,21 @@ std::optional<Horizontal> HorizontalTrack::projected_at(const Time& time) const 
  *
  * @sa EquatorialTrack::from_novas_track()
  */
-HorizontalTrack HorizontalTrack::from_novas_track(const novas_track *track, const Interval& range) {
+std::optional<HorizontalTrack> HorizontalTrack::from_novas_track(const novas_track *track, const Interval& range) {
+  static const char *fn = "HorizontalTrack::from_novas_track()";
+
   if(!track) {
-    novas_set_errno(EINVAL, "HorizontalTrack::from_novas_track", "input track is NULL");
-    return HorizontalTrack(&_default_track, range);
+    novas_set_errno(EINVAL, fn, "input track is NULL");
+    return std::nullopt;
   }
-  return HorizontalTrack(track, range);
+
+  HorizontalTrack t(track, range);
+
+  if(t.is_valid())
+    return t;
+
+  novas_trace_invalid(fn);
+  return std::nullopt;
 }
 
 /**
@@ -420,7 +477,7 @@ HorizontalTrack HorizontalTrack::from_novas_track(const novas_track *track, cons
 std::optional<Equatorial> EquatorialTrack::projected_at(const Time& time) const {
   if(is_valid_at(time))
     return Equatorial(unchecked_longitude(time), unchecked_latitude(time), _system);
-  novas_set_errno(ERANGE, "EquatorialTrack::projected_at", "requested time is outside the trajectory valifity range");
+  novas_set_errno(ERANGE, "EquatorialTrack::projected_at()", "requested time is outside the trajectory valifity range");
   return std::nullopt;
 }
 
@@ -432,7 +489,17 @@ std::optional<Equatorial> EquatorialTrack::projected_at(const Time& time) const 
  * @param range   time range of validity around the reference time of the trajectory.
  */
 EquatorialTrack::EquatorialTrack(const Equinox& system, const novas::novas_track *track, const Interval& range)
-: Track(track, range), _system(system) {}
+: Track(track, range), _system(system) {
+  static const char *fn = "EquatorialTrack()";
+
+  if(!is_valid())
+    novas_trace_invalid(fn);
+
+  if(!_system.is_valid()) {
+    novas_set_errno(EINVAL, fn, "input equatorial system is invalid");
+    _valid = false;
+  }
+}
 
 /**
  * Instantiates a short-term equatorial source trajectory on sky for a given reference time,
@@ -443,13 +510,16 @@ EquatorialTrack::EquatorialTrack(const Equinox& system, const novas::novas_track
  * @param range       time range of validity around the reference time for extrapolating.
  * @param ra          short-term time evolution of the right-ascention (R.A.) coordinate.
  * @param dec         short-term time evolution of the declination coordinate.
- * @param distance    short-term time evolution of the distance coordinate.
+ * @param distance    (optional) short-term time evolution of distance (default: static at 1 Gpc).
+ * @param z           (optional) time evolution of redshift, including gravitational effects.
+ *                    If it's only kinetic, then you can leave it undefined to let the
+ *                    distance evolution determine it automatically.
  *
  * @sa from_novas_track(), HorizontalTrack::HorizontalTrackTrack()
  */
 EquatorialTrack::EquatorialTrack(const Equinox& system, const Time& ref_time, const Interval& range,
-        const Evolution& ra, const Evolution& dec, const Evolution& distance)
-: Track(ref_time, range, ra, dec, distance), _system(system) {}
+        const Evolution& ra, const Evolution& dec, const Evolution& distance, const Evolution& z)
+: Track(ref_time, range, ra, dec, distance, z), _system(system) {}
 
 
 /**
@@ -462,14 +532,23 @@ EquatorialTrack::EquatorialTrack(const Equinox& system, const Time& ref_time, co
  * @param range     time range of validity around the reference time. Attempts to extrapolate
  *                  outside this interval will produce invalid data.
  *
- * @sa from_novas_track()
+ * @sa HorizontalTrack::from_novas_track()
  */
-EquatorialTrack EquatorialTrack::from_novas_track(const Equinox& system, const novas_track *track, const Interval& range) {
+std::optional<EquatorialTrack> EquatorialTrack::from_novas_track(const Equinox& system, const novas_track *track, const Interval& range) {
+  static const char *fn = "EquatorialTrack::from_novas_track()";
+
   if(!track) {
-    novas_set_errno(EINVAL, "EquatorialTrack::from_novas_track", "input track is NULL");
-    return EquatorialTrack(system, &_default_track, range);
+    novas_set_errno(EINVAL, fn, "input track is NULL");
+    return std::nullopt;
   }
-  return EquatorialTrack(system, track, range);
+
+  EquatorialTrack t(system, track, range);
+
+  if(t.is_valid())
+    return t;
+
+  novas_trace_invalid(fn);
+  return std::nullopt;
 }
 
 

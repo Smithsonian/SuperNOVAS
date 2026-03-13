@@ -127,7 +127,7 @@ Spherical OrbitalSystem::pole() const {
  * @sa pole(), obliquity(), ascending_node()
  */
 OrbitalSystem& OrbitalSystem::orientation(double obliquity_rad, double ascending_node_rad, const Equinox& system) {
-  static const char *fn = "OrbitalSystem::orinetation";
+  static const char *fn = "OrbitalSystem::orientation()";
 
   _system.type = system.system_type();
   _system.obl = obliquity_rad;
@@ -290,7 +290,7 @@ OrbitalSystem OrbitalSystem::ecliptic(const Planet& center) {
  * @sa is_valid()
  */
 OrbitalSystem OrbitalSystem::from_novas_orbital_system(const novas::novas_orbital_system *system) {
-  static const char *fn = "OrbitalSystem::from_novas_orbital_system";
+  static const char *fn = "OrbitalSystem::from_novas_orbital_system()";
 
   if(!system) {
     novas_orbital_system sys = {};
@@ -307,7 +307,7 @@ OrbitalSystem OrbitalSystem::from_novas_orbital_system(const novas::novas_orbita
 }
 
 void Orbital::validate(const char *loc) {
-  static const char *fn = "Orbital::validate";
+  static const char *fn = "Orbital::validate()";
 
   errno = 0;
 
@@ -668,7 +668,7 @@ Velocity Orbital::velocity(const Time& time, enum novas_accuracy accuracy) const
  * @sa apsis_period(), apsis_rate()
  */
 Orbital& Orbital::eccentricity(double e, double periapsis_rad) {
-  static const char *fn = "Orbital::eccentricity";
+  static const char *fn = "Orbital::eccentricity()";
 
   _orbit.e = e;
   _orbit.omega = periapsis_rad / Unit::deg;
@@ -717,7 +717,7 @@ Orbital& Orbital::eccentricity(double e, const Angle& periapsis_angle) {
  * @sa pole(), node_period(), node_rate()
  */
 Orbital& Orbital::inclination(double angle_rad, double ascending_node_rad) {
-  static const char *fn = "Orbital::inclination";
+  static const char *fn = "Orbital::inclination()";
 
   _orbit.i = angle_rad / Unit::deg;
   _orbit.Omega = ascending_node_rad / Unit::deg;
@@ -804,7 +804,7 @@ Orbital& Orbital::pole(const Spherical& coords) {
  * @sa apsis_rate(), periapsis(), eccentricity()
  */
 Orbital& Orbital::apsis_period(double seconds) {
-  static const char *fn = "Orbital::apsis_period";
+  static const char *fn = "Orbital::apsis_period()";
 
   _orbit.apsis_period = seconds / Unit::day;
 
@@ -864,7 +864,7 @@ Orbital& Orbital::apsis_rate(double rad_per_sec) {
  * @sa node_rate(), ascending_node(), inclination(), pole()
  */
 Orbital& Orbital::node_period(double seconds) {
-  static const char *fn = "Orbital::node_period";
+  static const char *fn = "Orbital::node_period()";
 
   _orbit.node_period = seconds / Unit::day;
 
@@ -963,7 +963,7 @@ Orbital Orbital::with_mean_motion(const OrbitalSystem& system, const Time& time,
  * @sa Orbital(), is_valid()
  */
 Orbital Orbital::from_novas_orbit(const novas_orbital *orbit) {
-  static const char *fn = "Orbital::from_novas_orbit";
+  static const char *fn = "Orbital::from_novas_orbit()";
 
   if(!orbit) {
     novas_orbital orb = {};

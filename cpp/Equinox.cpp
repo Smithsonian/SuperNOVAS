@@ -59,6 +59,8 @@ Equinox::Equinox(enum novas::novas_reference_system system, double jd_tt)
 : _name("invalid"), _system(system), _jd(jd_tt) {
   static const char *fn = "Equinox()";
 
+  _valid = true;
+
   switch(system) {
     case NOVAS_GCRS:
     case NOVAS_ICRS:
@@ -81,10 +83,14 @@ Equinox::Equinox(enum novas::novas_reference_system system, double jd_tt)
       break;
     default:
       novas_set_errno(EINVAL, fn, "invalid reference system: %d", system);
-      return;
+      _valid = false;
   }
 
-  _valid = true;
+  if(!isfinite(_jd)) {
+    novas_set_errno(EINVAL, fn, "input JD date is NAN or infinite", system);
+    _valid = false;
+  }
+
 }
 
 /**
@@ -296,7 +302,7 @@ std::optional<Equinox> Equinox::from_string(const std::string& name) {
   double ejd;
 
   if(name.length() < 3) {
-    novas_set_errno(EINVAL, "Equinox::from_string", "No catalog system matching: '%s'", name.c_str());
+    novas_set_errno(EINVAL, "Equinox::from_string()", "No catalog system matching: '%s'", name.c_str());
     return std::nullopt;
   }
 
@@ -329,7 +335,7 @@ std::optional<Equinox> Equinox::from_string(const std::string& name) {
   }
 
   if(isnan(ejd)) {
-    novas_set_errno(EINVAL, "Equinox::from_string", "No catalog system matching: '%s'", name.c_str());
+    novas_set_errno(EINVAL, "Equinox::from_string()", "No catalog system matching: '%s'", name.c_str());
     return std::nullopt;
   }
 
@@ -348,7 +354,7 @@ std::optional<Equinox> Equinox::from_string(const std::string& name) {
  *                  `std::nullopt`.
  */
 Equinox Equinox::from_system_type(enum novas::novas_reference_system system, double jd_tt) {
-  static const char *fn = "Equatorial::for_reference_system";
+  static const char *fn = "Equatorial::for_reference_system()";
 
   if(system == NOVAS_GCRS || system == NOVAS_ICRS || system == NOVAS_J2000) {
     jd_tt = NOVAS_JD_J2000;

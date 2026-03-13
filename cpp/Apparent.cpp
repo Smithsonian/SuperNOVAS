@@ -270,7 +270,7 @@ Galactic Apparent::galactic() const {
 std::optional<Horizontal> Apparent::to_horizontal() const {
 
   if(!_frame.observer().is_geodetic()) {
-    novas_set_errno(EINVAL, "Apparent::horizontal", "cannot convert for non-geodetic observer frame");
+    novas_set_errno(EINVAL, "Apparent::to_horizontal()", "cannot convert for non-geodetic observer frame");
     return std::nullopt;
   }
 

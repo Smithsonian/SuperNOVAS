@@ -28,7 +28,10 @@ static void use_weather(const Weather& weather, on_surface *s) {
  * @param elevation   [rad] elevation angle
  */
 Horizontal::Horizontal(double azimuth, double elevation)
-: Spherical(azimuth, elevation) {}
+: Spherical(azimuth, elevation) {
+  if(!is_valid())
+    novas_trace_invalid("Horizontal()");
+}
 
 /**
  * Instantiates new horizontal (Az/El) coordinates with the specified components

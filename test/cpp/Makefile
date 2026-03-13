@@ -1,6 +1,6 @@
 # Flags for measuring test coverage
 
-CPPFLAGS += -I. -I../../include
+CPPFLAGS += -I. -I../../include 
 LDFLAGS += --coverage -lm 
 
 include ../../config.mk
@@ -41,13 +41,14 @@ obj/%.o: $(SRC)/%.c | obj
 	$(CXX) -c -o $@ -DNOVAS_NAMESPACE $(CPPFLAGS) $< 
 
 obj/%.opp: $(CPP_SRC)/%.cpp | obj
-	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -pg -Wall --coverage $<
+	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) -pg -Wall -fno-elide-constructors -fno-default-inline --coverage $<
 
 cov: cov.info
 	genhtml $< -o $@
 
 cov.info:
 	geninfo obj -o $@
+	lcov --remove $@ '*/usr/*' '*/include/*' -o $@
 
 .PRECIOUS: %.c.gcov
 %.c.gcov: %-%.gcno %-%.gcda

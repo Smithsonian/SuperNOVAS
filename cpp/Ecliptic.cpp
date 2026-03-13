@@ -18,11 +18,17 @@ using namespace novas;
 namespace supernovas {
 
 void Ecliptic::validate() {
-  if(!Spherical::is_valid())
-     novas_trace_invalid("Equatorial()");
+  static const char *fn = "Ecliptic()";
+
+  if(!is_valid())
+     novas_trace_invalid(fn);
 
   if(_equator == NOVAS_GCRS_EQUATOR)
     _jd = NOVAS_JD_J2000;
+  else if(!isfinite(_jd)) {
+    novas_set_errno(EINVAL, fn, "equinox date is NAN or infinite");
+    _valid = false;
+  }
 }
 
 /**
@@ -340,7 +346,7 @@ Equatorial Ecliptic::to_equatorial() const {
     }
   }
 
-  novas_set_errno(ERANGE, "Ecliptic::to_equatorial", "Invalid Ecliptic instance");
+  novas_set_errno(ERANGE, "Ecliptic::to_equatorial()", "Invalid Ecliptic instance");
   return Equatorial::invalid();
 }
 
