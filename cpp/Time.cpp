@@ -845,8 +845,8 @@ const Time& Time::b1900() {
  *
  * @return    a reference to a static standard invalid astrometric time.
  */
-const Time& Time::invalid() {
-  static const Time _invalid = Time(NAN, EOP::invalid(), NOVAS_TT);
+const Time& Time::undefined() {
+  static const Time _invalid = Time();
   return _invalid;
 }
 

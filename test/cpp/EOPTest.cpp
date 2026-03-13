@@ -16,11 +16,11 @@ int main() {
 
   int n = 0;
 
-  EOP x = EOP::invalid();
-  if(!test.check("invalid()", !x.is_valid())) n++;
-  if(!test.check("invalid().dUT1()", !x.dUT1().is_valid())) n++;
-  if(!test.check("invalid().xp()", !x.xp().is_valid())) n++;
-  if(!test.check("invalid().yp()", !x.yp().is_valid())) n++;
+  EOP x = EOP::undefined();
+  if(!test.check("undefined()", !x.is_valid())) n++;
+  if(!test.check("undefined().dUT1()", !x.dUT1().is_valid())) n++;
+  if(!test.check("undefined().xp()", !x.xp().is_valid())) n++;
+  if(!test.check("undefined().yp()", !x.yp().is_valid())) n++;
 
   if(!test.check("invalid(dut1 = NAN)", !EOP(0, NAN, 0.0, 0.0).is_valid())) n++;
   if(!test.check("invalid(dut1 < -1s)", !EOP(0, -1.1, 0.0, 0.0).is_valid())) n++;

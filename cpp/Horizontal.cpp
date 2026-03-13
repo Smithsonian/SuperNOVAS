@@ -271,7 +271,7 @@ Apparent Horizontal::to_apparent(const GeodeticFrame& frame, double rv, double d
   if(opt.has_value())
     return opt.value();
   novas_trace_nan("Horizontal::to_apparent");
-  return Apparent::invalid();
+  return Apparent::undefined();
 }
 
 /**
@@ -311,8 +311,8 @@ std::string Horizontal::to_string(enum novas_separator_type separator, int decim
  *
  * @return    a reference to the static standard invalid coordinates.
  */
-const Horizontal& Horizontal::invalid() {
-  static const Horizontal _invalid = Horizontal(NAN, NAN);
+const Horizontal& Horizontal::undefined() {
+  static const Horizontal _invalid = Horizontal();
   return _invalid;
 }
 

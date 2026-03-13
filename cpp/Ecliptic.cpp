@@ -347,7 +347,7 @@ Equatorial Ecliptic::to_equatorial() const {
   }
 
   novas_set_errno(ERANGE, "Ecliptic::to_equatorial()", "Invalid Ecliptic instance");
-  return Equatorial::invalid();
+  return Equatorial::undefined();
 }
 
 /**
@@ -415,8 +415,8 @@ std::string Ecliptic::to_string(enum novas_separator_type separator, int decimal
  *
  * @return    a reference to the static standard invalid coordinates.
  */
-const Ecliptic& Ecliptic::invalid() {
-  static const Ecliptic _invalid = Ecliptic(NAN, NAN, Equinox::invalid());
+const Ecliptic& Ecliptic::undefined() {
+  static const Ecliptic _invalid = Ecliptic();
   return _invalid;
 }
 

@@ -17,13 +17,17 @@ int main() {
 
   int n = 0;
 
-  Velocity x = Velocity::invalid();
+  Velocity x = Velocity::undefined();
   if(!test.check("is_valid() invalid", !x.is_valid())) n++;
   if(!test.check("x() invalid", isnan(x.x()))) n++;
   if(!test.check("y() invalid", isnan(x.y()))) n++;
   if(!test.check("z() invalid", isnan(x.z()))) n++;
 
-  if(!test.check("is_valid(> c) invalid", !Velocity(Constant::c + 1.0, 0.0).is_valid())) n++;
+  if(!test.check("invalid x", !Velocity(NAN, 0.0, 0.0).is_valid())) n++;
+  if(!test.check("invalid x", !Velocity(0.0, NAN, 0.0).is_valid())) n++;
+  if(!test.check("invalid x", !Velocity(0.0, 0.0, NAN).is_valid())) n++;
+
+  if(!test.check("is_valid(> c) invalid", !Velocity(Constant::c + 1.0, 0.0, 0.0).is_valid())) n++;
 
   Velocity z = Velocity::stationary();
   if(!test.check("is_valid() stationary", z.is_valid())) n++;

@@ -167,8 +167,8 @@ std::string Position::to_string(int decimals) const {
  *
  * @return    a reference to the static standard invalid vector.
  */
-const Position& Position::invalid() {
-  static const Position _nan = Position(NAN, NAN, NAN);
+const Position& Position::undefined() {
+  static const Position _nan = Position();
   return _nan;
 }
 

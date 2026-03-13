@@ -17,9 +17,9 @@ int main() {
 
   int n = 0;
  
-  if(!test.check("invalid(equatorial)", !CatalogEntry("test", Equatorial::invalid()).is_valid())) n++;
-  if(!test.check("invalid(ecliptic)", !CatalogEntry("test", Ecliptic::invalid()).is_valid())) n++;
-  if(!test.check("invalid(galactic)", !CatalogEntry("test", Galactic::invalid()).is_valid())) n++;
+  if(!test.check("invalid(equatorial)", !CatalogEntry("test", Equatorial::undefined()).is_valid())) n++;
+  if(!test.check("invalid(ecliptic)", !CatalogEntry("test", Ecliptic::undefined()).is_valid())) n++;
+  if(!test.check("invalid(galactic)", !CatalogEntry("test", Galactic::undefined()).is_valid())) n++;
 
   char longName[SIZE_OF_OBJ_NAME + 1] = {'\0'};
   memset(longName, 'X', SIZE_OF_OBJ_NAME);
@@ -134,7 +134,7 @@ int main() {
   if(!test.equals("Antares->promodec", d._cat_entry()->promodec, -23.30, 1e-14)) n++;
   if(!test.equals("to_string()", d.to_string(), "CatalogEntry 'Antares': EQU 16h 26m 20.1918s   -26d 19m 23.138s  B1950, rv -3.400 km/s at 169.779 pc")) n++;
 
-  CatalogEntry x = CatalogEntry(star, Equinox::invalid());
+  CatalogEntry x = CatalogEntry(star, Equinox::undefined());
   if(!test.check("invalid(equinox)", !x.is_valid())) n++;
 
   cat_entry inv = star; inv.ra = NAN; x = CatalogEntry(inv, Equinox::b1950());

@@ -150,7 +150,7 @@ Angle Galactic::distance_to(const Galactic& other) const {
 Equatorial Galactic::to_equatorial() const {
   if(!is_valid()) {
     novas_set_errno(ERANGE, "Equatorial::to_ecliptic()", "invalid Galactic instance");
-    return Equatorial::invalid();
+    return Equatorial::undefined();
   }
 
   double ra = 0.0, dec = 0.0;
@@ -189,8 +189,8 @@ std::string Galactic::to_string(enum novas_separator_type separator, int decimal
  *
  * @return    a reference to the static standard invalid coordinates.
  */
-const Galactic& Galactic::invalid() {
-  static const Galactic _invalid = Galactic(NAN, NAN);
+const Galactic& Galactic::undefined() {
+  static const Galactic _invalid = Galactic();
   return _invalid;
 }
 

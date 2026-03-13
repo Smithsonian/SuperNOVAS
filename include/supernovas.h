@@ -9,8 +9,8 @@
  *  !!! Under construction !!!
  */
 
-#ifndef INCLUDE_SUPERMOVAS_H_
-#define INCLUDE_SUPERMOVAS_H_
+#ifndef SUPERNOVAS_H_
+#define SUPERNOVAS_H_
 
 #define SUPERNOVAS_CPP_API_VERSION    0.9.0   ///< C++ API version (different from library version)
 
@@ -76,7 +76,7 @@ class Frame;
 class   GeodeticFrame;
 class Apparent;
 class Geometric;
-class Evolution;
+class ScalarEvolution;
 template <class CoordType> class Track;
 class   HorizontalTrack;
 class   EquatorialTrack;
@@ -224,7 +224,7 @@ protected:
    * the state variable. Constructors should set it to `true` before returning if the instance has
    * been initialized in a valid state.
    *
-   * @sa is)valid()
+   * @sa is_valid(), operator bool()
    */
   bool _valid = false;
 
@@ -241,8 +241,38 @@ public:
    * not exceed the speed of light, etc.
    *
    * @return    `true` if the instance is in a 'valid' state, or else `false`.
+   *
+   * @sa operator bool()
    */
   bool is_valid() const { return _valid; }
+
+  /**
+   * Objects that implement Validating can be used in conditionals directly, without explicitly
+   * calling `is_valid()`. E.g.:
+   *
+   * ```c++
+   * Validating o = ...;
+   *
+   * if(o) {
+   *   // o is valid...
+   * }
+   * ```
+   *
+   * is the same as the more verbose:
+   *
+   * ```c++
+   * Validating o = ...;
+   *
+   * if(o.is_valid()) {
+   *   // o is valid...
+   * }
+   * ```
+   *
+   * @return    `true` if the instance is in a 'valid' state, or else `false`.
+   *
+   * @sa is_valid()
+   */
+  explicit operator bool() const { return _valid; }
 };
 
 /**
@@ -260,6 +290,9 @@ private:
   enum novas::novas_reference_system _system; ///< Coordinate reference system.
   double _jd;           ///< [day] Julian date of the dynamical equator (or closest to it) that
   ///< matches the system
+
+  /// Instantiates an undefined equinox
+  Equinox() : _name("invalid"), _system((enum novas::novas_reference_system) -1), _jd(NAN) {}
 
   Equinox(const std::string& name, double jd_tt);
 
@@ -323,7 +356,7 @@ public:
 
   static const Equinox& b1900();
 
-  static const Equinox& invalid();
+  static const Equinox& undefined();
 
 };
 
@@ -437,12 +470,16 @@ public:
  * @ingroup util
  */
 class Angle : public Validating {
+private:
+  /// Instantiates an indefined angle
+  Angle()  : _rad(NAN) {}
+
 protected:
   double _rad;      ///< [rad] stored angle value, usually [-&pi;:&pi;), but can be different for subclasses.
 
 public:
 
-  virtual ~Angle() {};
+  virtual ~Angle() {}
 
   explicit Angle(double radians);
 
@@ -474,7 +511,7 @@ public:
 
   virtual std::string to_string(enum novas::novas_separator_type separator = novas::NOVAS_SEP_UNITS_AND_SPACES, int decimals = 3) const;
 
-  static Angle& invalid();
+  static Angle& undefined();
 
   static constexpr int east = 1;      ///< East direction sign, e.g `19.5 * Unit::deg * Angle::east` for 19.5 deg East.
 
@@ -545,7 +582,10 @@ class Vector : public Validating {
 protected:
   double _component[3];       ///< [arb.u] Array containing the x, y, z components.
 
-  explicit Vector(double x = 0.0, double y = 0.0, double z = 0.0);
+  /// Instantiates an undefined vector
+  Vector();
+
+  explicit Vector(double x, double y, double z);
 
   bool equals(const Vector& v, double precision) const;
 
@@ -591,9 +631,13 @@ Vector operator*(double factor, const Vector& v);
  * @ingroup geometric
  */
 class Position : public Vector {
+private:
+  /// Instantiates an undefined position vector
+  Position() : Vector() {}
+
 public:
 
-  explicit Position(double x_m = 0.0, double y_m = 0.0, double z_m = 0.0);
+  explicit Position(double x_m, double y_m, double z_m);
 
   explicit Position(const double pos[3], double unit = Unit::m);
 
@@ -617,7 +661,7 @@ public:
 
   static const Position& origin();
 
-  static const Position& invalid();
+  static const Position& undefined();
 };
 
 /**
@@ -627,8 +671,12 @@ public:
  * @ingroup geometric
  */
 class Velocity : public Vector {
+private:
+  /// Instantiates an undefined velocity vector
+  Velocity() : Vector() {}
+
 public:
-  explicit Velocity(double x_ms = 0.0, double y_ms = 0.0, double z_ms = 0.0);
+  explicit Velocity(double x_ms, double y_ms, double z_ms);
 
   explicit Velocity(const double vel[3], double unit = 1.0);
 
@@ -656,7 +704,7 @@ public:
 
   static const Velocity& stationary();
 
-  static const Velocity& invalid();
+  static const Velocity& undefined();
 };
 
 /**
@@ -732,6 +780,9 @@ private:
   Angle _lat;           ///< [rad] stored latitude value
 
 protected:
+  /// Instantiates invalid spherical coordinates
+  Spherical() : _lon(Angle::undefined()), _lat(Angle::undefined()) {}
+
   Angle distance_to(const Spherical& other) const;
 
   bool equals(const Spherical& other, double precision) const {
@@ -766,6 +817,9 @@ public:
 class Equatorial : public Spherical {
 private:
   Equinox _sys;
+
+  /// Instantiates undefined equatorial coordinates
+  Equatorial() : Spherical(), _sys(Equinox::undefined()) {}
 
   void validate();
 
@@ -828,7 +882,7 @@ public:
 
   std::string to_string(enum novas::novas_separator_type separator = novas::NOVAS_SEP_UNITS_AND_SPACES, int decimals = 3) const override;
 
-  static const Equatorial& invalid();
+  static const Equatorial& undefined();
 };
 
 /**
@@ -842,6 +896,9 @@ class Ecliptic : public Spherical {
 private:
   enum novas::novas_equator_type _equator;
   double _jd;
+
+  /// Instantiates undefined Ecliptic coordinates
+  Ecliptic() : Spherical(), _equator((enum novas::novas_equator_type) -1), _jd(NAN) {}
 
   void validate();
 
@@ -895,7 +952,7 @@ public:
 
   std::string to_string(enum novas::novas_separator_type separator = novas::NOVAS_SEP_UNITS_AND_SPACES, int decimals = 3) const override;
 
-  static const Ecliptic& invalid();
+  static const Ecliptic& undefined();
 };
 
 /**
@@ -905,6 +962,11 @@ public:
  * @ingroup nonequatorial
  */
 class Galactic : public Spherical {
+private:
+
+  /// Instantiates undefined Galactic coordinates
+  Galactic() : Spherical() {}
+
 public:
   Galactic(double longitude_rad, double latitude_rad);
 
@@ -932,7 +994,7 @@ public:
 
   std::string to_string(enum novas::novas_separator_type separator = novas::NOVAS_SEP_UNITS_AND_SPACES, int decimals = 3) const override;
 
-  static const Galactic& invalid();
+  static const Galactic& undefined();
 };
 
 /**
@@ -1053,7 +1115,7 @@ public:
  * publishes daily values, short-term and medium term forecasts, and historical data for the
  * measured, unmodelled (by the IAU 2006 precession-nutation model), _x_<sub>p</sub>,
  * _y_<sub>p</sub> pole offsets, leap-seconds (UTC - TAI difference), and the current UT1 - UTC
- * time difference.
+ * time difference for various ITRF realizations.
  *
  * The _x_<sub>p</sub>, _y_<sub>p</sub> pole offsets define the true rotational pole of Earth vs
  * the dynamical equator of date, while the leap_seconds and UT1 - UTC time difference trace the
@@ -1070,6 +1132,9 @@ public:
  * <li>Corrections for diurnal variations are automatically applied in the constructors of
  * Time (for dUT1) and Frame (for _x_<sub>p</sub> and _y_<sub>p</sub> for geodetic observers),
  * and in Geometric::to_itrs(), as appropriate.</li>
+ * <li>For &mu;as-level precision, your EOP data should match the ITRF realization of the site
+ * coordinates. IERS provides EOP data in different ITRF realizations, and SuperNOVAS provides
+ * methods to convert both the EOP and/or the Site to another ITRF realization, if need be.</li>
  * </ol>
  *
  * @sa Time, GeodeticObserver, Apparent::to_itrs(), Geometric::to_itrs(), Horizontal::to_apparent()
@@ -1081,6 +1146,10 @@ private:
   Angle _xp;          ///< stored x pole offset (at midhight UTC).
   Angle _yp;          ///< stored y pole offset (at midnight UTC).
   double _dut1;       ///< [s] stored UT1 - UTC time difference.
+
+  /// Instantiates undefined EOPs
+  EOP() : _leap(0), _xp(Angle::undefined()), _yp(Angle::undefined()), _dut1(NAN) {}
+
   void validate();
 
 public:
@@ -1104,7 +1173,7 @@ public:
 
   std::string to_string() const;
 
-  static const EOP& invalid();
+  static const EOP& undefined();
 };
 
 /**
@@ -1123,6 +1192,11 @@ public:
 class Site : public Validating {
 private:
   novas::on_surface _site = {};    ///< stored site information
+
+  /// Instantiates an undefined observing site
+  Site() {
+    _site.longitude = _site.latitude = _site.height = NAN;
+  }
 
 public:
 
@@ -1170,7 +1244,7 @@ public:
 
   static Site from_GPS(const std::string& longitude, const std::string& latitude, const Coordinate& altitude = Coordinate::zero());
 
-  static const Site& invalid();
+  static const Site& undefined();
 };
 
 /**
@@ -1181,10 +1255,14 @@ public:
  * @ingroup observer
  */
 class Observer : public Validating {
+private:
+  /// Instantiates an undefined observer location
+  Observer();
+
 protected:
   novas::observer _observer = {};   ///< stored observer data
 
-  explicit Observer(enum novas::novas_observer_place type, const Site& site = Site::invalid(), const Position& pos = Position::origin(),
+  explicit Observer(enum novas::novas_observer_place type, const Site& site = Site::undefined(), const Position& pos = Position::origin(),
           const Velocity& vel = Velocity::stationary());
 
 public:
@@ -1218,7 +1296,7 @@ public:
 
   static SolarSystemObserver at_ssb();
 
-  static const Observer& invalid();
+  static const Observer& undefined();
 };
 
 
@@ -1231,7 +1309,7 @@ public:
 class SpaceBasedObserver : public Observer {
 protected:
   explicit SpaceBasedObserver(enum novas::novas_observer_place type, const Position& pos = Position::origin(),
-          const Velocity& vel = Velocity::stationary()) : Observer(type, Site::invalid(), pos, vel) {}
+          const Velocity& vel = Velocity::stationary()) : Observer(type, Site::undefined(), pos, vel) {}
 
 public:
   /// @ingroup frame
@@ -1470,7 +1548,10 @@ class Time : public Validating {
 private:
   novas::novas_timespec _ts = {};    ///< stored astronomical time specification
 
-  Time() {};
+  /// Instantiates an undefined time
+  Time() {
+    _ts.fjd_tt = _ts.dut1 = _ts.ut1_to_tt = _ts.tt2tdb = NAN;
+  };
 
   void diurnal_correct();
 
@@ -1590,7 +1671,7 @@ public:
 
   static const Time& b1900();
 
-  static const Time& invalid();
+  static const Time& undefined();
 };
 
 /**
@@ -1616,6 +1697,9 @@ private:
   const Observer *_observer;
   Time _time;
   novas::novas_frame _frame = {}; ///< Stored frame data
+
+  /// Intantiates an undefined observing frame
+  Frame() : _observer(Observer::undefined().copy()), _time(Time::undefined()) {}
 
   void diurnal_correct();
 
@@ -1643,7 +1727,7 @@ public:
 
   static Frame reduced_accuracy(const Observer& obs, const Time& time);
 
-  static const Frame& invalid();
+  static const Frame& undefined();
 };
 
 /**
@@ -2176,6 +2260,11 @@ private:
   Frame _frame;                ///< stored frame data
   novas::sky_pos _pos;         ///< stored apparent position data
 
+  /// Instantiates undefined apparent coordinates
+  Apparent() : cirs2tod_ra(NAN), _frame(Frame::undefined()), _pos({}) {
+    _pos.ra = _pos.dec = _pos.dis = _pos.rv = NAN;
+  }
+
   explicit Apparent(const Frame& frame);
 
   Apparent(const Frame& frame, enum novas::novas_reference_system sys, novas::sky_pos p);
@@ -2224,7 +2313,7 @@ public:
 
   static Apparent from_cirs_sky_pos(novas::sky_pos pos, const Frame& frame);
 
-  static const Apparent& invalid();
+  static const Apparent& undefined();
 };
 
 /**
@@ -2248,6 +2337,9 @@ private:
   Position _pos;                              ///< stored geometric position w.r.t. observer
   Velocity _vel;                              ///< stored geometric velocity w.r.t. observer
   enum novas::novas_reference_system _system; ///< stored coordinate reference system type
+
+  /// Instantiates undefined geometric positions
+  Geometric() : _frame(Frame::undefined()), _pos(Position::undefined()), _vel(Velocity::undefined()), _system((enum novas::novas_reference_system) -1) {}
 
   Geometric to_system(const novas::novas_frame *f, enum novas::novas_reference_system system) const;
 
@@ -2287,11 +2379,11 @@ public:
 
   Geometric to_tirs() const;
 
-  std::optional<Geometric> to_itrs(const EOP& eop = EOP::invalid()) const;
+  std::optional<Geometric> to_itrs(const EOP& eop = EOP::undefined()) const;
 
   std::string to_string() const; // TODO
 
-  static const Geometric& invalid();
+  static const Geometric& undefined();
 };
 
 /**
@@ -2305,7 +2397,8 @@ public:
  */
 class Horizontal : public Spherical {
 private:
-  Horizontal();
+  /// Instantiates undefined horizontal coordinates
+  Horizontal() : Spherical() {}
 
 public:
   Horizontal(double azimuth, double elevation);
@@ -2331,10 +2424,10 @@ public:
   const Angle zenith_angle() const;
 
   /// @ingroup refract
-  Horizontal to_refracted(novas::RefractionModel ref, const Weather& weather = Weather::standard(), const Time &time = Time::invalid());
+  Horizontal to_refracted(novas::RefractionModel ref, const Weather& weather = Weather::standard(), const Time &time = Time::undefined());
 
   /// @ingroup refract
-  Horizontal to_unrefracted(novas::RefractionModel ref, const Weather& weather = Weather::standard(), const Time& time = Time::invalid());
+  Horizontal to_unrefracted(novas::RefractionModel ref, const Weather& weather = Weather::standard(), const Time& time = Time::undefined());
 
   /// @ingroup apparent
   std::optional<Apparent> to_apparent(const Frame& frame, double rv = 0.0, double distance = Unit::Gpc) const;
@@ -2350,22 +2443,25 @@ public:
 
   std::string to_string(enum novas::novas_separator_type separator = novas::NOVAS_SEP_UNITS_AND_SPACES, int decimals = 3) const override;
 
-  static const Horizontal& invalid();
+  static const Horizontal& undefined();
 };
 
 /**
- * Evolution of a scalar quantity in time, based on a local quadratic approximation.
+ * The evolution of a scalar quantity in time, based on a local quadratic approximation.
  *
  * @sa Track
  */
-class Evolution : public Validating {
+class ScalarEvolution : public Validating {
 private:
   double _value;    ///< [?] momentary scalar value
   double _rate;     ///< [?/s] momentary rate of change in scalar value
   double _accel;    ///< [?/s<sup>2</sup>] momentary acceleration of scalar value
 
+  /// Instantiates an undefined evolution
+  ScalarEvolution() : _value(NAN), _rate(NAN), _accel(NAN) {}
+
 public:
-  explicit Evolution(double pos, double vel = 0.0, double accel = 0.0);
+  explicit ScalarEvolution(double value, double rate = 0.0, double accel = 0.0);
 
   double value(const Interval& offset = Interval::zero()) const;
 
@@ -2373,9 +2469,9 @@ public:
 
   double acceleration() const;
 
-  static Evolution stationary(double pos);
+  static ScalarEvolution stationary(double value);
 
-  static const Evolution& undefined();
+  static const ScalarEvolution& undefined();
 };
 
 
@@ -2391,16 +2487,16 @@ class Track : public Validating {
 private:
   Time _ref_time;
   Interval _range;
-  Evolution _lon;
-  Evolution _lat;
-  Evolution _r;
-  Evolution _z;
+  ScalarEvolution _lon;
+  ScalarEvolution _lat;
+  ScalarEvolution _r;
+  ScalarEvolution _z;
 
   void validate();
 
 protected:
 
-  Track(const Time& ref_time, const Interval& range, const Evolution& lon, const Evolution& lat, const Evolution& r, const Evolution& z);
+  Track(const Time& ref_time, const Interval& range, const ScalarEvolution& lon, const ScalarEvolution& lat, const ScalarEvolution& r, const ScalarEvolution& z);
 
   Track(const novas::novas_track *track, const Interval& range);
 
@@ -2422,13 +2518,13 @@ public:
 
   const Interval& range() const;
 
-  const Evolution& longitude_evolution() const;
+  const ScalarEvolution& longitude_evolution() const;
 
-  const Evolution& latitude_evolution() const;
+  const ScalarEvolution& latitude_evolution() const;
 
-  const Evolution& distance_evolution() const;
+  const ScalarEvolution& distance_evolution() const;
 
-  const Evolution& redshift_evolution() const;
+  const ScalarEvolution& redshift_evolution() const;
 
   std::optional<Angle> longitude_at(const Time& time) const;
 
@@ -2438,7 +2534,7 @@ public:
 
   std::optional<ScalarVelocity> radial_velocity_at(const Time& time) const;
 
-  double redshift_at(const Time& time) const;
+  std::optional<double> redshift_at(const Time& time) const;
 
   virtual std::optional<CoordType> projected_at(const Time& time) const = 0;
 };
@@ -2460,8 +2556,8 @@ private:
 
 public:
   HorizontalTrack(const Time& ref_time, const Interval& range,
-          const Evolution& azimuth, const Evolution& elevation, const Evolution& distance = Evolution::stationary(Unit::Gpc),
-          const Evolution& z = Evolution::undefined());
+          const ScalarEvolution& azimuth, const ScalarEvolution& elevation, const ScalarEvolution& distance = ScalarEvolution::stationary(Unit::Gpc),
+          const ScalarEvolution& z = ScalarEvolution::undefined());
 
   std::optional<Horizontal> projected_at(const Time& time) const override;
 
@@ -2487,8 +2583,8 @@ private:
 
 public:
   EquatorialTrack(const Equinox& system, const Time& ref_time, const Interval& range,
-          const Evolution& ra, const Evolution& dec, const Evolution& distance = Evolution::stationary(Unit::Gpc),
-          const Evolution& z = Evolution::undefined());
+          const ScalarEvolution& ra, const ScalarEvolution& dec, const ScalarEvolution& distance = ScalarEvolution::stationary(Unit::Gpc),
+          const ScalarEvolution& z = ScalarEvolution::undefined());
 
   std::optional<Equatorial> projected_at(const Time& time) const override;
 
@@ -2499,4 +2595,4 @@ public:
 } // namespace supernovas
 
 #  endif /* cplusplus */
-#endif /* INCLUDE_SUPERMOVAS_H_ */
+#endif /* SUPERNOVAS_H_ */

@@ -20,7 +20,7 @@ int main() {
   if(!test.check("invalid lat", !Horizontal(45.0 * Unit::deg, NAN).is_valid())) n++;
   if(!test.check("invalid lat > 90", !Horizontal(45.0 * Unit::deg, 91.0 * Unit::deg).is_valid())) n++;
 
-  Horizontal x = Horizontal::invalid();
+  Horizontal x = Horizontal::undefined();
   if(!test.check("is_valid() invalid", !x.is_valid())) n++;
   if(!test.check("longitude() invalid", isnan(x.longitude().rad()))) n++;
   if(!test.check("latitude() invalid", isnan(x.latitude().rad()))) n++;
@@ -53,7 +53,7 @@ int main() {
           ScalarVelocity(Unit::km / Unit::s), Coordinate(Unit::pc));
   if(!test.check("to_apparent(geocentric)", !opt.has_value())) n++;
 
-  opt = a.to_apparent(Frame::invalid(), ScalarVelocity(Unit::km / Unit::s), Coordinate(Unit::pc));
+  opt = a.to_apparent(Frame::undefined(), ScalarVelocity(Unit::km / Unit::s), Coordinate(Unit::pc));
   if(!test.check("to_apparent(Frame invalid).has_value()", !opt.has_value())) n++;
 
   EOP eop(32, 0.1, 0.2 * Unit::arcsec, 0.3 * Unit::arcsec);

@@ -21,7 +21,7 @@ int main() {
 
   EOP eop(32.0, 0.1, 0.2, 0.3);
 
-  if(!test.check("invalid", !Time::invalid().is_valid())) n++;
+  if(!test.check("invalid", !Time::undefined().is_valid())) n++;
   if(!test.check("invalid jd = NAN", !Time(NAN, 32, 0.1, NOVAS_UTC).is_valid())) n++;
   if(!test.check("invalid fjd = NAN", !Time((long)NOVAS_JD_J2000, NAN, 32, 0.1, NOVAS_UTC).is_valid())) n++;
   if(!test.check("invalid timescale", !Time(NOVAS_JD_J2000, 32, 0.0, (enum novas_timescale) -1).is_valid())) n++;

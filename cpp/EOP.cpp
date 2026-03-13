@@ -170,8 +170,8 @@ std::string EOP::to_string() const {
  *
  * @return    a reference to a static standard EOP.
  */
-const EOP& EOP::invalid() {
-  static const EOP _invalid = EOP(0, NAN, NAN, NAN);
+const EOP& EOP::undefined() {
+  static const EOP _invalid = EOP();
   return _invalid;
 }
 

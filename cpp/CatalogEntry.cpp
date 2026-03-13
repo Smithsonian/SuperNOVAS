@@ -523,6 +523,12 @@ CatalogEntry& CatalogEntry::redshift(double z) {
   return *this;
 }
 
+/**
+ * Returns a human-readable string representation of this catalog entry, showing only the most basic data.
+ *
+ * @param decimals    [0:16] number of decimal places to print for coordinates.
+ * @return            a string describing this catalog entry.
+ */
 std::string CatalogEntry::to_string(int decimals) const {
   return "CatalogEntry '" + name() + "': " + equatorial().to_string(NOVAS_SEP_UNITS_AND_SPACES, decimals) + ", rv "
           + radial_velocity().to_string(decimals) + " at " + distance().to_string(decimals);

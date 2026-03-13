@@ -18,9 +18,9 @@ int main() {
 
   GeocentricObserver gc = Observer::at_geocenter();
 
-  if(!test.check("invalid", !Frame::invalid().is_valid())) n++;
-  if(!test.check("invalid observer", !Frame::create(Observer::invalid(), Time::j2000(), (enum novas_accuracy) -1).has_value())) n++;
-  if(!test.check("invalid time", !Frame::create(gc, Time::invalid(), (enum novas_accuracy) -1).has_value())) n++;
+  if(!test.check("invalid", !Frame::undefined().is_valid())) n++;
+  if(!test.check("invalid observer", !Frame::create(Observer::undefined(), Time::j2000(), (enum novas_accuracy) -1).has_value())) n++;
+  if(!test.check("invalid time", !Frame::create(gc, Time::undefined(), (enum novas_accuracy) -1).has_value())) n++;
   if(!test.check("invalid accuracy", !Frame::create(gc, Time::j2000(), (enum novas_accuracy) -1).has_value())) n++;
 
   Frame a = Frame::reduced_accuracy(gc, Time::j2000());
@@ -36,13 +36,13 @@ int main() {
   b = Frame::create(gc, Time::j2000(), NOVAS_FULL_ACCURACY);
   if(!test.check("create(full accuracy).has_value()", !b.has_value())) n++;
 
-  b = Frame::create(Observer::invalid(), Time::j2000());
+  b = Frame::create(Observer::undefined(), Time::j2000());
   if(!test.check("create(obs invalid).has_value()", !b.has_value())) n++;
 
-  b = Frame::create(gc, Time::invalid());
+  b = Frame::create(gc, Time::undefined());
   if(!test.check("create(time invalid).has_value()", !b.has_value())) n++;
 
-  std::optional <Frame> c = Frame::reduced_accuracy(Observer::invalid(), Time::j2000());
+  std::optional <Frame> c = Frame::reduced_accuracy(Observer::undefined(), Time::j2000());
   if(!test.check("reduced_accuracy(invalid).has_value()", c.has_value())) n++;
 
   EOP eop(32, 0.1, 0.2 * Unit::arcsec, 0.3 * Unit::arcsec);
@@ -60,7 +60,7 @@ int main() {
   if(!test.check("observer().is_geocentric()", !gf.observer().is_geocentric())) n++;
   if(!test.equals("to_string()", gf.to_string(), "Geodetic Frame for GeodeticObserver at Site (E  10d 00m 00.000s, S  20d 00m 00.000s, altitude 30 m) at 2000-01-01T11:58:55.816 UTC")) n++;
 
-  gf = GeodeticFrame::reduced_accuracy(go, Time::invalid());
+  gf = GeodeticFrame::reduced_accuracy(go, Time::undefined());
   if(!test.check("reduced_accuracy(invalid).has_value()", c.has_value())) n++;
 
   std::optional <GeodeticFrame> opt = GeodeticFrame::create(go, Time::j2000(), NOVAS_REDUCED_ACCURACY);

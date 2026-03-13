@@ -19,13 +19,15 @@ int main() {
   if(!test.check("invalid lon", !Ecliptic(NAN, 30.0 * Unit::deg, Equinox::icrs()).is_valid())) n++;
   if(!test.check("invalid lat", !Ecliptic(45.0 * Unit::deg, NAN, Equinox::icrs()).is_valid())) n++;
   if(!test.check("invalid lat > 90", !Ecliptic(45.0 * Unit::deg, 91.0 * Unit::deg, Equinox::icrs()).is_valid())) n++;
+  if(!test.check("invalid equinox", !Ecliptic(45.0 * Unit::deg, 30.0 * Unit::deg, Equinox::undefined()).is_valid())) n++;
 
-  Ecliptic x = Ecliptic::invalid();
+  Ecliptic x = Ecliptic::undefined();
   if(!test.check("is_valid() invalid", !x.is_valid())) n++;
   if(!test.check("longitude() invalid", isnan(x.longitude().rad()))) n++;
   if(!test.check("latitude() invalid", isnan(x.latitude().rad()))) n++;
   if(!test.check("to_equatorial() invalid", !x.to_equatorial().is_valid())) n++;
   if(!test.check("to_galactic() invalid", !x.to_galactic().is_valid())) n++;
+
 
   Ecliptic a = Ecliptic(Angle(45.0 * Unit::deg), Angle(30.0 * Unit::deg), Equinox::icrs());
   if(!test.check("is_valid()", a.is_valid())) n++;

@@ -60,7 +60,7 @@ Apparent::Apparent(const Frame& frame, enum novas_reference_system sys, double r
 
   radec2vector(_pos.ra, _pos.dec, 1.0, _pos.r_hat);
 
-  _valid = is_valid_sky_pos(fn, &_pos);
+  _valid = frame.is_valid() && is_valid_sky_pos(fn, &_pos);
 }
 
 Apparent::Apparent(const Frame& frame, enum novas_reference_system sys, sky_pos p)
@@ -328,8 +328,8 @@ Apparent Apparent::from_cirs_sky_pos(sky_pos pos, const Frame& frame) {
  *
  * @return    a reference to the static standard invalid coordinates.
  */
-const Apparent& Apparent::invalid() {
-  static const Apparent _invalid = Apparent::tod(NAN, NAN, Frame::invalid(), NAN);
+const Apparent& Apparent::undefined() {
+  static const Apparent _invalid = Apparent();
   return _invalid;
 }
 

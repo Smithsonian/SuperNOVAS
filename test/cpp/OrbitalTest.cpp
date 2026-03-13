@@ -47,12 +47,12 @@ int main() {
   s.orientation(1.0 * Unit::deg, -2.0 * Unit::deg, Equinox::icrs());
   if(!test.check("invalid(ascending_node OK)", s.is_valid())) n++;
 
-  s.orientation(1.0 * Unit::deg, -2.0 * Unit::deg, Equinox::invalid());
+  s.orientation(1.0 * Unit::deg, -2.0 * Unit::deg, Equinox::undefined());
   if(!test.check("invalid(equinox)", !s.is_valid())) n++;
   s.orientation(1.0 * Unit::deg, -2.0 * Unit::deg, Equinox::icrs());
   if(!test.check("invalid(equinox OK)", s.is_valid())) n++;
 
-  s.pole(Equatorial::invalid(), Equinox::invalid());
+  s.pole(Equatorial::undefined(), Equinox::undefined());
   if(!test.check("invalid(pole)", !s.is_valid())) n++;
   s.pole(-92 * Unit::deg, 89.0 * Unit::deg, Equinox::icrs());
   if(!test.check("invalid(pole OK)", s.is_valid())) n++;
@@ -92,7 +92,7 @@ int main() {
   s = (OrbitalSystem::equatorial());
 
   if(!test.check("invalid(system)", !Orbital(xs, Time::j2000(), Coordinate(Unit::AU), Angle(0.0), Interval(Unit::yr)).is_valid())) n++;
-  if(!test.check("invalid(time)", !Orbital(s, Time::invalid(), Coordinate(Unit::AU), Angle(0.0), Interval(Unit::yr)).is_valid())) n++;
+  if(!test.check("invalid(time)", !Orbital(s, Time::undefined(), Coordinate(Unit::AU), Angle(0.0), Interval(Unit::yr)).is_valid())) n++;
   if(!test.check("invalid(a = NAN)", !Orbital(s, Time::j2000(), Coordinate(NAN), Angle(0.0), Interval(Unit::yr)).is_valid())) n++;
   if(!test.check("invalid(a = 0)", !Orbital(s, Time::j2000(), Coordinate(0.0), Angle(0.0), Interval(Unit::yr)).is_valid())) n++;
   if(!test.check("invalid(a < 0)", !Orbital(s, Time::j2000(), Coordinate(-Unit::AU), Angle(0.0), Interval(Unit::yr)).is_valid())) n++;
@@ -204,8 +204,8 @@ int main() {
   if(!test.check("position()", o.position(Time::hip(), NOVAS_FULL_ACCURACY) == Position(p, Unit::au))) n++;
   if(!test.check("velocity()", o.velocity(Time::hip(), NOVAS_FULL_ACCURACY) == Velocity(v, Unit::au / Unit::day))) n++;
 
-  if(!test.check("position(time invalid)", !o.position(Time::invalid()).is_valid())) n++;
-  if(!test.check("velocity(time invalid)", !o.velocity(Time::invalid()).is_valid())) n++;
+  if(!test.check("position(time invalid)", !o.position(Time::undefined()).is_valid())) n++;
+  if(!test.check("velocity(time invalid)", !o.velocity(Time::undefined()).is_valid())) n++;
 
   if(!test.check("position(acc invalid)", !o.position(Time::hip(), (enum novas_accuracy) -1).is_valid())) n++;
   if(!test.check("velocity(acc invalid)", !o.velocity(Time::hip(), (enum novas_accuracy) -1).is_valid())) n++;

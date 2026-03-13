@@ -221,8 +221,6 @@ Site Site::itrf_transformed(int from_year, int to_year) const {
   return Site(s.longitude * Unit::deg, s.latitude * Unit::deg, s.height * Unit::m);
 }
 
-
-
 /**
  * Converts an ITRF position vector to a local East-Noth-Up (ENU) vector at the site.
  *
@@ -347,9 +345,13 @@ Site Site::from_GPS(const std::string& longitude, const std::string& latitude, c
   return from_GPS(Angle(longitude), Angle(latitude), altitude);
 }
 
-
-const Site& Site::invalid() {
-  static const Site _invalid = Site(NAN, NAN, NAN, (enum novas_reference_ellipsoid) -1);
+/**
+ * Returns a reference to a statically allocated undefined observing site instance.
+ *
+ * @return    a static reference to an undefined observing site.
+ */
+const Site& Site::undefined() {
+  static const Site _invalid = Site();
   return _invalid;
 }
 

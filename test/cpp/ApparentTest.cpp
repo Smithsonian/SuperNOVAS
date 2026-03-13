@@ -17,7 +17,7 @@ int main() {
 
   int n = 0;
 
-  Apparent x = Apparent::invalid();
+  Apparent x = Apparent::undefined();
   if(!test.check("invalid", !x.is_valid())) n++;
   if(!test.check("invalid frame", !x.frame().is_valid())) n++;
   if(!test.check("invalid to_horizontal()", !x.to_horizontal().has_value())) n++;
@@ -28,6 +28,8 @@ int main() {
   radec2vector(p.ra, p.dec, 1.0, p.r_hat);
   p.rv = -133.0;
   p.dis = Unit::pc / Unit::au;
+
+  if(!test.check("invalid", !Apparent::from_tod_sky_pos(p, Frame::undefined()).is_valid())) n++;
 
   EOP eop(32, 0.1, 0.2 * Unit::arcsec, 0.3 * Unit::arcsec);
   Frame frame = Observer::at_geocenter().reduced_accuracy_frame_at(Time::j2000());

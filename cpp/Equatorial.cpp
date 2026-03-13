@@ -237,7 +237,7 @@ Equatorial Equatorial::to_system(const Equinox& system) const {
       break;
     default:
       novas_set_errno(ERANGE, fn, "invalid equatorial with system type %d", _sys.system_type());
-      return Equatorial::invalid();
+      return Equatorial::undefined();
   }
 
   // Convert from ICRS to output system...
@@ -259,7 +259,7 @@ Equatorial Equatorial::to_system(const Equinox& system) const {
       break;
     default:
       novas_set_errno(ERANGE, fn, "invalid output system type %d", system.system_type());
-      return Equatorial::invalid();
+      return Equatorial::undefined();
   }
 
   double r = 0.0, d = 0.0;
@@ -440,7 +440,7 @@ Ecliptic Equatorial::to_ecliptic() const {
 
   if(!is_valid()) {
     novas_set_errno(ERANGE, "Equatorial::to_ecliptic()", "invalid Equatorial instance");
-    return Ecliptic::invalid();
+    return Ecliptic::undefined();
   }
 
   double r = ra().hours();
@@ -464,7 +464,7 @@ Ecliptic Equatorial::to_ecliptic() const {
 Galactic Equatorial::to_galactic() const {
   if(!is_valid()) {
     novas_set_errno(ERANGE, "Equatorial::to_galactic()", "invalid Equatorial instance");
-    return Galactic::invalid();
+    return Galactic::undefined();
   }
 
   Equatorial icrs = to_icrs();
@@ -494,8 +494,8 @@ std::string Equatorial::to_string(enum novas_separator_type separator, int decim
  *
  * @return    a reference to a static standard invalid equatorial coordinates.
  */
-const Equatorial& Equatorial::invalid() {
-  static const Equatorial _invalid = Equatorial(NAN, NAN, Equinox::invalid());
+const Equatorial& Equatorial::undefined() {
+  static const Equatorial _invalid = Equatorial();
   return _invalid;
 }
 

@@ -17,7 +17,7 @@ int main() {
 
   int n = 0;
 
-  CatalogEntry xe("Invalid", Equatorial::invalid());
+  CatalogEntry xe("Invalid", Equatorial::undefined());
   if(!test.check("invalid(catalog)", !CatalogSource(xe).is_valid())) n++;
 
   CatalogEntry ce("Test", Equatorial("12:34:56.789", "12:34:56.789"));
@@ -43,7 +43,7 @@ int main() {
 
   Frame frame = Observer::on_earth(site, eop).reduced_accuracy_frame_at(Time::j2000());
   GeodeticFrame gf = Observer::on_earth(site, eop).reduced_accuracy_frame_at(Time::j2000());
-  GeodeticFrame gfx = Observer::on_earth(site, eop).reduced_accuracy_frame_at(Time::invalid());
+  GeodeticFrame gfx = Observer::on_earth(site, eop).reduced_accuracy_frame_at(Time::undefined());
   Frame gc = Observer::at_geocenter().reduced_accuracy_frame_at(Time::j2000());
 
   if(!test.check("observer.is_geodetic()", Observer::on_earth(site, eop).is_geodetic())) n++;

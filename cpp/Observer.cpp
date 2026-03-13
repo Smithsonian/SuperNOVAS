@@ -17,17 +17,8 @@ using namespace novas;
 
 namespace supernovas {
 
-/**
- * (_for internal use_) Used only for instantiating an invalid observer.
- *
- */
-class InvalidObserver : public Observer {
-public:
-  /**
-   * Instantiates and invalid observer.
-   */
-  InvalidObserver() : Observer((enum novas_observer_place) -1, Site::invalid(), Position::invalid(), Velocity::invalid()) {}
-};
+
+Observer::Observer() : Observer((enum novas_observer_place) -1, Site::undefined(), Position::undefined(), Velocity::undefined()) {}
 
 
 Observer::Observer(enum novas_observer_place type, const Site& site, const Position& pos,
@@ -51,7 +42,7 @@ Observer::Observer(enum novas_observer_place type, const Site& site, const Posit
  * @return  a copy of this observer class, which may be an invalid observer (default).
  */
 const Observer *Observer::copy() const {
-  return new InvalidObserver();
+  return new Observer();
 }
 
 /**
@@ -260,8 +251,8 @@ SolarSystemObserver Observer::at_ssb() {
  *
  * @return    a reference to a static standard invalid observer.
  */
-const Observer &Observer::invalid() {
-  static const InvalidObserver _invalid = InvalidObserver();
+const Observer &Observer::undefined() {
+  static const Observer _invalid = Observer();
   return _invalid;
 }
 

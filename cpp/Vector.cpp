@@ -15,6 +15,12 @@ using namespace novas;
 
 namespace supernovas {
 
+Vector::Vector() {
+  _component[0] = NAN;
+  _component[1] = NAN;
+  _component[2] = NAN;
+}
+
 /**
  * Instantiates a vector from its cartesian components.
  *

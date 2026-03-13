@@ -233,8 +233,8 @@ std::string Frame::to_string() const {
  *
  * @return    a reference to a static standard invalid equatorial coordinates.
  */
-const Frame& Frame::invalid() {
-  static const Frame _invalid = Frame(Observer::invalid(), Time::invalid(), (enum novas_accuracy) -1);
+const Frame& Frame::undefined() {
+  static const Frame _invalid = Frame();
   return _invalid;
 }
 
@@ -332,7 +332,6 @@ GeodeticFrame GeodeticFrame::reduced_accuracy(const GeodeticObserver& obs, const
 std::string GeodeticFrame::to_string() const {
   return "Geodetic " + Frame::to_string();
 }
-
 
 
 } // namespace supernovas

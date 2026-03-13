@@ -619,7 +619,7 @@ Position Orbital::position(const Time& time, enum novas_accuracy accuracy) const
 
   if(novas_orbit_posvel(time.jd(), &_orbit, accuracy, p, NULL) != 0) {
     novas_trace_invalid("Orbital::position");
-    return Position::invalid();
+    return Position::undefined();
   }
 
   return Position(p, Unit::au);
@@ -650,7 +650,7 @@ Velocity Orbital::velocity(const Time& time, enum novas_accuracy accuracy) const
 
   if(novas_orbit_posvel(time.jd(), &_orbit, accuracy, NULL, v) != 0) {
     novas_trace_invalid("Orbital::velocity");
-    return Velocity::invalid();
+    return Velocity::undefined();
   }
 
   return Velocity(v, Unit::au / Unit::day);

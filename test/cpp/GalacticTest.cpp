@@ -20,10 +20,10 @@ int main() {
   if(!test.check("invalid lat", !Galactic(45.0 * Unit::deg, NAN).is_valid())) n++;
   if(!test.check("invalid Alon", !Galactic(Angle(NAN), Angle(30.0 * Unit::deg)).is_valid())) n++;
   if(!test.check("invalid Alat", !Galactic(Angle(45.0 * Unit::deg), Angle(NAN)).is_valid())) n++;
-  if(!test.check("invalid pos", !Galactic(Position::invalid()).is_valid())) n++;
+  if(!test.check("invalid pos", !Galactic(Position::undefined()).is_valid())) n++;
   if(!test.check("invalid lat > 90", !Galactic(45.0 * Unit::deg, 91.0 * Unit::deg).is_valid())) n++;
 
-  Galactic x = Galactic::invalid();
+  Galactic x = Galactic::undefined();
   if(!test.check("is_valid() invalid", !x.is_valid())) n++;
   if(!test.check("longitude() invalid", isnan(x.longitude().rad()))) n++;
   if(!test.check("latitude() invalid", isnan(x.latitude().rad()))) n++;

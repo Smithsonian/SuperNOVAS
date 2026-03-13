@@ -16,7 +16,7 @@ int main() {
 
   int n = 0;
 
-  Geometric x = Geometric::invalid();
+  Geometric x = Geometric::undefined();
   if(!test.check("invalid", !x.is_valid())) n++;
   if(!test.check("invalid frame", !x.frame().is_valid())) n++;
   if(!test.check("invalid pos", !x.position().is_valid())) n++;
@@ -27,9 +27,9 @@ int main() {
 
   Frame frame = Observer::at_geocenter().reduced_accuracy_frame_at(Time::j2000());
 
-  if(!test.check("invalid (pos invalid)", !Geometric(frame, Position::invalid(), Velocity::stationary()).is_valid())) n++;
-  if(!test.check("invalid (vel invalid)", !Geometric(frame, Position::origin(), Velocity::invalid()).is_valid())) n++;
-  if(!test.check("invalid (frame invalid)", !Geometric(Frame::invalid(), Position::origin(), Velocity::stationary()).is_valid())) n++;
+  if(!test.check("invalid (pos invalid)", !Geometric(frame, Position::undefined(), Velocity::stationary()).is_valid())) n++;
+  if(!test.check("invalid (vel invalid)", !Geometric(frame, Position::origin(), Velocity::undefined()).is_valid())) n++;
+  if(!test.check("invalid (frame invalid)", !Geometric(Frame::undefined(), Position::origin(), Velocity::stationary()).is_valid())) n++;
   if(!test.check("invalid (system -1)", !Geometric(frame, Position::origin(), Velocity::stationary(), (enum novas_reference_system) -1).is_valid())) n++;
 
   Position pos(1.0 * Unit::pc, 2.0 * Unit::pc, 3.0 * Unit::pc);

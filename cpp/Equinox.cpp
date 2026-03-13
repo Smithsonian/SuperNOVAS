@@ -90,7 +90,6 @@ Equinox::Equinox(enum novas::novas_reference_system system, double jd_tt)
     novas_set_errno(EINVAL, fn, "input JD date is NAN or infinite", system);
     _valid = false;
   }
-
 }
 
 /**
@@ -356,23 +355,11 @@ std::optional<Equinox> Equinox::from_string(const std::string& name) {
 Equinox Equinox::from_system_type(enum novas::novas_reference_system system, double jd_tt) {
   static const char *fn = "Equatorial::for_reference_system()";
 
-  if(system == NOVAS_GCRS || system == NOVAS_ICRS || system == NOVAS_J2000) {
-    jd_tt = NOVAS_JD_J2000;
-  }
-  else if((unsigned) system >= NOVAS_REFERENCE_SYSTEMS) {
-    novas_set_errno(EINVAL, fn, "invalid reference system: %d", system);
-    return Equinox::invalid();
-  }
-  else if(!isfinite(jd_tt)) {
-    novas_set_errno(EINVAL, fn, "input JD is NAN or infinite");
-    return Equinox::invalid();
-  }
-
   switch(system) {
     case NOVAS_TIRS:
     case NOVAS_ITRS:
       novas_set_errno(EINVAL, fn, "No equinox for Earth-rotating reference systems");
-      return Equinox::invalid();
+      return Equinox::undefined();
     default:
       return Equinox(system, jd_tt);
   }
@@ -572,8 +559,8 @@ const Equinox& Equinox::b1900() {
  *
  * @return    a reference to a static standard invalid equatorial system.
  */
-const Equinox& Equinox::invalid() {
-  static const Equinox _invalid = Equinox((enum novas_reference_system) -1, NAN);
+const Equinox& Equinox::undefined() {
+  static const Equinox _invalid = Equinox();
   return _invalid;
 }
 

@@ -85,7 +85,7 @@ Apparent Source::apparent_in(const Frame& frame) const {
   }
 
   novas_trace_invalid("Source::apparent");
-  return Apparent::invalid();
+  return Apparent::undefined();
 }
 
 /**
@@ -142,7 +142,7 @@ Geometric Source::geometric_in(const Frame& frame, enum novas_reference_system s
   }
 
   novas_trace_invalid("Source::geometric");
-  return Geometric::invalid();
+  return Geometric::undefined();
 
 
 }
@@ -522,6 +522,9 @@ std::string CatalogSource::to_string() const {
           " " + Angle(c->dec * Unit::deg).to_string() + " " + _cat.system().to_string();
 }
 
+
+
+
 /**
  * Returns the fraction [0.0:1.0] of the Solar-system source that appears illuminated by the Sun
  * when viewed from a given observing frame, assuming that the source has a spheroidal shape.
@@ -580,8 +583,6 @@ ScalarVelocity SolarSystemSource::helio_rate(const Time& time) const {
 double SolarSystemSource::solar_power(const Time& time) const {
   return novas_check_nan("SolarSystemSource::solar_power()", novas_solar_power(time.jd(NOVAS_TDB), &_object));
 }
-
-
 
 /**
  * Instantiates a planet from its NOVAS ID number.

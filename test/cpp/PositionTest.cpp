@@ -16,7 +16,7 @@ int main() {
 
   int n = 0;
 
-  Position x = Position::invalid();
+  Position x = Position::undefined();
   if(!test.check("is_valid() invalid", !x.is_valid())) n++;
   if(!test.check("x() invalid", isnan(x.x()))) n++;
   if(!test.check("y() invalid", isnan(x.y()))) n++;
@@ -28,6 +28,10 @@ int main() {
   if(!test.equals("y() origin", z.y(), 0.0)) n++;
   if(!test.equals("z() origin", z.z(), 0.0)) n++;
   if(!test.check("is_zero(origin)", z.is_zero())) n++;
+
+  if(!test.check("invalid x", !Position(NAN, 0.0, 0.0).is_valid())) n++;
+  if(!test.check("invalid x", !Position(0.0, NAN, 0.0).is_valid())) n++;
+  if(!test.check("invalid x", !Position(0.0, 0.0, NAN).is_valid())) n++;
 
   Position a(-1.0 * Unit::au, 2.0 * Unit::au, -3.0 * Unit::au);
   if(!test.check("is_valid(-1 AU, 2 AU, -3 AU)", a.is_valid())) n++;

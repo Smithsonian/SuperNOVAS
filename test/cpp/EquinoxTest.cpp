@@ -17,20 +17,20 @@ int main() {
 
   int n = 0;
 
-  Equinox x = Equinox::invalid();
-  if(!test.check("invalid()", !x.is_valid())) n++;
-  if(!test.check("invalid().is_icrs()", !x.is_icrs())) n++;
-  if(!test.check("invalid().is_mod()", !x.is_mod())) n++;
-  if(!test.check("invalid().is_true()", !x.is_true())) n++;
-  if(!test.check("invalid().jd() ? NAN", isnan(x.jd()))) n++;
-  if(!test.check("invalid().epoch() ? NAN", isnan(x.epoch()))) n++;
-  if(!test.equals("invalid().system()", x.system_type(), -1)) n++;
+  Equinox x = Equinox::undefined();
+  if(!test.check("undefined()", !x.is_valid())) n++;
+  if(!test.check("undefined().is_icrs()", !x.is_icrs())) n++;
+  if(!test.check("undefined().is_mod()", !x.is_mod())) n++;
+  if(!test.check("undefined().is_true()", !x.is_true())) n++;
+  if(!test.check("undefined().jd() ? NAN", isnan(x.jd()))) n++;
+  if(!test.check("undefined().epoch() ? NAN", isnan(x.epoch()))) n++;
+  if(!test.equals("undefined().system()", x.system_type(), -1)) n++;
 
-  if(!test.check("has_value(jd = NAN)", !Equinox::from_system_type(NOVAS_MOD, NAN).is_valid())) n++;
-  if(!test.check("has_value(system = -1)", !Equinox::from_system_type((novas_reference_system) -1, NOVAS_JD_J2000).is_valid())) n++;
-  if(!test.check("has_value(system = hi)", !Equinox::from_system_type((novas_reference_system) NOVAS_REFERENCE_SYSTEMS, NOVAS_JD_J2000).is_valid())) n++;
-  if(!test.check("has_value(system = TIRS)", !Equinox::from_system_type(NOVAS_TIRS, NOVAS_JD_J2000).is_valid())) n++;
-  if(!test.check("has_value(system = ITRS)", !Equinox::from_system_type(NOVAS_ITRS, NOVAS_JD_J2000).is_valid())) n++;
+  if(!test.check("is_valid(jd = NAN)", !Equinox::from_system_type(NOVAS_MOD, NAN).is_valid())) n++;
+  if(!test.check("is_valid(system = -1)", !Equinox::from_system_type((novas_reference_system) -1, NOVAS_JD_J2000).is_valid())) n++;
+  if(!test.check("is_valid(system = hi)", !Equinox::from_system_type((novas_reference_system) NOVAS_REFERENCE_SYSTEMS, NOVAS_JD_J2000).is_valid())) n++;
+  if(!test.check("is_valid(system = TIRS)", !Equinox::from_system_type(NOVAS_TIRS, NOVAS_JD_J2000).is_valid())) n++;
+  if(!test.check("is_valid(system = ITRS)", !Equinox::from_system_type(NOVAS_ITRS, NOVAS_JD_J2000).is_valid())) n++;
 
   std::optional<Equinox> o = Equinox::from_string("blah");
   if(!test.check("invalid('blah')", !o.has_value())) n++;

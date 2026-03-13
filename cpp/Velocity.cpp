@@ -200,8 +200,8 @@ std::string Velocity::to_string(int decimals) const {
  *
  * @return  the static reference to a standard invalid velocity
  */
-const Velocity& Velocity::invalid() {
-  static const Velocity _nan = Velocity(NAN, NAN, NAN);
+const Velocity& Velocity::undefined() {
+  static const Velocity _nan = Velocity();
   return _nan;
 }
 

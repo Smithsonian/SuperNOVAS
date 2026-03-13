@@ -16,8 +16,8 @@ int main() {
 
   int n = 0;
 
-  if(!test.check("invalid", !Angle::invalid().is_valid())) n++;
-  if(!test.check("invalid rad()", isnan(Angle::invalid().rad()))) n++;
+  if(!test.check("invalid", !Angle::undefined().is_valid())) n++;
+  if(!test.check("invalid rad()", isnan(Angle::undefined().rad()))) n++;
 
   Angle x(NAN);
   if(!test.check("is_valid(NAN)", !x.is_valid())) n++;

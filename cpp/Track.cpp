@@ -10,7 +10,6 @@
 /// \endcond
 
 #include <cmath>
-#include <iostream>
 #include <type_traits>
 
 
@@ -19,76 +18,6 @@
 using namespace novas;
 
 namespace supernovas {
-
-/**
- * Instantiate an time evolution set for a scalar quantity.
- *
- * @param pos     [?] momentary value
- * @param vel     [?/s] (optional) momentary rate of change in value (default: 0).
- * @param accel   [?/s<sup>2</sup>] (optional) momentary acceleration of value (default: 0).
- */
-Evolution::Evolution(double pos, double vel, double accel)
-: _value(pos), _rate(vel), _accel(accel) {
-  static const char *fn = "Evolution()";
-
-  errno = 0;
-
-  if(!isfinite(_value))
-    novas_set_errno(EINVAL, fn, "position is NAN or infinite");
-  if(!isfinite(_rate))
-    novas_set_errno(EINVAL, fn, "rate is NAN or infinite");
-  if(!isfinite(_accel))
-    novas_set_errno(EINVAL, fn, "acceleration is NAN or infinite");
-
-  _valid = (errno == 0);
-}
-
-/**
- * Returns an extrapolated momentary value of the evolving quantity at an offset time, using
- * the defined derivatives.
- *
- * @param offset    time offset from when reference value and derivatives were defined.
- * @return          the extrapolated momentary scalar value at the offset time.
- *
- * @sa rate(), acceleration()
- */
-double Evolution::value(const Interval& offset) const {
-  return _value + offset.seconds() * (_rate + offset.seconds() * _accel);
-}
-
-/**
- * Returns an extrapolated momentary rate of change for the evolving quantity at an offset
- * time, using the defined acceleration.
- *
- * @param offset    time offset from when reference value and derivatives were defined.
- * @return          the extrapolated momentary rate of change at the offset time.
- *
- * @sa value(), acceleration()
- */
-double Evolution::rate(const Interval& offset) const {
-  return _rate + _accel * offset.seconds();
-}
-
-/**
- * Returns the defined (constant) acceleration value.
- *
- * @return    the acceleration that was defined.
- *
- * @sa value(), rate()
- */
-double Evolution::acceleration() const {
-  return _accel;
-}
-
-
-Evolution Evolution::stationary(double pos) {
-  return Evolution(pos);
-}
-
-const Evolution& Evolution::undefined() {
-  static const Evolution _undefined(NAN, 0.0, 0.0);
-  return _undefined;
-}
 
 
 template class Track<Horizontal>;
@@ -125,12 +54,12 @@ template<class CoordType> void Track<CoordType>::validate() {
  * @param lon       the time evolution of the longitude (in whatever coordinate system)
  * @param lat       the time evolution of the latitude (in whatever coordinate system)
  * @param r         the time evolution of distance (default: static 1 Gpc).
- * @param z         time evolution of redshift, including gravitational effects.
- *                  If it's only kinetic, then you can leave it undefined to let the
+ * @param z         the time evolution of redshift, including gravitational effects.
+ *                  If it's kinetic only, then you can leave it undefined to let the
  *                  distance evolution determine it automatically.
  */
-template<class CoordType> Track<CoordType>::Track(const Time& ref_time, const Interval& range, const Evolution& lon, const Evolution& lat,
-        const Evolution& r, const Evolution& z)
+template<class CoordType> Track<CoordType>::Track(const Time& ref_time, const Interval& range, const ScalarEvolution& lon, const ScalarEvolution& lat,
+        const ScalarEvolution& r, const ScalarEvolution& z)
 : _ref_time(ref_time), _range(range), _lon(lon), _lat(lat), _r(r), _z(z) {
 
   // make sure CoordType is a sublcass of Spherical
@@ -142,7 +71,7 @@ template<class CoordType> Track<CoordType>::Track(const Time& ref_time, const In
     double zp = novas_v2z(_r.rate(Interval(dt)) / (Unit::km / Unit::s));
     double zm = novas_v2z(_r.rate(Interval(-dt)) / (Unit::km / Unit::s));
     double z1 = 0.5 * (zp - zm) / dt;
-    _z = Evolution(z0, z1);
+    _z = ScalarEvolution(z0, z1);
   }
 
   validate();
@@ -160,10 +89,10 @@ template<class CoordType> Track<CoordType>::Track(const Time& ref_time, const In
  */
 template<class CoordType> Track<CoordType>::Track(const novas_track *track, const Interval& range)
 : _ref_time(&track->time), _range(range),
-  _lon(Evolution(track->pos.lon * Unit::deg, track->rate.lon * Unit::deg / Unit::sec, track->accel.lon * Unit::deg / (Unit::sec * Unit::sec))),
-  _lat(Evolution(track->pos.lat * Unit::deg, track->rate.lat * Unit::deg / Unit::sec, track->accel.lat * Unit::deg / (Unit::sec * Unit::sec))),
-  _r(Evolution(track->pos.dist * Unit::au, track->rate.dist * Unit::au / Unit::sec, track->accel.dist * Unit::au / (Unit::sec * Unit::sec))),
-  _z(Evolution(track->pos.z, track->rate.z, track->accel.z)) {
+  _lon(ScalarEvolution(track->pos.lon * Unit::deg, track->rate.lon * Unit::deg / Unit::sec, track->accel.lon * Unit::deg / (Unit::sec * Unit::sec))),
+  _lat(ScalarEvolution(track->pos.lat * Unit::deg, track->rate.lat * Unit::deg / Unit::sec, track->accel.lat * Unit::deg / (Unit::sec * Unit::sec))),
+  _r(ScalarEvolution(track->pos.dist * Unit::au, track->rate.dist * Unit::au / Unit::sec, track->accel.dist * Unit::au / (Unit::sec * Unit::sec))),
+  _z(ScalarEvolution(track->pos.z, track->rate.z, track->accel.z)) {
 
   // make sure CoordType is a sublcass of Spherical
   static_assert(std::is_base_of<Spherical, CoordType>::value, "CoordType is not a subclass of Spherical");
@@ -179,7 +108,7 @@ template<class CoordType> Track<CoordType>::Track(const novas_track *track, cons
  *
  * @sa longitude_at(), latitude_evolution(), distance_evolution(), redshift_evolution()
  */
-template<class CoordType> const Evolution& Track<CoordType>::longitude_evolution() const {
+template<class CoordType> const ScalarEvolution& Track<CoordType>::longitude_evolution() const {
   return _lon;
 }
 
@@ -190,7 +119,7 @@ template<class CoordType> const Evolution& Track<CoordType>::longitude_evolution
  *
  * @sa latitude_at(), longitude_evolution(), distance_evolution(), redshift_evolution()
  */
-template<class CoordType> const Evolution& Track<CoordType>::latitude_evolution() const {
+template<class CoordType> const ScalarEvolution& Track<CoordType>::latitude_evolution() const {
   return _lat;
 }
 
@@ -201,7 +130,7 @@ template<class CoordType> const Evolution& Track<CoordType>::latitude_evolution(
  *
  * @sa distance_at(), redshift_evolution(), longitude_evolution(), latitude_evolution()
  */
-template<class CoordType> const Evolution& Track<CoordType>::distance_evolution() const {
+template<class CoordType> const ScalarEvolution& Track<CoordType>::distance_evolution() const {
   return _r;
 }
 
@@ -212,7 +141,7 @@ template<class CoordType> const Evolution& Track<CoordType>::distance_evolution(
  *
  * @sa redshift_at(), radial_velocity_at(), longitude_evolution(), latitude_evolution(), distance_evolution()
  */
-template<class CoordType> const Evolution& Track<CoordType>::redshift_evolution() const {
+template<class CoordType> const ScalarEvolution& Track<CoordType>::redshift_evolution() const {
   return _z;
 }
 
@@ -347,11 +276,11 @@ template<class CoordType> std::optional<Angle> Track<CoordType>::latitude_at(con
  *
  * @sa longitude_at(), latitude_at(), distance_at(), radial_velocity_at()
  */
-template<class CoordType> double Track<CoordType>::redshift_at(const Time& time) const {
+template<class CoordType> std::optional<double> Track<CoordType>::redshift_at(const Time& time) const {
   if(is_valid_at(time))
     return unchecked_redshift(time);
   novas_set_errno(ERANGE, "Track::redshift_at()", "requested time is outside the trajectory valifity range");
-  return nan("");
+  return std::nullopt;
 }
 
 /**
@@ -409,13 +338,13 @@ HorizontalTrack::HorizontalTrack(const novas::novas_track *track, const Interval
  * @param elevation   short-term time evolution of the elevation coordinate.
  * @param distance    (optional) short-term time evolution of distance (default: static at 1 Gpc).
  * @param z           (optional) time evolution of redshift, including gravitational effects.
- *                    If it's only kinetic, then you can leave it undefined to let the
+ *                    If it's kinetic only, then you can leave it undefined to let the
  *                    distance evolution determine it automatically.
  *
  * @sa from_novas_track(), EquatorialTrack::EquatorialTrack()
  */
 HorizontalTrack::HorizontalTrack(const Time& ref_time, const Interval& range,
-        const Evolution& azimuth, const Evolution& elevation, const Evolution& distance, const Evolution& z)
+        const ScalarEvolution& azimuth, const ScalarEvolution& elevation, const ScalarEvolution& distance, const ScalarEvolution& z)
 : Track(ref_time, range, azimuth, elevation, distance, z) {}
 
 
@@ -512,13 +441,13 @@ EquatorialTrack::EquatorialTrack(const Equinox& system, const novas::novas_track
  * @param dec         short-term time evolution of the declination coordinate.
  * @param distance    (optional) short-term time evolution of distance (default: static at 1 Gpc).
  * @param z           (optional) time evolution of redshift, including gravitational effects.
- *                    If it's only kinetic, then you can leave it undefined to let the
+ *                    If it's kinetic only, then you can leave it undefined to let the
  *                    distance evolution determine it automatically.
  *
  * @sa from_novas_track(), HorizontalTrack::HorizontalTrackTrack()
  */
 EquatorialTrack::EquatorialTrack(const Equinox& system, const Time& ref_time, const Interval& range,
-        const Evolution& ra, const Evolution& dec, const Evolution& distance, const Evolution& z)
+        const ScalarEvolution& ra, const ScalarEvolution& dec, const ScalarEvolution& distance, const ScalarEvolution& z)
 : Track(ref_time, range, ra, dec, distance, z), _system(system) {}
 
 

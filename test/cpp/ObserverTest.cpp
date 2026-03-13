@@ -22,33 +22,33 @@ int main() {
   EOP eop(37, 0.15, 0.2 * Unit::arcsec, -0.3 * Unit::arcsec);
   Site site(Angle(-2.0), Angle(1.0), Coordinate(75.0));
 
-  Observer x = Observer::invalid();
+  Observer x = Observer::undefined();
   const Observer *copy;
 
-  if(!test.check("invalid()", !x.is_valid())) n++;
-  if(!test.equals("invalid().type", (int) x.type(), -1)) n++;
+  if(!test.check("undefined()", !x.is_valid())) n++;
+  if(!test.equals("undefined().type", (int) x.type(), -1)) n++;
 
   copy = x.copy();
-  if(!test.check("invalid().copy()", !copy->is_valid())) n++;
+  if(!test.check("undefined().copy()", !copy->is_valid())) n++;
   delete copy;
 
-  if(!test.check("invalid Site", !Observer::on_earth(Site::invalid(), eop).is_valid())) n++;
-  if(!test.check("invalid Site (moving)", !Observer::moving_on_earth(Site::invalid(), Velocity::stationary(), eop).is_valid())) n++;
-  if(!test.check("invalid Site (moving ENU)", !Observer::moving_on_earth(Site::invalid(), eop, ScalarVelocity(1.0), Angle(0.0)).is_valid())) n++;
-  if(!test.check("invalid Velocity", !Observer::moving_on_earth(site, Velocity::invalid(), eop).is_valid())) n++;
+  if(!test.check("invalid Site", !Observer::on_earth(Site::undefined(), eop).is_valid())) n++;
+  if(!test.check("invalid Site (moving)", !Observer::moving_on_earth(Site::undefined(), Velocity::stationary(), eop).is_valid())) n++;
+  if(!test.check("invalid Site (moving ENU)", !Observer::moving_on_earth(Site::undefined(), eop, ScalarVelocity(1.0), Angle(0.0)).is_valid())) n++;
+  if(!test.check("invalid Velocity", !Observer::moving_on_earth(site, Velocity::undefined(), eop).is_valid())) n++;
   if(!test.check("invalid speed", !Observer::moving_on_earth(site, eop, ScalarVelocity(NAN), Angle(0.0)).is_valid())) n++;
   if(!test.check("invalid direction", !Observer::moving_on_earth(site, eop, ScalarVelocity(1.0), Angle(NAN)).is_valid())) n++;
   if(!test.check("invalid vertial speed", !Observer::moving_on_earth(site, eop, ScalarVelocity(1.0), Angle(0.0), ScalarVelocity(NAN)).is_valid())) n++;
-  if(!test.check("invalid EOP", !Observer::on_earth(site, EOP::invalid()).is_valid())) n++;
-  if(!test.check("invalid EOP (moving)", !Observer::moving_on_earth(site, Velocity::stationary(), EOP::invalid()).is_valid())) n++;
+  if(!test.check("invalid EOP", !Observer::on_earth(site, EOP::undefined()).is_valid())) n++;
+  if(!test.check("invalid EOP (moving)", !Observer::moving_on_earth(site, Velocity::stationary(), EOP::undefined()).is_valid())) n++;
 
-  if(!test.check("invalid orbit Position", !Observer::in_earth_orbit(Position::invalid(), Velocity::stationary()).is_valid())) n++;
-  if(!test.check("invalid orbit Velocity", !Observer::in_earth_orbit(Position::origin(), Velocity::invalid()).is_valid())) n++;
+  if(!test.check("invalid orbit Position", !Observer::in_earth_orbit(Position::undefined(), Velocity::stationary()).is_valid())) n++;
+  if(!test.check("invalid orbit Velocity", !Observer::in_earth_orbit(Position::origin(), Velocity::undefined()).is_valid())) n++;
 
-  if(!test.check("invalid ssb Position", !Observer::in_solar_system(Position::invalid(), Velocity::stationary()).is_valid())) n++;
-  if(!test.check("invalid ssb Velocity", !Observer::in_solar_system(Position::origin(), Velocity::invalid()).is_valid())) n++;
+  if(!test.check("invalid ssb Position", !Observer::in_solar_system(Position::undefined(), Velocity::stationary()).is_valid())) n++;
+  if(!test.check("invalid ssb Velocity", !Observer::in_solar_system(Position::origin(), Velocity::undefined()).is_valid())) n++;
 
-  if(!test.equals("to_string(base)", Observer::invalid().to_string(),
+  if(!test.equals("to_string(base)", Observer::undefined().to_string(),
           "Observer type -1")) n++;
 
 

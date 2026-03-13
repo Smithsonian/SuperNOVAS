@@ -57,22 +57,7 @@ Geometric Geometric::operator>>(enum novas_reference_system system) const {
 }
 
 /**
- * Returns the observing frame for which these geometric c Geometric c(pos, vel, frame, NOVAS_CIRS);
-
-  opt = b.to_system(NOVAS_ITRS);
-  if(!test.check("to_itrs(site).has_value()", opt.has_value())) n++;
-  else {
-    Geometric c1 = opt.value();
-
-    novas_make_transform(frame._novas_frame(), NOVAS_CIRS, NOVAS_ITRS, &T);
-    novas_transform_vector(pos._array(), &T, pos1);
-    novas_transform_vector(vel._array(), &T, vel1);
-
-    if(!test.equals("to_itrs().system()", c1.system().system_type(), NOVAS_ITRS)) n++;
-    if(!test.check("to_itrs(site).position()", c1.position() == Position(pos1))) n++;
-    if(!test.check("to_itrs(site).velocity()", c1.velocity() == Velocity(vel1))) n++;
-  }
- * oordinates were defined.
+ * Returns the observing frame for which these geometric c Geometric coordinates were defined.
  *
  * @return    a reference to the observing frame (observer location and time of observation)
  *
@@ -181,7 +166,7 @@ Geometric Geometric::to_system(const novas::novas_frame *f, enum novas::novas_re
 
   if(novas_make_transform(f, _system, system, &T) != 0) {
     novas_trace_invalid("Geometric::to_system");
-    return Geometric::invalid();
+    return Geometric::undefined();
   }
 
   novas_transform_vector(_pos._array(), &T, p);
@@ -207,7 +192,7 @@ Geometric Geometric::to_system(enum novas_reference_system system) const {
     return *this;
 
   if(system == NOVAS_ITRS)
-    return to_itrs().value_or(Geometric::invalid()); // TODO error trace...
+    return to_itrs().value_or(Geometric::undefined()); // TODO error trace...
 
   return to_system(_frame._novas_frame(), system);
 }
@@ -342,8 +327,8 @@ std::optional<Geometric> Geometric::to_itrs(const EOP& eop) const {
  *
  * @return    a reference to a static standard invalid geometric coordinates.
  */
-const Geometric& Geometric::invalid() {
-  static const Geometric _invalid = Geometric(Frame::invalid(), Position::invalid(), Velocity::invalid(), (enum novas_reference_system) -1);
+const Geometric& Geometric::undefined() {
+  static const Geometric _invalid = Geometric();
   return _invalid;
 }
 
