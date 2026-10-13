@@ -20,6 +20,12 @@ the Naval Observatory Vector Astrometry Software ([NOVAS](https://aa.usno.navy.m
 3.1, but since then it has grown into its own, providing bug fixes, tons of new features, and a much improved and 
 expanded API compared to the original NOVAS.
 
+If you use SMA-X for your project, please cite as: 
+
+ - Kovács, Attila "The SuperNOVAS high-precision C/C++ astrometry library", __Proc. SPIE__, 
+14155, _Software and Cyberinfrastructure for Astronomy IX_, 1415533 (2026); https://doi.org/10.1117/12.3104649<br>
+[[BibTex]](resources/citation-14155_1079.bib) [[EndNote]](resources/citation-14155_1079.enw) [[RIS]](resources/citation-14155_1079.ris) 
+
 __SuperNOVAS__ is easy to use and it is very fast, providing 3--5 orders of magnitude faster position calculations than 
 [astropy](https://www.astropy.org/) 7.0.0 in a single thread (see the [benchmarks](#benchmarks)), and its performance 
 will scale with the number of CPUs when calculations are performed in parallel threads.
@@ -35,12 +41,6 @@ __SuperNOVAS__ is maintained by [Attila Kovacs](https://github.com/attipaci) (Si
 astrophysicist with a long history of telescope control and data reduction software. __SuperNOVAS__
 
 This site contains various online resources that support the library:
-
-__Citation__
-
- - _Reference Paper_: Attila Kovács "The SuperNOVAS high-precision C/C++ astrometry library", __Proc. SPIE__, 
-14155, _Software and Cyberinfrastructure for Astronomy IX_, 1415533 (2026); https://doi.org/10.1117/12.3104649<br>
-[[BibTex]](resources/citation-14155_1079.bib) [[EndNote]](resources/citation-14155_1079.enw) [[RIS]](resources/citation-14155_1079.ris) 
 
 __Documentation__
 
