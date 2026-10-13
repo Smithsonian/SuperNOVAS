@@ -1617,7 +1617,7 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
     }
 
     // Adjusted frame time for last crossing time estimate
-    dhr = remainder((pos.ra + sign * lha - novas_frame_lst(&frame1)), DAY_HOURS);
+    dhr = remainder((pos.ra - sign * lha - novas_frame_lst(&frame1)), DAY_HOURS);
     t.fjd_tt += dhr / DAY_HOURS / SIDEREAL_RATE;
 
     // Make sure that calculated time is after input frame time.
@@ -1699,7 +1699,7 @@ double novas_rises_above(double el, const object *restrict source, const novas_f
 
   errno = 0;
 
-  utc = novas_cross_el_date(el, -1, source, frame, ref_model);
+  utc = novas_cross_el_date(el, 1, source, frame, ref_model);
   if(isnan(utc) && errno)
     return novas_trace_nan("novas_rises_above");
 
@@ -1738,7 +1738,7 @@ double novas_sets_below(double el, const object *restrict source, const novas_fr
 
   errno = 0;
 
-  utc = novas_cross_el_date(el, 1, source, frame, ref_model);
+  utc = novas_cross_el_date(el, -1, source, frame, ref_model);
   if(isnan(utc) && errno)
     return novas_trace_nan("novas_sets_below");
 
