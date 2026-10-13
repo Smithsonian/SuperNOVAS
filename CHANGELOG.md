@@ -119,6 +119,8 @@ Upcoming maintenance release, expected around 1 November 2026.
    sources, and improved calculation of gravitational effects.
    
  - #382: `Vector(double, double, double)` promoted to public.
+ 
+ - #389: Improve error propagation on interpolated EOP estimate when EOP is obtained from IERS or some other source.
    
  - Changed portable mutex feature test order to reserve use of the C11 mutexes for cases where neither POSIX nor
    MSC mutexes can be used.

@@ -744,11 +744,16 @@ static int novas_eop_spline_interp(double jd, const novas_eop *restrict array, n
     eop->lod += w * e->lod;
     eop->dut1 += w * (e->dut1 - e->leap + eop->leap); // (spline UT1 - TAI) -> dUT1
 
-    eop->xp_err += w * e->xp_err;
-    eop->yp_err += w * e->yp_err;
-    eop->dut1_err += w * e->dut1_err;
-    eop->lod_err += w * e->lod_err;
+    eop->xp_err += w * e->xp_err * e->xp_err;
+    eop->yp_err += w * e->yp_err * e->yp_err;
+    eop->dut1_err += w * e->dut1_err * e->dut1_err;
+    eop->lod_err += w * e->lod_err * e->lod_err;
   }
+
+  eop->xp_err = sqrt(eop->xp_err);
+  eop->yp_err = sqrt(eop->yp_err);
+  eop->dut1_err = sqrt(eop->dut1_err);
+  eop->lod_err = sqrt(eop->lod_err);
 
   return 0;
 }
