@@ -254,8 +254,11 @@ int novas_make_planet_orbit(enum novas_planet id, double jd_tdb, novas_orbital *
     // Additional terms for the long-term orbitals only...
     const planet_terms *terms = &plts[id - NOVAS_JUPITER];
     double ft = terms->f * DEGREE * t;
-    orbit->M0 += terms->b * t * t + terms->c * cos(ft) + terms->s * sin(ft);
-    orbit->n += 2.0 * terms->b * t + terms->f * (terms->s * cos(ft) - terms->c * sin(ft));
+    double cft = cos(ft);
+    double sft = sin(ft);
+
+    orbit->M0 += terms->b * t * t + terms->c * cft + terms->s * sft;
+    orbit->n += 2.0 * terms->b * t + terms->f * (terms->s * cft - terms->c * sft);
   }
 
   orbit->n /= JULIAN_CENTURY_DAYS;
