@@ -22,6 +22,10 @@ Upcoming maintenance release, expected around 1 November 2026.
  
  - #380: Fixed missing non-relativistic expression for adding observer motion in `rad_vel2()`, which resulted in 
    errors at or below the few m/s level typically.
+
+ - #393: Fixed `interpolate()` in the legacy `eph_manager.c` using `remainder()` instead of `fmod()` for the
+   normalized Chebyshev time, which evaluated bodies stored with more than one sub-interval per record (e.g. the
+   Earth-Moon barycenter and the Moon in DE421) at the wrong time. (by joeytroy)
   
  - #383: Fixed retrograde apsis / node motion not being accounted for in Keplerian orbital model before.
  
