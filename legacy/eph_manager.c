@@ -540,7 +540,7 @@ int interpolate(const double *buf, const double *t, long ncf, long na, double *p
   l = (long) (temp - dt1);
 
   // 'tc' is the normalized Chebyshev time (-1 <= tc <= 1).
-  tc = 2.0 * (remainder(temp, 1.0) + dt1) - 1.0;
+  tc = 2.0 * (fmod(temp, 1.0) + dt1) - 1.0;
 
   // Check to see whether Chebyshev time has changed, and compute new
   // polynomial values if it has.  (The element PC[1] is the value of
