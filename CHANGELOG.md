@@ -152,6 +152,10 @@ Upcoming maintenance release, expected around 1 November 2026.
  
  - #389: Improved error propagation on interpolated EOP estimate when EOP is obtained from IERS or some other source.
    
+ - #392: Tolerate missing leap seconds expiration timestamp in `leap-seconds.list`. It is not required to be present
+   by the related `tzfile` specification either, and future versions of the file may not contain an expiration after 
+   the abolishment of leaps seconds on 20 May 2027.
+   
  - Streamlined `novas_make_planet_orbit()` slightly by avoiding duplicate trigonometric calls.
 
  - Changed portable mutex feature test order to reserve use of the C11 mutexes for cases where neither POSIX nor

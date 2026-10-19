@@ -1659,7 +1659,7 @@ static int test_refract_astro() {
 static int test_v2z() {
   int v;
 
-  for(v = 0.0; v < NOVAS_C; v += 10000000) {
+  for(v = 0; v < NOVAS_C; v += 10000000) {
     char label[40];
     double zexp = sqrt((1.0 + v / NOVAS_C) / (1.0 - v / NOVAS_C)) - 1.0;
 
@@ -5976,6 +5976,10 @@ static int test_lookup_leap() {
   rc = get_resource("bad-expiration-ok2.list", path, sizeof(path));
   if(!rc) fprintf(stderr, "WARNING! Missing %s: skip tests requiring it", path);
   else if(!is_ok("lookup_leap:set_leap_list:bad-second-expiration", novas_set_leap_list(path))) return ++n;
+
+  rc = get_resource("missing-expiration-OK.list", path, sizeof(path));
+  if(!rc) fprintf(stderr, "WARNING! Missing %s: skip tests requiring it", path);
+  else if(!is_ok("lookup_leap:set_leap_list:missing-expiration-OK", novas_set_leap_list(rc))) return ++n;
 
   novas_set_leap_list(NULL);
 

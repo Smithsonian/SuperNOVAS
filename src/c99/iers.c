@@ -288,7 +288,8 @@ static iers_leap_entry *parse_leaps(char *buf, long long *expiration) {
 
   iers_leap_entry *list = NULL;
   char *ptr = buf, *line, *context = NULL;
-  int got_expiration = 0;
+
+  *expiration = LLONG_MAX;
 
   // Parse leap-seconds.list data
   while((line = strtok_r(ptr, "\r\n", &context)) != NULL) {
@@ -327,26 +328,14 @@ static iers_leap_entry *parse_leaps(char *buf, long long *expiration) {
       list = e;
     }
     else if(line[1] == '@') { // Process expiration timestamp
-      // We'll use the first valid expiration timestamp (there should be only one, but...).
-      if(!got_expiration && sscanf(&line[2], "%lld", expiration) == 1) {
+      // We'll use the last valid expiration timestamp (there should be only one, but...).
+      if(sscanf(&line[2], "%lld", expiration) == 1)
         *expiration -= NTP_UNIX_EPOCH;
-        got_expiration = 1;
-      }
     }
   } // while loop over lines.
 
-  if(!got_expiration) {
-    destroy_leap_list(list);
-    novas_set_errno(errno, fn, "could not parse leap-seconds.list expiration time.");
-    return NULL;
-  }
-
   if(list)
     list->unix_end = (time_t) *expiration;
-  else {
-    *expiration = 0L;
-    novas_set_errno(ERANGE, fn, "empty leap seconds list.");
-  }
 
   return list;
 }
