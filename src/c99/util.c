@@ -69,14 +69,10 @@ novas_error_handler novas_set_error_handler(novas_error_handler handler) {
 }
 
 static void novas_emit(const char *fmt, ...) {
-  if(!error_handler_fn)
-    return;
-  {
-    va_list args;
-    va_start(args, fmt);
-    error_handler_fn(fmt, args);
-    va_end(args);
-  }
+  va_list args;
+  va_start(args, fmt);
+  error_handler_fn(fmt, args);
+  va_end(args);
 }
 
 /**
