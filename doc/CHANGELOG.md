@@ -22,10 +22,21 @@ Upcoming maintenance release, expected around 1 November 2026.
  
  - #380: Fixed missing non-relativistic expression for adding observer motion in `rad_vel2()`, which resulted in 
    errors at or below the few m/s level typically.
+
+ - #393: Fixed `interpolate()` in the legacy `eph_manager.c` using `remainder()` instead of `fmod()` for the
+   normalized Chebyshev time, which evaluated bodies stored with more than one sub-interval per record (e.g. the
+   Earth-Moon barycenter and the Moon in DE421) at the wrong time. (by joeytroy)
   
  - #383: Fixed retrograde apsis / node motion not being accounted for in Keplerian orbital model before.
  
  - #384: Fixed reprojection of radial velocity in `transform_cat()`, when proper motion is applied.
+ 
+ - #385: Recalculate angular-to-physical motion conversion in `transform_cat()` for the final epoch. Previously,
+   and in NOVAS C, the conversion incorrectly used the initial distance for the final output quantities also.
+
+ - #388: Fixed wrong angle in a matrix element of the rotation matrix that is used for converting between ITRF 
+   realizations (e.g. `novas_itrf_transform_site()` / `novas_itrf_transform_eop()`). The resulting error in
+   ITRF-based positioning is below 1 mas typically.
    
 ### Added
 
@@ -112,6 +123,10 @@ Upcoming maintenance release, expected around 1 November 2026.
    sources, and improved calculation of gravitational effects.
    
  - #382: `Vector(double, double, double)` promoted to public.
+ 
+ - #389: Improved error propagation on interpolated EOP estimate when EOP is obtained from IERS or some other source.
+   
+ - Streamlined `novas_make_planet_orbit()` slightly by avoiding duplicate trigonometric calls.
    
  - Changed portable mutex feature test order to reserve use of the C11 mutexes for cases where neither POSIX nor
    MSC mutexes can be used.
