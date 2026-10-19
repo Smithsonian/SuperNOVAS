@@ -64,7 +64,7 @@ class Observer;
 class   SolarSystemObserver;
 class     DynamicObserver;
 class       EphemerisObserver;
-class     OrbitalObserver;
+class       OrbitalObserver;
 class   GeocentricObserver;
 class   GeodeticObserver;
 class CatalogEntry;
@@ -1608,9 +1608,9 @@ public:
 
   static SolarSystemObserver at_ssb();
 
-  static EphemerisObserver via_ephemeris(const std::string& name, long id);
+  static EphemerisObserver in_ephemeris(const std::string& name, long id);
 
-  static OrbitalObserver in_orbit(const Orbital& orbit, const std::string& name = "orbital observer");
+  static OrbitalObserver in_orbital(const Orbital& orbit, const std::string& name = "orbital observer");
 
   static DynamicObserver dynamic(novas_state_provider state_call, const void *arg = NULL);
 

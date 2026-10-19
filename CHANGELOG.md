@@ -79,7 +79,7 @@ Upcoming maintenance release, expected around 1 November 2026.
    by Keplerian orbital parameters around a major Solar System body).
  
  - #387: Added `DynamicObserver`, `EphemerisObserver`, and `OrbitalObserver` classes, and corresponding 
-   `Observer::dynamic()`, `Observer::via_ephemeris()`, and `Observer::in_orbit()` static factory methods.
+   `Observer::dynamic()`, `Observer::in_ephemeris()`, and `Observer::in_orbital()` static factory methods.
 
  - #387: Added `Frame::barycentric()` static factory method.
  

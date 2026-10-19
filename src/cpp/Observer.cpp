@@ -370,7 +370,7 @@ std::string Observer::to_string() const {
  * @return        a new observer instance for the given observing site.
  *
  * @since 1.6
- * @sa moving_on_earth(), in_earth_orbit(), via_ephemeris(), in_orbit(), in_solar_system(),
+ * @sa moving_on_earth(), in_earth_orbit(), in_ephemeris(), in_orbital(), in_solar_system(),
  *     at_geocenter(), at_ssb(),
  */
 GeodeticObserver Observer::on_earth(const Site& site, const EOP& eop) {
@@ -394,7 +394,7 @@ GeodeticObserver Observer::on_earth(const Site& site, const EOP& eop) {
  * @return            a new observer instance for the given moving observer.
  *
  * @since 1.6
- * @sa on_earth(), in_earth_orbit(), via_ephemeris(), in_orbit(), in_solar_system(),
+ * @sa on_earth(), in_earth_orbit(), in_ephemeris(), in_orbital(), in_solar_system(),
  *     at_geocenter(), at_ssb()
  */
 GeodeticObserver Observer::moving_on_earth(const Site& geodetic, const Velocity& itrs_vel, const EOP& eop) {
@@ -435,7 +435,7 @@ GeodeticObserver Observer::moving_on_earth(const Site& site, const EOP& eop, con
  * @return          a new observer instance for the observer in Earth orbit.
  *
  * @since 1.6
- * @sa at_geocenter(), on_earth(), in_earth_orbit(), via_ephemeris(), in_orbit(),
+ * @sa at_geocenter(), on_earth(), in_earth_orbit(), in_ephemeris(), in_orbital(),
  *     in_solar_system(), at_ssb(), dyamic()
  */
 GeocentricObserver Observer::in_earth_orbit(const Position& pos, const Velocity& vel) {
@@ -451,7 +451,7 @@ GeocentricObserver Observer::in_earth_orbit(const Position& pos, const Velocity&
  * @return         a new fictitious observer located at the geocenter.
  *
  * @since 1.6
- * @sa on_earth(), in_earth_orbit(), in_orbit(), via_ephemeris(), in_solar_system(), at_ssb(),
+ * @sa on_earth(), in_earth_orbit(), in_orbital(), in_ephemeris(), in_solar_system(), at_ssb(),
  *     dynamic()
  */
 GeocentricObserver Observer::at_geocenter() {
@@ -468,7 +468,7 @@ GeocentricObserver Observer::at_geocenter() {
  * @return        a new observer instance for the given Solar-system location.
  *
  * @since 1.6
- * @sa at_ssb(), via_ephemeris(), in_orbit(), at_geocenter(), on_earth(), in_earth_orbit(),
+ * @sa at_ssb(), in_ephemeris(), in_orbital(), at_geocenter(), on_earth(), in_earth_orbit(),
  *     dynamic()
  */
 SolarSystemObserver Observer::in_solar_system(const Position& pos, const Velocity& vel) {
@@ -484,7 +484,7 @@ SolarSystemObserver Observer::in_solar_system(const Position& pos, const Velocit
  * @return        a new fictitious observer located at the Solar-System Barycenter (SSB).
  *
  * @since 1.6
- * @sa via_ephemeris(), in_orbit(), in_solar_system(), at_geocenter(), on_earth(),
+ * @sa in_ephemeris(), in_orbital(), in_solar_system(), at_geocenter(), on_earth(),
  *     in_earth_orbit(), dynamic()
  */
 SolarSystemObserver Observer::at_ssb() {
@@ -504,10 +504,10 @@ SolarSystemObserver Observer::at_ssb() {
  *
  * @since 1.8
  *
- * @sa dynamic(), in_orbit(), at_geocenter(), in_earth_orbit(), in_solar_system(), at_ssb()
+ * @sa dynamic(), in_orbital(), at_geocenter(), in_earth_orbit(), in_solar_system(), at_ssb()
  * @sa set_ephem_provider()
  */
-EphemerisObserver Observer::via_ephemeris(const std::string& name, long id) {
+EphemerisObserver Observer::in_ephemeris(const std::string& name, long id) {
   EphemerisObserver o(name, id);
   if(!o.is_valid())
     novas_trace_invalid("Observer::ephemeris()");
@@ -524,12 +524,12 @@ EphemerisObserver Observer::via_ephemeris(const std::string& name, long id) {
  *
  * @since 1.8
  *
- * @see via_ephemeris(), at_geocenter(), in_earth_orbit(), in_solar_system(), at_ssb(), dynamic()
+ * @see in_ephemeris(), at_geocenter(), in_earth_orbit(), in_solar_system(), at_ssb(), dynamic()
  */
-OrbitalObserver Observer::in_orbit(const Orbital& orbit, const std::string& name) {
+OrbitalObserver Observer::in_orbital(const Orbital& orbit, const std::string& name) {
   OrbitalObserver o(orbit, name);
   if(!o.is_valid())
-    novas_trace_invalid("Observer::in_orbit()");
+    novas_trace_invalid("Observer::in_orbital()");
   return o;
 }
 
@@ -543,7 +543,7 @@ OrbitalObserver Observer::in_orbit(const Orbital& orbit, const std::string& name
  *
  * @since 1.8
  *
- * @sa via_ephemeris(), in_orbit(), at_geocenter(), in_earth_orbit(), in_solar_system(), at_ssb()
+ * @sa in_ephemeris(), in_orbital(), at_geocenter(), in_earth_orbit(), in_solar_system(), at_ssb()
  */
 DynamicObserver Observer::dynamic(novas_state_provider state_call, const void *arg) {
   DynamicObserver o(state_call, arg);
@@ -1158,7 +1158,7 @@ std::string DynamicObserver::to_string() const {
  *
  * @since 1.8
  *
- * @sa Observer::via_ephemeris(), set_ephem_provider()
+ * @sa Observer::in_ephemeris(), set_ephem_provider()
  */
 EphemerisObserver::EphemerisObserver(const std::string& name, long id)
 : DynamicObserver(novas_ephem_state, NULL), _object({}) {
@@ -1232,7 +1232,7 @@ std::string EphemerisObserver::to_string() const {
  *                  "orbital observer").
  *
  * @since 1.8
- * @see Observer::in_orbit()
+ * @see Observer::in_orbital()
  */
 OrbitalObserver::OrbitalObserver(const Orbital& orbital, const std::string& name)
 : DynamicObserver(novas_ephem_state, NULL) {

@@ -274,12 +274,12 @@ int main() {
 
   test = TestUtil("EphemerisObserver");
 
-  if(!test.check("invalid", !Observer::via_ephemeris("", -1).is_valid())) n++;
+  if(!test.check("invalid", !Observer::in_ephemeris("", -1).is_valid())) n++;
 
-  EphemerisObserver oe = Observer::via_ephemeris("Earth", 399);
+  EphemerisObserver oe = Observer::in_ephemeris("Earth", 399);
   if(!test.check("is_valid()", oe.is_valid())) n++;
   if(!test.check("equals(self)", oe.equals(oe))) n++;
-  if(!test.check("equals(different body)", !oe.equals(Observer::via_ephemeris("Moon", 301)))) n++;
+  if(!test.check("equals(different body)", !oe.equals(Observer::in_ephemeris("Moon", 301)))) n++;
 
   const Observer *coe = oe.copy();
   if(!test.check("copy()", coe->equals(oe))) n++;
@@ -295,14 +295,14 @@ int main() {
 
   Orbital orbit(OrbitalSystem::ecliptic(Planet::sun()), Time::undefined(), Coordinate::undefined(), Angle::undefined(), Interval::zero());
   if(!test.check("orbit.invalid()", !orbit.is_valid())) n++;
-  if(!test.check("invalid()", !Observer::in_orbit(orbit).is_valid())) n++;
+  if(!test.check("invalid()", !Observer::in_orbital(orbit).is_valid())) n++;
 
   orbit = Planet::mars().orbit(Time::j2000());
-  OrbitalObserver oo = Observer::in_orbit(orbit, "Mars orbit");
+  OrbitalObserver oo = Observer::in_orbital(orbit, "Mars orbit");
   if(!test.check("is_valid()", oo.is_valid())) n++;
   if(!test.check("equals(self)", oo.equals(oo))) n++;
-  if(!test.check("equals(different orbit)", !oo.equals(Observer::in_orbit(Planet::mars().orbit(Time::b1950()), "Mars orbit")))) n++;
-  if(!test.check("equals(different name)", !oo.equals(Observer::in_orbit(Planet::mars().orbit(Time::j2000()), "Martes")))) n++;
+  if(!test.check("equals(different orbit)", !oo.equals(Observer::in_orbital(Planet::mars().orbit(Time::b1950()), "Mars orbit")))) n++;
+  if(!test.check("equals(different name)", !oo.equals(Observer::in_orbital(Planet::mars().orbit(Time::j2000()), "Martes")))) n++;
 
   const Observer *coo = oo.copy();
   if(!test.check("copy()", coo->equals(oo))) n++;
