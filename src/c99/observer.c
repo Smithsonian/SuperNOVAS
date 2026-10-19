@@ -600,7 +600,7 @@ int make_solar_system_observer(const double *sc_pos, const double *sc_vel, obser
 int make_dynamic_observer(novas_state_provider call, const void *restrict arg, observer *restrict obs) {
   static const char *fn = "make_dynamic_observer";
 
-  if(!fn)
+  if(!call)
     return novas_error(-1, EINVAL, fn, "input state provider function is null");
   if(!obs)
     return novas_error(-1, EINVAL, fn, "output observer is null");

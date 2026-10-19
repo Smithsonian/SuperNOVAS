@@ -3130,6 +3130,34 @@ static int test_is_leap_year() {
   return n;
 }
 
+static int zero_posvel(double tdb, enum novas_accuracy acc, const void *arg, double *pos, double *vel) {
+  memset(pos, 0, XYZ_VECTOR_SIZE);
+  memset(vel, 0, XYZ_VECTOR_SIZE);
+  return 0;
+}
+
+static int test_dynamic_observer() {
+  int n = 0;
+  observer obs = {};
+
+  if(check("dynamic_observer:call:null", -1, make_dynamic_observer(NULL, NULL, &obs))) n++;
+  if(check("dynamic_observer:obs:null", -1, make_dynamic_observer(zero_posvel, NULL, NULL))) n++;
+
+  return n;
+}
+
+static int test_ephem_state() {
+  int n = 0;
+  object sun = NOVAS_SUN_INIT;
+  double p[3] = {0.0}, v[3] = {0.0};
+
+  if(check("ephem_state:object", -1, novas_ephem_state(NOVAS_JD_J2000, NOVAS_REDUCED_ACCURACY, NULL, p, v))) n++;
+  if(check("ephem_state:pos", -1, novas_ephem_state(NOVAS_JD_J2000, NOVAS_REDUCED_ACCURACY, &sun, NULL, v))) n++;
+  if(check("ephem_state:vel", -1, novas_ephem_state(NOVAS_JD_J2000, NOVAS_REDUCED_ACCURACY, &sun, p, NULL))) n++;
+
+  return n;
+}
+
 int main(int argc, const char *argv[]) {
   int n = 0;
 
@@ -3372,6 +3400,8 @@ int main(int argc, const char *argv[]) {
   if(test_set_leap_list()) n++;
 
   if(test_is_leap_year()) n++;
+  if(test_dynamic_observer()) n++;
+  if(test_ephem_state()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");
