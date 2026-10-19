@@ -4709,8 +4709,10 @@ static int test_itrf_transform() {
   if(!is_ok("itrf_transform:vel:only", novas_itrf_transform(2014, x2014, v2014, 2000, NULL, x1))) return 1;
   if(!is_ok("itrf_transform:vel:only:check", check_equal_pos(x1, v, 1e-6))) n++;
 
-  if(!is_ok("itrf_transform:2100", novas_itrf_transform(2100, x2014, NULL, 2000, x1, NULL))) return 1;
-  //if(!is_ok("itrf_transform:2100:check", !check_equal_pos(x1, x, 1e-6))) n++;
+  if(!is_ok("itrf_transform:1988", novas_itrf_transform(1988, x2014, NULL, 2000, x, NULL))) return 1;
+  if(!is_ok("itrf_transform:1980", novas_itrf_transform(1980, x2014, NULL, 2000, x1, NULL))) return 1;
+
+  if(!is_ok("itrf_transform:1980:check", check_equal_pos(x1, x, 1e-12))) n++;
 
   return n;
 }

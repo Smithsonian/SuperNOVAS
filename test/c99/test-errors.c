@@ -3054,15 +3054,26 @@ static int test_lookup_leap() {
   else {
     if(check("lookup_leap:set_leap_list", 0, novas_set_leap_list(rc))) n++;
     if(check("lookup_leap:far_ahead", NOVAS_INVALID_LEAP, novas_lookup_leap(time(NULL) + 3000L * 86400L))) n++;
-    novas_set_leap_list(NULL);
   }
 
-  novas_set_auto_fetch_eop(1);
+  novas_set_leap_list(NULL);
 
 #if  !defined(WITHOUT_CURL) && !defined(OFFLINE)
+  novas_set_auto_fetch_eop(1);
+
+  rc = get_resource_url("empty-leap.list");
+  if(!rc) fprintf(stderr, "WARNING! missing resource '%s': skipping tests requiring it.\n", path);
+  else {
+    if(check("lookup_leap:set_eop_url:empty_list", -1, novas_set_eop_url(EOP_LEAP_LIST, 0, rc))) n++;
+    if(check("lookup_leap:empty", NOVAS_INVALID_LEAP, novas_lookup_leap(946694800L))) n++;
+  }
+
   if(check("lookup:set_eop_url:bad", -1, novas_set_eop_url(EOP_LEAP_LIST, 0, "file:///blah.txt"))) n++;
   novas_set_eop_url(EOP_LEAP_LIST, 0, NULL);
 #endif
+
+  novas_set_leap_list(NULL);
+  novas_set_auto_fetch_eop(0);
 
   return n;
 }

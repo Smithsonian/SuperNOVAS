@@ -343,6 +343,10 @@ static iers_leap_entry *parse_leaps(char *buf, long long *expiration) {
 
   if(list)
     list->unix_end = (time_t) *expiration;
+  else {
+    *expiration = 0L;
+    novas_set_errno(ERANGE, fn, "empty leap seconds list.");
+  }
 
   return list;
 }
