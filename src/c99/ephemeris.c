@@ -258,10 +258,10 @@ novas_planet_provider_hp get_planet_provider_hp() {
  * @param[out] pos  [AU] Pointer to structure containing the designation of the body of interest
  * @param[out] vel  [AU/day] Velocity vector of the body at 'jd_tdb'; equatorial rectangular
  *                  coordinates in AU/day referred to the ICRS.
- * @return          0 if successful, -1 if the 'jd_tdb' or input object argument is NULL, or
- *                  else 1 if 'origin' is invalid, 2 if `cel_obj->type` is invalid,
- *                  10 + the error code from the currently configured `novas_planet_provider_hp`
- *                  call, or 20 + the error code from `readeph()`.
+ * @return          0 if successful, -1 if the `jd_tdb` or input object argument is NULL or if
+ *                  either of the time components is NAN, or else 1 if 'origin' is invalid, 2 if
+ *                  `cel_obj->type` is invalid, 10 + the error code from the currently configured
+ *                  `novas_planet_provider_hp` call, or 20 + the error code from `readeph()`.
  *
  * @sa set_planet_provider(), set_planet_provider_hp(), set_ephem_provider()
  * @sa make_planet(), make_ephem_object()
@@ -275,6 +275,9 @@ short ephemeris(const double *restrict jd_tdb, const object *restrict body, enum
 
   if(!jd_tdb || !body)
     return novas_error(-1, EINVAL, fn, "NULL input pointer: jd_tdb=%p, body=%p", jd_tdb, body);
+
+  if(isnan(jd_tdb[0]) || isnan(jd_tdb[1]))
+    return novas_error(-1, EINVAL, fn, "input time is NaN");
 
   if(!pos || !vel)
     return novas_error(-1, EINVAL, fn, "NULL output pointer: pos=%p, vel=%p", pos, vel);

@@ -67,6 +67,8 @@ Upcoming maintenance release, expected around 1 November 2026.
    a 3D velocity vector along some direction. 
    
  - #382: Added `Velocity::speed_difference_to(Velocity&)`.
+ 
+ - #387: Added `Observer::className()` method, which returns the name of the specific `Observer` subclass used.
    
  - Added `USER_SOLSYS` / `USER_READEPH` GNU make configuration options (see `config.mk`) for legacy builds when
    the `solarsystem()` / `solarsystem_hp()` and / or the `readeph()` functions are provided as external modules
@@ -123,6 +125,8 @@ Upcoming maintenance release, expected around 1 November 2026.
    sources, and improved calculation of gravitational effects.
    
  - #382: `Vector(double, double, double)` promoted to public.
+ 
+ - #387: `ephemeris()` now will now return -1 with errno set to EINVAL if either input time component is NaN.
  
  - #389: Improved error propagation on interpolated EOP estimate when EOP is obtained from IERS or some other source.
    

@@ -421,7 +421,7 @@ short make_object(enum novas_object_type type, long number, const char *name, co
 
   source->number = number;
 
-  if(name) {
+  if(name && name[0]) {
     int i;
 
     for(i = 0; i < (int) sizeof(source->name) && name[i]; i++) {

@@ -383,7 +383,7 @@ OrbitalSystem OrbitalSystem::from_novas_orbital_system(const novas_orbital_syste
  * @since 1.6
  */
 std::string OrbitalSystem::to_string() const {
-  return std::string(_system.plane == NOVAS_ECLIPTIC_PLANE ? "Ecliptic" : "Equatorial") + " OrbitalSystem around " + Planet(_system.center).name() +
+  return std::string(_system.plane == NOVAS_ECLIPTIC_PLANE ? "Ecliptic" : "Equatorial") + " orbital system around " + Planet(_system.center).name() +
           " inclined at " + std::to_string(_system.obl / Unit::deg) + " deg with node at " + std::to_string(_system.Omega / Unit::deg) + " deg.";
 }
 

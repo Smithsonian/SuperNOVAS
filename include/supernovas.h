@@ -1570,6 +1570,8 @@ public:
 
   enum novas_observer_place type() const;
 
+  virtual const std::string& className() const;
+
   virtual bool is_geodetic() const;
 
   virtual bool is_geocentric() const;
@@ -1646,6 +1648,8 @@ public:
   GeodeticObserver(const Site& site, const EOP& eop, const ScalarVelocity& horizontal, const Angle& direction,
           const ScalarVelocity& vertical = ScalarVelocity::stationary());
 
+  const std::string& className() const override;
+
   const Observer *copy() const override;
 
   bool is_geodetic() const override;
@@ -1682,6 +1686,8 @@ public:
 
   GeocentricObserver(const Position& pos, const Velocity& vel);
 
+  const std::string& className() const override;
+
   Position gcrs_position() const;
 
   Velocity gcrs_velocity() const;
@@ -1708,6 +1714,8 @@ public:
 
   SolarSystemObserver(const Position& pos, const Velocity& vel);
 
+  const std::string& className() const override;
+
   const Observer *copy() const override;
 
   Position ssb_position() const;
@@ -1731,6 +1739,8 @@ protected:
 
 public:
   explicit DynamicObserver(novas_state_provider call, const void *arg = NULL);
+
+  const std::string& className() const override;
 
   novas_state_provider state_call() const;
 
@@ -1762,11 +1772,15 @@ private:
 public:
   EphemerisObserver(const std::string& name, long id);
 
+  const std::string& className() const override;
+
   const Observer *copy() const override;
+
+  bool equals(const Observer& other) const override;
 
   std::string name() const;
 
-  long id() const;
+  long number() const;
 
   std::string to_string() const override;
 };
@@ -1788,7 +1802,11 @@ private:
 public:
   explicit OrbitalObserver(const Orbital& orbital, const std::string& name = "orbital observer");
 
+  const std::string& className() const override;
+
   const Observer *copy() const override;
+
+  bool equals(const Observer& other) const override;
 
   std::string name() const;
 

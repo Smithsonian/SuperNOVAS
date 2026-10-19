@@ -457,12 +457,14 @@ static int test_transform_hip() {
 
 static int test_ephemeris() {
   double p[3], v[3];
-  double tdb[2] = { NOVAS_JD_J2000 };
+  double tdb[2] = { NOVAS_JD_J2000 }, xtdb0[] = { NAN, 0.0 }, xtdb1[] = { NOVAS_JD_J2000, NAN };
   object ceres;
   int n = 0;
 
   make_ephem_object("Ceres", 2000001, &ceres);
 
+  if(check("ephemeris:tdb[0]", -1, ephemeris(xtdb0, &ceres, NOVAS_BARYCENTER, NOVAS_FULL_ACCURACY, p, v))) n++;
+  if(check("ephemeris:tdb[1]", -1, ephemeris(xtdb1, &ceres, NOVAS_BARYCENTER, NOVAS_FULL_ACCURACY, p, v))) n++;
   if(check("ephemeris:body", -1, ephemeris(tdb, NULL, NOVAS_BARYCENTER, NOVAS_FULL_ACCURACY, p, v))) n++;
   if(check("ephemeris:jd", -1, ephemeris(NULL, &ceres, NOVAS_BARYCENTER, NOVAS_FULL_ACCURACY, p, v))) n++;
   if(check("ephemeris:pos", -1, ephemeris(tdb, &ceres, NOVAS_BARYCENTER, NOVAS_FULL_ACCURACY, NULL, v))) n++;

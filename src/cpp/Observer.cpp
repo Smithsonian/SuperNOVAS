@@ -21,7 +21,7 @@ namespace supernovas {
 // the use of an out-of-range enum is intentional below...
 __attribute__((no_sanitize("enum")))
 #endif
-                        Observer::Observer() : Observer((enum novas_observer_place) -1, Site::undefined(), Position::undefined(), Velocity::undefined()) {}
+                                Observer::Observer() : Observer((enum novas_observer_place) -1, Site::undefined(), Position::undefined(), Velocity::undefined()) {}
 
 Observer::Observer(enum novas_observer_place type, const Site& site, const Position& pos,
         const Velocity& vel) {
@@ -96,6 +96,18 @@ enum novas_observer_place Observer::type() const {
 }
 
 /**
+ * Returns the observer class name.
+ *
+ * @return the class name for this observer instance.
+ *
+ * @since 1.8
+ */
+const std::string& Observer::className() const {
+  static const std::string clName("Observer");
+  return clName;
+}
+
+/**
  * Checks if this observer is essentially the same as the other, within the tolerances associated
  * to their defining components. Note, that an observer may not equal itself if it contains NAN or
  * infinite components.
@@ -109,7 +121,7 @@ enum novas_observer_place Observer::type() const {
  * @sa operator==(), operator!=()
  */
 bool Observer::equals(const Observer& other) const {
-  return novas_equals_observer(&_observer, &other._observer);
+  return className() == other.className() && novas_equals_observer(&_observer, &other._observer);
 }
 
 /**
@@ -343,7 +355,7 @@ Interferometric Observer::to_interferometric(const Apparent& phase_center, enum 
  * @since 1.6
  */
 std::string Observer::to_string() const {
-  return "Observer type " + std::to_string(_observer.where);
+  return className();
 }
 
 /**
@@ -534,9 +546,9 @@ OrbitalObserver Observer::in_orbit(const Orbital& orbit, const std::string& name
  */
 DynamicObserver Observer::dynamic(novas_state_provider state_call, const void *arg) {
   DynamicObserver o(state_call, arg);
-    if(!o.is_valid())
-      novas_trace_invalid("Observer::dynamic()");
-    return o;
+  if(!o.is_valid())
+    novas_trace_invalid("Observer::dynamic()");
+  return o;
 }
 
 /**
@@ -579,6 +591,12 @@ GeocentricObserver::GeocentricObserver(const Position& pos, const Velocity& vel)
     novas_set_errno(EINVAL, fn, "input velocity contains NAN component(s)");
   else
     _valid = true;
+}
+
+
+const std::string& GeocentricObserver::className() const {
+  static const std::string clName("GeocentricObserver");
+  return clName;
 }
 
 /**
@@ -640,7 +658,7 @@ std::string GeocentricObserver::to_string() const {
   std::string p = (pos.is_zero()) ? "" : " at " + pos.to_string();
   std::string v = (vel.is_zero()) ? "" : " moving at " + vel.to_string();
 
-  return "Geocentric Observer" + p + v;
+  return className() + p + v;
 }
 
 /**
@@ -678,6 +696,12 @@ SolarSystemObserver::SolarSystemObserver(const Position& pos, const Velocity& ve
   else
     _valid = true;
 }
+
+const std::string& SolarSystemObserver::className() const {
+  static const std::string clName("SolarSystemObserver");
+  return clName;
+}
+
 
 /**
  * Returns a pointer to a newly allocated copy of this observer instance at a Solar-system location.
@@ -729,7 +753,7 @@ std::string SolarSystemObserver::to_string() const {
   std::string p = (pos.is_zero()) ? "SSB" : pos.to_string();
   std::string v = (vel.is_zero()) ? "" : " moving at SSB " + vel.to_string();
 
-  return "SolarSystemObserver at " + p + v;
+  return className() + " at " + p + v;
 }
 
 /**
@@ -825,6 +849,12 @@ GeodeticObserver::GeodeticObserver(const Site& site, const EOP& eop, const Scala
   v[2] = vertical.km_per_s();
 
   novas_enu_to_itrs(v, site.longitude().deg(), site.latitude().deg(), _observer.near_earth.sc_vel);
+}
+
+
+const std::string& GeodeticObserver::className() const {
+  static const std::string clName("GeodeticObserver");
+  return clName;
 }
 
 /**
@@ -1027,7 +1057,7 @@ EOP GeodeticObserver::eop_at(const Time& time) const {
 std::string GeodeticObserver::to_string() const {
   Velocity vel = enu_velocity();
   std::string v = (vel.is_zero()) ? "" : " moving at ENU " + vel.to_string();
-  return "GeodeticObserver at " + site().to_string() + v;
+  return className() + " at " + site().to_string() + v;
 }
 
 /**
@@ -1043,7 +1073,7 @@ std::string GeodeticObserver::to_string() const {
  * @sa Observer::dynamic(), EphemerisObserver, OrbitalObserver
  */
 DynamicObserver::DynamicObserver(novas_state_provider call, const void *arg)
- : Observer(NOVAS_DYNAMIC_OBSERVER, Site::undefined(), Position::undefined(), Velocity::undefined()), _call(call), _arg(arg)
+: Observer(NOVAS_DYNAMIC_OBSERVER, Site::undefined(), Position::undefined(), Velocity::undefined()), _call(call), _arg(arg)
 {
   if(!call)
     novas_set_errno(EINVAL, "DynamicObserver::DynamicObserver", "input state provider function is NULL");
@@ -1060,6 +1090,12 @@ DynamicObserver::DynamicObserver(novas_state_provider call, const void *arg)
  */
 void DynamicObserver::set_arg(const void *ptr) {
   _arg = ptr;
+}
+
+
+const std::string& DynamicObserver::className() const {
+  static const std::string clName("DynamicObserver");
+  return clName;
 }
 
 const Observer *DynamicObserver::copy() const {
@@ -1091,7 +1127,7 @@ Geometric DynamicObserver::barycentric_at(const Time& time, enum novas_accuracy 
   double vel[3] = {0.0};
 
   if(_call(time.jd(NOVAS_TDB), accuracy, _arg, pos, vel) != 0) {
-    novas_trace_invalid("EphemerisObserver::barycentric_at");
+    novas_trace_invalid("DynamicObserver::barycentric_at");
     return Geometric::undefined();
   }
 
@@ -1101,7 +1137,7 @@ Geometric DynamicObserver::barycentric_at(const Time& time, enum novas_accuracy 
 
 std::string DynamicObserver::to_string() const {
   std::stringstream s;
-  s << "DynamicObserver(call = " << _call << ", arg = " << _arg << ")";
+  s << className() << "(call = " << _call << ", arg = " << _arg << ")";
   return s.str();
 }
 
@@ -1110,6 +1146,9 @@ std::string DynamicObserver::to_string() const {
  * configured `novas_ephem_provider` call. Depending on the call, the provider may use the
  * specified object name or ID number for the ephemeris lookup, and you should make sure that you
  * defined the one needed correctly.
+ *
+ * The name must be a non-empty string OR the id must be non-negative for a valid instant,
+ * otherwise the observer will be invalid.
  *
  * @param name    The name to use by the ephemeric call. It may be an empty string if the
  *                ephemeris provider does not use names.
@@ -1122,16 +1161,32 @@ std::string DynamicObserver::to_string() const {
  */
 EphemerisObserver::EphemerisObserver(const std::string& name, long id)
 : DynamicObserver(novas_ephem_state, NULL), _object({}) {
-  if(make_ephem_object(name.c_str(), id, &_object) == 0)
-    _valid = true;
-  else
-    novas_trace_invalid("EphemerisObserver::EphemerisObserver");
-
+  make_ephem_object(name.c_str(), id, &_object);
+  _valid = name.length() > 0 || id >= 0;
+  if(!_valid)
+    novas_set_errno(EINVAL, "EphemerisObserver::EphemerisObserver", "name must not be empty OR id must be non-negative");
   set_arg(&_object);
 }
 
+const std::string& EphemerisObserver::className() const {
+  static const std::string clName("EphemerisObserver");
+  return clName;
+}
+
 const Observer* EphemerisObserver::copy() const {
-  return new EphemerisObserver(name(), id());
+  return new EphemerisObserver(name(), number());
+}
+
+bool EphemerisObserver::equals(const Observer& other) const {
+  if(className() != other.className())
+    return false;
+
+  const EphemerisObserver& orb = dynamic_cast<const EphemerisObserver &>(other);
+
+  if(!novas_equals_object(&_object, &orb._object))
+    return false;
+
+  return true;
 }
 
 /**
@@ -1142,7 +1197,7 @@ const Observer* EphemerisObserver::copy() const {
  *
  * @since 1.8
  *
- * @sa id(), novas_ephem_provider
+ * @sa number(), novas_ephem_provider
  */
 std::string EphemerisObserver::name() const {
   return std::string(_object.name);
@@ -1158,13 +1213,13 @@ std::string EphemerisObserver::name() const {
  *
  * @sa name(), novas_ephem_provider
  */
-long EphemerisObserver::id() const {
+long EphemerisObserver::number() const {
   return _object.number;
 }
 
 
 std::string EphemerisObserver::to_string() const {
-  return "Ephemeris Observer(name = " + name() + ", id = " + std::to_string(_object.number) + ")";
+  return className() + "(name = " + name() + ", num = " + std::to_string(_object.number) + ")";
 }
 
 /**
@@ -1182,13 +1237,32 @@ OrbitalObserver::OrbitalObserver(const Orbital& orbital, const std::string& name
 : DynamicObserver(novas_ephem_state, NULL) {
   if(orbital.is_valid() && make_orbital_object(name.c_str(), -1, orbital._novas_orbital(), &_object) == 0)
     _valid = true;
-  else
+  else {
+    _valid = false;
     novas_trace_invalid("OrbitalObserver::OrbitalObserver");
+  }
   _observer.call_arg = &_object;
 }
 
+const std::string& OrbitalObserver::className() const {
+  static const std::string clName("OrbitalObserver");
+  return clName;
+}
+
 const Observer *OrbitalObserver::copy() const {
-  return new OrbitalObserver(orbital());
+  return new OrbitalObserver(orbital(), name());
+}
+
+bool OrbitalObserver::equals(const Observer& other) const {
+  if(className() != other.className())
+    return false;
+
+  const OrbitalObserver& orb = dynamic_cast<const OrbitalObserver &>(other);
+
+  if(!novas_equals_object(&_object, &orb._object))
+    return false;
+
+  return true;
 }
 
 /**
@@ -1198,8 +1272,6 @@ const Observer *OrbitalObserver::copy() const {
  * @return    the name used for the ephemeris lookup
  *
  * @since 1.8
- *
- * @sa id(), novas_ephem_provider
  */
 std::string OrbitalObserver::name() const {
   return std::string(_object.name);
@@ -1219,7 +1291,7 @@ const Orbital OrbitalObserver::orbital() const {
 
 
 std::string OrbitalObserver::to_string() const {
-  return "Orbital Observer(name = " + std::string(_object.name) + ", " + orbital().to_string() + ")";
+  return className() + "(name = " + std::string(_object.name) + ", " + orbital().to_string() + ")";
 }
 
 

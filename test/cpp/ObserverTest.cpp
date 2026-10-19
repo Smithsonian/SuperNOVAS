@@ -34,7 +34,6 @@ int main() {
   delete copy;
 
 
-
   if(!test.check("invalid Site", !Observer::on_earth(Site::undefined(), eop).is_valid())) n++;
   if(!test.check("invalid Site (moving)", !Observer::moving_on_earth(Site::undefined(), Velocity::stationary(), eop).is_valid())) n++;
   if(!test.check("invalid Site (moving ENU)", !Observer::moving_on_earth(Site::undefined(), eop, ScalarVelocity(1.0), Angle(0.0)).is_valid())) n++;
@@ -51,8 +50,7 @@ int main() {
   if(!test.check("invalid ssb Position", !Observer::in_solar_system(Position::undefined(), Velocity::stationary()).is_valid())) n++;
   if(!test.check("invalid ssb Velocity", !Observer::in_solar_system(Position::origin(), Velocity::undefined()).is_valid())) n++;
 
-  if(!test.equals("to_string(base)", Observer::undefined().to_string(),
-          "Observer type -1")) n++;
+  if(!test.equals("to_string(base)", Observer::undefined().to_string(), "Observer")) n++;
 
 
   test = TestUtil("GeodeticObserver");
@@ -169,7 +167,7 @@ int main() {
   if(!test.check("geocentric_velocity(gc)", gc.gcrs_velocity() == Velocity::stationary())) n++;
   if(!test.check("frame_at(reduced)", gc.frame_at(Time::j2000(), NOVAS_REDUCED_ACCURACY).is_valid())) n++;
   if(!test.check("frame_at(full)", !gc.frame_at(Time::j2000(), NOVAS_FULL_ACCURACY).is_valid())) n++;
-  if(!test.equals("to_string(gc)", gc.to_string(), "Geocentric Observer")) n++;
+  if(!test.equals("to_string(gc)", gc.to_string(), "GeocentricObserver")) n++;
 
 
   copy = gc.copy();
@@ -196,7 +194,7 @@ int main() {
   if(!test.check("is_geodetic(orbit)", !o1.is_geodetic())) n++;
   if(!test.check("geocentric_position(orbit)", o1.gcrs_position() == p1)) n++;
   if(!test.check("geocentric_velocity(orbit)", o1.gcrs_velocity() == v1)) n++;
-  if(!test.equals("to_string(orbit)", o1.to_string(), "Geocentric Observer at Position (10000.000 km, 0.000 m, 0.000 m) moving at Velocity (0.001 km/s, -0.002 km/s, 0.003 km/s)")) n++;
+  if(!test.equals("to_string(orbit)", o1.to_string(), "GeocentricObserver at Position (10000.000 km, 0.000 m, 0.000 m) moving at Velocity (0.001 km/s, -0.002 km/s, 0.003 km/s)")) n++;
 
 
 
@@ -248,6 +246,73 @@ int main() {
   copy = s1.copy();
   if(!test.check("copy(ss)", *copy == s1)) n++;
   delete copy;
+
+
+  test = TestUtil("DynamicObserver");
+  object earth = NOVAS_EARTH_INIT;
+
+  if(!test.check("invalid (null call)", !Observer::dynamic(NULL, &earth).is_valid())) n++;
+
+  DynamicObserver od = Observer::dynamic(novas_ephem_state, &earth);
+  if(!test.check("is_valid()", od.is_valid())) n++;
+  if(!test.check("state_call()", od.state_call() == novas_ephem_state)) n++;
+  if(!test.check("state_call_arg()", od.state_call_arg() == &earth)) n++;
+
+  const Observer *cod = od.copy();
+  if(!test.check("copy()", cod->equals(od))) n++;
+  delete cod;
+
+  Geometric gd = od.barycentric_at(Time::j2000(), NOVAS_REDUCED_ACCURACY);
+  Geometric ge = Planet::earth().barycentric_at(Time::j2000(), NOVAS_REDUCED_ACCURACY);
+
+  if(!test.check("barycentric_at(time invalid)", !od.barycentric_at(Time::undefined(), NOVAS_REDUCED_ACCURACY).is_valid())) n++;
+  if(!test.check("barycentric_at()", gd.is_valid())) n++;
+  if(!test.check("barycentric_at().position()", gd.position() == ge.position())) n++;
+  if(!test.check("barycentric_at().velocity()", gd.velocity() == ge.velocity())) n++;
+  if(!test.check("to_string()", od.to_string().compare(0, od.className().length(), "DynamicObserver") == 0)) n++;
+
+
+  test = TestUtil("EphemerisObserver");
+
+  if(!test.check("invalid", !Observer::via_ephemeris("", -1).is_valid())) n++;
+
+  EphemerisObserver oe = Observer::via_ephemeris("Earth", 399);
+  if(!test.check("is_valid()", oe.is_valid())) n++;
+  if(!test.check("equals(self)", oe.equals(oe))) n++;
+  if(!test.check("equals(different body)", !oe.equals(Observer::via_ephemeris("Moon", 301)))) n++;
+
+  const Observer *coe = oe.copy();
+  if(!test.check("copy()", coe->equals(oe))) n++;
+  delete coe;
+
+  if(!test.equals("name()", oe.name(), "EARTH")) n++;
+  if(!test.equals("number()", oe.number(), 399, 1e-12)) n++;
+  if(!test.check("equals(DynamicObserver)", !oe.equals(od))) n++;
+  if(!test.equals("to_string()", oe.to_string(), "EphemerisObserver(name = EARTH, num = 399)")) n++;
+
+
+  test = TestUtil("OrbitalObserver");
+
+  Orbital orbit(OrbitalSystem::ecliptic(Planet::sun()), Time::undefined(), Coordinate::undefined(), Angle::undefined(), Interval::zero());
+  if(!test.check("orbit.invalid()", !orbit.is_valid())) n++;
+  if(!test.check("invalid()", !Observer::in_orbit(orbit).is_valid())) n++;
+
+  orbit = Planet::mars().orbit(Time::j2000());
+  OrbitalObserver oo = Observer::in_orbit(orbit, "Mars orbit");
+  if(!test.check("is_valid()", oo.is_valid())) n++;
+  if(!test.check("equals(self)", oo.equals(oo))) n++;
+  if(!test.check("equals(different orbit)", !oo.equals(Observer::in_orbit(Planet::mars().orbit(Time::b1950()), "Mars orbit")))) n++;
+  if(!test.check("equals(different name)", !oo.equals(Observer::in_orbit(Planet::mars().orbit(Time::j2000()), "Martes")))) n++;
+
+  const Observer *coo = oo.copy();
+  if(!test.check("copy()", coo->equals(oo))) n++;
+  delete coo;
+
+  if(!test.equals("name()", oo.name(), "MARS ORBIT")) n++;
+  if(!test.check("orbital()", oo.orbital() == orbit)) n++;
+  if(!test.equals("to_string()", oo.to_string(), "OrbitalObserver(name = MARS ORBIT, " + orbit.to_string() + ")")) n++;
+
+  if(!test.check("equals(EphemerisObserver)", !oo.equals(oe))) n++;
 
   std::cout << "Observer.cpp: " << (n > 0 ? "FAILED" : "OK") << "\n";
   return n;
