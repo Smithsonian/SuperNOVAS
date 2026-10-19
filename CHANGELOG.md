@@ -68,7 +68,8 @@ Upcoming maintenance release, expected around 1 November 2026.
    
  - #382: Added `Velocity::speed_difference_to(Velocity&)`.
  
- - #387: Added `Observer::className()` method, which returns the name of the specific `Observer` subclass used.
+ - #387: Added `Observer::className()` and `Source::className()` methods, which returns the name of the concrete 
+   subclass used.
    
  - Added `USER_SOLSYS` / `USER_READEPH` GNU make configuration options (see `config.mk`) for legacy builds when
    the `solarsystem()` / `solarsystem_hp()` and / or the `readeph()` functions are provided as external modules

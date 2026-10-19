@@ -96,7 +96,8 @@ enum novas_observer_place Observer::type() const {
 }
 
 /**
- * Returns the observer class name.
+ * Returns the observer class name. All concrete subclasses should override
+ * this method to return their C++ class name.
  *
  * @return the class name for this observer instance.
  *

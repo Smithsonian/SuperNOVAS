@@ -2213,6 +2213,16 @@ public:
 
   enum novas_object_type type() const;
 
+  /**
+   * Returns the class name for this astronomical source. All concrete subclasses should override
+   * this method to return their C++ class name.
+   *
+   * @return the class name for this source instance.
+   *
+   * @since 1.8
+   */
+  virtual const std::string& className() const = 0;
+
   bool equals(const Source& other) const;
 
   bool operator==(const Source &other) const;
@@ -2252,6 +2262,13 @@ public:
   /// @ingroup tracking
   HorizontalTrack horizontal_track(const Frame &frame, RefractionModel ref = NULL, const Weather& weather = Weather::standard()) const;
 
+  /**
+   * Returns a human readable string representation of this astronomical source.
+   *
+   * @return  a string representation of this source.
+   *
+   * @since 1.6
+   */
   virtual std::string to_string() const = 0;
 
   static void set_case_sensitive(bool value);
@@ -2358,6 +2375,8 @@ private:
 public:
   explicit CatalogSource(const CatalogEntry& e);
 
+  const std::string& className() const override;
+
   const Source* copy() const override;
 
   const CatalogEntry& catalog_entry() const;
@@ -2410,6 +2429,8 @@ private:
 
 public:
   explicit Planet(enum novas_planet number, const std::string& name = "");
+
+  const std::string& className() const override;
 
   const Source* copy() const override;
 
@@ -2484,6 +2505,8 @@ public:
 class EphemerisSource : public SolarSystemSource {
 public:
   explicit EphemerisSource(const std::string &name, long number = -1);
+
+  const std::string& className() const override;
 
   const Source *copy() const override;
 
@@ -2694,6 +2717,8 @@ public:
   OrbitalSource(const std::string& name, const Orbital& orbit);
 
   const novas_orbital *_novas_orbital() const;
+
+  const std::string& className() const override;
 
   const Source *copy() const override;
 
