@@ -22,8 +22,9 @@
  *  4. Solar-system locations via `make_solar_system_observer()`, specifying a momentary
  *     barycentric (that is w.r.t. the SSB) position and velocity vector.
  *
- *  5. Dynamic observer locations via `make_dynamic_observer()`, where the observer's position and
- *     velocity state vectors are provided on demand for the time of observation.
+ *  5. Dynamic observer locations via `make_dynamic_observer()` or `make_comoving_observer()`,
+ *     where the observer's position and velocity state vectors are provided on demand for the
+ *     time of observation.
  *
  * Once an observer is defined, it maybe used to set up an observing frame for a specific time of
  * observation. Observing frames allow efficient and precise position calculations from an

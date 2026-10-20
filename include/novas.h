@@ -3632,12 +3632,16 @@ int novas_lookup_leap(time_t t);
 // ---------------------- Added in 1.8.0 -------------------------
 
 // in calendar.c
+/// @c_time
 int novas_is_leap_year(int year, enum novas_calendar_type calendar);
 
+/// @c_observer
 int make_dynamic_observer(novas_state_provider call, const void *restrict call_arg, observer *restrict obs);
 
+/// @c_observer
 int make_comoving_observer(const object *restrict place, observer *restrict obs);
 
+/// @c_observer
 int novas_ephem_state(double jd_tdb, enum novas_accuracy accuracy, const void *p_object, double *restrict pos, double *restrict vel);
 
 
