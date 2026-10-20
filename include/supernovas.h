@@ -62,6 +62,9 @@ class Weather;
 class Site;
 class Observer;
 class   SolarSystemObserver;
+class     DynamicObserver;
+class       EphemerisObserver;
+class       OrbitalObserver;
 class   GeocentricObserver;
 class   GeodeticObserver;
 class CatalogEntry;
@@ -903,6 +906,7 @@ public:
   static const Interferometric& undefined();
 };
 
+
 /**
  * A scalar velocity (if signed) or speed (if unsigned).
  *
@@ -1566,6 +1570,8 @@ public:
 
   enum novas_observer_place type() const;
 
+  virtual const std::string& className() const;
+
   virtual bool is_geodetic() const;
 
   virtual bool is_geocentric() const;
@@ -1602,6 +1608,12 @@ public:
 
   static SolarSystemObserver at_ssb();
 
+  static EphemerisObserver in_ephemeris(const std::string& name, long id);
+
+  static OrbitalObserver in_orbital(const Orbital& orbit, const std::string& name = "orbital observer");
+
+  static DynamicObserver dynamic(novas_state_provider state_call, const void *arg = NULL);
+
   static const Observer& undefined();
 };
 
@@ -1635,6 +1647,8 @@ public:
 
   GeodeticObserver(const Site& site, const EOP& eop, const ScalarVelocity& horizontal, const Angle& direction,
           const ScalarVelocity& vertical = ScalarVelocity::stationary());
+
+  const std::string& className() const override;
 
   const Observer *copy() const override;
 
@@ -1672,6 +1686,8 @@ public:
 
   GeocentricObserver(const Position& pos, const Velocity& vel);
 
+  const std::string& className() const override;
+
   Position gcrs_position() const;
 
   Velocity gcrs_velocity() const;
@@ -1698,11 +1714,103 @@ public:
 
   SolarSystemObserver(const Position& pos, const Velocity& vel);
 
+  const std::string& className() const override;
+
   const Observer *copy() const override;
 
   Position ssb_position() const;
 
   Velocity ssb_velocity() const;
+
+  std::string to_string() const override;
+};
+
+/**
+ * An observer whose momentary position and velocity is defined dynamically through a state provider function.
+ *
+ */
+class DynamicObserver : public Observer {
+private:
+  novas_state_provider _call;
+  const void *_arg;
+
+protected:
+  void set_arg(const void *ptr);
+
+public:
+  explicit DynamicObserver(novas_state_provider call, const void *arg = NULL);
+
+  const std::string& className() const override;
+
+  novas_state_provider state_call() const;
+
+  const void * state_call_arg() const;
+
+  const Observer *copy() const override;
+
+  Geometric barycentric_at(const Time& time, enum novas_accuracy = NOVAS_FULL_ACCURACY) const;
+
+  std::string to_string() const override;
+};
+
+
+/**
+ * An observer whose position and velocity is defined by ephemeris data, which can be
+ * obtained by the currently configured novas_ephem_provider function.
+ *
+ * @since 1.8
+ *
+ * @ingroup observer
+ *
+ * @sa set_ephem_provider(), novas_use_calceph(), novas_use_cspice()
+ * @sa OrbitalObserver
+ */
+class EphemerisObserver : public DynamicObserver {
+private:
+  object _object = {};     ///< The ephemeris object that defines the location of the observer
+
+public:
+  EphemerisObserver(const std::string& name, long id);
+
+  const std::string& className() const override;
+
+  const Observer *copy() const override;
+
+  bool equals(const Observer& other) const override;
+
+  std::string name() const;
+
+  long number() const;
+
+  std::string to_string() const override;
+};
+
+
+/**
+ * An observer whose position and velocity is defined by Keplerian orbital parameters around
+ * a major Solar-system body (such as the Sun, Moon, major planets, or barycenters).
+ *
+ * @since 1.8
+ *
+ * @sa Orbital, EphemerisObserver
+ * @ingroup observer
+ */
+class OrbitalObserver : public DynamicObserver {
+private:
+  object _object = {};
+
+public:
+  explicit OrbitalObserver(const Orbital& orbital, const std::string& name = "orbital observer");
+
+  const std::string& className() const override;
+
+  const Observer *copy() const override;
+
+  bool equals(const Observer& other) const override;
+
+  std::string name() const;
+
+  const Orbital orbital() const;
 
   std::string to_string() const override;
 };
@@ -2067,7 +2175,10 @@ public:
 
   static Frame reduced_accuracy(const Observer& obs, const Time& time, const EOP& eop = EOP::undefined());
 
+  static Frame barycentric_at(const Time& time, enum novas_accuracy accuracy = NOVAS_FULL_ACCURACY);
+
   static const Frame& undefined();
+
 };
 
 /**
@@ -2101,6 +2212,16 @@ public:
   std::string name() const;
 
   enum novas_object_type type() const;
+
+  /**
+   * Returns the class name for this astronomical source. All concrete subclasses should override
+   * this method to return their C++ class name.
+   *
+   * @return the class name for this source instance.
+   *
+   * @since 1.8
+   */
+  virtual const std::string& className() const = 0;
 
   bool equals(const Source& other) const;
 
@@ -2141,6 +2262,13 @@ public:
   /// @ingroup tracking
   HorizontalTrack horizontal_track(const Frame &frame, RefractionModel ref = NULL, const Weather& weather = Weather::standard()) const;
 
+  /**
+   * Returns a human readable string representation of this astronomical source.
+   *
+   * @return  a string representation of this source.
+   *
+   * @since 1.6
+   */
   virtual std::string to_string() const = 0;
 
   static void set_case_sensitive(bool value);
@@ -2247,6 +2375,8 @@ private:
 public:
   explicit CatalogSource(const CatalogEntry& e);
 
+  const std::string& className() const override;
+
   const Source* copy() const override;
 
   const CatalogEntry& catalog_entry() const;
@@ -2299,6 +2429,8 @@ private:
 
 public:
   explicit Planet(enum novas_planet number, const std::string& name = "");
+
+  const std::string& className() const override;
 
   const Source* copy() const override;
 
@@ -2373,6 +2505,8 @@ public:
 class EphemerisSource : public SolarSystemSource {
 public:
   explicit EphemerisSource(const std::string &name, long number = -1);
+
+  const std::string& className() const override;
 
   const Source *copy() const override;
 
@@ -2584,12 +2718,18 @@ public:
 
   const novas_orbital *_novas_orbital() const;
 
+  const std::string& className() const override;
+
   const Source *copy() const override;
 
   Orbital orbital() const;
 
   std::string to_string() const override;
 };
+
+
+
+
 
 /**
  * %Apparent position on sky as seen by an observer at a specific time of observation. %Apparent

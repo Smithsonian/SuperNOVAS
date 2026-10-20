@@ -63,7 +63,7 @@ int main() {
   if(!test.check("ecliptic()", tod.ecliptic() == tod.equatorial().to_ecliptic())) n++;
   if(!test.check("galactic()", tod.galactic() == tod.equatorial().to_galactic())) n++;
   if(!test.check("horizontal(gc)", !tod.to_horizontal().is_valid())) n++;
-  if(!test.equals("to_string()", tod.to_string(), "Apparent EQU 03h 00m 00.0000s   -15d 00m 00.000s  TOD J2000 in Frame for Geocentric Observer at 2000-01-01T11:58:55.816 UTC")) n++;
+  if(!test.equals("to_string()", tod.to_string(), "Apparent EQU 03h 00m 00.0000s   -15d 00m 00.000s  TOD J2000 in Frame for GeocentricObserver at 2000-01-01T11:58:55.816 UTC")) n++;
 
   double v[3] = {0.0};
   novas_app_to_geom(frame._novas_frame(), NOVAS_TOD, p.ra, p.dec, p.dis, v);

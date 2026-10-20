@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [1.8.0-rc2] - 2026-10-07
+## [Unreleased]
 
 Upcoming maintenance release, expected around 1 November 2026.
 
@@ -67,6 +67,24 @@ Upcoming maintenance release, expected around 1 November 2026.
    a 3D velocity vector along some direction. 
    
  - #382: Added `Velocity::speed_difference_to(Velocity&)`.
+ 
+ - #387: Added `novas_state_provider` function type, and corresponding `state_call` and `call_arg` fields to `object` 
+   (a.k.a. `novas_object`) data structure.
+ 
+ - #387: Added `NOVAS_DYNAMIC_OBSERVER` constant to `enum novas_observer_place`, and `make_dynamic_observer()` 
+   function.
+ 
+ - #387: Added `novas_ephem_state()` dynamic observer adapter function for observers whose position is determined
+   by an `ephemeris()` call (e.g. virtual observers at planet centers, observers with ephemeris positions, or defined
+   by Keplerian orbital parameters around a major Solar System body).
+ 
+ - #387: Added `DynamicObserver`, `EphemerisObserver`, and `OrbitalObserver` classes, and corresponding 
+   `Observer::dynamic()`, `Observer::in_ephemeris()`, and `Observer::in_orbital()` static factory methods.
+
+ - #387: Added `Frame::barycentric()` static factory method.
+ 
+ - #387: Added `Observer::className()` and `Source::className()` methods, which returns the name of the concrete 
+   subclass used.
    
  - Added `USER_SOLSYS` / `USER_READEPH` GNU make configuration options (see `config.mk`) for legacy builds when
    the `solarsystem()` / `solarsystem_hp()` and / or the `readeph()` functions are provided as external modules
@@ -124,7 +142,13 @@ Upcoming maintenance release, expected around 1 November 2026.
    
  - #382: `Vector(double, double, double)` promoted to public.
  
+ - #387: `ephemeris()` now will now return -1 with errno set to EINVAL if either input time component is NaN.
+ 
+ - #387: Modified `geo_posvel()` to handle new dynamic observer locations.
+ 
  - #389: Improved error propagation on interpolated EOP estimate when EOP is obtained from IERS or some other source.
+   
+ - Streamlined `novas_make_planet_orbit()` slightly by avoiding duplicate trigonometric calls.
    
  - Streamlined `novas_make_planet_orbit()` slightly by avoiding duplicate trigonometric calls.
    

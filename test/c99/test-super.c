@@ -6008,6 +6008,54 @@ static int test_is_leap_year() {
   return n;
 }
 
+static int zero_posvel(double tdb, enum novas_accuracy acc, const void *arg, double *pos, double *vel) {
+  memset(pos, 0, XYZ_VECTOR_SIZE);
+  memset(vel, 0, XYZ_VECTOR_SIZE);
+  return 0;
+}
+
+static int test_dynamic_observer() {
+  int n = 0;
+  observer obs = {}, obs2 = {};
+  double pos[3] = {1.0, 2.0, 3.0 }, vel[3] = {-1.0, 2.0, -3.0}, p0[3] = {0.0}, v0[3] = {0.0};
+
+
+  if(!is_ok("dynamic_observer", make_dynamic_observer(zero_posvel, NULL, &obs))) n++;
+  if(!is_ok("dynamic_observer:ssb", make_solar_system_observer(p0, v0, &obs2))) n++;
+
+  if(!is_ok("dynamic_observer:geo_posvel", geo_posvel(JD_J2000, 69.0, NOVAS_REDUCED_ACCURACY, &obs, pos, vel))) n++;
+  if(!is_ok("dynamic_observer:geo_posvel:ssb", geo_posvel(JD_J2000, 69.0, NOVAS_REDUCED_ACCURACY, &obs2, p0, v0))) n++;
+  if(!is_ok("dynamic_observer:geo_posvel:pos", check_equal_pos(pos, p0, 1e-12))) n++;
+  if(!is_ok("dynamic_observer:geo_posvel:vel", check_equal_pos(vel, v0, 1e-12))) n++;
+
+  obs2 = obs;
+  if(!is_ok("dynamic_observer:equals:call:true", !novas_equals_observer(&obs, &obs2))) n++;
+
+  obs2.state_call = novas_ephem_state;
+  if(!is_ok("dynamic_observer:equals:call:false", novas_equals_observer(&obs, &obs2))) n++;
+
+  obs2 = obs;
+  obs.call_arg = &n;
+  if(!is_ok("dynamic_observer:equals:arg:false", novas_equals_observer(&obs, &obs2))) n++;
+
+  return n;
+}
+
+static int test_ephem_state() {
+    int n = 0;
+    object sun = NOVAS_SUN_INIT;
+    double p[3] = {0.0}, v[3] = {0.0}, p0[3] = {0.0}, v0[3] = {0.0};
+    double tdb2[] = {NOVAS_JD_J2000, 0.0};
+
+    if(!is_ok("ephem_state:object", novas_ephem_state(NOVAS_JD_J2000, NOVAS_REDUCED_ACCURACY, &sun, p, v))) n++;
+    ephemeris(tdb2, &sun, NOVAS_BARYCENTER, NOVAS_REDUCED_ACCURACY, p0, v0);
+
+    if(!is_ok("ephem_state:pos", check_equal_pos(p, p0, 1e-12))) n++;
+    if(!is_ok("ephem_state:vel", check_equal_pos(v, v0, 1e-12))) n++;
+
+    return n;
+}
+
 int main(int argc, char *argv[]) {
   int n = 0;
 
@@ -6201,6 +6249,8 @@ int main(int argc, char *argv[]) {
   if(test_lookup_leap()) n++;
 
   if(test_is_leap_year()) n++;
+  if(test_dynamic_observer()) n++;
+  if(test_ephem_state()) n++;
 
   n += test_dates();
 

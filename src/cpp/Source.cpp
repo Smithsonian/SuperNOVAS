@@ -34,6 +34,7 @@ const struct novas_object *Source::_novas_object() const {
   return &_object;
 }
 
+
 /**
  * Checks if this astronomical source is the same as another within typical tolerances. Two
  * sources are considered equals only if their types, names (case sensitive), and defining
@@ -51,7 +52,7 @@ const struct novas_object *Source::_novas_object() const {
  * @sa operator==(), operator!=()
  */
 bool Source::equals(const Source& other) const {
-  return novas_equals_object(&_object, &other._object);
+  return className() == other.className() && novas_equals_object(&_object, &other._object);
 }
 
 /**
@@ -499,6 +500,11 @@ CatalogSource::CatalogSource(const CatalogEntry& e)
   }
 }
 
+const std::string& CatalogSource::className() const {
+  static const std::string clName("CatalogSource");
+  return clName;
+}
+
 /**
  * Returns a pointer to a newly allocated copy of this catalog source instance
  *
@@ -530,7 +536,7 @@ const CatalogEntry& CatalogSource::catalog_entry() const {
  */
 std::string CatalogSource::to_string() const {
   const cat_entry *c = _cat._cat_entry();
-  return "CatalogSource " + std::string(c->starname) + " @ " + TimeAngle(c->ra * Unit::hour_angle).to_string() +
+  return className() + " " + std::string(c->starname) + " @ " + TimeAngle(c->ra * Unit::hour_angle).to_string() +
           " " + Angle(c->dec * Unit::deg).to_string() + " " + _cat.system().to_string();
 }
 
@@ -556,7 +562,7 @@ Geometric SolarSystemSource::barycentric_at(const Time& time, enum novas_accurac
     return Geometric::undefined();
   }
 
-  return Geometric(Observer::at_ssb().frame_at(time, accuracy),
+  return Geometric(Frame::barycentric_at(time, accuracy),
           Position(p, Unit::AU), Velocity(v, Unit::AU_per_day), NOVAS_ICRS);
 }
 
@@ -668,6 +674,11 @@ Planet::Planet(enum novas_planet number, const std::string& name) : SolarSystemS
   if(name.length() > 1) {
     strncpy(_object.name, name.c_str(), sizeof(_object.name) - 1);
   }
+}
+
+const std::string& Planet::className() const {
+  static const std::string clName("Planet");
+  return clName;
 }
 
 /**
@@ -946,7 +957,7 @@ Orbital Planet::orbit(const Time& ref_time) const {
 }
 
 std::string Planet::to_string() const {
-  return "Planet " + name();
+  return className() + " " + name();
 }
 
 /**
@@ -1144,6 +1155,11 @@ EphemerisSource::EphemerisSource(const std::string &name, long number) : SolarSy
     _valid = true;
 }
 
+const std::string& EphemerisSource::className() const {
+  static const std::string clName("EphemerisSource");
+  return clName;
+}
+
 /**
  * Returns a pointer to a newly allocated copy of this Solar-system ephemeris source instance
  *
@@ -1176,7 +1192,7 @@ long EphemerisSource::number() const {
  * @since 1.6
  */
 std::string EphemerisSource::to_string() const {
-  return "EphemerisSource " + name() + " (nr. " + std::to_string(number()) + ")";
+  return className() + " " + name() + " (nr. " + std::to_string(number()) + ")";
 }
 
 
@@ -1201,6 +1217,11 @@ OrbitalSource::OrbitalSource(const std::string& name, const Orbital& orbit) : So
     novas_set_errno(EINVAL, fn, "input orbital is invalid");
   else
     _valid = true;
+}
+
+const std::string& OrbitalSource::className() const {
+  static const std::string clName("OrbitalSource");
+  return clName;
 }
 
 /**
@@ -1247,7 +1268,7 @@ Orbital OrbitalSource::orbital() const {
  * @since 1.6
  */
 std::string OrbitalSource::to_string() const {
-  return "OrbitalSource " + name();
+  return className() + " " + name();
 }
 
 } // namespace supernovas

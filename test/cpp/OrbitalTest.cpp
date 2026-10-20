@@ -31,7 +31,7 @@ int main() {
   if(!test.equals("system_type()", s.system_type(), NOVAS_ICRS)) n++;
   if(!test.check("operator==()", s == s)) n++;
   if(!test.check("operator!=()", !(s != s))) n++;
-  if(!test.equals("to_string()", s.to_string(), "Ecliptic OrbitalSystem around SUN inclined at 1.000000 deg with node at -2.000000 deg.")) n++;
+  if(!test.equals("to_string()", s.to_string(), "Ecliptic orbital system around SUN inclined at 1.000000 deg with node at -2.000000 deg.")) n++;
 
   s.pole(Spherical(-92.0 * Unit::deg, 89.0 * Unit::deg), Equinox::j2000());
   if(!test.check("is_valid(pole)", s.is_valid())) n++;
@@ -90,7 +90,7 @@ int main() {
 
 
   OrbitalSystem xs = (OrbitalSystem::equatorial(Planet((novas_planet) -1)));
-  if(!test.equals("to_string(equatorial)", xs.to_string(), "Equatorial OrbitalSystem around  inclined at 0.000000 deg with node at 0.000000 deg.")) n++;
+  if(!test.equals("to_string(equatorial)", xs.to_string(), "Equatorial orbital system around  inclined at 0.000000 deg with node at 0.000000 deg.")) n++;
 
   // ------------------------------------------------------------------------
   test = TestUtil("Orbital");
@@ -143,7 +143,7 @@ int main() {
   if(!test.equals("period()", o.period().years(), 2.0, 1e-15)) n++;
   if(!test.check("operator==()", o == o)) n++;
   if(!test.check("operator!=()", !(o != o))) n++;
-  if(!test.equals("to_string()", o.to_string(), "Orbital (a = 1.000 AU, T = 2.000 yr, e = 0.000000) in Equatorial OrbitalSystem around SUN inclined at 0.000000 deg with node at 0.000000 deg.")) n++;
+  if(!test.equals("to_string()", o.to_string(), "Orbital (a = 1.000 AU, T = 2.000 yr, e = 0.000000) in Equatorial orbital system around SUN inclined at 0.000000 deg with node at 0.000000 deg.")) n++;
   if(!test.check("position(invalid time)", !x.position(Time::undefined()).is_valid())) n++;
   if(!test.check("velocity(invalid time)", !x.velocity(Time::undefined()).is_valid())) n++;
 

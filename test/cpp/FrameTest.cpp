@@ -44,10 +44,10 @@ int main() {
   if(!test.equals("observer() type", a.observer().type(), NOVAS_OBSERVER_AT_GEOCENTER)) n++;
   if(!test.equals("clock_skew()", a.clock_skew(NOVAS_TT), novas_clock_skew(a._novas_frame(), NOVAS_TT))) n++;
   if(!test.check("clock_skew(timescale invalid)", isnan(a.clock_skew((enum novas_timescale) -1)))) n++;
-  if(!test.equals("to_string()", a.to_string(), "Frame for Geocentric Observer at 2000-01-01T11:58:55.816 UTC")) n++;
+  if(!test.equals("to_string()", a.to_string(), "Frame for GeocentricObserver at 2000-01-01T11:58:55.816 UTC")) n++;
 
   a = a; // @suppress("Assignment to itself")
-  if(!test.equals("self assign", a.to_string(), "Frame for Geocentric Observer at 2000-01-01T11:58:55.816 UTC")) n++;
+  if(!test.equals("self assign", a.to_string(), "Frame for GeocentricObserver at 2000-01-01T11:58:55.816 UTC")) n++;
 
   Frame a1(a);
   novas_frame *f1 = (novas_frame *) a1._novas_frame();
@@ -120,6 +120,9 @@ int main() {
   if(!test.check("is_valid(geocentric/no-EOP)", fe.is_valid())) n++;
   novas_set_auto_fetch_eop(0);
 #endif // WITH_CURL && !OFFLINE
+
+  if(!test.check("barycentric_at()", Frame::barycentric_at(Time::j2000(), NOVAS_REDUCED_ACCURACY).is_valid())) n++;
+  if(!test.check("barycentric_at(invalid)", !Frame::barycentric_at(Time::undefined(), NOVAS_REDUCED_ACCURACY).is_valid())) n++;
 
   std::cout << "Frame.cpp: " << (n > 0 ? "FAILED" : "OK") << "\n";
   return n;
