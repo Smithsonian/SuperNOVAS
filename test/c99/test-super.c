@@ -6017,7 +6017,7 @@ static int zero_posvel(double tdb, enum novas_accuracy acc, const void *arg, dou
 static int test_dynamic_observer() {
   int n = 0;
   observer obs = {}, obs2 = {};
-  double pos[3] = {1.0, 2.0, 3.0 }, vel[3] = {-1.0, 2.0, -3.0}, p0[3] = {0.0}, v0[3] = {0.0};
+  double pos[3] = {1.0, 2.0, 3.0}, vel[3] = {-1.0, 2.0, -3.0}, p0[3] = {0.0}, v0[3] = {0.0};
 
 
   if(!is_ok("dynamic_observer", make_dynamic_observer(zero_posvel, NULL, &obs))) n++;
@@ -6054,6 +6054,22 @@ static int test_ephem_state() {
     if(!is_ok("ephem_state:vel", check_equal_pos(v, v0, 1e-12))) n++;
 
     return n;
+}
+
+static int test_comoving_observer() {
+  int n = 0;
+  object earth = NOVAS_EARTH_INIT;
+  observer obs = {}, gc = {};
+  double pos[3] = {1.0, 2.0, 3.0}, vel[3] = {-1.0, 2.0, -3.0}, p0[3] = {0.0}, v0[3] = {0.0};
+
+  make_observer_at_geocenter(&gc);
+  if(!is_ok("comoving_observer", make_comoving_observer(&earth, &obs))) n++;
+
+  if(!is_ok("comoving_observer:geo_posvel", geo_posvel(JD_J2000, 69.0, NOVAS_REDUCED_ACCURACY, &obs, pos, vel))) n++;
+  if(!is_ok("comoving_observer:geo_posvel:pos", check_equal_pos(pos, p0, 1e-12))) n++;
+  if(!is_ok("comoving_observer:geo_posvel:vel", check_equal_pos(vel, v0, 1e-12))) n++;
+
+  return n;
 }
 
 int main(int argc, char *argv[]) {
@@ -6251,6 +6267,7 @@ int main(int argc, char *argv[]) {
   if(test_is_leap_year()) n++;
   if(test_dynamic_observer()) n++;
   if(test_ephem_state()) n++;
+  if(test_comoving_observer()) n++;
 
   n += test_dates();
 

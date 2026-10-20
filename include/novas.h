@@ -3636,6 +3636,8 @@ int novas_is_leap_year(int year, enum novas_calendar_type calendar);
 
 int make_dynamic_observer(novas_state_provider call, const void *restrict call_arg, observer *restrict obs);
 
+int make_comoving_observer(const object *restrict place, observer *restrict obs);
+
 int novas_ephem_state(double jd_tdb, enum novas_accuracy accuracy, const void *p_object, double *restrict pos, double *restrict vel);
 
 

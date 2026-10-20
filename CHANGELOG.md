@@ -21,7 +21,7 @@ Upcoming maintenance release, expected around 1 November 2026.
  - #376: Fixed inverted flattening parameters for the IERS 1989 and 2003 reference ellipsoids.
  
  - #380: Fixed missing non-relativistic expression for adding observer motion in `rad_vel2()`, which resulted in 
-   errors at or below the few m/s level typically.
+   errors at or below the m/s level typically.
 
  - #393: Fixed `interpolate()` in the legacy `eph_manager.c` using `remainder()` instead of `fmod()` for the
    normalized Chebyshev time, which evaluated bodies stored with more than one sub-interval per record (e.g. the
@@ -85,6 +85,10 @@ Upcoming maintenance release, expected around 1 November 2026.
  
  - #387: Added `Observer::className()` and `Source::className()` methods, which returns the name of the concrete 
    subclass used.
+   
+ - #296: Added `make_comoving_observer()` to simplify the creation of observers whose momentary location is defined
+   by a Solar-system body or place, such as virtual observers planet centers, travelling on a spacescraft with
+   ephemeris data, or defined by Keplerian orbital parameters around a major Solar-system body or barycenter position.
    
  - Added `USER_SOLSYS` / `USER_READEPH` GNU make configuration options (see `config.mk`) for legacy builds when
    the `solarsystem()` / `solarsystem_hp()` and / or the `readeph()` functions are provided as external modules
