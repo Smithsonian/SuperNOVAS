@@ -634,10 +634,13 @@ public:
 
 };
 
+/// @ingroup util
 double sin(const Angle& angle);
 
+/// @ingroup util
 double cos(const Angle& angle);
 
+/// @ingroup util
 double tan(const Angle& angle);
 
 /**
@@ -1728,6 +1731,11 @@ public:
 /**
  * An observer whose momentary position and velocity is defined dynamically through a state provider function.
  *
+ * @since 1.8
+ *
+ * @sa EphemerisObserver, OrbitalObserver
+ *
+ * @ingroup observer
  */
 class DynamicObserver : public Observer {
 private:
@@ -1792,8 +1800,9 @@ public:
  *
  * @since 1.8
  *
- * @sa Orbital, EphemerisObserver
  * @ingroup observer
+ *
+ * @sa Orbital, EphemerisObserver
  */
 class OrbitalObserver : public DynamicObserver {
 private:

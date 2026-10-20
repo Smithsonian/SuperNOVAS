@@ -22,8 +22,9 @@
  *  4. Solar-system locations via `make_solar_system_observer()`, specifying a momentary
  *     barycentric (that is w.r.t. the SSB) position and velocity vector.
  *
- *  5. Dynamic observer locations via `make_dynamic_observer()`, where the observer's position and
- *     velocity state vectors are provided on demand for the time of observation.
+ *  5. Dynamic observer locations via `make_dynamic_observer()` or `make_comoving_observer()`,
+ *     where the observer's position and velocity state vectors are provided on demand for the
+ *     time of observation.
  *
  * Once an observer is defined, it maybe used to set up an observing frame for a specific time of
  * observation. Observing frames allow efficient and precise position calculations from an
@@ -76,6 +77,7 @@
  *
  * @sa make_observer_at_geocenter(), make_itrf_observer(), make_gps_observer(),
  *     make_airborne_observer(), make_observer_in_space(), make_solar_system_observer()
+ *     make_dynamic_observer(), make_comoving_observer()
  */
 short make_observer(enum novas_observer_place where, const on_surface *loc_surface, const in_space *loc_space, observer *obs) {
   static const char *fn = "make_observer";
@@ -133,6 +135,7 @@ short make_observer(enum novas_observer_place where, const on_surface *loc_surfa
  *
  * @sa make_gps_observer(), make_itrf_observer(), make_observer_at_site(),
  *     make_airborne_observer(), make_observer_in_space(), make_solar_system_observer()
+ *     make_comoving_observer(), make_dynamic_observer()
  * @sa novas_make_frame()
  */
 int make_observer_at_geocenter(observer *restrict obs) {
@@ -302,7 +305,7 @@ int make_gps_observer(double latitude, double longitude, double height, observer
  *
  * @sa make_gps_observer(), make_itrf_observer(), make_observer_at_site(),
  *     make_airborne_observer(), make_observer_at_geocenter(), make_solar_system_observer(),
- *     make_dynamic_observer()
+ *     make_comoving_observer(), make_dynamic_observer()
  * @sa novas_make_frame()
  */
 int make_observer_in_space(const double *sc_pos, const double *sc_vel, observer *obs) {
@@ -567,7 +570,8 @@ int make_airborne_observer(const on_surface *location, const double *itrs_vel, o
  * @return              0 if successful, or -1 if the output argument is NULL.
  *
  * @sa make_gps_observer(), make_itrf_observer(), make_observer_at_site(),
- *     make_airborne_observer(), make_observer_in_space(),make_dynamic_observer()
+ *     make_airborne_observer(), make_observer_in_space(), make_comoving_observer(),
+ *     make_dynamic_observer()
  * @sa novas_make_frame()
  *
  * @since 1.1
@@ -596,6 +600,9 @@ int make_solar_system_observer(const double *sc_pos, const double *sc_vel, obser
  *
  * @since 1.8
  * @author Attila Kovacs
+ *
+ * @sa make_comoving_observer(), make_solar_system_observer(), make_observer_at_geocenter(),
+ *     make_observer_in_space()
  */
 int make_dynamic_observer(novas_state_provider call, const void *restrict arg, observer *restrict obs) {
   static const char *fn = "make_dynamic_observer";
@@ -609,6 +616,44 @@ int make_dynamic_observer(novas_state_provider call, const void *restrict arg, o
   obs->where = NOVAS_DYNAMIC_OBSERVER;
   obs->state_call = call;
   obs->call_arg = arg;
+  return 0;
+}
+
+/**
+ * Populates an 'observer' data structure, for an observer that is comoving with a Solar-system body
+ * or place, and whose momentary position is consequently provided by an `ephemeris()` call for that
+ * body or place.
+ *
+ * Examples of comoving observers are virtual observers located at the centers of planets, asteroids,
+ * or comets, travelling on a spacecraft (which has ephemeris data), or defined by Keplerian orbital
+ * parameters around a major Solar-system body or barycenter position.
+ *
+ * @param place   the Solar-system body or place to which defines the momentary position of the
+ *                observer at all times.
+ * @param obs     Pointer to the data structure to populate
+ * @return        0 if successful, or -1 if either argument is NULL (errno set to EINVAL), or
+ *                if the place is not in the Solar-system (errno set to ERANGE).
+ *
+ * @since 1.8
+ *
+ * @sa ephemeris(), make_solar_system_observer(), make_observer_at_geocenter()
+ */
+int make_comoving_observer(const object *restrict place, observer *restrict obs) {
+  static const char *fn = "make_object_based_observer";
+
+  if(!place)
+    return novas_error(-1, EINVAL, fn, "input place is NULL");
+
+  if(!obs)
+    return novas_error(-1, EINVAL, fn, "output observer is NULL");
+
+  if((unsigned) place->type >= NOVAS_OBJECT_TYPES)
+    return novas_error(-1, ERANGE, fn, "input place type %d is out of range", (int) place->type);
+
+  if(place->type == NOVAS_CATALOG_OBJECT)
+    return novas_error(-1, ERANGE, fn, "got catalog source, but need a Solar-system place");
+
+  prop_error(fn, make_dynamic_observer(novas_ephem_state, place, obs), 0);
   return 0;
 }
 

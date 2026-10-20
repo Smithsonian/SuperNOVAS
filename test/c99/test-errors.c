@@ -3160,6 +3160,23 @@ static int test_ephem_state() {
   return n;
 }
 
+static int test_comoving_observer() {
+  int n = 0;
+  object place = NOVAS_EARTH_INIT;
+  observer obs = {};
+
+  if(check("comoving_observer:place:null", -1, make_comoving_observer(NULL, &obs))) n++;
+  if(check("comoving_observer:obs:null", -1, make_comoving_observer(&place, NULL))) n++;
+
+  place.type = (enum novas_object_type) -1;
+  if(check("comoving_observer:place:-1", -1, make_comoving_observer(&place, &obs))) n++;
+
+  place.type = NOVAS_CATALOG_OBJECT;
+  if(check("comoving_observer:place:catalog", -1, make_comoving_observer(&place, &obs))) n++;
+
+  return n;
+}
+
 int main(int argc, const char *argv[]) {
   int n = 0;
 
@@ -3404,6 +3421,7 @@ int main(int argc, const char *argv[]) {
   if(test_is_leap_year()) n++;
   if(test_dynamic_observer()) n++;
   if(test_ephem_state()) n++;
+  if(test_comoving_observer()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");
