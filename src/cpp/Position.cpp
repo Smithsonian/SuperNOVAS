@@ -202,7 +202,7 @@ Coordinate Position::distance() const {
  * @since 1.8
  *
  * @sa operator-(), distance()
- * @sa Velocity::speed_difference_to()
+ * @sa Velocity::speed_relative_to()
  */
 Coordinate Position::distance_to(const Position& pos) const {
   Coordinate d(novas_vdist(_component, pos._component));

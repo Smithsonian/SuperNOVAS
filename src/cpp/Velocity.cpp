@@ -122,7 +122,7 @@ Velocity Velocity::operator+(const Velocity& r) const {
  * @return    the sum of this velocity and the argument.
  *
  * @since 1.6
- * @sa operator+(), speed_difference_to()
+ * @sa operator+(), speed_relative_to()
  */
 Velocity Velocity::operator-(const Velocity& r) const {
   Velocity v(v_add(_component[0], -r._component[0]), v_add(_component[1], -r._component[01]), v_add(_component[2], -r._component[2]));
@@ -174,7 +174,7 @@ ScalarVelocity Velocity::z() const {
  *
  * @since 1.6
  *
- * @sa speed_difference_to()
+ * @sa speed_relative_to()
  */
 ScalarVelocity Velocity::speed() const {
   ScalarVelocity v(abs());
@@ -198,7 +198,7 @@ ScalarVelocity Velocity::speed() const {
  * @sa operator-(), speed()
  * @sa Position::distance_to()
  */
-ScalarVelocity Velocity::speed_difference_to(const Velocity& v) const {
+ScalarVelocity Velocity::speed_relative_to(const Velocity& v) const {
   double sum = 0.0;
   for(int i = 0; i < 3; i++) {
     double d = _component[i] - v._component[i];

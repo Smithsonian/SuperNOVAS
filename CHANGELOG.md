@@ -66,7 +66,7 @@ Upcoming maintenance release, expected around 1 November 2026.
  - #382: Added `Velocity::along(Vector&)` / `Velocity::along(Spherical&)` to get the 1D projected scalar velocity of 
    a 3D velocity vector along some direction. 
    
- - #382: Added `Velocity::speed_difference_to(Velocity&)`.
+ - #382: Added `Velocity::speed_relative_to(Velocity&)`.
  
  - #387: Added `novas_state_provider` function type, and corresponding `state_call` and `call_arg` fields to `object` 
    (a.k.a. `novas_object`) data structure.
