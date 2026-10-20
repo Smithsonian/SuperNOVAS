@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [1.8.0-rc3] - 2026-10-20
+## [Unreleased]
 
 Upcoming maintenance release, expected around 1 November 2026.
 
@@ -103,7 +103,7 @@ Upcoming maintenance release, expected around 1 November 2026.
    that normal leap list files will ever benefit from the change. (by csp256)
 
  - #371: `novas_jd_to_date()` now checks that input JD date can be represented in a calendar format with an `int`-type 
-   year components in any calendar, and returns -1 with errno set to `ERANGE` when it cannot. The change prevents 
+   year components in any calendar, and returns -1 with `errno` set to `ERANGE` when it cannot. The change prevents 
    silent garbage output for ridiculous JD input values (such as more than 2 billion years from present day).
    (by csp256 and attipaci)
    
@@ -142,16 +142,14 @@ Upcoming maintenance release, expected around 1 November 2026.
    
  - #382: `Vector(double, double, double)` promoted to public.
  
- - #387: `ephemeris()` now will now return -1 with errno set to EINVAL if either input time component is NaN.
+ - #387: `ephemeris()` now will now return -1 with `errno` set to `EINVAL` if either input time component is NaN.
  
  - #387: Modified `geo_posvel()` to handle new dynamic observer locations.
  
  - #389: Improved error propagation on interpolated EOP estimate when EOP is obtained from IERS or some other source.
    
  - Streamlined `novas_make_planet_orbit()` slightly by avoiding duplicate trigonometric calls.
-   
- - Streamlined `novas_make_planet_orbit()` slightly by avoiding duplicate trigonometric calls.
-   
+
  - Changed portable mutex feature test order to reserve use of the C11 mutexes for cases where neither POSIX nor
    MSC mutexes can be used.
    

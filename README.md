@@ -1364,6 +1364,14 @@ Below is a non-exhaustive overview new features added by __SuperNOVAS__ on top o
 
 </details>
 
+<details open>
+<summary>New in v1.8</summary>
+
+ - New observer locations with dynamically calculated positions and velocities, such as observers defined by an 
+   ephemeris location or by Keplerian orbital elements.
+
+</details>
+
 <a name="api-changes"></a>
 ### Refinements to the NOVAS C API
 
