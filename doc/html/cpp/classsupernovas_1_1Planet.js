@@ -3,6 +3,7 @@ var classsupernovas_1_1Planet =
     [ "Planet", "classsupernovas_1_1Planet.html#a5eab02d5a9e923909b7c959fba5100b3", null ],
     [ "approx_apparent_in", "group__apparent.html#gad531705b1b07e32ead410483e109248f", null ],
     [ "approx_geometric_in", "group__geometric.html#gaf83481c3e551cd9fbfc949257567b468", null ],
+    [ "className", "classsupernovas_1_1Planet.html#a4d5542105b3856abe83edb07baa7ae58", null ],
     [ "copy", "classsupernovas_1_1Planet.html#aa312a35f47299d8dbb58f84fc15491b4", null ],
     [ "de_number", "classsupernovas_1_1Planet.html#aabb4badd53f6c696872ef95bb65cf53c", null ],
     [ "mass", "classsupernovas_1_1Planet.html#a1e2d15acac6c3072cfa65341059c4341", null ],

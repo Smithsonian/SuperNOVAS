@@ -12,7 +12,8 @@ var searchData=
   ['novas_5fplanet_5fbundle_9',['novas_planet_bundle',['../novas_8h.html#a94e5e4fa0f3ac31d642497d09f309b5f',1,'novas.h']]],
   ['novas_5fplanet_5fprovider_10',['novas_planet_provider',['../group__solar-system.html#ga08b05562aa008e4fffb943c3500d22eb',1,'novas.h']]],
   ['novas_5fplanet_5fprovider_5fhp_11',['novas_planet_provider_hp',['../group__solar-system.html#ga0c4147e9cb7fa16f9f0b252d5619df7b',1,'novas.h']]],
-  ['novas_5ftimespec_12',['novas_timespec',['../novas_8h.html#a98daa33604665eda41d9a9de964d7cc2',1,'novas.h']]],
-  ['novas_5ftrack_13',['novas_track',['../novas_8h.html#a19e2b7ebefb830d7cab293981adbbe07',1,'novas.h']]],
-  ['novas_5ftransform_14',['novas_transform',['../novas_8h.html#a98c96461c56c17948f6ba1cc746f85eb',1,'novas.h']]]
+  ['novas_5fstate_5fprovider_12',['novas_state_provider',['../novas_8h.html#a57854b43a0a88bfaac0fb886d30fecf5',1,'novas.h']]],
+  ['novas_5ftimespec_13',['novas_timespec',['../novas_8h.html#a98daa33604665eda41d9a9de964d7cc2',1,'novas.h']]],
+  ['novas_5ftrack_14',['novas_track',['../novas_8h.html#a19e2b7ebefb830d7cab293981adbbe07',1,'novas.h']]],
+  ['novas_5ftransform_15',['novas_transform',['../novas_8h.html#a98c96461c56c17948f6ba1cc746f85eb',1,'novas.h']]]
 ];

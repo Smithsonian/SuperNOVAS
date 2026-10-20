@@ -150,6 +150,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:gad531705b1b07e32ead410483e109248f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return an approximate apparent location on sky for a major planet, Sun, Moon, Earth-Moon Barycenter (EMB) &ndash; typically to arcmin level accuracy &ndash; using Keplerian orbital elements.  <br /></td></tr>
 <tr class="memitem:gaf83481c3e551cd9fbfc949257567b468" id="r_gaf83481c3e551cd9fbfc949257567b468"><td class="memItemLeft"><a class="el" href="classsupernovas_1_1Geometric.html">Geometric</a>&#160;</td><td class="memItemRight"><a class="el" href="group__geometric.html#gaf83481c3e551cd9fbfc949257567b468">approx_geometric_in</a> (const <a class="el" href="classsupernovas_1_1Frame.html">Frame</a> &amp;frame) const</td></tr>
 <tr class="memdesc:gaf83481c3e551cd9fbfc949257567b468"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns approximate eometric posiitions and velocities for a major planet, Sun, Moon, Earth-Moon Barycenter (EMB) &ndash; typically to arcmin level accuracy &ndash; using Keplerian orbital elements.  <br /></td></tr>
+<tr class="memitem:a4d5542105b3856abe83edb07baa7ae58" id="r_a4d5542105b3856abe83edb07baa7ae58"><td class="memItemLeft">const std::string &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a4d5542105b3856abe83edb07baa7ae58">className</a> () const override</td></tr>
+<tr class="memdesc:a4d5542105b3856abe83edb07baa7ae58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the class name for this astronomical source.  <br /></td></tr>
 <tr class="memitem:aa312a35f47299d8dbb58f84fc15491b4" id="r_aa312a35f47299d8dbb58f84fc15491b4"><td class="memItemLeft">const <a class="el" href="classsupernovas_1_1Source.html">Source</a> *&#160;</td><td class="memItemRight"><a class="el" href="#aa312a35f47299d8dbb58f84fc15491b4">copy</a> () const override</td></tr>
 <tr class="memdesc:aa312a35f47299d8dbb58f84fc15491b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pointer to a newly allocated copy of this planet instance.  <br /></td></tr>
 <tr class="memitem:aabb4badd53f6c696872ef95bb65cf53c" id="r_aabb4badd53f6c696872ef95bb65cf53c"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#aabb4badd53f6c696872ef95bb65cf53c">de_number</a> () const</td></tr>
@@ -165,6 +167,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a660d13408cb13cbc42b7263f0196c36d" id="r_a660d13408cb13cbc42b7263f0196c36d"><td class="memItemLeft"><a class="el" href="classsupernovas_1_1Orbital.html">Orbital</a>&#160;</td><td class="memItemRight"><a class="el" href="#a660d13408cb13cbc42b7263f0196c36d">orbit</a> (const <a class="el" href="classsupernovas_1_1Time.html">Time</a> &amp;ref_time) const</td></tr>
 <tr class="memdesc:a660d13408cb13cbc42b7263f0196c36d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the approximate Keplerian orbital parameters for this planet, calculated for the specified time of reference.  <br /></td></tr>
 <tr class="memitem:a4e6e0bbea18e4f0681eec673584a8785" id="r_a4e6e0bbea18e4f0681eec673584a8785"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#a4e6e0bbea18e4f0681eec673584a8785">to_string</a> () const override</td></tr>
+<tr class="memdesc:a4e6e0bbea18e4f0681eec673584a8785"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a human readable string representation of this astronomical source.  <br /></td></tr>
 <tr class="inherit_header pub_methods_classsupernovas_1_1SolarSystemSource"><td colspan="2" class="dyn-inherit"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Member Functions inherited from <a class="el" href="classsupernovas_1_1SolarSystemSource.html">supernovas::SolarSystemSource</a></td></tr>
 <tr class="memitem:ga42b4fe858ef5da0ae538e676f2bb7ca8 inherit pub_methods_classsupernovas_1_1SolarSystemSource" id="r_ga42b4fe858ef5da0ae538e676f2bb7ca8"><td class="memItemLeft"><a class="el" href="classsupernovas_1_1Geometric.html">Geometric</a>&#160;</td><td class="memItemRight"><a class="el" href="group__geometric.html#ga42b4fe858ef5da0ae538e676f2bb7ca8">barycentric_at</a> (const <a class="el" href="classsupernovas_1_1Time.html">Time</a> &amp;time, enum <a class="el" href="group__frame.html#ga3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy=<a class="el" href="group__frame.html#gga3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>) const</td></tr>
 <tr class="memdesc:ga42b4fe858ef5da0ae538e676f2bb7ca8 inherit pub_methods_classsupernovas_1_1SolarSystemSource"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the Solar-system barycentric position and velocity of this Solar-system source, or else an undefined geometry if the source's place cannot be determined at the requested time or accuracy.  <br /></td></tr>
@@ -320,6 +323,40 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
+<a id="a4d5542105b3856abe83edb07baa7ae58" name="a4d5542105b3856abe83edb07baa7ae58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d5542105b3856abe83edb07baa7ae58">&#9670;&#160;</a></span>className()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string &amp; supernovas::Planet::className </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the class name for this astronomical source. </p>
+<p>All concrete subclasses should override this method to return their C++ class name.</p>
+<dl class="section return"><dt>Returns</dt><dd>the class name for this source instance.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.8 </dd></dl>
+
+<p>Implements <a class="el" href="classsupernovas_1_1Source.html#ade658a9df9b79aac713cf416e0236256">supernovas::Source</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="#a4e6e0bbea18e4f0681eec673584a8785">to_string()</a>.</p>
+
+</div>
+</div>
 <a id="aa312a35f47299d8dbb58f84fc15491b4" name="aa312a35f47299d8dbb58f84fc15491b4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa312a35f47299d8dbb58f84fc15491b4">&#9670;&#160;</a></span>copy()</h2>
 
@@ -473,7 +510,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line">  <span class="comment">// Oops there is no planet for that NAIF ID...</span></div>
 <div class="line">  <span class="keywordflow">return</span>;</div>
 <div class="line">}</div>
-<div class="ttc" id="aclasssupernovas_1_1Planet_html_a2b4669db5152477ea09b9bf66c809aa3"><div class="ttname"><a href="#a2b4669db5152477ea09b9bf66c809aa3">supernovas::Planet::for_naif_id</a></div><div class="ttdeci">static Planet for_naif_id(long naif, const std::string &amp;name=&quot;&quot;)</div><div class="ttdoc">Returns a new planet corresponding to the specified NAIF ID, if possible, or else an invalid Planet i...</div><div class="ttdef"><b>Definition</b> Source.cpp:708</div></div>
+<div class="ttc" id="aclasssupernovas_1_1Planet_html_a2b4669db5152477ea09b9bf66c809aa3"><div class="ttname"><a href="#a2b4669db5152477ea09b9bf66c809aa3">supernovas::Planet::for_naif_id</a></div><div class="ttdeci">static Planet for_naif_id(long naif, const std::string &amp;name=&quot;&quot;)</div><div class="ttdoc">Returns a new planet corresponding to the specified NAIF ID, if possible, or else an invalid Planet i...</div><div class="ttdef"><b>Definition</b> Source.cpp:719</div></div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">naif</td><td>the NAIF ID number of the planet </td></tr>
@@ -519,7 +556,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line">  <span class="comment">// Oops there is no planet for that name...</span></div>
 <div class="line">  <span class="keywordflow">return</span>;</div>
 <div class="line">}</div>
-<div class="ttc" id="aclasssupernovas_1_1Planet_html_a7cec4323d92f0c576fd25fdc3633efb3"><div class="ttname"><a href="#a7cec4323d92f0c576fd25fdc3633efb3">supernovas::Planet::for_name</a></div><div class="ttdeci">static Planet for_name(const std::string &amp;name)</div><div class="ttdoc">Returns a new planet corresponding to the specified name (case insensitive), if possible,...</div><div class="ttdef"><b>Definition</b> Source.cpp:739</div></div>
+<div class="ttc" id="aclasssupernovas_1_1Planet_html_a7cec4323d92f0c576fd25fdc3633efb3"><div class="ttname"><a href="#a7cec4323d92f0c576fd25fdc3633efb3">supernovas::Planet::for_name</a></div><div class="ttdeci">static Planet for_name(const std::string &amp;name)</div><div class="ttdoc">Returns a new planet corresponding to the specified name (case insensitive), if possible,...</div><div class="ttdef"><b>Definition</b> Source.cpp:750</div></div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>the planet's name (includes Sun, Moon, SSB, EMB, and Pluto-Barycenter also). Case insensitive. </td></tr>
@@ -999,9 +1036,13 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Returns a human readable string representation of this astronomical source. </p>
+<dl class="section return"><dt>Returns</dt><dd>a string representation of this source.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.6 </dd></dl>
+
 <p>Implements <a class="el" href="classsupernovas_1_1Source.html#af7ae7c88a6375c790d2477d9fe99e396">supernovas::Source</a>.</p>
 
-<p class="reference">References <a class="el" href="classsupernovas_1_1Source.html#ae16d5d04d593b9b14d6b5390bb8a07e3">supernovas::Source::name()</a>.</p>
+<p class="reference">References <a class="el" href="#a4d5542105b3856abe83edb07baa7ae58">className()</a>, and <a class="el" href="classsupernovas_1_1Source.html#ae16d5d04d593b9b14d6b5390bb8a07e3">supernovas::Source::name()</a>.</p>
 
 </div>
 </div>

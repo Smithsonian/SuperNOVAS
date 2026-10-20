@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['interferometric_0',['Interferometric',['../classsupernovas_1_1Interferometric.html',1,'supernovas']]],
-  ['interval_1',['Interval',['../classsupernovas_1_1Interval.html',1,'supernovas']]]
+  ['horizontal_0',['Horizontal',['../classsupernovas_1_1Horizontal.html',1,'supernovas']]],
+  ['horizontaltrack_1',['HorizontalTrack',['../classsupernovas_1_1HorizontalTrack.html',1,'supernovas']]]
 ];

@@ -35,6 +35,10 @@ var hierarchy =
       [ "supernovas::Frame", "classsupernovas_1_1Frame.html", null ],
       [ "supernovas::Geometric", "classsupernovas_1_1Geometric.html", null ],
       [ "supernovas::Observer", "classsupernovas_1_1Observer.html", [
+        [ "supernovas::DynamicObserver", "classsupernovas_1_1DynamicObserver.html", [
+          [ "supernovas::EphemerisObserver", "classsupernovas_1_1EphemerisObserver.html", null ],
+          [ "supernovas::OrbitalObserver", "classsupernovas_1_1OrbitalObserver.html", null ]
+        ] ],
         [ "supernovas::GeocentricObserver", "classsupernovas_1_1GeocentricObserver.html", null ],
         [ "supernovas::GeodeticObserver", "classsupernovas_1_1GeodeticObserver.html", null ],
         [ "supernovas::SolarSystemObserver", "classsupernovas_1_1SolarSystemObserver.html", null ]

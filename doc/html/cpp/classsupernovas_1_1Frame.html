@@ -189,6 +189,8 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-static-methods" class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a755ffa3591fc74a80fafdd6a73854617" id="r_a755ffa3591fc74a80fafdd6a73854617"><td class="memItemLeft">static Frame&#160;</td><td class="memItemRight"><a class="el" href="#a755ffa3591fc74a80fafdd6a73854617">barycentric_at</a> (const <a class="el" href="classsupernovas_1_1Time.html">Time</a> &amp;time, enum <a class="el" href="group__frame.html#ga3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy=<a class="el" href="group__frame.html#gga3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>)</td></tr>
+<tr class="memdesc:a755ffa3591fc74a80fafdd6a73854617"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a new Solar-System Barycentric observing frame for the given time and accuracy.  <br /></td></tr>
 <tr class="memitem:a10c51835fcbb5c2f04714d1bc17f7e87" id="r_a10c51835fcbb5c2f04714d1bc17f7e87"><td class="memItemLeft">static Frame&#160;</td><td class="memItemRight"><a class="el" href="#a10c51835fcbb5c2f04714d1bc17f7e87">reduced_accuracy</a> (const <a class="el" href="classsupernovas_1_1Observer.html">Observer</a> &amp;obs, const <a class="el" href="classsupernovas_1_1Time.html">Time</a> &amp;time, const <a class="el" href="classsupernovas_1_1EOP.html">EOP</a> &amp;eop=<a class="el" href="classsupernovas_1_1EOP.html#a7675a6f28f30468c22ac70211880cc6f">EOP::undefined</a>())</td></tr>
 <tr class="memdesc:a10c51835fcbb5c2f04714d1bc17f7e87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a reduced accuracy observing frame for the specified observer at the specified time.  <br /></td></tr>
 <tr class="memitem:a4a84b410932553d0c781fc47bb17dc26" id="r_a4a84b410932553d0c781fc47bb17dc26"><td class="memItemLeft">static const Frame &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a4a84b410932553d0c781fc47bb17dc26">undefined</a> ()</td></tr>
@@ -248,7 +250,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line">  ...</div>
 <div class="line">}</div>
 <div class="ttc" id="aclasssupernovas_1_1Frame_html_ad6eb32c4b1cf68e839d6257ad1933d4a"><div class="ttname"><a href="#ad6eb32c4b1cf68e839d6257ad1933d4a">supernovas::Frame::time</a></div><div class="ttdeci">const Time &amp; time() const</div><div class="ttdoc">Returns the astrometric time of observation of this observing frame.</div><div class="ttdef"><b>Definition</b> Frame.cpp:232</div></div>
-<div class="ttc" id="aclasssupernovas_1_1Validating_html_aa3695f10056563de6ba2f0863cabda53"><div class="ttname"><a href="classsupernovas_1_1Validating.html#aa3695f10056563de6ba2f0863cabda53">supernovas::Validating::is_valid</a></div><div class="ttdeci">bool is_valid() const</div><div class="ttdoc">Returns the previously set &#39;valid&#39; state of the implementing instance.</div><div class="ttdef"><b>Definition</b> supernovas.h:278</div></div>
+<div class="ttc" id="aclasssupernovas_1_1Validating_html_aa3695f10056563de6ba2f0863cabda53"><div class="ttname"><a href="classsupernovas_1_1Validating.html#aa3695f10056563de6ba2f0863cabda53">supernovas::Validating::is_valid</a></div><div class="ttdeci">bool is_valid() const</div><div class="ttdoc">Returns the previously set &#39;valid&#39; state of the implementing instance.</div><div class="ttdef"><b>Definition</b> supernovas.h:281</div></div>
 </div><!-- fragment --><p>The returned new frame may be invalid for multiple reasons, such as:</p>
 <ul>
 <li>the input observer or time is invalid.</li>
@@ -375,7 +377,51 @@ Additional Inherited Members</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.6 </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="#a045f690bf158d04c8f77c8b049b0ef50">Frame()</a>, and <a class="el" href="group__interferometry.html#gadda2670c6c66d72fbd1b57eb0827e629">supernovas::Observer::to_interferometric()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#a045f690bf158d04c8f77c8b049b0ef50">Frame()</a>, <a class="el" href="#a755ffa3591fc74a80fafdd6a73854617">barycentric_at()</a>, and <a class="el" href="group__interferometry.html#gadda2670c6c66d72fbd1b57eb0827e629">supernovas::Observer::to_interferometric()</a>.</p>
+
+</div>
+</div>
+<a id="a755ffa3591fc74a80fafdd6a73854617" name="a755ffa3591fc74a80fafdd6a73854617"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a755ffa3591fc74a80fafdd6a73854617">&#9670;&#160;</a></span>barycentric_at()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Frame supernovas::Frame::barycentric_at </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classsupernovas_1_1Time.html">Time</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>time</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__frame.html#ga3cba2735c32163fab062b1a904a83b56">novas_accuracy</a></td>          <td class="paramname"><span class="paramname"><em>accuracy</em></span><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="group__frame.html#gga3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns a new Solar-System Barycentric observing frame for the given time and accuracy. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">time</td><td>Astrometric time of observation </td></tr>
+    <tr><td class="paramname">accuracy</td><td>(optional) NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY (default: full accuracy). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A new barycentric observing frame for the specified time and accuracy.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.8 </dd></dl>
+
+<p class="reference">References <a class="el" href="#a662b8d1698620c98076d66c08d5ce00f">accuracy()</a>, <a class="el" href="classsupernovas_1_1Observer.html#a559ac67489ac1b98ff52312367e0b98f">supernovas::Observer::at_ssb()</a>, <a class="el" href="classsupernovas_1_1Validating.html#aa3695f10056563de6ba2f0863cabda53">supernovas::Validating::is_valid()</a>, <a class="el" href="#ad6eb32c4b1cf68e839d6257ad1933d4a">time()</a>, and <a class="el" href="#a4a84b410932553d0c781fc47bb17dc26">undefined()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="classsupernovas_1_1DynamicObserver.html#a5a786daae21b02f8f41b2e7e90702b04">supernovas::DynamicObserver::barycentric_at()</a>, and <a class="el" href="group__geometric.html#ga42b4fe858ef5da0ae538e676f2bb7ca8">supernovas::SolarSystemSource::barycentric_at()</a>.</p>
 
 </div>
 </div>
@@ -798,7 +844,7 @@ Additional Inherited Members</h2></td></tr>
 <dl class="section since"><dt>Since</dt><dd>1.6 </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#a3a8ad7789f7e16a6a64a97aafd0e4d17" title="Returns the precise Julian Date of this observing frame, in the specific timescale of choice.">jd()</a>, <a class="el" href="novas_8h.html#ae7963c522d28ce6891b472e079307d03" title="Observer location.">observer()</a> </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="#a074fa6f8c669da6f40f7a885d39af88e">Frame()</a>, <a class="el" href="#a045f690bf158d04c8f77c8b049b0ef50">Frame()</a>, <a class="el" href="group__tracking.html#ga1da60cae52d719260947c000891cfa87">supernovas::Source::equatorial_track()</a>, <a class="el" href="#a10c51835fcbb5c2f04714d1bc17f7e87">reduced_accuracy()</a>, and <a class="el" href="group__interferometry.html#gadda2670c6c66d72fbd1b57eb0827e629">supernovas::Observer::to_interferometric()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#a074fa6f8c669da6f40f7a885d39af88e">Frame()</a>, <a class="el" href="#a045f690bf158d04c8f77c8b049b0ef50">Frame()</a>, <a class="el" href="#a755ffa3591fc74a80fafdd6a73854617">barycentric_at()</a>, <a class="el" href="group__tracking.html#ga1da60cae52d719260947c000891cfa87">supernovas::Source::equatorial_track()</a>, <a class="el" href="#a10c51835fcbb5c2f04714d1bc17f7e87">reduced_accuracy()</a>, and <a class="el" href="group__interferometry.html#gadda2670c6c66d72fbd1b57eb0827e629">supernovas::Observer::to_interferometric()</a>.</p>
 
 </div>
 </div>
@@ -854,6 +900,8 @@ Additional Inherited Members</h2></td></tr>
 <p>This invalid frame may be used inside any object that is invalid itself.</p>
 <dl class="section return"><dt>Returns</dt><dd>a reference to a static standard invalid equatorial coordinates.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.6 </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="#a755ffa3591fc74a80fafdd6a73854617">barycentric_at()</a>.</p>
 
 </div>
 </div>

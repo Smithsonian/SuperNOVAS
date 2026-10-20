@@ -1,9 +1,11 @@
 var searchData=
 [
-  ['temperature_0',['Temperature',['../classsupernovas_1_1Temperature.html',1,'supernovas']]],
-  ['time_1',['Time',['../classsupernovas_1_1Time.html',1,'supernovas']]],
-  ['timeangle_2',['TimeAngle',['../classsupernovas_1_1TimeAngle.html',1,'supernovas']]],
-  ['track_3',['Track',['../classsupernovas_1_1Track.html',1,'supernovas']]],
-  ['track_3c_20equatorial_20_3e_4',['Track&lt; Equatorial &gt;',['../classsupernovas_1_1Track.html',1,'supernovas']]],
-  ['track_3c_20horizontal_20_3e_5',['Track&lt; Horizontal &gt;',['../classsupernovas_1_1Track.html',1,'supernovas']]]
+  ['scalar_0',['Scalar',['../classsupernovas_1_1Scalar.html',1,'supernovas']]],
+  ['scalarevolution_1',['ScalarEvolution',['../classsupernovas_1_1ScalarEvolution.html',1,'supernovas']]],
+  ['scalarvelocity_2',['ScalarVelocity',['../classsupernovas_1_1ScalarVelocity.html',1,'supernovas']]],
+  ['site_3',['Site',['../classsupernovas_1_1Site.html',1,'supernovas']]],
+  ['solarsystemobserver_4',['SolarSystemObserver',['../classsupernovas_1_1SolarSystemObserver.html',1,'supernovas']]],
+  ['solarsystemsource_5',['SolarSystemSource',['../classsupernovas_1_1SolarSystemSource.html',1,'supernovas']]],
+  ['source_6',['Source',['../classsupernovas_1_1Source.html',1,'supernovas']]],
+  ['spherical_7',['Spherical',['../classsupernovas_1_1Spherical.html',1,'supernovas']]]
 ];

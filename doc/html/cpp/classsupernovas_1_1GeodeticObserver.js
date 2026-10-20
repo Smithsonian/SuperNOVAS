@@ -3,6 +3,7 @@ var classsupernovas_1_1GeodeticObserver =
     [ "GeodeticObserver", "classsupernovas_1_1GeodeticObserver.html#aedc3bdf981a9777fbae078f1b84792c9", null ],
     [ "GeodeticObserver", "classsupernovas_1_1GeodeticObserver.html#a27d141fdabb111464442f65126d20168", null ],
     [ "GeodeticObserver", "classsupernovas_1_1GeodeticObserver.html#ae100ecbf7803ed56bd78b3f056353445", null ],
+    [ "className", "classsupernovas_1_1GeodeticObserver.html#a67b986b879ec8d2159f9fd043638493b", null ],
     [ "copy", "classsupernovas_1_1GeodeticObserver.html#a2efc7112c0b475e84aa94219d77b960b", null ],
     [ "enu_velocity", "classsupernovas_1_1GeodeticObserver.html#a9a65457117d1ae66096805c92e66767b", null ],
     [ "eop_at", "classsupernovas_1_1GeodeticObserver.html#a66c8d9adc7dad77300f861899866e3cf", null ],

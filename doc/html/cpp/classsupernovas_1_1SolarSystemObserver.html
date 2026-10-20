@@ -147,6 +147,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:af1ab79f3e321bbbe8a6343c88d8417cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instantiates a new stationary observer located at the Solar-System Barycenter (SSB).  <br /></td></tr>
 <tr class="memitem:a026039e93a1925b9078502aea993f203" id="r_a026039e93a1925b9078502aea993f203"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a026039e93a1925b9078502aea993f203">SolarSystemObserver</a> (const <a class="el" href="classsupernovas_1_1Position.html">Position</a> &amp;pos, const <a class="el" href="classsupernovas_1_1Velocity.html">Velocity</a> &amp;vel)</td></tr>
 <tr class="memdesc:a026039e93a1925b9078502aea993f203"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instantiates a new observer in the Solar System.  <br /></td></tr>
+<tr class="memitem:aed48a80656ae3b0e13e7f07a711b1140" id="r_aed48a80656ae3b0e13e7f07a711b1140"><td class="memItemLeft">const std::string &amp;&#160;</td><td class="memItemRight"><a class="el" href="#aed48a80656ae3b0e13e7f07a711b1140">className</a> () const override</td></tr>
+<tr class="memdesc:aed48a80656ae3b0e13e7f07a711b1140"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the observer class name.  <br /></td></tr>
 <tr class="memitem:a3ba91583e539cc02241b82ced9675aab" id="r_a3ba91583e539cc02241b82ced9675aab"><td class="memItemLeft">const Observer *&#160;</td><td class="memItemRight"><a class="el" href="#a3ba91583e539cc02241b82ced9675aab">copy</a> () const override</td></tr>
 <tr class="memdesc:a3ba91583e539cc02241b82ced9675aab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pointer to a newly allocated copy of this observer instance at a Solar-system location.  <br /></td></tr>
 <tr class="memitem:af063a24216e1d4f7ec007a524a500464" id="r_af063a24216e1d4f7ec007a524a500464"><td class="memItemLeft"><a class="el" href="classsupernovas_1_1Position.html">Position</a>&#160;</td><td class="memItemRight"><a class="el" href="#af063a24216e1d4f7ec007a524a500464">ssb_position</a> () const</td></tr>
@@ -190,8 +192,14 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memdesc:a575a758eea4defc3d47fa6da9054e84f inherit pub_static_methods_classsupernovas_1_1Observer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a fictitious observer placed at the location of the geocenter.  <br /></td></tr>
 <tr class="memitem:a559ac67489ac1b98ff52312367e0b98f inherit pub_static_methods_classsupernovas_1_1Observer" id="r_a559ac67489ac1b98ff52312367e0b98f"><td class="memItemLeft">static <a class="el" href="classsupernovas_1_1SolarSystemObserver.html">SolarSystemObserver</a>&#160;</td><td class="memItemRight"><a class="el" href="classsupernovas_1_1Observer.html#a559ac67489ac1b98ff52312367e0b98f">at_ssb</a> ()</td></tr>
 <tr class="memdesc:a559ac67489ac1b98ff52312367e0b98f inherit pub_static_methods_classsupernovas_1_1Observer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a fictitious observer placed at the location of the Solar-System Barycenter (SSB).  <br /></td></tr>
+<tr class="memitem:a87d82d5dab19a16c94365d76223f3dfb inherit pub_static_methods_classsupernovas_1_1Observer" id="r_a87d82d5dab19a16c94365d76223f3dfb"><td class="memItemLeft">static <a class="el" href="classsupernovas_1_1DynamicObserver.html">DynamicObserver</a>&#160;</td><td class="memItemRight"><a class="el" href="classsupernovas_1_1Observer.html#a87d82d5dab19a16c94365d76223f3dfb">dynamic</a> (<a class="el" href="novas_8h.html#a57854b43a0a88bfaac0fb886d30fecf5">novas_state_provider</a> state_call, const void *arg=NULL)</td></tr>
+<tr class="memdesc:a87d82d5dab19a16c94365d76223f3dfb inherit pub_static_methods_classsupernovas_1_1Observer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a new observer with dynamically determined position / velocity via a designated state provider function.  <br /></td></tr>
 <tr class="memitem:a968c562d9e65d4418e77b2457001d09e inherit pub_static_methods_classsupernovas_1_1Observer" id="r_a968c562d9e65d4418e77b2457001d09e"><td class="memItemLeft">static <a class="el" href="classsupernovas_1_1GeocentricObserver.html">GeocentricObserver</a>&#160;</td><td class="memItemRight"><a class="el" href="classsupernovas_1_1Observer.html#a968c562d9e65d4418e77b2457001d09e">in_earth_orbit</a> (const <a class="el" href="classsupernovas_1_1Position.html">Position</a> &amp;pos, const <a class="el" href="classsupernovas_1_1Velocity.html">Velocity</a> &amp;vel)</td></tr>
 <tr class="memdesc:a968c562d9e65d4418e77b2457001d09e inherit pub_static_methods_classsupernovas_1_1Observer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a new observer orbiting the Earth.  <br /></td></tr>
+<tr class="memitem:a94d8a60246b39da45eccc6e52cb132a1 inherit pub_static_methods_classsupernovas_1_1Observer" id="r_a94d8a60246b39da45eccc6e52cb132a1"><td class="memItemLeft">static <a class="el" href="classsupernovas_1_1EphemerisObserver.html">EphemerisObserver</a>&#160;</td><td class="memItemRight"><a class="el" href="classsupernovas_1_1Observer.html#a94d8a60246b39da45eccc6e52cb132a1">in_ephemeris</a> (const std::string &amp;name, long id)</td></tr>
+<tr class="memdesc:a94d8a60246b39da45eccc6e52cb132a1 inherit pub_static_methods_classsupernovas_1_1Observer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a new observer defined by an ephemeris position, that can be obtained by the configured <span class="tt"><a class="el" href="group__solar-system.html#gadbd62a48b46ce89f20e0343632dfcdd0" title="Function to obtain ephemeris data for minor planets, which are not handled by the solarsystem() type ...">novas_ephem_provider</a></span> call.  <br /></td></tr>
+<tr class="memitem:a6fb421e769597399531845a8749baf79 inherit pub_static_methods_classsupernovas_1_1Observer" id="r_a6fb421e769597399531845a8749baf79"><td class="memItemLeft">static <a class="el" href="classsupernovas_1_1OrbitalObserver.html">OrbitalObserver</a>&#160;</td><td class="memItemRight"><a class="el" href="classsupernovas_1_1Observer.html#a6fb421e769597399531845a8749baf79">in_orbital</a> (const <a class="el" href="classsupernovas_1_1Orbital.html">Orbital</a> &amp;orbit, const std::string &amp;name=&quot;orbital observer&quot;)</td></tr>
+<tr class="memdesc:a6fb421e769597399531845a8749baf79 inherit pub_static_methods_classsupernovas_1_1Observer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a new observer, whose location is defined by Keplerian orbital parameters around a major Solar System body.  <br /></td></tr>
 <tr class="memitem:a19e2218fa648b4233dbd37c7ef2969bf inherit pub_static_methods_classsupernovas_1_1Observer" id="r_a19e2218fa648b4233dbd37c7ef2969bf"><td class="memItemLeft">static <a class="el" href="classsupernovas_1_1SolarSystemObserver.html">SolarSystemObserver</a>&#160;</td><td class="memItemRight"><a class="el" href="classsupernovas_1_1Observer.html#a19e2218fa648b4233dbd37c7ef2969bf">in_solar_system</a> (const <a class="el" href="classsupernovas_1_1Position.html">Position</a> &amp;pos, const <a class="el" href="classsupernovas_1_1Velocity.html">Velocity</a> &amp;vel)</td></tr>
 <tr class="memdesc:a19e2218fa648b4233dbd37c7ef2969bf inherit pub_static_methods_classsupernovas_1_1Observer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a new observer in some Solar-system location.  <br /></td></tr>
 <tr class="memitem:aa0abf1c22d33bb94f266219a9c8282d7 inherit pub_static_methods_classsupernovas_1_1Observer" id="r_aa0abf1c22d33bb94f266219a9c8282d7"><td class="memItemLeft">static <a class="el" href="classsupernovas_1_1GeodeticObserver.html">GeodeticObserver</a>&#160;</td><td class="memItemRight"><a class="el" href="classsupernovas_1_1Observer.html#aa0abf1c22d33bb94f266219a9c8282d7">moving_on_earth</a> (const <a class="el" href="classsupernovas_1_1Site.html">Site</a> &amp;site, const <a class="el" href="classsupernovas_1_1EOP.html">EOP</a> &amp;eop, const <a class="el" href="classsupernovas_1_1ScalarVelocity.html">ScalarVelocity</a> &amp;horizontal, const <a class="el" href="classsupernovas_1_1Angle.html">Angle</a> &amp;direction, const <a class="el" href="classsupernovas_1_1ScalarVelocity.html">ScalarVelocity</a> &amp;vertical=<a class="el" href="classsupernovas_1_1ScalarVelocity.html#ae106b32bca97a3d677522da36f4ff853">ScalarVelocity::stationary</a>())</td></tr>
@@ -280,6 +288,40 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
+<a id="aed48a80656ae3b0e13e7f07a711b1140" name="aed48a80656ae3b0e13e7f07a711b1140"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed48a80656ae3b0e13e7f07a711b1140">&#9670;&#160;</a></span>className()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string &amp; supernovas::SolarSystemObserver::className </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the observer class name. </p>
+<p>All concrete subclasses should override this method to return their C++ class name.</p>
+<dl class="section return"><dt>Returns</dt><dd>the class name for this observer instance.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.8 </dd></dl>
+
+<p>Reimplemented from <a class="el" href="classsupernovas_1_1Observer.html#a060bef2ec7171c4f0fb3472f4165d285">supernovas::Observer</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="#a000ae8621806fbf4637b2c112b50613f">to_string()</a>.</p>
+
+</div>
+</div>
 <a id="a3ba91583e539cc02241b82ced9675aab" name="a3ba91583e539cc02241b82ced9675aab"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3ba91583e539cc02241b82ced9675aab">&#9670;&#160;</a></span>copy()</h2>
 
@@ -394,7 +436,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classsupernovas_1_1Observer.html#a6976e04ac1fe70d10ac5b9966ff73c8b">supernovas::Observer</a>.</p>
 
-<p class="reference">References <a class="el" href="classsupernovas_1_1Vector.html#a731ab991e6b7426666dfeb9047da8dc8">supernovas::Vector::is_zero()</a>, <a class="el" href="#af063a24216e1d4f7ec007a524a500464">ssb_position()</a>, <a class="el" href="#a52b68ba98939ec3b3832d4edcfbf5324">ssb_velocity()</a>, <a class="el" href="classsupernovas_1_1Position.html#a8506cf525711b3bdbac8adc9c153c984">supernovas::Position::to_string()</a>, and <a class="el" href="classsupernovas_1_1Velocity.html#a1484083f9c73aec4e40e9fe8f45c056c">supernovas::Velocity::to_string()</a>.</p>
+<p class="reference">References <a class="el" href="#aed48a80656ae3b0e13e7f07a711b1140">className()</a>, <a class="el" href="classsupernovas_1_1Vector.html#a731ab991e6b7426666dfeb9047da8dc8">supernovas::Vector::is_zero()</a>, <a class="el" href="#af063a24216e1d4f7ec007a524a500464">ssb_position()</a>, <a class="el" href="#a52b68ba98939ec3b3832d4edcfbf5324">ssb_velocity()</a>, <a class="el" href="classsupernovas_1_1Position.html#a8506cf525711b3bdbac8adc9c153c984">supernovas::Position::to_string()</a>, and <a class="el" href="classsupernovas_1_1Velocity.html#a1484083f9c73aec4e40e9fe8f45c056c">supernovas::Velocity::to_string()</a>.</p>
 
 </div>
 </div>

@@ -154,6 +154,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ga600eddf89ef347be4838130f327da6df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the apparent angular separation of this source from another source, for the given observer location and time of observation.  <br /></td></tr>
 <tr class="memitem:ga30cfb5d2c48b4464e015c8429174e771" id="r_ga30cfb5d2c48b4464e015c8429174e771"><td class="memItemLeft"><a class="el" href="classsupernovas_1_1Apparent.html">Apparent</a>&#160;</td><td class="memItemRight"><a class="el" href="group__apparent.html#ga30cfb5d2c48b4464e015c8429174e771">apparent_in</a> (const <a class="el" href="classsupernovas_1_1Frame.html">Frame</a> &amp;frame) const</td></tr>
 <tr class="memdesc:ga30cfb5d2c48b4464e015c8429174e771"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the apparent position of a source (if possible), or else an invalid position.  <br /></td></tr>
+<tr class="memitem:ade658a9df9b79aac713cf416e0236256" id="r_ade658a9df9b79aac713cf416e0236256"><td class="memItemLeft">virtual const std::string &amp;&#160;</td><td class="memItemRight"><a class="el" href="#ade658a9df9b79aac713cf416e0236256">className</a> () const =0</td></tr>
+<tr class="memdesc:ade658a9df9b79aac713cf416e0236256"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the class name for this astronomical source.  <br /></td></tr>
 <tr class="memitem:af5a18693fc942953c44bf6a04d512060" id="r_af5a18693fc942953c44bf6a04d512060"><td class="memItemLeft">virtual const <a class="el" href="#a7e0f947b9bb8eeb40c21cec3db3d89aa">Source</a> *&#160;</td><td class="memItemRight"><a class="el" href="#af5a18693fc942953c44bf6a04d512060">copy</a> () const =0</td></tr>
 <tr class="memdesc:af5a18693fc942953c44bf6a04d512060"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pointer to a newly allocated copy of this instance.  <br /></td></tr>
 <tr class="memitem:a7ad4d9077afc0ccbbc8b60910a69273e" id="r_a7ad4d9077afc0ccbbc8b60910a69273e"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a7ad4d9077afc0ccbbc8b60910a69273e">equals</a> (const <a class="el" href="#a7e0f947b9bb8eeb40c21cec3db3d89aa">Source</a> &amp;other) const</td></tr>
@@ -181,6 +183,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ga837b7cc8012af33b66b577bfed9597d9" id="r_ga837b7cc8012af33b66b577bfed9597d9"><td class="memItemLeft"><a class="el" href="classsupernovas_1_1Angle.html">Angle</a>&#160;</td><td class="memItemRight"><a class="el" href="group__apparent.html#ga837b7cc8012af33b66b577bfed9597d9">sun_angle</a> (const <a class="el" href="classsupernovas_1_1Frame.html">Frame</a> &amp;frame) const</td></tr>
 <tr class="memdesc:ga837b7cc8012af33b66b577bfed9597d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the pparent angular separation of this source from the Sun, for the given observer location and time of observation.  <br /></td></tr>
 <tr class="memitem:af7ae7c88a6375c790d2477d9fe99e396" id="r_af7ae7c88a6375c790d2477d9fe99e396"><td class="memItemLeft">virtual std::string&#160;</td><td class="memItemRight"><a class="el" href="#af7ae7c88a6375c790d2477d9fe99e396">to_string</a> () const =0</td></tr>
+<tr class="memdesc:af7ae7c88a6375c790d2477d9fe99e396"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a human readable string representation of this astronomical source.  <br /></td></tr>
 <tr class="memitem:gac424e530ebbab130b1635ac0c5355101" id="r_gac424e530ebbab130b1635ac0c5355101"><td class="memItemLeft"><a class="el" href="classsupernovas_1_1Time.html">Time</a>&#160;</td><td class="memItemRight"><a class="el" href="group__time.html#gac424e530ebbab130b1635ac0c5355101">transits_in</a> (const <a class="el" href="classsupernovas_1_1Frame.html">Frame</a> &amp;frame) const</td></tr>
 <tr class="memdesc:gac424e530ebbab130b1635ac0c5355101"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the time when the source transits for an observer located on or near Earth's surface, or else an undefined (invalid) time if the observer is not near Earth's surface.  <br /></td></tr>
 <tr class="memitem:a46cb1a64e8c19da4df03df59df625380" id="r_a46cb1a64e8c19da4df03df59df625380"><td class="memItemLeft">enum <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238f">novas_object_type</a>&#160;</td><td class="memItemRight"><a class="el" href="#a46cb1a64e8c19da4df03df59df625380">type</a> () const</td></tr>
@@ -241,7 +244,7 @@ Protected Attributes</h2></td></tr>
 
 <p>stored data on source </p>
 
-<p class="reference">Referenced by <a class="el" href="classsupernovas_1_1CatalogSource.html#ab309ce8e3bd4d09229aa6eff97248b5e">supernovas::CatalogSource::CatalogSource()</a>, <a class="el" href="group__apparent.html#ga600eddf89ef347be4838130f327da6df">angle_to()</a>, <a class="el" href="classsupernovas_1_1CatalogSource.html#a98b76a5026ad51a77796f3e8d5a79ce9">supernovas::CatalogSource::copy()</a>, <a class="el" href="#af5a18693fc942953c44bf6a04d512060">copy()</a>, <a class="el" href="#a7ad4d9077afc0ccbbc8b60910a69273e">equals()</a>, <a class="el" href="#af1507f851b6eb410b8e06defc880151e">operator!=()</a>, and <a class="el" href="#a44bc81fc1eb513b3c46e77e768401833">operator==()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classsupernovas_1_1CatalogSource.html#ab309ce8e3bd4d09229aa6eff97248b5e">supernovas::CatalogSource::CatalogSource()</a>, <a class="el" href="group__apparent.html#ga600eddf89ef347be4838130f327da6df">angle_to()</a>, <a class="el" href="#ade658a9df9b79aac713cf416e0236256">className()</a>, <a class="el" href="classsupernovas_1_1CatalogSource.html#a98b76a5026ad51a77796f3e8d5a79ce9">supernovas::CatalogSource::copy()</a>, <a class="el" href="#af5a18693fc942953c44bf6a04d512060">copy()</a>, <a class="el" href="#a7ad4d9077afc0ccbbc8b60910a69273e">equals()</a>, <a class="el" href="#af1507f851b6eb410b8e06defc880151e">operator!=()</a>, and <a class="el" href="#a44bc81fc1eb513b3c46e77e768401833">operator==()</a>.</p>
 
 </div>
 </div>
@@ -296,6 +299,42 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="ade658a9df9b79aac713cf416e0236256" name="ade658a9df9b79aac713cf416e0236256"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade658a9df9b79aac713cf416e0236256">&#9670;&#160;</a></span>className()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual const std::string &amp; supernovas::Source::className </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel pure-virtual">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the class name for this astronomical source. </p>
+<p>All concrete subclasses should override this method to return their C++ class name.</p>
+<dl class="section return"><dt>Returns</dt><dd>the class name for this source instance.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.8 </dd></dl>
+
+<p>Implemented in <a class="el" href="classsupernovas_1_1CatalogSource.html#a0d8c246a04a30bc8c54bd60098e7afdd">supernovas::CatalogSource</a>, <a class="el" href="classsupernovas_1_1EphemerisSource.html#a700fcc67a38d13fb5addea05ea3526ee">supernovas::EphemerisSource</a>, <a class="el" href="classsupernovas_1_1OrbitalSource.html#aeb798f007aa0fd52721f5d70404a14a2">supernovas::OrbitalSource</a>, and <a class="el" href="classsupernovas_1_1Planet.html#a4d5542105b3856abe83edb07baa7ae58">supernovas::Planet</a>.</p>
+
+<p class="reference">References <a class="el" href="#a7e0f947b9bb8eeb40c21cec3db3d89aa">Source()</a>, <a class="el" href="group__apparent.html#ga600eddf89ef347be4838130f327da6df">angle_to()</a>, <a class="el" href="group__apparent.html#ga30cfb5d2c48b4464e015c8429174e771">apparent_in()</a>, <a class="el" href="#a7ad4d9077afc0ccbbc8b60910a69273e">equals()</a>, <a class="el" href="group__tracking.html#ga1da60cae52d719260947c000891cfa87">equatorial_track()</a>, <a class="el" href="group__geometric.html#ga5d45ffe8479b2b0945e66ef1a0c7cc0a">geometric_in()</a>, <a class="el" href="group__tracking.html#gaacf8278daed3c4bd7054aa68f7022842">horizontal_track()</a>, <a class="el" href="classsupernovas_1_1Unit.html#adce60398bc378c205599221c83ee160d">supernovas::Unit::hour</a>, <a class="el" href="group__apparent.html#ga4d8c425044b5594fa8251812db25f0d7">moon_angle()</a>, <a class="el" href="group__equatorial.html#gga7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3">NOVAS_TOD</a>, <a class="el" href="#af1507f851b6eb410b8e06defc880151e">operator!=()</a>, <a class="el" href="#a44bc81fc1eb513b3c46e77e768401833">operator==()</a>, <a class="el" href="group__time.html#gaecda13098f9fcb4f0a5a864c68bbf697">rises_above()</a>, <a class="el" href="group__time.html#ga29375c229dce898b751473f2f4f74b1d">sets_below()</a>, <a class="el" href="classsupernovas_1_1Weather.html#a0395574b9c5b2bdb7b9f8e04e1342029">supernovas::Weather::standard()</a>, <a class="el" href="group__apparent.html#ga837b7cc8012af33b66b577bfed9597d9">sun_angle()</a>, and <a class="el" href="group__time.html#gac424e530ebbab130b1635ac0c5355101">transits_in()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="#a7ad4d9077afc0ccbbc8b60910a69273e">equals()</a>.</p>
+
+</div>
+</div>
 <a id="af5a18693fc942953c44bf6a04d512060" name="af5a18693fc942953c44bf6a04d512060"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af5a18693fc942953c44bf6a04d512060">&#9670;&#160;</a></span>copy()</h2>
 
@@ -325,7 +364,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Implemented in <a class="el" href="classsupernovas_1_1CatalogSource.html#a98b76a5026ad51a77796f3e8d5a79ce9">supernovas::CatalogSource</a>, <a class="el" href="classsupernovas_1_1EphemerisSource.html#a1db6c1e6e9709b75eb684b253c70c9fe">supernovas::EphemerisSource</a>, <a class="el" href="classsupernovas_1_1OrbitalSource.html#ab7d23a68a9b0af5cec3778db13cafe8b">supernovas::OrbitalSource</a>, and <a class="el" href="classsupernovas_1_1Planet.html#aa312a35f47299d8dbb58f84fc15491b4">supernovas::Planet</a>.</p>
 
-<p class="reference">References <a class="el" href="#a7e0f947b9bb8eeb40c21cec3db3d89aa">Source()</a>, <a class="el" href="#a085d8cf394db6147cd785d8a86ef7856">_novas_object()</a>, <a class="el" href="group__apparent.html#ga600eddf89ef347be4838130f327da6df">angle_to()</a>, <a class="el" href="group__apparent.html#ga30cfb5d2c48b4464e015c8429174e771">apparent_in()</a>, <a class="el" href="#a7ad4d9077afc0ccbbc8b60910a69273e">equals()</a>, <a class="el" href="group__tracking.html#ga1da60cae52d719260947c000891cfa87">equatorial_track()</a>, <a class="el" href="group__geometric.html#ga5d45ffe8479b2b0945e66ef1a0c7cc0a">geometric_in()</a>, <a class="el" href="group__tracking.html#gaacf8278daed3c4bd7054aa68f7022842">horizontal_track()</a>, <a class="el" href="classsupernovas_1_1Unit.html#adce60398bc378c205599221c83ee160d">supernovas::Unit::hour</a>, <a class="el" href="group__apparent.html#ga4d8c425044b5594fa8251812db25f0d7">moon_angle()</a>, <a class="el" href="#ae16d5d04d593b9b14d6b5390bb8a07e3">name()</a>, <a class="el" href="group__equatorial.html#gga7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3">NOVAS_TOD</a>, <a class="el" href="#af1507f851b6eb410b8e06defc880151e">operator!=()</a>, <a class="el" href="#a44bc81fc1eb513b3c46e77e768401833">operator==()</a>, <a class="el" href="group__time.html#gaecda13098f9fcb4f0a5a864c68bbf697">rises_above()</a>, <a class="el" href="group__time.html#ga29375c229dce898b751473f2f4f74b1d">sets_below()</a>, <a class="el" href="classsupernovas_1_1Weather.html#a0395574b9c5b2bdb7b9f8e04e1342029">supernovas::Weather::standard()</a>, <a class="el" href="group__apparent.html#ga837b7cc8012af33b66b577bfed9597d9">sun_angle()</a>, <a class="el" href="group__time.html#gac424e530ebbab130b1635ac0c5355101">transits_in()</a>, and <a class="el" href="#a46cb1a64e8c19da4df03df59df625380">type()</a>.</p>
+<p class="reference">References <a class="el" href="#a7e0f947b9bb8eeb40c21cec3db3d89aa">Source()</a>, <a class="el" href="#a085d8cf394db6147cd785d8a86ef7856">_novas_object()</a>, <a class="el" href="#ae16d5d04d593b9b14d6b5390bb8a07e3">name()</a>, and <a class="el" href="#a46cb1a64e8c19da4df03df59df625380">type()</a>.</p>
 
 </div>
 </div>
@@ -357,9 +396,9 @@ Protected Attributes</h2></td></tr>
 <dl class="section since"><dt>Since</dt><dd>1.7</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#a44bc81fc1eb513b3c46e77e768401833" title="Checks if this astronomical source is the same as another within typical tolerances.">operator==()</a>, <a class="el" href="#af1507f851b6eb410b8e06defc880151e" title="Checks if this astronomical source differs another given typical tolerances.">operator!=()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="#a7e0f947b9bb8eeb40c21cec3db3d89aa">Source()</a>, <a class="el" href="#a0a8fa35950bb58cc03ba520b1c337080">_object</a>, and <a class="el" href="novas_8h.html#a8e8d07b67babdb5be1737d83b29b65c6">novas_equals_object()</a>.</p>
+<p class="reference">References <a class="el" href="#a7e0f947b9bb8eeb40c21cec3db3d89aa">Source()</a>, <a class="el" href="#a0a8fa35950bb58cc03ba520b1c337080">_object</a>, <a class="el" href="#ade658a9df9b79aac713cf416e0236256">className()</a>, and <a class="el" href="novas_8h.html#a8e8d07b67babdb5be1737d83b29b65c6">novas_equals_object()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="#af5a18693fc942953c44bf6a04d512060">copy()</a>, <a class="el" href="#af1507f851b6eb410b8e06defc880151e">operator!=()</a>, and <a class="el" href="#a44bc81fc1eb513b3c46e77e768401833">operator==()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#ade658a9df9b79aac713cf416e0236256">className()</a>, <a class="el" href="#af1507f851b6eb410b8e06defc880151e">operator!=()</a>, and <a class="el" href="#a44bc81fc1eb513b3c46e77e768401833">operator==()</a>.</p>
 
 </div>
 </div>
@@ -419,7 +458,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="reference">References <a class="el" href="#a7e0f947b9bb8eeb40c21cec3db3d89aa">Source()</a>, and <a class="el" href="#a7ad4d9077afc0ccbbc8b60910a69273e">equals()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="#af5a18693fc942953c44bf6a04d512060">copy()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#ade658a9df9b79aac713cf416e0236256">className()</a>.</p>
 
 </div>
 </div>
@@ -452,7 +491,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="reference">References <a class="el" href="#a7e0f947b9bb8eeb40c21cec3db3d89aa">Source()</a>, and <a class="el" href="#a7ad4d9077afc0ccbbc8b60910a69273e">equals()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="#af5a18693fc942953c44bf6a04d512060">copy()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#ade658a9df9b79aac713cf416e0236256">className()</a>.</p>
 
 </div>
 </div>
@@ -517,6 +556,10 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Returns a human readable string representation of this astronomical source. </p>
+<dl class="section return"><dt>Returns</dt><dd>a string representation of this source.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.6 </dd></dl>
 
 <p>Implemented in <a class="el" href="classsupernovas_1_1CatalogSource.html#a94ac207adcc4c9c2bbc000b0e4ef40ce">supernovas::CatalogSource</a>, <a class="el" href="classsupernovas_1_1EphemerisSource.html#abcd51283f8e155b21ada7389b3a083fc">supernovas::EphemerisSource</a>, <a class="el" href="classsupernovas_1_1OrbitalSource.html#a63b391682a84d4c02eee8e41dfabae79">supernovas::OrbitalSource</a>, and <a class="el" href="classsupernovas_1_1Planet.html#a4e6e0bbea18e4f0681eec673584a8785">supernovas::Planet</a>.</p>
 

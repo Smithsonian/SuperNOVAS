@@ -15,5 +15,7 @@ var searchData=
   ['distance_5fevolution_12',['distance_evolution',['../classsupernovas_1_1Track.html#a390b32d9795db3bc6d4f19afd444085c',1,'supernovas::Track']]],
   ['distance_5fto_13',['distance_to',['../classsupernovas_1_1Position.html#a78f39054f6ad457833daf9f47fc604fe',1,'supernovas::Position::distance_to()'],['../classsupernovas_1_1Spherical.html#a3f83a7b7c79a6f71e52fb8de35225a7c',1,'supernovas::Spherical::distance_to()'],['../classsupernovas_1_1Equatorial.html#ae01c0ae358aadee5e1649fb20b8c8729',1,'supernovas::Equatorial::distance_to()'],['../classsupernovas_1_1Ecliptic.html#a2986f3e28124b274ba670005d126b0b9',1,'supernovas::Ecliptic::distance_to()'],['../classsupernovas_1_1Galactic.html#a88e6b56ab310eb504ac5633dc7fa0cd4',1,'supernovas::Galactic::distance_to()'],['../classsupernovas_1_1Horizontal.html#adf4ef726dd929eb816a93152bfa5d563',1,'supernovas::Horizontal::distance_to()']]],
   ['dot_14',['dot',['../classsupernovas_1_1Vector.html#a17572fd5d9e2127b813c5f0186dde2ee',1,'supernovas::Vector']]],
-  ['dut1_15',['dUT1',['../classsupernovas_1_1EOP.html#a14015d01e9b377e3eebede8ae2588f81',1,'supernovas::EOP::dUT1()'],['../classsupernovas_1_1Time.html#acf5b4f03c103c649a2561cb7b6696e14',1,'supernovas::Time::dUT1()']]]
+  ['dut1_15',['dUT1',['../classsupernovas_1_1EOP.html#a14015d01e9b377e3eebede8ae2588f81',1,'supernovas::EOP::dUT1()'],['../classsupernovas_1_1Time.html#acf5b4f03c103c649a2561cb7b6696e14',1,'supernovas::Time::dUT1()']]],
+  ['dynamic_16',['dynamic',['../classsupernovas_1_1Observer.html#a87d82d5dab19a16c94365d76223f3dfb',1,'supernovas::Observer']]],
+  ['dynamicobserver_17',['DynamicObserver',['../classsupernovas_1_1DynamicObserver.html#a2874b747ab3c80d4b6e104f8d1c450db',1,'supernovas::DynamicObserver']]]
 ];

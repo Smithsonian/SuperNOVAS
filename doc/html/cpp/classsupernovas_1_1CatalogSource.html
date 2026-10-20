@@ -147,6 +147,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ab309ce8e3bd4d09229aa6eff97248b5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instantiates a new catalog source, from its catalog definition.  <br /></td></tr>
 <tr class="memitem:a72b9e00dafe872d0bd30b9414d8ccb24" id="r_a72b9e00dafe872d0bd30b9414d8ccb24"><td class="memItemLeft">const <a class="el" href="classsupernovas_1_1CatalogEntry.html">CatalogEntry</a> &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a72b9e00dafe872d0bd30b9414d8ccb24">catalog_entry</a> () const</td></tr>
 <tr class="memdesc:a72b9e00dafe872d0bd30b9414d8ccb24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the catalog entry stored internally.  <br /></td></tr>
+<tr class="memitem:a0d8c246a04a30bc8c54bd60098e7afdd" id="r_a0d8c246a04a30bc8c54bd60098e7afdd"><td class="memItemLeft">const std::string &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a0d8c246a04a30bc8c54bd60098e7afdd">className</a> () const override</td></tr>
+<tr class="memdesc:a0d8c246a04a30bc8c54bd60098e7afdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the class name for this astronomical source.  <br /></td></tr>
 <tr class="memitem:a98b76a5026ad51a77796f3e8d5a79ce9" id="r_a98b76a5026ad51a77796f3e8d5a79ce9"><td class="memItemLeft">const <a class="el" href="classsupernovas_1_1Source.html#a7e0f947b9bb8eeb40c21cec3db3d89aa">Source</a> *&#160;</td><td class="memItemRight"><a class="el" href="#a98b76a5026ad51a77796f3e8d5a79ce9">copy</a> () const override</td></tr>
 <tr class="memdesc:a98b76a5026ad51a77796f3e8d5a79ce9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pointer to a newly allocated copy of this catalog source instance.  <br /></td></tr>
 <tr class="memitem:a94ac207adcc4c9c2bbc000b0e4ef40ce" id="r_a94ac207adcc4c9c2bbc000b0e4ef40ce"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#a94ac207adcc4c9c2bbc000b0e4ef40ce">to_string</a> () const override</td></tr>
@@ -275,6 +277,40 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="a0d8c246a04a30bc8c54bd60098e7afdd" name="a0d8c246a04a30bc8c54bd60098e7afdd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d8c246a04a30bc8c54bd60098e7afdd">&#9670;&#160;</a></span>className()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string &amp; supernovas::CatalogSource::className </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the class name for this astronomical source. </p>
+<p>All concrete subclasses should override this method to return their C++ class name.</p>
+<dl class="section return"><dt>Returns</dt><dd>the class name for this source instance.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.8 </dd></dl>
+
+<p>Implements <a class="el" href="classsupernovas_1_1Source.html#ade658a9df9b79aac713cf416e0236256">supernovas::Source</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="#a94ac207adcc4c9c2bbc000b0e4ef40ce">to_string()</a>.</p>
+
+</div>
+</div>
 <a id="a98b76a5026ad51a77796f3e8d5a79ce9" name="a98b76a5026ad51a77796f3e8d5a79ce9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a98b76a5026ad51a77796f3e8d5a79ce9">&#9670;&#160;</a></span>copy()</h2>
 
@@ -337,7 +373,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classsupernovas_1_1Source.html#af7ae7c88a6375c790d2477d9fe99e396">supernovas::Source</a>.</p>
 
-<p class="reference">References <a class="el" href="classsupernovas_1_1TimeAngle.html#aefc4d47845acc009e22b368255827448">supernovas::TimeAngle::TimeAngle()</a>, <a class="el" href="structnovas__cat__entry.html#ab539dc076c350cf98ac047453fa18c9c">novas_cat_entry::dec</a>, <a class="el" href="classsupernovas_1_1Unit.html#a8bfd777ba2cae7778c1ae72e8944b175">supernovas::Unit::deg</a>, <a class="el" href="classsupernovas_1_1Unit.html#a92bc22099e4ab5f102102da7321457c0">supernovas::Unit::hour_angle</a>, <a class="el" href="structnovas__cat__entry.html#a0bf9261730a8decbfd1d0c63c377dac2">novas_cat_entry::ra</a>, <a class="el" href="structnovas__cat__entry.html#ac06af140acde272f032a431f6cfeb85d">novas_cat_entry::starname</a>, and <a class="el" href="classsupernovas_1_1Angle.html#aa43390f74139176aa53a3dd26d5b1818">supernovas::Angle::to_string()</a>.</p>
+<p class="reference">References <a class="el" href="classsupernovas_1_1TimeAngle.html#aefc4d47845acc009e22b368255827448">supernovas::TimeAngle::TimeAngle()</a>, <a class="el" href="#a0d8c246a04a30bc8c54bd60098e7afdd">className()</a>, <a class="el" href="structnovas__cat__entry.html#ab539dc076c350cf98ac047453fa18c9c">novas_cat_entry::dec</a>, <a class="el" href="classsupernovas_1_1Unit.html#a8bfd777ba2cae7778c1ae72e8944b175">supernovas::Unit::deg</a>, <a class="el" href="classsupernovas_1_1Unit.html#a92bc22099e4ab5f102102da7321457c0">supernovas::Unit::hour_angle</a>, <a class="el" href="structnovas__cat__entry.html#a0bf9261730a8decbfd1d0c63c377dac2">novas_cat_entry::ra</a>, <a class="el" href="structnovas__cat__entry.html#ac06af140acde272f032a431f6cfeb85d">novas_cat_entry::starname</a>, and <a class="el" href="classsupernovas_1_1Angle.html#aa43390f74139176aa53a3dd26d5b1818">supernovas::Angle::to_string()</a>.</p>
 
 </div>
 </div>

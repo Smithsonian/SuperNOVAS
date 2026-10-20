@@ -40,5 +40,7 @@ var searchData=
   ['dut1_37',['dut1',['../structnovas__timespec.html#a1e5a8481119ea7e5d982a016f25ecca6',1,'novas_timespec::dut1'],['../structnovas__eop.html#aa7dc31267da0f16593948531081b9c20',1,'novas_eop::dut1']]],
   ['dut1_5ferr_38',['dut1_err',['../structnovas__eop.html#a604eee81022909235d5045a3cbda9e5b',1,'novas_eop']]],
   ['dx_39',['dx',['../structnovas__frame.html#a5591ff41d6450a6e80be6496e4ba3809',1,'novas_frame']]],
-  ['dy_40',['dy',['../structnovas__frame.html#a0524a3109f686582f8693602b09320f7',1,'novas_frame']]]
+  ['dy_40',['dy',['../structnovas__frame.html#a0524a3109f686582f8693602b09320f7',1,'novas_frame']]],
+  ['dynamic_41',['dynamic',['../classsupernovas_1_1Observer.html#a87d82d5dab19a16c94365d76223f3dfb',1,'supernovas::Observer']]],
+  ['dynamicobserver_42',['DynamicObserver',['../classsupernovas_1_1DynamicObserver.html',1,'supernovas::DynamicObserver'],['../classsupernovas_1_1DynamicObserver.html#a2874b747ab3c80d4b6e104f8d1c450db',1,'supernovas::DynamicObserver::DynamicObserver()']]]
 ];

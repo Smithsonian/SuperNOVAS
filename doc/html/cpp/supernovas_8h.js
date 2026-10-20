@@ -1,5 +1,6 @@
 var supernovas_8h =
 [
+    [ "supernovas::DynamicObserver", "classsupernovas_1_1DynamicObserver.html", "classsupernovas_1_1DynamicObserver" ],
     [ "supernovas::OrbitalSystem", "classsupernovas_1_1OrbitalSystem.html", "classsupernovas_1_1OrbitalSystem" ],
     [ "supernovas::Scalar", "classsupernovas_1_1Scalar.html", "classsupernovas_1_1Scalar" ],
     [ "supernovas::ScalarEvolution", "classsupernovas_1_1ScalarEvolution.html", "classsupernovas_1_1ScalarEvolution" ],

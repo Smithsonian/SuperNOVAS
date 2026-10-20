@@ -140,6 +140,7 @@ var novas_8h =
     [ "novas_planet_bundle", "novas_8h.html#a94e5e4fa0f3ac31d642497d09f309b5f", null ],
     [ "novas_planet_provider", "group__solar-system.html#ga08b05562aa008e4fffb943c3500d22eb", null ],
     [ "novas_planet_provider_hp", "group__solar-system.html#ga0c4147e9cb7fa16f9f0b252d5619df7b", null ],
+    [ "novas_state_provider", "novas_8h.html#a57854b43a0a88bfaac0fb886d30fecf5", null ],
     [ "novas_timespec", "group__time.html#ga98daa33604665eda41d9a9de964d7cc2", null ],
     [ "novas_track", "group__tracking.html#ga19e2b7ebefb830d7cab293981adbbe07", null ],
     [ "novas_transform", "group__frame.html#ga98c96461c56c17948f6ba1cc746f85eb", null ],
@@ -223,7 +224,8 @@ var novas_8h =
       [ "NOVAS_OBSERVER_ON_EARTH", "novas_8h.html#a6140c39d1526b137f827e2091ecc36b3aadb64b75d1bf5344760b942f241e52e8", null ],
       [ "NOVAS_OBSERVER_IN_EARTH_ORBIT", "novas_8h.html#a6140c39d1526b137f827e2091ecc36b3aca418efc57ac159cf541c324c008eb27", null ],
       [ "NOVAS_AIRBORNE_OBSERVER", "novas_8h.html#a6140c39d1526b137f827e2091ecc36b3a1665bf146ca1a4d11380bf4d7d9d7058", null ],
-      [ "NOVAS_SOLAR_SYSTEM_OBSERVER", "novas_8h.html#a6140c39d1526b137f827e2091ecc36b3a82474207bac139bc2a8826b9d317a42c", null ]
+      [ "NOVAS_SOLAR_SYSTEM_OBSERVER", "novas_8h.html#a6140c39d1526b137f827e2091ecc36b3a82474207bac139bc2a8826b9d317a42c", null ],
+      [ "NOVAS_DYNAMIC_OBSERVER", "novas_8h.html#a6140c39d1526b137f827e2091ecc36b3a0bad31754d885ebae9f204162954516c", null ]
     ] ],
     [ "novas_origin", "group__solar-system.html#ga208120c5fa3e12853eb37cb99d3e27be", [
       [ "NOVAS_BARYCENTER", "group__solar-system.html#gga208120c5fa3e12853eb37cb99d3e27beade504a1c5ccf790ce9d8ad52797bb94c", null ],
@@ -382,6 +384,7 @@ var novas_8h =
     [ "make_cat_entry", "group__source.html#gabc164144085313b27faa96c838a9d30c", null ],
     [ "make_cat_object", "group__source.html#gab9b7a622486f2904615ceed1ba94cd8f", null ],
     [ "make_cat_object_sys", "group__source.html#ga5104d7db66ce2d8c61c7ad21599fb45e", null ],
+    [ "make_dynamic_observer", "novas_8h.html#af4956285681bd88082f4aa1d8fd76f61", null ],
     [ "make_ephem_object", "group__source.html#gaa22303f98df2d63edf6d8452ff3a43b2", null ],
     [ "make_gps_observer", "group__observer.html#gaa2f9fc986f99c1ec7092330dbf233fef", null ],
     [ "make_gps_site", "group__observer.html#gab5fb62a9fb185632175ae622bce28dea", null ],
@@ -431,6 +434,7 @@ var novas_8h =
     [ "novas_e2h_offset", "group__nonequatorial.html#ga13cd0b80eaa7bc682013f7e8ffbdbd6f", null ],
     [ "novas_enu_to_itrs", "group__observer.html#ga2bfff0a80ee078a45bc4301cd1ad8299", null ],
     [ "novas_epa", "group__nonequatorial.html#ga095ba0ee644dc00c11dcdc5616bc96b0", null ],
+    [ "novas_ephem_state", "novas_8h.html#a14078c87a8cbbb5bc5c8444b40814018", null ],
     [ "novas_epoch", "group__time.html#gaf4e18885b7d173eb3fe5f18b06f0b4d4", null ],
     [ "novas_equ_offset_by", "group__util.html#ga500745e68a50eaac03d963b539637dc5", null ],
     [ "novas_equ_sep", "group__apparent.html#ga4f7e06b2fa5b3145b37aec4f9c2d1602", null ],

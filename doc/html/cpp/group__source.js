@@ -35,11 +35,13 @@ var group__source =
     [ "supernovas::CatalogSource", "classsupernovas_1_1CatalogSource.html", [
       [ "CatalogSource", "classsupernovas_1_1CatalogSource.html#ab309ce8e3bd4d09229aa6eff97248b5e", null ],
       [ "catalog_entry", "classsupernovas_1_1CatalogSource.html#a72b9e00dafe872d0bd30b9414d8ccb24", null ],
+      [ "className", "classsupernovas_1_1CatalogSource.html#a0d8c246a04a30bc8c54bd60098e7afdd", null ],
       [ "copy", "classsupernovas_1_1CatalogSource.html#a98b76a5026ad51a77796f3e8d5a79ce9", null ],
       [ "to_string", "classsupernovas_1_1CatalogSource.html#a94ac207adcc4c9c2bbc000b0e4ef40ce", null ]
     ] ],
     [ "supernovas::EphemerisSource", "classsupernovas_1_1EphemerisSource.html", [
       [ "EphemerisSource", "classsupernovas_1_1EphemerisSource.html#af6eef3af2b52aaa44a8c7ef9e2bc3c2b", null ],
+      [ "className", "classsupernovas_1_1EphemerisSource.html#a700fcc67a38d13fb5addea05ea3526ee", null ],
       [ "copy", "classsupernovas_1_1EphemerisSource.html#a1db6c1e6e9709b75eb684b253c70c9fe", null ],
       [ "number", "classsupernovas_1_1EphemerisSource.html#a78e33490ee3766c7cb7effed0e413fa0", null ],
       [ "to_string", "classsupernovas_1_1EphemerisSource.html#abcd51283f8e155b21ada7389b3a083fc", null ]
@@ -87,6 +89,7 @@ var group__source =
     [ "supernovas::OrbitalSource", "classsupernovas_1_1OrbitalSource.html", [
       [ "OrbitalSource", "classsupernovas_1_1OrbitalSource.html#afbc443cc9f0ab8ce57fff78040f929ff", null ],
       [ "_novas_orbital", "classsupernovas_1_1OrbitalSource.html#a43a103fa359b1d438016e15a8d6ffff5", null ],
+      [ "className", "classsupernovas_1_1OrbitalSource.html#aeb798f007aa0fd52721f5d70404a14a2", null ],
       [ "copy", "classsupernovas_1_1OrbitalSource.html#ab7d23a68a9b0af5cec3778db13cafe8b", null ],
       [ "orbital", "classsupernovas_1_1OrbitalSource.html#a07580304c8d5ee81fb918946f7f40616", null ],
       [ "to_string", "classsupernovas_1_1OrbitalSource.html#a63b391682a84d4c02eee8e41dfabae79", null ]
@@ -95,6 +98,7 @@ var group__source =
       [ "Planet", "classsupernovas_1_1Planet.html#a5eab02d5a9e923909b7c959fba5100b3", null ],
       [ "approx_apparent_in", "group__apparent.html#gad531705b1b07e32ead410483e109248f", null ],
       [ "approx_geometric_in", "group__geometric.html#gaf83481c3e551cd9fbfc949257567b468", null ],
+      [ "className", "classsupernovas_1_1Planet.html#a4d5542105b3856abe83edb07baa7ae58", null ],
       [ "copy", "classsupernovas_1_1Planet.html#aa312a35f47299d8dbb58f84fc15491b4", null ],
       [ "de_number", "classsupernovas_1_1Planet.html#aabb4badd53f6c696872ef95bb65cf53c", null ],
       [ "mass", "classsupernovas_1_1Planet.html#a1e2d15acac6c3072cfa65341059c4341", null ],
@@ -118,6 +122,7 @@ var group__source =
       [ "_novas_object", "classsupernovas_1_1Source.html#a085d8cf394db6147cd785d8a86ef7856", null ],
       [ "angle_to", "group__apparent.html#ga600eddf89ef347be4838130f327da6df", null ],
       [ "apparent_in", "group__apparent.html#ga30cfb5d2c48b4464e015c8429174e771", null ],
+      [ "className", "classsupernovas_1_1Source.html#ade658a9df9b79aac713cf416e0236256", null ],
       [ "copy", "classsupernovas_1_1Source.html#af5a18693fc942953c44bf6a04d512060", null ],
       [ "equals", "classsupernovas_1_1Source.html#a7ad4d9077afc0ccbbc8b60910a69273e", null ],
       [ "equatorial_track", "group__tracking.html#ga804912d7c773781e5a22cdcb377bae4b", null ],

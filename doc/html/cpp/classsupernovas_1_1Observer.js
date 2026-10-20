@@ -3,6 +3,7 @@ var classsupernovas_1_1Observer =
     [ "Observer", "classsupernovas_1_1Observer.html#a65ae0b0d36341717bf7b958ac3236f8c", null ],
     [ "~Observer", "classsupernovas_1_1Observer.html#a05aad2955d8cfcb712e71091276fb715", null ],
     [ "_novas_observer", "classsupernovas_1_1Observer.html#a06604bddb755e5070caeefb4306de037", null ],
+    [ "className", "classsupernovas_1_1Observer.html#a060bef2ec7171c4f0fb3472f4165d285", null ],
     [ "copy", "classsupernovas_1_1Observer.html#ab96ce405d6c8cbe8d90e50c8e4da2e42", null ],
     [ "equals", "classsupernovas_1_1Observer.html#a57f2b31199ce8657b03ae9972626c3f0", null ],
     [ "frame_at", "group__frame.html#gadd24c03a86837e10783af06be02a8b21", null ],

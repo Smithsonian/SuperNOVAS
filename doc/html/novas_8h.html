@@ -409,7 +409,7 @@ Macros</h2></td></tr>
 <tr class="memdesc:aaed93e356acfc0d15d0f64ae0793b4f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">API minor version.  <br /></td></tr>
 <tr class="memitem:a9b926427954233b94ebd6925d86f9f81" id="r_a9b926427954233b94ebd6925d86f9f81"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a9b926427954233b94ebd6925d86f9f81">SUPERNOVAS_PATCHLEVEL</a>&#160;&#160;&#160;0</td></tr>
 <tr class="memdesc:a9b926427954233b94ebd6925d86f9f81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integer sub version of the release.  <br /></td></tr>
-<tr class="memitem:aadef42ba39811e058ee9efe2c6f7d151" id="r_aadef42ba39811e058ee9efe2c6f7d151"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#aadef42ba39811e058ee9efe2c6f7d151">SUPERNOVAS_RELEASE_STRING</a>&#160;&#160;&#160;&quot;-rc2&quot;</td></tr>
+<tr class="memitem:aadef42ba39811e058ee9efe2c6f7d151" id="r_aadef42ba39811e058ee9efe2c6f7d151"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#aadef42ba39811e058ee9efe2c6f7d151">SUPERNOVAS_RELEASE_STRING</a>&#160;&#160;&#160;&quot;-rc3&quot;</td></tr>
 <tr class="memdesc:aadef42ba39811e058ee9efe2c6f7d151"><td class="mdescLeft">&#160;</td><td class="mdescRight">Additional release information in version, e.g. "-1", or "-rc1", or empty string "" for releases.  <br /></td></tr>
 <tr class="memitem:a44de9d1672290d153a1dfb0685886208" id="r_a44de9d1672290d153a1dfb0685886208"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a44de9d1672290d153a1dfb0685886208">SUPERNOVAS_VERSION_STRING</a></td></tr>
 <tr class="memdesc:a44de9d1672290d153a1dfb0685886208"><td class="mdescLeft">&#160;</td><td class="mdescRight">The version string for this library.  <br /></td></tr>
@@ -448,6 +448,8 @@ Typedefs</h2></td></tr>
 <tr class="memdesc:ga08b05562aa008e4fffb943c3500d22eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides the position and velocity of major planets (as well as the Sun, Moon, Solar-system Barycenter, and other barycenters).  <br /></td></tr>
 <tr class="memitem:ga0c4147e9cb7fa16f9f0b252d5619df7b" id="r_ga0c4147e9cb7fa16f9f0b252d5619df7b"><td class="memItemLeft">typedef short(*)&#160;</td><td class="memItemRight"><a class="el" href="group__solar-system.html#ga0c4147e9cb7fa16f9f0b252d5619df7b">novas_planet_provider_hp</a>(const double jd_tdb[2], enum <a class="el" href="group__source.html#ga219df36b21dc4476656e708d14d08045">novas_planet</a> body, enum <a class="el" href="group__solar-system.html#ga208120c5fa3e12853eb37cb99d3e27be">novas_origin</a> origin, double *restrict position, double *restrict velocity)</td></tr>
 <tr class="memdesc:ga0c4147e9cb7fa16f9f0b252d5619df7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides the position and velocity of major planets (as well as the Sun, Moon, Solar-system Barycenter, and other barycenters).  <br /></td></tr>
+<tr class="memitem:a57854b43a0a88bfaac0fb886d30fecf5" id="r_a57854b43a0a88bfaac0fb886d30fecf5"><td class="memItemLeft">typedef int(*)&#160;</td><td class="memItemRight"><a class="el" href="#a57854b43a0a88bfaac0fb886d30fecf5">novas_state_provider</a>(double jd_tdb, enum <a class="el" href="group__frame.html#ga3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, const void *restrict arg, double *restrict ssb_pos, double *restrict ssb_vel)</td></tr>
+<tr class="memdesc:a57854b43a0a88bfaac0fb886d30fecf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the Solar-System Barycentric (SSB) position / velocity state vectors for a dynamic observer location.  <br /></td></tr>
 <tr class="memitem:ga98daa33604665eda41d9a9de964d7cc2" id="r_ga98daa33604665eda41d9a9de964d7cc2"><td class="memItemLeft">typedef struct novas_timespec&#160;</td><td class="memItemRight"><a class="el" href="group__time.html#ga98daa33604665eda41d9a9de964d7cc2">novas_timespec</a></td></tr>
 <tr class="memdesc:ga98daa33604665eda41d9a9de964d7cc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">A structure, which defines a precise instant of time that can be expressed in any of the astronomical timescales.  <br /></td></tr>
 <tr class="memitem:ga19e2b7ebefb830d7cab293981adbbe07" id="r_ga19e2b7ebefb830d7cab293981adbbe07"><td class="memItemLeft">typedef struct novas_track&#160;</td><td class="memItemRight"><a class="el" href="group__tracking.html#ga19e2b7ebefb830d7cab293981adbbe07">novas_track</a></td></tr>
@@ -542,6 +544,7 @@ Enumerations</h2></td></tr>
 , <a class="el" href="#a6140c39d1526b137f827e2091ecc36b3a1665bf146ca1a4d11380bf4d7d9d7058">NOVAS_AIRBORNE_OBSERVER</a>
 , <br />
 &#160;&#160;<a class="el" href="#a6140c39d1526b137f827e2091ecc36b3a82474207bac139bc2a8826b9d317a42c">NOVAS_SOLAR_SYSTEM_OBSERVER</a>
+, <a class="el" href="#a6140c39d1526b137f827e2091ecc36b3a0bad31754d885ebae9f204162954516c">NOVAS_DYNAMIC_OBSERVER</a>
 <br />
  }</td></tr>
 <tr class="memdesc:a6140c39d1526b137f827e2091ecc36b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Types of places on and around Earth that may serve as a reference position for the observation.  <a href="#a6140c39d1526b137f827e2091ecc36b3">More...</a><br /></td></tr>
@@ -805,6 +808,8 @@ Functions</h2></td></tr>
 <tr class="memdesc:gab9b7a622486f2904615ceed1ba94cd8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Populates and object data structure with the data for a catalog source.  <br /></td></tr>
 <tr class="memitem:ga5104d7db66ce2d8c61c7ad21599fb45e" id="r_ga5104d7db66ce2d8c61c7ad21599fb45e"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="group__source.html#ga5104d7db66ce2d8c61c7ad21599fb45e">make_cat_object_sys</a> (const <a class="el" href="group__source.html#ga8fa0251d2ffa4e750420bdc86a7d73b8">cat_entry</a> *star, const char *restrict system, <a class="el" href="group__source.html#ga8bb95dd453e33d4c9892266c9af5df2a">object</a> *source)</td></tr>
 <tr class="memdesc:ga5104d7db66ce2d8c61c7ad21599fb45e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Populates and object data structure with the data for a catalog source for a given system of catalog coordinates.  <br /></td></tr>
+<tr class="memitem:af4956285681bd88082f4aa1d8fd76f61" id="r_af4956285681bd88082f4aa1d8fd76f61"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#af4956285681bd88082f4aa1d8fd76f61">make_dynamic_observer</a> (<a class="el" href="#a57854b43a0a88bfaac0fb886d30fecf5">novas_state_provider</a> call, const void *restrict call_arg, <a class="el" href="group__observer.html#gae7963c522d28ce6891b472e079307d03">observer</a> *restrict obs)</td></tr>
+<tr class="memdesc:af4956285681bd88082f4aa1d8fd76f61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Populates an 'observer' data structure, for an observer whose position and velocity state vectors are detwermined dynamically for the time of observation.  <br /></td></tr>
 <tr class="memitem:gaa22303f98df2d63edf6d8452ff3a43b2" id="r_gaa22303f98df2d63edf6d8452ff3a43b2"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="group__source.html#gaa22303f98df2d63edf6d8452ff3a43b2">make_ephem_object</a> (const char *name, long num, <a class="el" href="group__source.html#ga8bb95dd453e33d4c9892266c9af5df2a">object</a> *body)</td></tr>
 <tr class="memdesc:gaa22303f98df2d63edf6d8452ff3a43b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a celestial object to be a Solar-system ephemeris body.  <br /></td></tr>
 <tr class="memitem:gaa2f9fc986f99c1ec7092330dbf233fef" id="r_gaa2f9fc986f99c1ec7092330dbf233fef"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="group__observer.html#gaa2f9fc986f99c1ec7092330dbf233fef">make_gps_observer</a> (double latitude, double longitude, double height, <a class="el" href="group__observer.html#gae7963c522d28ce6891b472e079307d03">observer</a> *obs)</td></tr>
@@ -902,6 +907,8 @@ Functions</h2></td></tr>
 <tr class="memdesc:ga2bfff0a80ee078a45bc4301cd1ad8299"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an East-North-Up (ENU) vector at the specified site to an ITRS vector.  <br /></td></tr>
 <tr class="memitem:ga095ba0ee644dc00c11dcdc5616bc96b0" id="r_ga095ba0ee644dc00c11dcdc5616bc96b0"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="group__nonequatorial.html#ga095ba0ee644dc00c11dcdc5616bc96b0">novas_epa</a> (double ha, double dec, double lat)</td></tr>
 <tr class="memdesc:ga095ba0ee644dc00c11dcdc5616bc96b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the Parallactic Angle (PA) calculated for an RA/Dec location of the sky at a given sidereal time.  <br /></td></tr>
+<tr class="memitem:a14078c87a8cbbb5bc5c8444b40814018" id="r_a14078c87a8cbbb5bc5c8444b40814018"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#a14078c87a8cbbb5bc5c8444b40814018">novas_ephem_state</a> (double jd_tdb, enum <a class="el" href="group__frame.html#ga3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, const void *p_object, double *restrict pos, double *restrict vel)</td></tr>
+<tr class="memdesc:a14078c87a8cbbb5bc5c8444b40814018"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <a class="el" href="#a57854b43a0a88bfaac0fb886d30fecf5" title="Calculates the Solar-System Barycentric (SSB) position / velocity state vectors for a dynamic observe...">novas_state_provider</a> adapter function for planets, ephemeris objects, or Keplerian orbital objects.  <br /></td></tr>
 <tr class="memitem:gaf4e18885b7d173eb3fe5f18b06f0b4d4" id="r_gaf4e18885b7d173eb3fe5f18b06f0b4d4"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="group__time.html#gaf4e18885b7d173eb3fe5f18b06f0b4d4">novas_epoch</a> (const char *restrict system)</td></tr>
 <tr class="memdesc:gaf4e18885b7d173eb3fe5f18b06f0b4d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the Julian day corresponding to an astronomical coordinate epoch.  <br /></td></tr>
 <tr class="memitem:ga500745e68a50eaac03d963b539637dc5" id="r_ga500745e68a50eaac03d963b539637dc5"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="group__util.html#ga500745e68a50eaac03d963b539637dc5">novas_equ_offset_by</a> (double ra, double dec, double direction, double distance, double *restrict out_ra, double *restrict out_dec)</td></tr>
@@ -2146,7 +2153,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define SUPERNOVAS_RELEASE_STRING&#160;&#160;&#160;&quot;-rc2&quot;</td>
+          <td class="memname">#define SUPERNOVAS_RELEASE_STRING&#160;&#160;&#160;&quot;-rc3&quot;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -2205,6 +2212,35 @@ Variables</h2></td></tr>
 <p>Position and velocity data for a set of major planets (which may include the Sun and the Moon also). </p>
 <dl class="section since"><dt>Since</dt><dd>1.1</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>enum <a class="el" href="group__source.html#ga219df36b21dc4476656e708d14d08045" title="Enumeration for the &#39;major planet&#39; numbers in NOVAS to use as the solar-system body number whenever t...">novas_planet</a>, <a class="el" href="#a4cc558a8e366bfea3be40777ea0fcbc3" title="Empty initializer for novas_planet_bundle.">NOVAS_PLANET_BUNDLE_INIT</a>, <a class="el" href="grav_8c.html#ae36bc31e1dad8a68f94f7a6414f0519f" title="(primarily for internal use) Computes the total gravitational deflection of light for the observed ob...">grav_planets()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a57854b43a0a88bfaac0fb886d30fecf5" name="a57854b43a0a88bfaac0fb886d30fecf5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57854b43a0a88bfaac0fb886d30fecf5">&#9670;&#160;</a></span>novas_state_provider</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef int(*) novas_state_provider(double jd_tdb, enum <a class="el" href="group__frame.html#ga3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, const void *restrict arg, double *restrict ssb_pos, double *restrict ssb_vel)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calculates the Solar-System Barycentric (SSB) position / velocity state vectors for a dynamic observer location. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>The Barycentric Dynamic Time (TDB) based Julian date </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">arg</td><td>Pointer argument for additional data. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">ssb_pos</td><td>[AU] The output ICRS equatorial position vector with respect to the Solar System Barycenter (SSB) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">ssb_vel</td><td>[AU/day] the output ICRS equatorial velocity vector with respect to the Solar System Barycenter (SSB)</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful or else -1 in there is an error (errno should be set appropriately to indicate the type of error).</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.8</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#af4956285681bd88082f4aa1d8fd76f61" title="Populates an &#39;observer&#39; data structure, for an observer whose position and velocity state vectors are...">make_dynamic_observer()</a>, <a class="el" href="#a14078c87a8cbbb5bc5c8444b40814018" title="A novas_state_provider adapter function for planets, ephemeris objects, or Keplerian orbital objects.">novas_ephem_state()</a> </dd></dl>
 
 </div>
 </div>
@@ -2321,6 +2357,8 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a6140c39d1526b137f827e2091ecc36b3a82474207bac139bc2a8826b9d317a42c" name="a6140c39d1526b137f827e2091ecc36b3a82474207bac139bc2a8826b9d317a42c"></a>NOVAS_SOLAR_SYSTEM_OBSERVER&#160;</td><td class="fielddoc"><p>Observer is orbiting the Sun. </p>
 <dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__observer.html#ga9c3f1a1bc3fd9ac6d211806913d2d529" title="Populates an &#39;observer&#39; data structure, for an observer situated on a near-Earth spacecraft,...">make_solar_system_observer()</a> </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="a6140c39d1526b137f827e2091ecc36b3a0bad31754d885ebae9f204162954516c" name="a6140c39d1526b137f827e2091ecc36b3a0bad31754d885ebae9f204162954516c"></a>NOVAS_DYNAMIC_OBSERVER&#160;</td><td class="fielddoc"><p>Observer position / velocity is provided by a plugin function. </p>
 </td></tr>
 </table>
 
@@ -3209,6 +3247,50 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="af4956285681bd88082f4aa1d8fd76f61" name="af4956285681bd88082f4aa1d8fd76f61"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4956285681bd88082f4aa1d8fd76f61">&#9670;&#160;</a></span>make_dynamic_observer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int make_dynamic_observer </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a57854b43a0a88bfaac0fb886d30fecf5">novas_state_provider</a></td>          <td class="paramname"><span class="paramname"><em>call</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const void *restrict</td>          <td class="paramname"><span class="paramname"><em>arg</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__observer.html#gae7963c522d28ce6891b472e079307d03">observer</a> *restrict</td>          <td class="paramname"><span class="paramname"><em>obs</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Populates an 'observer' data structure, for an observer whose position and velocity state vectors are detwermined dynamically for the time of observation. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">call</td><td>the function that provides the observer's Solar System Barycentric position and velocity vectors. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">arg</td><td>(optional) additional parameters to pass to the call, as needed. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">obs</td><td>Pointer to the data structure to populate </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if either argument is NULL.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__observer.html#gaa2f9fc986f99c1ec7092330dbf233fef" title="Initializes an observer data structure for a ground-based observer with the specified GPS / WGS84 loc...">make_gps_observer()</a>, <a class="el" href="group__observer.html#gad8b2d2e6ca9570f09a0ca1f82957ed48" title="Initializes an observer data structure for a ground-based observer with the specified International T...">make_itrf_observer()</a>, <a class="el" href="group__observer.html#gaa82db32ce7b115db4f0a077ca899589b" title="Initializes an observer data structure for a ground-based observer at the specified observing site,...">make_observer_at_site()</a>, <a class="el" href="group__observer.html#gaa423a88cd3f434642fc89d47390184f4" title="Populates an &#39;observer&#39; data structure for an observer moving relative to the surface of Earth,...">make_airborne_observer()</a>, <a class="el" href="group__observer.html#ga6c146e4d10152d5e1ffb978f2fc962be" title="Populates an &#39;observer&#39; data structure, for an observer situated on a near-Earth spacecraft,...">make_observer_in_space()</a>, <a class="el" href="group__observer.html#ga9c3f1a1bc3fd9ac6d211806913d2d529" title="Populates an &#39;observer&#39; data structure, for an observer situated on a near-Earth spacecraft,...">make_solar_system_observer()</a></dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.8 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+
+<p class="reference">References <a class="el" href="observer_8c.html#a048b1b447ae7b3077fd88ac29a0e7e7b">make_dynamic_observer()</a>, and <a class="el" href="#a6140c39d1526b137f827e2091ecc36b3a0bad31754d885ebae9f204162954516c">NOVAS_DYNAMIC_OBSERVER</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="observer_8c.html#a048b1b447ae7b3077fd88ac29a0e7e7b">make_dynamic_observer()</a>.</p>
+
+</div>
+</div>
 <a id="a859c6c09e05d95d047c92408454a1b1e" name="a859c6c09e05d95d047c92408454a1b1e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a859c6c09e05d95d047c92408454a1b1e">&#9670;&#160;</a></span>make_object()</h2>
 
@@ -3451,6 +3533,62 @@ Variables</h2></td></tr>
 <p class="reference">References <a class="el" href="group__apparent.html#ga906b17f06b42e31a29cafad4856f565f">app_star()</a>, <a class="el" href="group__source.html#ga0a185da3a347343e5dd21d41a598d0fa">CAT_ENTRY_INIT</a>, <a class="el" href="structnovas__cat__entry.html#ab539dc076c350cf98ac047453fa18c9c">novas_cat_entry::dec</a>, <a class="el" href="place_8c.html#aaf51bf000e993807101a34adf423d36b">mean_star()</a>, <a class="el" href="util_8c.html#ad2b933ce2f58e8b04bbe76ffbff99eb0">novas_inv_max_iter</a>, <a class="el" href="group__earth.html#ga9178358732325399f3a5e3582080ced3">precession()</a>, <a class="el" href="structnovas__cat__entry.html#a0bf9261730a8decbfd1d0c63c377dac2">novas_cat_entry::ra</a>, <a class="el" href="group__source.html#ga27bae6c9efdab763dba9f1ae36a04669">starvectors()</a>, and <a class="el" href="group__util.html#ga84f672dc1c37e3af374198f29cbcfba9">vector2radec()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="place_8c.html#aaf51bf000e993807101a34adf423d36b">mean_star()</a>, and <a class="el" href="#aa5f22db2fa785675372d45b88f2f1736">readeph()</a>.</p>
+
+</div>
+</div>
+<a id="a14078c87a8cbbb5bc5c8444b40814018" name="a14078c87a8cbbb5bc5c8444b40814018"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14078c87a8cbbb5bc5c8444b40814018">&#9670;&#160;</a></span>novas_ephem_state()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int novas_ephem_state </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>jd_tdb</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__frame.html#ga3cba2735c32163fab062b1a904a83b56">novas_accuracy</a></td>          <td class="paramname"><span class="paramname"><em>accuracy</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const void *</td>          <td class="paramname"><span class="paramname"><em>p_object</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *restrict</td>          <td class="paramname"><span class="paramname"><em>ssb_pos</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *restrict</td>          <td class="paramname"><span class="paramname"><em>ssb_vel</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A <a class="el" href="#a57854b43a0a88bfaac0fb886d30fecf5" title="Calculates the Solar-System Barycentric (SSB) position / velocity state vectors for a dynamic observe...">novas_state_provider</a> adapter function for planets, ephemeris objects, or Keplerian orbital objects. </p>
+<p>It routes the observer position / velocity to an <a class="el" href="group__geometric.html#ga713982e1f2bae0a72b39d03007f00d23" title="Retrieves the position and velocity of a solar system body using the currently configured plugins tha...">ephemeris()</a> call.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>The Barycentric Dynamic Time (TDB) based Julian date </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">p_object</td><td>Pointer to the Solar-system body definition of <span class="tt"><a class="el" href="structnovas__object.html" title="Celestial object of interest.">novas_object</a></span> type. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">ssb_pos</td><td>[AU] The output ICRS equatorial position vector with respect to the Solar System Barycenter (SSB) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">ssb_vel</td><td>[AU/day] the output ICRS equatorial velocity vector with respect to the Solar System Barycenter (SSB)</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful or else -1 in there is an error (errno should be set appropriately to indicate the type of error).</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.8</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a57854b43a0a88bfaac0fb886d30fecf5" title="Calculates the Solar-System Barycentric (SSB) position / velocity state vectors for a dynamic observe...">novas_state_provider()</a>, <a class="el" href="group__geometric.html#ga713982e1f2bae0a72b39d03007f00d23" title="Retrieves the position and velocity of a solar system body using the currently configured plugins tha...">ephemeris()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="group__geometric.html#ga713982e1f2bae0a72b39d03007f00d23">ephemeris()</a>, <a class="el" href="group__solar-system.html#gga208120c5fa3e12853eb37cb99d3e27beade504a1c5ccf790ce9d8ad52797bb94c">NOVAS_BARYCENTER</a>, and <a class="el" href="observer_8c.html#a0be3e21bb2a8350105c9894fa7c3e8c6">novas_ephem_state()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="observer_8c.html#a0be3e21bb2a8350105c9894fa7c3e8c6">novas_ephem_state()</a>.</p>
 
 </div>
 </div>

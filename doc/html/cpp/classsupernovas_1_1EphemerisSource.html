@@ -146,6 +146,8 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('classsupernova
 Public Member Functions</h2></td></tr>
 <tr class="memitem:af6eef3af2b52aaa44a8c7ef9e2bc3c2b" id="r_af6eef3af2b52aaa44a8c7ef9e2bc3c2b"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#af6eef3af2b52aaa44a8c7ef9e2bc3c2b">EphemerisSource</a> (const std::string &amp;name, long number=-1)</td></tr>
 <tr class="memdesc:af6eef3af2b52aaa44a8c7ef9e2bc3c2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instantiates a new Solar-system body whose positions are provided by ephemeris lookup.  <br /></td></tr>
+<tr class="memitem:a700fcc67a38d13fb5addea05ea3526ee" id="r_a700fcc67a38d13fb5addea05ea3526ee"><td class="memItemLeft">const std::string &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a700fcc67a38d13fb5addea05ea3526ee">className</a> () const override</td></tr>
+<tr class="memdesc:a700fcc67a38d13fb5addea05ea3526ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the class name for this astronomical source.  <br /></td></tr>
 <tr class="memitem:a1db6c1e6e9709b75eb684b253c70c9fe" id="r_a1db6c1e6e9709b75eb684b253c70c9fe"><td class="memItemLeft">const <a class="el" href="classsupernovas_1_1Source.html">Source</a> *&#160;</td><td class="memItemRight"><a class="el" href="#a1db6c1e6e9709b75eb684b253c70c9fe">copy</a> () const override</td></tr>
 <tr class="memdesc:a1db6c1e6e9709b75eb684b253c70c9fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pointer to a newly allocated copy of this Solar-system ephemeris source instance.  <br /></td></tr>
 <tr class="memitem:a78e33490ee3766c7cb7effed0e413fa0" id="r_a78e33490ee3766c7cb7effed0e413fa0"><td class="memItemLeft">long&#160;</td><td class="memItemRight"><a class="el" href="#a78e33490ee3766c7cb7effed0e413fa0">number</a> () const</td></tr>
@@ -274,6 +276,40 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
+<a id="a700fcc67a38d13fb5addea05ea3526ee" name="a700fcc67a38d13fb5addea05ea3526ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a700fcc67a38d13fb5addea05ea3526ee">&#9670;&#160;</a></span>className()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string &amp; supernovas::EphemerisSource::className </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the class name for this astronomical source. </p>
+<p>All concrete subclasses should override this method to return their C++ class name.</p>
+<dl class="section return"><dt>Returns</dt><dd>the class name for this source instance.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.8 </dd></dl>
+
+<p>Implements <a class="el" href="classsupernovas_1_1Source.html#ade658a9df9b79aac713cf416e0236256">supernovas::Source</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="#abcd51283f8e155b21ada7389b3a083fc">to_string()</a>.</p>
+
+</div>
+</div>
 <a id="a1db6c1e6e9709b75eb684b253c70c9fe" name="a1db6c1e6e9709b75eb684b253c70c9fe"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1db6c1e6e9709b75eb684b253c70c9fe">&#9670;&#160;</a></span>copy()</h2>
 
@@ -362,7 +398,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classsupernovas_1_1Source.html#af7ae7c88a6375c790d2477d9fe99e396">supernovas::Source</a>.</p>
 
-<p class="reference">References <a class="el" href="classsupernovas_1_1Source.html#ae16d5d04d593b9b14d6b5390bb8a07e3">supernovas::Source::name()</a>, and <a class="el" href="#a78e33490ee3766c7cb7effed0e413fa0">number()</a>.</p>
+<p class="reference">References <a class="el" href="#a700fcc67a38d13fb5addea05ea3526ee">className()</a>, <a class="el" href="classsupernovas_1_1Source.html#ae16d5d04d593b9b14d6b5390bb8a07e3">supernovas::Source::name()</a>, and <a class="el" href="#a78e33490ee3766c7cb7effed0e413fa0">number()</a>.</p>
 
 </div>
 </div>

@@ -5,6 +5,7 @@ var classsupernovas_1_1Source =
     [ "_novas_object", "classsupernovas_1_1Source.html#a085d8cf394db6147cd785d8a86ef7856", null ],
     [ "angle_to", "group__apparent.html#ga600eddf89ef347be4838130f327da6df", null ],
     [ "apparent_in", "group__apparent.html#ga30cfb5d2c48b4464e015c8429174e771", null ],
+    [ "className", "classsupernovas_1_1Source.html#ade658a9df9b79aac713cf416e0236256", null ],
     [ "copy", "classsupernovas_1_1Source.html#af5a18693fc942953c44bf6a04d512060", null ],
     [ "equals", "classsupernovas_1_1Source.html#a7ad4d9077afc0ccbbc8b60910a69273e", null ],
     [ "equatorial_track", "group__tracking.html#ga804912d7c773781e5a22cdcb377bae4b", null ],

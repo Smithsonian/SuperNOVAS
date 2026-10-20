@@ -1,8 +1,18 @@
 var group__observer =
 [
+    [ "supernovas::EphemerisObserver", "classsupernovas_1_1EphemerisObserver.html", [
+      [ "EphemerisObserver", "classsupernovas_1_1EphemerisObserver.html#a4dbb4233b23291ca1bf640ea129f94cd", null ],
+      [ "className", "classsupernovas_1_1EphemerisObserver.html#ad4161755f2ba55393daf1873e257e199", null ],
+      [ "copy", "classsupernovas_1_1EphemerisObserver.html#aa843dfc74200b4af12f4c43d1be374be", null ],
+      [ "equals", "classsupernovas_1_1EphemerisObserver.html#acc6e2d4f1b953e641bd00132e7f72b97", null ],
+      [ "name", "classsupernovas_1_1EphemerisObserver.html#a8d70057c89d219d5c410c89fab1c79b0", null ],
+      [ "number", "classsupernovas_1_1EphemerisObserver.html#a4d6981e9979881e2d2f7366d58cf0670", null ],
+      [ "to_string", "classsupernovas_1_1EphemerisObserver.html#a7a7ca098923bd4c2342cf7b27d38bfac", null ]
+    ] ],
     [ "supernovas::GeocentricObserver", "classsupernovas_1_1GeocentricObserver.html", [
       [ "GeocentricObserver", "classsupernovas_1_1GeocentricObserver.html#a60091b8caa93724af5a5e8c976a7f1ed", null ],
       [ "GeocentricObserver", "classsupernovas_1_1GeocentricObserver.html#aeedaaf768920eea598deae2d210a6235", null ],
+      [ "className", "classsupernovas_1_1GeocentricObserver.html#acc3450df5890938c8381b4b9db391d19", null ],
       [ "copy", "classsupernovas_1_1GeocentricObserver.html#ae578757821ffde79329e535e54e45b28", null ],
       [ "gcrs_position", "classsupernovas_1_1GeocentricObserver.html#a293c24268408aba93899f3cf0937db5b", null ],
       [ "gcrs_velocity", "classsupernovas_1_1GeocentricObserver.html#a220c1019edab5f90502c3ae5141d886e", null ],
@@ -13,6 +23,7 @@ var group__observer =
       [ "GeodeticObserver", "classsupernovas_1_1GeodeticObserver.html#aedc3bdf981a9777fbae078f1b84792c9", null ],
       [ "GeodeticObserver", "classsupernovas_1_1GeodeticObserver.html#a27d141fdabb111464442f65126d20168", null ],
       [ "GeodeticObserver", "classsupernovas_1_1GeodeticObserver.html#ae100ecbf7803ed56bd78b3f056353445", null ],
+      [ "className", "classsupernovas_1_1GeodeticObserver.html#a67b986b879ec8d2159f9fd043638493b", null ],
       [ "copy", "classsupernovas_1_1GeodeticObserver.html#a2efc7112c0b475e84aa94219d77b960b", null ],
       [ "enu_velocity", "classsupernovas_1_1GeodeticObserver.html#a9a65457117d1ae66096805c92e66767b", null ],
       [ "eop_at", "classsupernovas_1_1GeodeticObserver.html#a66c8d9adc7dad77300f861899866e3cf", null ],
@@ -30,6 +41,7 @@ var group__observer =
       [ "Observer", "classsupernovas_1_1Observer.html#a65ae0b0d36341717bf7b958ac3236f8c", null ],
       [ "~Observer", "classsupernovas_1_1Observer.html#a05aad2955d8cfcb712e71091276fb715", null ],
       [ "_novas_observer", "classsupernovas_1_1Observer.html#a06604bddb755e5070caeefb4306de037", null ],
+      [ "className", "classsupernovas_1_1Observer.html#a060bef2ec7171c4f0fb3472f4165d285", null ],
       [ "copy", "classsupernovas_1_1Observer.html#ab96ce405d6c8cbe8d90e50c8e4da2e42", null ],
       [ "equals", "classsupernovas_1_1Observer.html#a57f2b31199ce8657b03ae9972626c3f0", null ],
       [ "frame_at", "group__frame.html#gadd24c03a86837e10783af06be02a8b21", null ],
@@ -44,6 +56,15 @@ var group__observer =
       [ "to_string", "classsupernovas_1_1Observer.html#a6976e04ac1fe70d10ac5b9966ff73c8b", null ],
       [ "type", "classsupernovas_1_1Observer.html#a68214f28fee06df8aa28478475eccf04", null ],
       [ "_observer", "classsupernovas_1_1Observer.html#a5d474a28113c03ea809f617fd3f2b61b", null ]
+    ] ],
+    [ "supernovas::OrbitalObserver", "classsupernovas_1_1OrbitalObserver.html", [
+      [ "OrbitalObserver", "classsupernovas_1_1OrbitalObserver.html#a4246055c74d4b50de95e94f1e20eb779", null ],
+      [ "className", "classsupernovas_1_1OrbitalObserver.html#a0e436b75115884e7c1a6ddf459b4431e", null ],
+      [ "copy", "classsupernovas_1_1OrbitalObserver.html#a1c7be84df1babdcae64bbc7e88b8271c", null ],
+      [ "equals", "classsupernovas_1_1OrbitalObserver.html#aa857f167d595e6824822428a5d0d4774", null ],
+      [ "name", "classsupernovas_1_1OrbitalObserver.html#a4b911c9d11ee7f7aad2473a02647b04f", null ],
+      [ "orbital", "classsupernovas_1_1OrbitalObserver.html#abe24f9e0cdcfcb5bbf02762dec65af82", null ],
+      [ "to_string", "classsupernovas_1_1OrbitalObserver.html#a742f80f89cf573a56fa23cea274d0ac2", null ]
     ] ],
     [ "supernovas::Site", "classsupernovas_1_1Site.html", [
       [ "Site", "classsupernovas_1_1Site.html#aefc52a24735924b2912317cc5a975958", null ],
@@ -71,6 +92,7 @@ var group__observer =
     [ "supernovas::SolarSystemObserver", "classsupernovas_1_1SolarSystemObserver.html", [
       [ "SolarSystemObserver", "classsupernovas_1_1SolarSystemObserver.html#af1ab79f3e321bbbe8a6343c88d8417cf", null ],
       [ "SolarSystemObserver", "classsupernovas_1_1SolarSystemObserver.html#a026039e93a1925b9078502aea993f203", null ],
+      [ "className", "classsupernovas_1_1SolarSystemObserver.html#aed48a80656ae3b0e13e7f07a711b1140", null ],
       [ "copy", "classsupernovas_1_1SolarSystemObserver.html#a3ba91583e539cc02241b82ced9675aab", null ],
       [ "ssb_position", "classsupernovas_1_1SolarSystemObserver.html#af063a24216e1d4f7ec007a524a500464", null ],
       [ "ssb_velocity", "classsupernovas_1_1SolarSystemObserver.html#a52b68ba98939ec3b3832d4edcfbf5324", null ],
