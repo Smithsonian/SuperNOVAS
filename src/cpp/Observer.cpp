@@ -1065,9 +1065,17 @@ std::string GeodeticObserver::to_string() const {
  * Instantiates a new observer with dynamically determined position / velocity via a designated
  * state provider function.
  *
+ * NOTES:
+ *
+ *  1. Unlike most SuperNOVAS classes, which typically copy data, this one tracks the pointer
+ *     reference to the call arguments directly. Therefore, you must make sure that the data
+ *     pointed at remains valid in the scope in which the observer exists or is being used.
+ *
  * @param call    the state provider function
- * @param arg     (optional) pointer argument to pass to the state provider function. It may be NULL
- *                if the function does not use externally supplied data. (default: NULL)
+ * @param arg     (optional) pointer argument to pass to the state provider function. It may be
+ *                NULL if the function does not use externally supplied data (default: NULL). When
+ *                the pointer is not NULL, you should make sure that the data pointed at exists
+ *                and remains valid in this observer instance.
  *
  * @since 1.8
  *
@@ -1077,7 +1085,7 @@ DynamicObserver::DynamicObserver(novas_state_provider call, const void *arg)
 : Observer(NOVAS_DYNAMIC_OBSERVER, Site::undefined(), Position::undefined(), Velocity::undefined()), _call(call), _arg(arg)
 {
   if(!call)
-    novas_set_errno(EINVAL, "DynamicObserver::DynamicObserver", "input state provider function is NULL");
+    novas_set_errno(EINVAL, "DynamicObserver()", "input state provider function is NULL");
   else
     _valid = true;
 }
@@ -1165,7 +1173,7 @@ EphemerisObserver::EphemerisObserver(const std::string& name, long id)
   make_ephem_object(name.c_str(), id, &_object);
   _valid = name.length() > 0 || id >= 0;
   if(!_valid)
-    novas_set_errno(EINVAL, "EphemerisObserver::EphemerisObserver", "name must not be empty OR id must be non-negative");
+    novas_set_errno(EINVAL, "EphemerisObserver()", "name must not be empty OR id must be non-negative");
   set_arg(&_object);
 }
 
@@ -1240,7 +1248,7 @@ OrbitalObserver::OrbitalObserver(const Orbital& orbital, const std::string& name
     _valid = true;
   else {
     _valid = false;
-    novas_trace_invalid("OrbitalObserver::OrbitalObserver");
+    novas_trace_invalid("OrbitalObserver()");
   }
   _observer.call_arg = &_object;
 }

@@ -587,11 +587,20 @@ int make_solar_system_observer(const double *sc_pos, const double *sc_vel, obser
 
 /**
  * Populates an 'observer' data structure, for an observer whose position and velocity state
- * vectors are detwermined dynamically for the time of observation.
+ * vectors are determined dynamically for the time of observation.
+ *
+ * NOTES:
+ *
+ *  1. Unlike most SuperNOVAS functions, which typically copy data, this one tracks the pointer
+ *     reference to the call arguments directly. Therefore, you must make sure that the data
+ *     pointed at remains valid in the scope in which the observer exists or is being used.
  *
  * @param call      the function that provides the observer's Solar System Barycentric position
  *                  and velocity vectors.
- * @param arg       (optional) additional parameters to pass to the call, as needed.
+ * @param arg       (optional) additional parameters to pass to the call, as needed, or NULL if
+ *                  the call does not require additional data. When the pointer is not NULL, you
+ *                  should make sure that the data pointed at exists and remains valid in the
+ *                  scope as the observer that is populated here.
  * @param[out] obs  Pointer to the data structure to populate
  * @return          0 if successful, or -1 if either argument is NULL.
  *
@@ -628,8 +637,16 @@ int make_dynamic_observer(novas_state_provider call, const void *restrict arg, o
  * or comets, travelling on a spacecraft (which has ephemeris data), or defined by Keplerian orbital
  * parameters around a major Solar-system body or barycenter position.
  *
+ * NOTES:
+ *
+ *  1. Unlike most SuperNOVAS functions, which typically copy data, this one uses the pointer
+ *     reference to the observing place directly. Therefore, you must make sure that the `object` data
+ *     pointed at remains valid in the scope in which the observer exists or is being used.
+ *
  * @param place   the Solar-system body or place to which defines the momentary position of the
- *                observer at all times.
+ *                observer at all times. The call will use the pointer reference directly. Therefore
+ *                you sohould make sure that the data pointed at exists and remains valid in the
+ *                scope as the observer that is populated here.
  * @param obs     Pointer to the data structure to populate
  * @return        0 if successful, or -1 if either argument is NULL (errno set to EINVAL), or
  *                if the place is not in the Solar-system (errno set to ERANGE).
@@ -864,8 +881,8 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
  * NOTES:
  *
  *  1. This implementation does not take polar wobble corrections into account for Earth-based
- *     (ITRS) observing locations. For those, it provides position vectors at the tens of meters
- *     level only.
+ *     (ITRS) observing locations. Thus for ITRS, it provides position vectors with an accuracy at
+ *     the tens of meters level only.
  *
  * @param jd_tdb        [day] Barycentric Dynamical Time (TDB) based Julian date.
  * @param ut1_to_tt     [s] TT - UT1 time difference. Used only when 'location->where' is
