@@ -100,11 +100,6 @@ Upcoming maintenance release, expected around 1 November 2026.
  
  - #369: Improved EOP fetching thread safety, with thread-safe one-time mutex initialization, and more synchronized
    code blocks preventing concurrent access of shared EOP resources (by csp256 and attipaci).
-   
- - #372: Improved leap seconds list parsing, by applying leap list expiration as end date for last leap entry, in the 
-   unlikely case that the expiration timestamp appears after the entries in the file. Note, that the timestamp of
-   always appears in the commented header section before the leap entries in the IERS data products, so it is unlikely
-   that normal leap list files will ever benefit from the change. (by csp256)
 
  - #371: `novas_jd_to_date()` now checks that input JD date can be represented in a calendar format with an `int`-type 
    year components in any calendar, and returns -1 with `errno` set to `ERANGE` when it cannot. The change prevents 
@@ -156,11 +151,23 @@ Upcoming maintenance release, expected around 1 November 2026.
    by the related `tzfile` specification either, and future versions of the file may not contain an expiration after 
    the abolishment of leaps seconds on 20 May 2027.
    
+ - #392: Given that leap seconds are abolished effective 20 May 2027, the final leap seconds list is now hardcoded,
+   making `novas_set_leap_list()` useless. It no longer does anything, except returning 0 (but setting `errno` to
+   `ENOSYS`). The same goes for `novas_set_eop_url()`, when called with `EOP_LEAP_LIST` as the series.
+    
+ - #395: `novas_lookup_leap()` no longer needs LIBC support, and will always return a valid leap seconds value, 
+   since no new leap seconds will be introduced in the future.
+   
  - Streamlined `novas_make_planet_orbit()` slightly by avoiding duplicate trigonometric calls.
 
  - Changed portable mutex feature test order to reserve use of the C11 mutexes for cases where neither POSIX nor
    MSC mutexes can be used.
    
+### Deprecated
+
+ - #395: Deprecated `novas_set_leap_list()`. It's pretty useless now that it does pretty much nothing at all, 
+   except setting `errno` to `ENOSYS`.
+
 
 ## [1.7.2] - 2026-08-05
 

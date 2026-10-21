@@ -5862,7 +5862,6 @@ static int test_fetch_eop() {
   if(!is_ok("fetch_eop:unix:now", novas_fetch_eop_unix(time(NULL), 0, &eop))) n++;
 #  endif
 
-  if(!is_ok("fetch_eop:set_eop_url:leap", novas_set_eop_url(EOP_LEAP_LIST, 0, get_resource_url("leap-seconds.list")))) n++;
   if(!is_ok("fetch_eop:set_eop_url:rapid", novas_set_eop_url(EOP_RAPID_IAU2000, 2020, get_resource_url("finals.all.iau2000.txt")))) n++;
   if(!is_ok("fetch_eop:set_eop_url:c04", novas_set_eop_url(EOP_C04_IAU2000_0UTC, 2008, get_resource_url("EOP_20u24_C04_one_file_1962-now.txt")))) n++;
   if(!is_ok("fetch_eop:set_eop_url:c01", novas_set_eop_url(EOP_C01_IAU2000, 1900, get_resource_url("EOP_C01_IAU2000_1846-now.txt")))) n++;
@@ -5954,34 +5953,10 @@ static int test_auto_fetch_eop() {
 
 static int test_lookup_leap() {
   int n = 0;
-  char path[1024] = {'\0'}, *rc;
 
-#if !defined(WITHOUT_CURL) && !defined(OFFLINE)
-  if(!is_ok("lookup_leap:set_eop_url", novas_set_eop_url(EOP_LEAP_LIST, 1950, NULL))) n++;
-  if(!is_equal("lookup_leap:auto:j2000", novas_lookup_leap(946684800L), 32.0, 1e-15)) n++;
-  if(!is_equal("lookup_leap:auto:1970", novas_lookup_leap(0L), 0.0, 1e-15)) n++;
-#endif
-
-  rc = get_resource("leap-seconds.list", path, sizeof(path));
-  if(!rc) fprintf(stderr, "WARNING! Missing %s: skip tests requiring it", path);
-  else {
-    if(!is_ok("lookup_leap:set_leap_list", novas_set_leap_list(path))) return ++n;
-    if(!is_equal("lookup_leap:offline:j2000", novas_lookup_leap(946684800L), 32.0, 1e-15)) n++;
-  }
-
-  rc = get_resource("bad-expiration-ok1.list", path, sizeof(path));
-  if(!rc) fprintf(stderr, "WARNING! Missing %s: skip tests requiring it", path);
-  else if(!is_ok("lookup_leap:set_leap_list:bad-first-expiration", novas_set_leap_list(path))) return ++n;
-
-  rc = get_resource("bad-expiration-ok2.list", path, sizeof(path));
-  if(!rc) fprintf(stderr, "WARNING! Missing %s: skip tests requiring it", path);
-  else if(!is_ok("lookup_leap:set_leap_list:bad-second-expiration", novas_set_leap_list(path))) return ++n;
-
-  rc = get_resource("missing-expiration-ok.list", path, sizeof(path));
-  if(!rc) fprintf(stderr, "WARNING! Missing %s: skip tests requiring it", path);
-  else if(!is_ok("lookup_leap:set_leap_list:missing-expiration-OK", novas_set_leap_list(rc))) return ++n;
-
-  novas_set_leap_list(NULL);
+  if(!is_equal("lookup_leap:1970", novas_lookup_leap(0L), 0.0, 1e-15)) n++;
+  if(!is_equal("lookup_leap:j2000", novas_lookup_leap(946684800L), 32.0, 1e-15)) n++;
+  if(!is_equal("lookup_leap:2030", novas_lookup_leap(1893456000), 37.0, 1e-15)) n++;
 
   return n;
 }

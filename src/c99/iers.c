@@ -58,13 +58,6 @@
 #endif
 
 /**
- * Alternative URL for `leap-seconds.list`.
- *
- * @sa novas_set_eop_url(), EOP_LEAP_LIST
- */
-#define NOVAS_EOP_ALT_LEAP_URL    "https://data.iana.org/time-zones/data/leap-seconds.list"
-
-/**
  * Alternative URL for the IERS rapid dailyseries Earth Orientation Parameter data series
  * from 1973, and including predictions for up to to a year from the current date.
  *
@@ -92,51 +85,26 @@
 
 
 /// \cond PRIVATE
-#  define LEAP_FILENAME               "leap-seconds.list"
-#  define LEAP_LIST_MAX_LEN           32768
-#  define DEFAULT_LEAP_URL            "https://" IERS_LEAP_SERVER "/iers/bul/bulc/ntp/" LEAP_FILENAME
 #  define NTP_UNIX_EPOCH              2208988800LL      ///< [s] NTP timestamp of UNIX epoch (1970 Jan 1)
 #  define LAST_LEAP_START             1483228800L       ///< [s] 1 Jan 2017
 
 #ifdef _MSC_VER
 #  define strtok_r        strtok_s                      ///< MSC equivalent
 #endif
-
-/**
- * A individual leap seconds entry in a linked list of leap seconds
- *
- */
-typedef struct iers_leap_entry {
-  time_t unix_start;  ///< [s] UNIX seconds when leap was introduced
-  time_t unix_end;    ///< [s] UNIX seconds to which leap is valid
-  int leap;           ///< [s] Leap seconds (TAI - UTC time difference)
-  struct iers_leap_entry *next;   ///< Link to the next leap entry in list.
-} iers_leap_entry;
 /// \endcond
 
-// ===========================================================================
-#ifndef WITHOUT_LIBC
-
-static iers_leap_entry *leaps;      ///< Leap seconds list
-static time_t leap_expiration;      ///< UNIX time at which leap seconds list expires.
-
-#if defined(NOVAS_LOCK_INITIALIZER)
-static lock_type leap_mutex = NOVAS_LOCK_INITIALIZER;   ///< Mutex for leap seconds data.
-#elif __STDC_VERSION__ >= 201112L
-static lock_type leap_mutex;                            ///< Mutex for leap seconds data.
-static once_flag leap_mutex_once = ONCE_FLAG_INIT;      ///< One-time mutex initialization state.
-#else
-#  error "Oops. No thread safe mutex initialization available."
-#endif
-
-#endif // WITH_LIBC
-// ===========================================================================
+// Final list of leap seconds NTP timestamps before abolishment on 20 May 2027
+static const long long ntp_leap_starts[28] = { //
+        2272060800, 2287785600, 2303683200, 2335219200, 2366755200, 2398291200, 2429913600, 2461449600, //
+        2492985600, 2524521600, 2571782400, 2603318400, 2634854400, 2698012800, 2776982400, 2840140800, //
+        2871676800, 2918937600, 2950473600, 2982009600, 3029443200, 3076704000, 3124137600, 3345062400, //
+        3439756800, 3550089600, 3644697600, 3692217600 };
 
 
 // ---------------------------------------------------------------------------
 #ifndef WITHOUT_CURL
-/// \cond PRIVATE
 
+/// \cond PRIVATE
 #  define IERS_LATEST_URL_PREFIX      "https://" IERS_DATACENTER "/data/latestVersion/"
 
 #  define RAPID_JD_START              ( NOVAS_JD_MJD0 + 41684.0 )   ///< [day] Julian date of first entry in rapid service file
@@ -166,6 +134,7 @@ typedef struct {
   short ilod;       ///< column index from which to parse length of day (LOD) differential.
   short ilode;      ///< column index from which to parse LOD error
 } iers_data_file;
+/// \endcond
 
 /// The currently configured URLs for each data series
 static const char *urls[NOVAS_NUM_EOP_SERIES];
@@ -177,7 +146,7 @@ static int itrf_years[NOVAS_NUM_EOP_SERIES] = { -1, 2020, 2020, 2020 };
 
 /// The default URLs for each data series.
 static const char *default_urls[NOVAS_NUM_EOP_SERIES] = {
-        DEFAULT_LEAP_URL,
+        NULL,
         IERS_LATEST_URL_PREFIX "finals.all.iau2000.txt",
         IERS_LATEST_URL_PREFIX "EOP_20u24_C04_one_file_1962-now.txt",
         IERS_LATEST_URL_PREFIX "EOP_C01_IAU2000_1846-now.txt"
@@ -233,189 +202,6 @@ static once_flag eop_mutex_once = ONCE_FLAG_INIT;       ///< One-time mutex init
 #  error "Oops. No thread safe mutex initialization available."
 #endif
 
-/// \endcond
-#endif /* WITH_CURL */
-// ---------------------------------------------------------------------------
-
-// ===========================================================================
-#ifndef WITHOUT_LIBC
-
-#if !defined(NOVAS_LOCK_INITIALIZER) && __STDC_VERSION__ >= 201112L
-static void init_leap_mutex() {
-  novas_init_lock(&leap_mutex);
-}
-#endif
-
-static void lock_leap() {
-#if !defined(NOVAS_LOCK_INITIALIZER) && __STDC_VERSION__ >= 201112L
-  call_once(&leap_mutex_once, init_leap_mutex);
-#endif
-  novas_lock(&leap_mutex);
-}
-
-static void unlock_leap() {
-  novas_unlock(&leap_mutex);
-}
-
-static void destroy_leap_list(iers_leap_entry *list) {
-  while(list) {
-    iers_leap_entry *e = list;
-    list = e->next;
-    free(e);
-  }
-}
-
-static void cleanup_leaps_async() {
-  destroy_leap_list(leaps);
-}
-
-static void set_leap_list_async(iers_leap_entry *list, long long expiration) {
-  static int initialized;
-
-  if(!initialized) {
-    atexit(cleanup_leaps_async);
-    initialized = 1;
-  }
-
-  iers_leap_entry *obsolete = leaps;
-  leaps = list;
-  leap_expiration = expiration;
-
-  destroy_leap_list(obsolete);
-}
-
-static iers_leap_entry *parse_leaps(char *buf, long long *expiration) {
-  static const char *fn = "parse_leap_file";
-
-  iers_leap_entry *list = NULL;
-  char *ptr = buf, *line, *context = NULL;
-
-  *expiration = LLONG_MAX;
-
-  // Parse leap-seconds.list data
-  while((line = strtok_r(ptr, "\r\n", &context)) != NULL) {
-    ptr = NULL; // Keep parsing from the same input
-
-    if(!line[0]) continue; // Skip empty lines
-
-    if(line[0] != '#') { // Not a comment line, we expect a leap list entry...
-      // Add leap entry to list
-      iers_leap_entry *e = (iers_leap_entry *) calloc(1, sizeof(iers_leap_entry));
-      long long ntp_start = 0LL;
-
-      // -- It's hard to produce a malloc fail in a test environment, so we'll skip coverage tracking on it.
-      // LCOV_EXCL_START
-      if(!e) {
-        destroy_leap_list(list);
-        novas_set_errno(errno, fn, "leap entry alloc error: %s", strerror(errno));
-        return NULL;
-      }
-      // LCOV_EXCL_STOP
-
-      // Parse start time and leap seconds value
-      if(sscanf(line, "%lld %d", &ntp_start, &e->leap) < 2) {
-        free(e);
-        destroy_leap_list(list);
-        novas_set_errno(errno, fn, "invalid leap-seconds.list entry: %s", line);
-        return NULL;
-      }
-
-      // Prepend to head of list.
-      e->unix_start = (time_t) (ntp_start - NTP_UNIX_EPOCH);
-      e->unix_end = (time_t) *expiration;
-      e->next = list;
-      if(e->next)
-        e->next->unix_end = e->unix_start;
-      list = e;
-    }
-    else if(line[1] == '@') { // Process expiration timestamp
-      // We'll use the last valid expiration timestamp (there should be only one, but...).
-      if(sscanf(&line[2], "%lld", expiration) == 1)
-        *expiration -= NTP_UNIX_EPOCH; // Hurray, a valid expiration timestamp...
-      else if(*expiration == LLONG_MAX)
-        *expiration = -1; // No prior valid expiration, only this invalid one (so far)
-    }
-  } // while loop over lines.
-
-  if(list) {
-    if(*expiration < 0) {
-      destroy_leap_list(list);
-      novas_set_errno(EBADF, fn, "invalid expiration date");
-      return NULL;
-    }
-
-    if(*expiration == LLONG_MAX && list->unix_start < LAST_LEAP_START) {
-      destroy_leap_list(list);
-      novas_set_errno(ERANGE, fn, "old (incomplete) leap seconds list without expiration date");
-      return NULL;
-    }
-
-    list->unix_end = (time_t) *expiration;
-  }
-
-  return list;
-}
-
-static iers_leap_entry *parse_leap_file(FILE *fp, long long *expiration) {
-  static const char *fn = "novas_parse_leap_file";
-
-  long len;
-  char *buf = NULL;
-  iers_leap_entry *list;
-
-  // LCOV_EXCL_START
-  //
-  //  The error conditions in this functions should not normally occur, and
-  //  would be quite impossible to test for in a controlled way. Thus it makes
-  //  no sense to include these bits in the code coverage stats.
-
-  if(fseek(fp, 0, SEEK_END) < 0)
-    goto error; // @suppress("Goto statement used")
-
-  len = ftell(fp);
-  if(len < 0)
-    goto error; // @suppress("Goto statement used")
-
-  if(len > LEAP_LIST_MAX_LEN) {
-    errno = EFBIG;
-    goto error; // @suppress("Goto statement used")
-  }
-
-  if(fseek(fp, 0, SEEK_SET) < 0)
-    goto error; // @suppress("Goto statement used")
-
-  buf = (char *) malloc(len + 1);
-  if(!buf)
-    goto error; // @suppress("Goto statement used")
-
-  if(fread(buf, 1, len, fp) != (size_t) len)
-    goto error; // @suppress("Goto statement used")
-
-  buf[len] = '\0';
-
-  list = parse_leaps(buf, expiration);
-  free(buf);
-  if(!list)
-    novas_trace_invalid(fn);
-
-  return list;
-
-  // -------------------------------------------------------------------------
-  error:
-
-  if(buf)
-    free(buf);
-
-  novas_set_errno(errno, fn, strerror(errno));
-  return NULL;
-  // LCOV_EXCL_STOP
-}
-
-#endif /* WITH_LIBC */
-// ===========================================================================
-
-// ---------------------------------------------------------------------------
-#ifndef WITHOUT_CURL
 
 #if !defined(NOVAS_LOCK_INITIALIZER) && __STDC_VERSION__ >= 201112L
 static void init_eop_mutex() {
@@ -467,41 +253,6 @@ static CURL *init_curl() {
   curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_0);
 
   return curl;
-}
-
-static iers_leap_entry *fetch_leaps_async(long long *expiration) {
-  static const char *fn = "fetch_leaps_async()";
-
-  CURL *curl = NULL;
-  CURLcode res;
-  char str[LEAP_LIST_MAX_LEN];
-  download_buffer data = { str, sizeof(str), 0 };
-  iers_leap_entry *list;
-  const char *url;
-
-  curl = init_curl();
-  if (!curl) {
-    novas_trace_invalid(fn);
-    return NULL;
-  }
-
-  url = novas_get_eop_url(EOP_LEAP_LIST);
-  curl_easy_setopt(curl, CURLOPT_URL, url);
-  curl_easy_setopt(curl, CURLOPT_WRITEDATA, &data);
-
-  res = curl_easy_perform(curl);
-  curl_easy_cleanup(curl);
-
-  if(res) {
-    novas_set_errno(EAGAIN, fn, "curl error %d for %s: %s", res, url, curl_easy_strerror(res));
-    return NULL;
-  }
-
-  list = parse_leaps(str, expiration);
-  if(!list)
-    novas_trace_invalid(fn);
-
-  return list;
 }
 
 static void cleanup_handle_async(iers_data_file *file) {
@@ -781,153 +532,66 @@ static void cleanup_eop_urls_async() {
 // ---------------------------------------------------------------------------
 
 /**
- * Specifies a local file containing the official leap seconds list, i.e. `leap-seconds.list`, to
- * use, at least until its expiry. (If the local leap file expires, a new one will be fetched from
- * IERS as needed).
+ * Obsoleted function to specify a file containing the leap seconds list. There will be no more leap
+ * seconds as of 20 May 2027, so the final list of leap seconds is now hardcoded into SuperNOVAS as
+ * of v1.8. There will be leap hours instead, perhaps, in the distant future, but not for some millenia.
+ * If someone still uses SuperNOVAS then, well, they must make some modifications to handle it then...
  *
- * It is similar to `novas_set_eop_url()` for the `EOP_LEAP_LIST` series, with a `file://` type
- * URL, except that this one does not need cURL support, and can work with relative paths also.
- *
- * NOTES:
- *
- *  - If __SuperNOVAS__ was built without `libc` support (`WITHOUT_LIBC` build configuration option),
- *    then this function will always return an error (`errno` set to `ENOSYS`).
- *
- *  - This call is not thread-safe. You should avoid calling it from concurrent threads if you
- *    want it to have predictable behavior.
- *
- * @param filename      Path to a local `leap-seconds.list` file (as obtained from IERS or a
- *                      mirror). It is typically included in the `tzdata` package on Linux, where
- *                      it may be found as `/usr/share/zoneinfo/leap-seconds.list` typically. Or,
- *                      NULL to clean up any prior leap seconds resources.
- * @return              0 if successful, or else -1 if there was an error (errno will indicate the
- *                      type of error).
+ * @param filename      _unused_
+ * @return              0
  *
  * @since 1.7
  * @author Attila Kovacs
  *
  * @sa https://hpiers.obspm.fr/iers/bul/bulc/ntp/leap-seconds.list
  * @sa novas_set_eop_url(), novas_lookup_leap(), novas_fetch_eop(), novas_reset_eop()
+ *
+ * @deprecated There will be no more leap seconds, so we readily know the final leap list, which
+ *      is now hardcoded into SuperNOVAS as of v1.8. This function will return 0 to remain compatible
+ *      with working code that uses it, but it will no longer actually load the specified leap seconds
+ *      file. It will however set `errno` to `ENOSYS` to indicate that the function is no longer
+ *      meaningful.
  */
 int novas_set_leap_list(const char *filename) {
-  static const char *fn = "novas_set_leap_list";
-
-#ifdef WITHOUT_LIBC
-  (void) filename;
-  return novas_error(-1, ENOSYS, fn, "SuperNOVAS was built without libc (WITHOUT_LIBC): file I/O unavailable");
-#else
-  FILE *fp;
-  iers_leap_entry *list;
-  long long expiration = 0LL;
-
-  if(!filename) {
-    set_leap_list_async(NULL, 0LL);
-    return 0;
-  }
-
-  if(!filename[0])
-    return novas_error(-1, EINVAL, fn, "leap seconds file name is empty");
-
-  fp = fopen(filename, "r");
-  if(!fp)
-    return novas_error(-1, errno, fn, "open %s: %s", filename, strerror(errno));
-
-  list = parse_leap_file(fp, &expiration);
-  fclose(fp);
-
-  if(!list)
-    return novas_trace(fn, -1, 0);
-
-  lock_leap();
-  set_leap_list_async(list, expiration);
-  unlock_leap();
-
+  (void) filename; // unused
+  novas_set_errno(ENOSYS, "novas_set_leap_list", "Setting leap seconds lists is no longer supported or needed.");
   return 0;
-#endif /* !WITHOUT_LIBC */
 }
 
 /**
- * Returns the leap seconds for the given UNIX timestamp, based either on a locally supplied leap
- * seconds list (see `novas_set_leap_list()`), or else from data obtained as needed from IERS
- * (provided that fetching it is allowed). In case of errors -1 is returned, with errno set as
- * appropriate.
+ * Returns the leap seconds for the given UNIX timestamp.
  *
  * Leap seconds were first introduced on 1 Jan 1972. Thus for date preceding the introduction,
- * 0 is returned. Leap seconds prognosis into the future is available only up to the expiration
- * date of the `leap-seconds.list` file (as supplied or updated from IERS).
- *
- * NOTES:
- *
- *  - If __SuperNOVAS__ was built without `libc` support (`WITHOUT_LIBC` build configuration option),
- *    then this function will always return an error (`errno` set to `ENOSYS`).
+ * 0 is returned. The last leap of 27 seconds was introduced on 1 January 2017, and the decision
+ * has been made to not introduce further leap seconds as of 20 May 2027, leaving 37 seconds
+ * for the foreseeable future.
  *
  * @param t     [s] UNIX time (seconds since 0 UTC, 1 Jan 1970)
- * @return      The leap seconds for the given time, or NOVAS_INVALID_LEAP (-999) if there was an
- *              error (errno will indicate the type of error).
+ * @return      The leap seconds for the given time.
  *
  * @since 1.7
  * @author Attila Kovacs
  *
- * @sa novas_set_leap_list(), novas_set_eop_url(), novas_fetch_eop(), novas_is_auto_fetch_eop(),
- *     NOVAS_INVALID_LEAP
+ * @sa novas_fetch_eop(), novas_is_auto_fetch_eop()
  */
 int novas_lookup_leap(time_t t) {
-  static const char *fn = "novas_lookup_leap";
+  long long ntpdate;
+  int i;
 
-#ifdef WITHOUT_LIBC
-  (void) t;
-  return novas_error(NOVAS_INVALID_LEAP, ENOSYS, fn, "SuperNOVAS was built without libc (WITHOUT_LIBC): specify leap seconds explicitly instead.");
-#else
-  const iers_leap_entry *e;
+  if(t >= LAST_LEAP_START)
+    return 37;
 
-  lock_leap();
-  if(!leaps || (t >= leap_expiration && time(NULL) >= leap_expiration)) {
+  ntpdate = t + NTP_UNIX_EPOCH;
+  if(ntpdate < ntp_leap_starts[0])
+    return 0;
 
-#  ifdef WITHOUT_CURL
-    unlock_leap();
-    return novas_error(NOVAS_INVALID_LEAP, ERANGE, fn, "no leap data available for time %lld (WITHOUT_CURL)", (long long) t);
-#  else
-    if(novas_is_auto_fetch_eop()) {
-      long long expiration = 0LL;
-      iers_leap_entry *update = fetch_leaps_async(&expiration);
-      if(!update) {
-        unlock_leap();
-        return novas_trace(fn, 1, NOVAS_INVALID_LEAP - 1); // trick work-around propagating negative (not -1) error code.
-      }
-      set_leap_list_async(update, expiration);
-    }
-    else {
-      unlock_leap();
-      return novas_error(NOVAS_INVALID_LEAP, EAGAIN, fn, "automatic EOP fetching is disabled.");
-    }
-#  endif
-  }
+  for(i = 0; i < 27; i++)
+    if(ntpdate < ntp_leap_starts[i + 1]) return 10 + i;
 
-  if(t > leaps->unix_end) {
-    struct tm tm = {};
-    char str[40] = {'\0'};
-    unlock_leap();
-#ifdef _MSC_VER
-    gmtime_s(&tm, &t);
-#else
-    gmtime_r(&t, &tm);
-#endif
-    strftime(str, sizeof(str), "%c", &tm);
-    return novas_error(NOVAS_INVALID_LEAP, ERANGE, fn, "Time %s is beyond the leap seconds coverage range", str);
-  }
-
-  for(e = leaps; e != NULL; e = e->next)
-    if(t >= e->unix_start && t < e->unix_end) {
-      unlock_leap();
-      return e->leap;
-    }
-
-  unlock_leap();
-
-  return 0;
-#endif /* !WITHOUT_LIBC */
+  // LCOV_EXCL_START
+  return -1; // NOT REACHED
+  // LCOV_EXCL_STOP
 }
-
 
 /**
  * Specify a URL to use for a given IERS Earth Orientation Parameter (EOP) series. By default,
@@ -972,7 +636,7 @@ int novas_lookup_leap(time_t t) {
  * @since 1.7
  * @author Attila Kovacs
  *
- * @sa novas_get_eop_url(), novas_fetch_eop(), novas_set_leap_list(), novas_get_eop_itrf_year()
+ * @sa novas_get_eop_url(), novas_fetch_eop(), novas_get_eop_itrf_year()
  * @sa NOVAS_EOP_ALT_LEAP_URL, NOVAS_EOP_ALT_RAPID_URL, NOVAS_EOP_ALT_C04_URL, NOVAS_EOP_ALT_C01_URL
  */
 int novas_set_eop_url(enum novas_eop_series series, int itrf_year, const char *url) {
@@ -1000,7 +664,7 @@ int novas_set_eop_url(enum novas_eop_series series, int itrf_year, const char *u
   switch(series) {
     case EOP_LEAP_LIST:
       novas_set_leap_list(NULL);
-      break;
+      return novas_trace(fn, 0, 0);
     case EOP_RAPID_IAU2000:
       cleanup_handle_async(&rapid);
       break;
@@ -1023,17 +687,13 @@ int novas_set_eop_url(enum novas_eop_series series, int itrf_year, const char *u
   urls[series] = url ? strdup(url) : NULL;
   url_version++;
 
-  if(series != EOP_LEAP_LIST)
-    itrf_years[series] = url ? itrf_year : default_itrf_years[series];
+  itrf_years[series] = url ? itrf_year : default_itrf_years[series];
 
   if(discard)
     free(discard);
 
   switch(series) {
-    case EOP_LEAP_LIST:
-      if(novas_lookup_leap(0L) != 0)
-        return novas_trace(fn, -1, 0);
-      return 0;
+    case EOP_LEAP_LIST: // it's a dummy entry point here, but here for completeness.
     case EOP_RAPID_IAU2000:
       status = checkout_eop_file_async(&rapid, 0);
       break;
@@ -1133,15 +793,9 @@ int novas_get_eop_itrf_year(enum novas_eop_series series) {
  * @since 1.7
  * @author Attila Kovacs
  *
- * @sa novas_set_leap_list(), novas_fetch_eop()
+ * @sa novas_fetch_eop()
  */
 void novas_reset_eop() {
-#ifndef WITHOUT_LIBC
- lock_leap();
- set_leap_list_async(NULL, 0LL);
- unlock_leap();
-#endif
-
 #ifndef WITHOUT_CURL
  lock_eop();
  cleanup_eop_urls_async();
