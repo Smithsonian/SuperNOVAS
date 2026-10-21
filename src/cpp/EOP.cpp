@@ -205,7 +205,7 @@ std::string EOP::to_string() const {
  *   configuration options), then this function will return an invalid / undefined EOP (`errno`
  *   set to `ENOSYS`).
  *
- * @param jd              [day] Julian Date (preferably UTC-based).
+ * @param jd_utc          [day] Julian Date (preferably UTC-based).
  * @param timeout_millis  [ms] (optional) HTTP connection timeout, or &lt;=0 to leave unchanged.
  * @return        EOP obtained from IERS or else an invalid EOP if there was an error (errno will
  *                indicate the type of error).
@@ -215,11 +215,11 @@ std::string EOP::to_string() const {
  * @sa https://www.iers.org/IERS/EN/DataProducts/EarthOrientationData/eop
  * @sa fetch_for_mjd(), fetch_for(), fetch_current(), novas_fetch_eop()
  */
-EOP EOP::fetch_for_jd(double jd, long timeout_millis) {
+EOP EOP::fetch_for_jd(double jd_utc, long timeout_millis) {
   static const char *fn = "EOP::fetch_for_jd()";
 
   novas_eop eop = {};
-  if(novas_fetch_eop(jd, timeout_millis, &eop) != 0) {
+  if(novas_fetch_eop(jd_utc, timeout_millis, &eop) != 0) {
     novas_trace_invalid(fn);
     return EOP::undefined();
   }
@@ -249,7 +249,7 @@ EOP EOP::fetch_for_jd(double jd, long timeout_millis) {
  *   configuration options), then this function will return an invalid / undefined EOP (`errno`
  *   set to `ENOSYS`).
  *
- * @param mjd             [day] Modified Julian Date (preferably UTC-based).
+ * @param mjd_utc         [day] Modified Julian Date (preferably UTC-based).
  * @param timeout_millis  [ms] (optional) HTTP connection timeout, or &lt;=0 to leave unchanged.
  * @return        EOP obtained from IERS or else an invalid EOP if there was an error (errno will
  *                indicate the type of error).
@@ -259,8 +259,8 @@ EOP EOP::fetch_for_jd(double jd, long timeout_millis) {
  * @sa https://www.iers.org/IERS/EN/DataProducts/EarthOrientationData/eop
  * @sa fetch_for_jd(), fetch_for(), fetch_current(), novas_fetch_eop()
  */
-EOP EOP::fetch_for_mjd(double mjd, long timeout_millis) {
-  EOP e = fetch_for_jd(NOVAS_JD_MJD0 + mjd, timeout_millis);
+EOP EOP::fetch_for_mjd(double mjd_utc, long timeout_millis) {
+  EOP e = fetch_for_jd(NOVAS_JD_MJD0 + mjd_utc, timeout_millis);
   if(!e.is_valid())
     novas_trace_invalid("EOP::fetch_for_mjd()");
   return e;

@@ -1358,7 +1358,6 @@ static int test_cirs_app_ra() {
 
 static int test_set_time() {
   novas_timespec tt, tt1, tai, gps, TDB, tcb, tcg, utc, ut1;
-  int leap = 32;
   double dut1 = 0.1;
   long ijd = (long) tdb;
   double fjd = 0.25;
@@ -1368,6 +1367,8 @@ static int test_set_time() {
   const double LB = 1.550519768e-8;
   const double TDB0 = 6.55e-5;
   const double LG = 6.969290134e-10;
+
+  int leap = novas_lookup_leap((time_t) ((tdb - J2000) * NOVAS_DAY) + 946728000LL);
 
   tdb2tt(ijd, NULL, &dt);
 
@@ -1421,7 +1422,6 @@ static int test_set_time() {
 
 static int test_get_time() {
   novas_timespec tt;
-  int leap = 32;
   double dut1 = 0.1;
   double dt;
   long ijd;
@@ -1430,6 +1430,8 @@ static int test_get_time() {
   const double LB = 1.550519768e-8;
   const double TDB0 = 6.55e-5;
   const double LG = 6.969290134e-10;
+
+  int leap = novas_lookup_leap((time_t) ((tdb - J2000) * NOVAS_DAY) + 946728000LL);
 
   if(!is_ok("get_time:set:tt", novas_set_time(NOVAS_TT, tdb + 0.25, leap, dut1, &tt))) return 1;
 

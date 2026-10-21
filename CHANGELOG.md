@@ -158,6 +158,12 @@ Upcoming maintenance release, expected around 1 November 2026.
  - #395: `novas_lookup_leap()` no longer needs LIBC support, and will always return a valid leap seconds value, 
    since no new leap seconds will be introduced in the future.
    
+ - #395: `novas_time_leap()` now calls `novas_lookup_leap()` to ensure that the leap seconds are returned correctly
+   after their abolishment.
+   
+ - #395: `novas_set_time()` / `novas_set_split_time()` have been improved to set leap correctly around the leap second 
+   boundaries for all timescales.
+   
  - Streamlined `novas_make_planet_orbit()` slightly by avoiding duplicate trigonometric calls.
 
  - Changed portable mutex feature test order to reserve use of the C11 mutexes for cases where neither POSIX nor

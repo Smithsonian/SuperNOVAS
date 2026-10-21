@@ -556,6 +556,53 @@ static double tt_offset(const novas_timespec *ts, enum novas_timescale timescale
 }
 
 /**
+ * Fills the `dut1` and `ut1_to_tt` fields for `time`, by lookup up leap, and attempting to fetch
+ * UT1-UTC from IERS (or some other source). If the UT1-UTC value cannot be obtained, both
+ * fields will be set to NAN.
+ *
+ * @param time        astrometric time specification
+ * @param timescale   timescale in which JD has been specified (so far).
+ */
+static void novas_time_lookup_dut1(novas_timespec *time, enum novas_timescale timescale) {
+  double dut1 = NAN;
+
+  int leap = novas_lookup_leap(novas_get_unix_time(time, NULL));
+  time->ut1_to_tt = leap + DTA;
+
+  if(novas_is_auto_fetch_eop()) {
+    // Fetch dut1 from IERS...
+    novas_eop eop = {};
+
+    if(novas_fetch_eop(novas_get_time(time, NOVAS_UTC), 0.0, &eop) == 0)
+      dut1 = eop.dut1;
+    else
+      novas_trace_invalid("novas_time_lookup_eop");
+  }
+
+  // For UT1 get the leap again (DUT1 will have been fetched for time +/- 1 s already).
+  if(timescale == NOVAS_UT1)
+    leap = novas_lookup_leap(novas_get_unix_time(time, NULL));
+
+  // Iterate if necessary to make sure we are on the correct side of a leap second boundary...
+  else if(timescale != NOVAS_UTC) {
+    int i;
+    for(i = 0; i < novas_inv_max_iter; i++) {
+      int leap2;
+
+      time->ut1_to_tt = leap - time->dut1 + DTA;
+      leap2 = novas_lookup_leap(novas_get_unix_time(time, NULL));
+      if(leap2 == leap) break;
+
+      leap = leap2;
+    }
+  }
+
+  time->dut1 = dut1;
+  time->ut1_to_tt = leap - time->dut1 + DTA;
+}
+
+
+/**
  * Sets an astronomical time to the split Julian Date value, defined in the specified timescale.
  * The split into the integer and fractional parts can be done in any convenient way. The highest
  * precision is reached if the fractional part is &le; 1 day. In that case, the time may be
@@ -610,7 +657,7 @@ int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, i
   static const char *fn = "novas_set_split_time";
 
   long ifjd;
-  double dt = 0.0, floor_jd;
+  double floor_jd;
 
   if(!time)
     return novas_error(-1, EINVAL, fn, "NULL output time structure");
@@ -618,25 +665,8 @@ int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, i
   if((unsigned) timescale >= NOVAS_TIMESCALES)
     return novas_error(-1, ERANGE, fn, "timescale %d is out of range", (int) timescale);
 
-  if(novas_is_auto_fetch_eop() && isnan(dut1)) {
-    // Fetch leap and dut1 from IERS...
-    novas_eop eop = {};
-
-    if(novas_fetch_eop(ijd + fjd, 0.0, &eop) == 0) {
-      leap = eop.leap;
-      dut1 = eop.dut1;
-    }
-    else {
-      novas_trace_invalid(fn);
-    }
-  }
-
   if(fjd < (double) LONG_MIN || fjd >= (double) LONG_MAX)
     return novas_error(-1, ERANGE, fn, "fractional JD %13g is outside of long integer range", fjd);
-
-  time->tt2tdb = NAN;
-  time->dut1 = dut1;
-  time->ut1_to_tt = leap - dut1 + DTA;
 
   // Normalized split, s.t. fjd is fractional day [0:1)
   ifjd = (long) floor(fjd);
@@ -644,29 +674,50 @@ int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, i
   time->ijd_tt = ijd + ifjd;
   time->fjd_tt = fjd - ifjd;
 
+  if(isnan(dut1)) {
+    // Bootstrap values for determining leap seconds and UT1 - UTC...
+    time->tt2tdb = 0.0;
+    time->dut1 = isnan(dut1) ? 0.0 : dut1;
+    time->ut1_to_tt = DTA;
+
+    // Determine dut1 and ut1_to_tt, if possible
+    novas_time_lookup_dut1(time, timescale);
+  }
+  else {
+    time->dut1 = dut1;
+    time->ut1_to_tt = leap - time->dut1 + DTA;
+  }
+
+  // if timescale is barycentric then calculate TDB - TT before conversion to TT
   if(timescale == NOVAS_TCB || timescale == NOVAS_TDB)
     time->tt2tdb = tt2tdb_hp(ijd + fjd);
+  else
+    time->tt2tdb = NAN;
 
+  // Convert JD to TT scale
   fjd -= tt_offset(time, timescale) / DAY;
-  floor_jd = ijd + floor(fjd);
 
+  // Check for out-of-range after conversion to TT
+  floor_jd = ijd + floor(fjd);
   if(floor_jd < (double) LONG_MIN || floor_jd >= (double) LONG_MAX)
     return novas_error(-1, ERANGE, fn, "JD %13g is outside of long integer range", floor_jd);
 
-  // Re-split after fjd adjustment.
+  // Re-split after fjd adjustment
   ifjd = (long) floor(fjd);
-
   time->ijd_tt = ijd + ifjd;
   time->fjd_tt = fjd - ifjd;
 
+  // If we haven't got TDB-TT already, then calculate it now
   if(isnan(time->tt2tdb))
     time->tt2tdb = tt2tdb_hp(time->ijd_tt + time->fjd_tt);
 
   // Diurnal variations in Earth rotation
-  novas_diurnal_eop_at_time(time, NULL, NULL, &dt);
-  time->dut1 += dt;
-  time->ut1_to_tt -= dt;
-
+  if(!isnan(time->dut1)) {
+    double dt = 0.0;
+    novas_diurnal_eop_at_time(time, NULL, NULL, &dt);
+    time->dut1 += dt;
+    time->ut1_to_tt -= dt;
+  }
   return 0;
 }
 
@@ -1327,11 +1378,11 @@ int novas_timestamp(const novas_timespec *restrict time, enum novas_timescale sc
 
   fjd = novas_get_split_time(time, scale, &ijd);
   if(isnan(fjd))
-      return novas_trace(fn, -1, 0);
+    return novas_trace(fn, -1, 0);
 
   n = timestamp(ijd, fjd, NOVAS_ASTRONOMICAL_CALENDAR, buf);
   if(n < 0)
-      return novas_trace(fn, -1, 0);
+    return novas_trace(fn, -1, 0);
 
   buf[n++] = ' ';
 
@@ -1449,9 +1500,19 @@ double novas_time_lst(const novas_timespec *restrict time, double lon, enum nova
  * @author Attila Kovacs
  */
 int novas_time_leap(const novas_timespec *time) {
+  static const char *fn = "novas_time_leap";
+
+  time_t ts;
+
   if(!time)
-    return novas_error(-1, EINVAL, "novas_time_leap", "input time specification is NULL");
-  return (int) round(time->ut1_to_tt + time->dut1 - DTA);
+    return novas_error(-1, EINVAL, fn, "input time specification is NULL");
+
+  errno = 0;
+  ts = novas_get_unix_time(time, NULL);
+  if(ts == -1 && errno)
+    return novas_trace(fn, -1, 0);
+
+  return novas_lookup_leap(ts);
 }
 
 
@@ -1774,7 +1835,7 @@ double novas_clock_skew(const novas_frame *frame, enum novas_timescale timescale
 double novas_mean_clock_skew(const novas_frame *frame, enum novas_timescale timescale) {
   double D = novas_clock_skew(frame, timescale);
   if(isnan(D))
-      return novas_trace_nan("novas_mean_clock_skew");
+    return novas_trace_nan("novas_mean_clock_skew");
 
   // (1 + D) * (1 - D') = 1 + D - (1 + D) D'
   return D - (1.0 + D) * tidal_clock_skew(frame);
