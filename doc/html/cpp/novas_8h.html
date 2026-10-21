@@ -774,7 +774,7 @@ Functions</h2></td></tr>
 <tr class="memitem:aef7f2670a1b62621ae417b038672b1e9" id="r_aef7f2670a1b62621ae417b038672b1e9"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#aef7f2670a1b62621ae417b038672b1e9">make_comoving_observer</a> (const <a class="el" href="#a8bb95dd453e33d4c9892266c9af5df2a">object</a> *restrict place, <a class="el" href="#ae7963c522d28ce6891b472e079307d03">observer</a> *restrict obs)</td></tr>
 <tr class="memdesc:aef7f2670a1b62621ae417b038672b1e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Populates an 'observer' data structure, for an observer that is comoving with a Solar-system body or place, and whose momentary position is consequently provided by an <span class="tt"><a class="el" href="#a713982e1f2bae0a72b39d03007f00d23" title="Retrieves the position and velocity of a solar system body using the currently configured plugins tha...">ephemeris()</a></span> call for that body or place.  <br /></td></tr>
 <tr class="memitem:af4956285681bd88082f4aa1d8fd76f61" id="r_af4956285681bd88082f4aa1d8fd76f61"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#af4956285681bd88082f4aa1d8fd76f61">make_dynamic_observer</a> (<a class="el" href="#a57854b43a0a88bfaac0fb886d30fecf5">novas_state_provider</a> call, const void *restrict call_arg, <a class="el" href="#ae7963c522d28ce6891b472e079307d03">observer</a> *restrict obs)</td></tr>
-<tr class="memdesc:af4956285681bd88082f4aa1d8fd76f61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Populates an 'observer' data structure, for an observer whose position and velocity state vectors are detwermined dynamically for the time of observation.  <br /></td></tr>
+<tr class="memdesc:af4956285681bd88082f4aa1d8fd76f61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Populates an 'observer' data structure, for an observer whose position and velocity state vectors are determined dynamically for the time of observation.  <br /></td></tr>
 <tr class="memitem:aa22303f98df2d63edf6d8452ff3a43b2" id="r_aa22303f98df2d63edf6d8452ff3a43b2"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#aa22303f98df2d63edf6d8452ff3a43b2">make_ephem_object</a> (const char *name, long num, <a class="el" href="#a8bb95dd453e33d4c9892266c9af5df2a">object</a> *body)</td></tr>
 <tr class="memdesc:aa22303f98df2d63edf6d8452ff3a43b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a celestial object to be a Solar-system ephemeris body.  <br /></td></tr>
 <tr class="memitem:aa2f9fc986f99c1ec7092330dbf233fef" id="r_aa2f9fc986f99c1ec7092330dbf233fef"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#aa2f9fc986f99c1ec7092330dbf233fef">make_gps_observer</a> (double latitude, double longitude, double height, <a class="el" href="#ae7963c522d28ce6891b472e079307d03">observer</a> *obs)</td></tr>
@@ -7875,7 +7875,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Populates an 'observer' data structure, for an observer whose position and velocity state vectors are detwermined dynamically for the time of observation. </p>
+<p>Populates an 'observer' data structure, for an observer whose position and velocity state vectors are determined dynamically for the time of observation. </p>
 <p>NOTES:</p>
 <ol type="1">
 <li>Unlike most SuperNOVAS functions, which typically copy data, this one tracks the pointer reference to the call arguments directly. Therefore, you must make sure that the data pointed at remains valid in the scope in which the observer exists or is being used.</li>
@@ -16485,7 +16485,7 @@ novas_fetch_current_eop(), <a class="el" href="group__earth.html#ga30319d4fc323f
 <p>Calculates the ICRS position and velocity of the observer relative to the Solar System Barycenter (SSB). </p>
 <p>NOTES:</p>
 <ol type="1">
-<li>This implementation does not take polar wobble corrections into account for Earth-based (ITRS) observing locations. For those, it provides position vectors at the tens of meters level only.</li>
+<li>This implementation does not take polar wobble corrections into account for Earth-based (ITRS) observing locations. Thus for ITRS, it provides position vectors with an accuracy at the tens of meters level only.</li>
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
