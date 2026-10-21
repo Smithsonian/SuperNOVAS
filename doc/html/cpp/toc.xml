@@ -265,6 +265,16 @@
       <topic label="supernovas::Orbital::to_source" href="group__source.html#gadde40fcf893deea67578d8d5491b8ce7"/>
     </topic>
     <topic label="Observer location" href="group__observer.html">
+      <topic label="supernovas::DynamicObserver" href="classsupernovas_1_1DynamicObserver.html">
+        <topic label="DynamicObserver" href="classsupernovas_1_1DynamicObserver.html#a2874b747ab3c80d4b6e104f8d1c450db"/>
+        <topic label="barycentric_at" href="classsupernovas_1_1DynamicObserver.html#a5a786daae21b02f8f41b2e7e90702b04"/>
+        <topic label="className" href="classsupernovas_1_1DynamicObserver.html#a51df6d1d3d79e2362bd1f2f415bccdd0"/>
+        <topic label="copy" href="classsupernovas_1_1DynamicObserver.html#a428103eaf87cc88e6edde7ceba12edcb"/>
+        <topic label="set_arg" href="classsupernovas_1_1DynamicObserver.html#a1d78a15ec92a09d58846ebc943971385"/>
+        <topic label="state_call" href="classsupernovas_1_1DynamicObserver.html#a6304e2cc61f6218618e010a63a7c29ed"/>
+        <topic label="state_call_arg" href="classsupernovas_1_1DynamicObserver.html#add04f18d917eed1548759128b8b806ed"/>
+        <topic label="to_string" href="classsupernovas_1_1DynamicObserver.html#ad9271b30343587451b139b52bd3ddc61"/>
+      </topic>
       <topic label="supernovas::EphemerisObserver" href="classsupernovas_1_1EphemerisObserver.html">
         <topic label="EphemerisObserver" href="classsupernovas_1_1EphemerisObserver.html#a4dbb4233b23291ca1bf640ea129f94cd"/>
         <topic label="className" href="classsupernovas_1_1EphemerisObserver.html#ad4161755f2ba55393daf1873e257e199"/>
@@ -612,7 +622,7 @@
         <topic label="operator-" href="classsupernovas_1_1Velocity.html#aa1eed97f4c7f762d450ad80130454a6b"/>
         <topic label="operator==" href="classsupernovas_1_1Velocity.html#ab51ed547b89f094b0bbff492eaa05a3a"/>
         <topic label="speed" href="classsupernovas_1_1Velocity.html#a3dbaf0927a89219ae14a2a759c103f09"/>
-        <topic label="speed_difference_to" href="classsupernovas_1_1Velocity.html#a73986e4a3fe977fd14760a0b97a3e00d"/>
+        <topic label="speed_relative_to" href="classsupernovas_1_1Velocity.html#a9d59fa3d20696fc07458b3dc16bed6e8"/>
         <topic label="to_string" href="classsupernovas_1_1Velocity.html#a1484083f9c73aec4e40e9fe8f45c056c"/>
         <topic label="travel" href="classsupernovas_1_1Velocity.html#abe62c156f9ab61154ec48b894be1cc05"/>
         <topic label="travel" href="classsupernovas_1_1Velocity.html#a1d295312687a1dc8bcecb35bc7625297"/>
@@ -1110,6 +1120,7 @@
         <topic label="NOVAS_DEBUG_ON" href="group__util.html#gga9d8d2a1f5c06b488e4c817bc9877e3baadc10e15517b94fdd3d9eba3359909c65"/>
         <topic label="NOVAS_DEBUG_EXTRA" href="group__util.html#gga9d8d2a1f5c06b488e4c817bc9877e3baaa03b175422e9603e87ab87f93a45c07c"/>
       </topic>
+      <topic label="supernovas::cos" href="group__util.html#ga07cedefeff1a6694306780356fcbb0f0"/>
       <topic label="novas_debug" href="group__util.html#ga5f35633b872751df4dacd2fb2cbe4ac3"/>
       <topic label="novas_get_debug_mode" href="group__util.html#ga29cad12337acfce5f1e370320dcefb79"/>
       <topic label="novas_parse_date" href="group__util.html#ga4934da85b9722ef43a5b238f3e1971e4"/>
@@ -1121,6 +1132,8 @@
       <topic label="novas_parse_iso_date" href="group__util.html#gad53b3be5b92ea244cfb0347feb3bec9f"/>
       <topic label="novas_parse_timescale" href="group__util.html#ga72245b3ea6099c573278f721a4bfd3d9"/>
       <topic label="novas_set_error_handler" href="group__util.html#gaf0859cb18e167bf9a3dcae5727c3ec97"/>
+      <topic label="supernovas::sin" href="group__util.html#ga7498aa57989ded115f6f5b14ec321173"/>
+      <topic label="supernovas::tan" href="group__util.html#ga4dfe213dd899e8b3e97ced54a2ab92a1"/>
     </topic>
   </topic>
   <topic label="Namespaces" href="namespaces.html">
@@ -1952,7 +1965,7 @@
           <topic label="operator-" href="classsupernovas_1_1Velocity.html#aa1eed97f4c7f762d450ad80130454a6b"/>
           <topic label="operator==" href="classsupernovas_1_1Velocity.html#ab51ed547b89f094b0bbff492eaa05a3a"/>
           <topic label="speed" href="classsupernovas_1_1Velocity.html#a3dbaf0927a89219ae14a2a759c103f09"/>
-          <topic label="speed_difference_to" href="classsupernovas_1_1Velocity.html#a73986e4a3fe977fd14760a0b97a3e00d"/>
+          <topic label="speed_relative_to" href="classsupernovas_1_1Velocity.html#a9d59fa3d20696fc07458b3dc16bed6e8"/>
           <topic label="to_string" href="classsupernovas_1_1Velocity.html#a1484083f9c73aec4e40e9fe8f45c056c"/>
           <topic label="travel" href="classsupernovas_1_1Velocity.html#abe62c156f9ab61154ec48b894be1cc05"/>
           <topic label="travel" href="classsupernovas_1_1Velocity.html#a1d295312687a1dc8bcecb35bc7625297"/>
@@ -1971,10 +1984,10 @@
           <topic label="temperature" href="classsupernovas_1_1Weather.html#a3d84bdc61aa8a1fb7c958a90df6a911c"/>
           <topic label="to_string" href="classsupernovas_1_1Weather.html#a0eabf3c9214f5b81cccfc681d4794713"/>
         </topic>
-        <topic label="cos" href="namespacesupernovas.html#a07cedefeff1a6694306780356fcbb0f0"/>
+        <topic label="cos" href="group__util.html#ga07cedefeff1a6694306780356fcbb0f0"/>
         <topic label="operator*" href="namespacesupernovas.html#ad967def47d18f6cad99cc2320d8476da"/>
-        <topic label="sin" href="namespacesupernovas.html#a7498aa57989ded115f6f5b14ec321173"/>
-        <topic label="tan" href="namespacesupernovas.html#a4dfe213dd899e8b3e97ced54a2ab92a1"/>
+        <topic label="sin" href="group__util.html#ga7498aa57989ded115f6f5b14ec321173"/>
+        <topic label="tan" href="group__util.html#ga4dfe213dd899e8b3e97ced54a2ab92a1"/>
       </topic>
     </topic>
     <topic label="Namespace Members" href="namespacemembers.html">
@@ -2811,7 +2824,7 @@
           <topic label="operator-" href="classsupernovas_1_1Velocity.html#aa1eed97f4c7f762d450ad80130454a6b"/>
           <topic label="operator==" href="classsupernovas_1_1Velocity.html#ab51ed547b89f094b0bbff492eaa05a3a"/>
           <topic label="speed" href="classsupernovas_1_1Velocity.html#a3dbaf0927a89219ae14a2a759c103f09"/>
-          <topic label="speed_difference_to" href="classsupernovas_1_1Velocity.html#a73986e4a3fe977fd14760a0b97a3e00d"/>
+          <topic label="speed_relative_to" href="classsupernovas_1_1Velocity.html#a9d59fa3d20696fc07458b3dc16bed6e8"/>
           <topic label="to_string" href="classsupernovas_1_1Velocity.html#a1484083f9c73aec4e40e9fe8f45c056c"/>
           <topic label="travel" href="classsupernovas_1_1Velocity.html#abe62c156f9ab61154ec48b894be1cc05"/>
           <topic label="travel" href="classsupernovas_1_1Velocity.html#a1d295312687a1dc8bcecb35bc7625297"/>
@@ -3645,6 +3658,7 @@
           <topic label="make_cat_entry" href="novas_8h.html#abc164144085313b27faa96c838a9d30c"/>
           <topic label="make_cat_object" href="novas_8h.html#ab9b7a622486f2904615ceed1ba94cd8f"/>
           <topic label="make_cat_object_sys" href="novas_8h.html#a5104d7db66ce2d8c61c7ad21599fb45e"/>
+          <topic label="make_comoving_observer" href="novas_8h.html#aef7f2670a1b62621ae417b038672b1e9"/>
           <topic label="make_dynamic_observer" href="novas_8h.html#af4956285681bd88082f4aa1d8fd76f61"/>
           <topic label="make_ephem_object" href="novas_8h.html#aa22303f98df2d63edf6d8452ff3a43b2"/>
           <topic label="make_gps_observer" href="novas_8h.html#aa2f9fc986f99c1ec7092330dbf233fef"/>
@@ -3889,16 +3903,6 @@
           <topic label="grav_bodies_reduced_accuracy" href="group__apparent.html#ga03a4df8961a0cd05f89aca478d2dcd24"/>
         </topic>
         <topic label="supernovas.h" href="supernovas_8h.html">
-          <topic label="supernovas::DynamicObserver" href="classsupernovas_1_1DynamicObserver.html">
-            <topic label="DynamicObserver" href="classsupernovas_1_1DynamicObserver.html#a2874b747ab3c80d4b6e104f8d1c450db"/>
-            <topic label="barycentric_at" href="classsupernovas_1_1DynamicObserver.html#a5a786daae21b02f8f41b2e7e90702b04"/>
-            <topic label="className" href="classsupernovas_1_1DynamicObserver.html#a51df6d1d3d79e2362bd1f2f415bccdd0"/>
-            <topic label="copy" href="classsupernovas_1_1DynamicObserver.html#a428103eaf87cc88e6edde7ceba12edcb"/>
-            <topic label="set_arg" href="classsupernovas_1_1DynamicObserver.html#a1d78a15ec92a09d58846ebc943971385"/>
-            <topic label="state_call" href="classsupernovas_1_1DynamicObserver.html#a6304e2cc61f6218618e010a63a7c29ed"/>
-            <topic label="state_call_arg" href="classsupernovas_1_1DynamicObserver.html#add04f18d917eed1548759128b8b806ed"/>
-            <topic label="to_string" href="classsupernovas_1_1DynamicObserver.html#ad9271b30343587451b139b52bd3ddc61"/>
-          </topic>
           <topic label="supernovas::OrbitalSystem" href="classsupernovas_1_1OrbitalSystem.html">
             <topic label="_novas_orbital_system" href="classsupernovas_1_1OrbitalSystem.html#a8f6c54b83e822d28fd72fb51f6466942"/>
             <topic label="ascending_node" href="classsupernovas_1_1OrbitalSystem.html#a6b6dccdfd22003029d0f3a40dafd716d"/>
@@ -3965,10 +3969,10 @@
           </topic>
           <topic label="_CONSTS_" href="supernovas_8h.html#a844b2b8a0eb6cf2b1b76f505cfc87887"/>
           <topic label="_EXCLUDE_DEPRECATED" href="supernovas_8h.html#abbbb70f69d5541cbf07464d853b3173a"/>
-          <topic label="supernovas::cos" href="namespacesupernovas.html#a07cedefeff1a6694306780356fcbb0f0"/>
+          <topic label="supernovas::cos" href="group__util.html#ga07cedefeff1a6694306780356fcbb0f0"/>
           <topic label="supernovas::operator*" href="namespacesupernovas.html#ad967def47d18f6cad99cc2320d8476da"/>
-          <topic label="supernovas::sin" href="namespacesupernovas.html#a7498aa57989ded115f6f5b14ec321173"/>
-          <topic label="supernovas::tan" href="namespacesupernovas.html#a4dfe213dd899e8b3e97ced54a2ab92a1"/>
+          <topic label="supernovas::sin" href="group__util.html#ga7498aa57989ded115f6f5b14ec321173"/>
+          <topic label="supernovas::tan" href="group__util.html#ga4dfe213dd899e8b3e97ced54a2ab92a1"/>
         </topic>
       </topic>
       <topic label="src" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">
@@ -4129,6 +4133,7 @@
             <topic label="light_time" href="observer_8c.html#afb2cc37c7bdcd34c5c167afe092aed68"/>
             <topic label="light_time2" href="observer_8c.html#a5c940b62732d74e6c6b1c844931aaa76"/>
             <topic label="make_airborne_observer" href="observer_8c.html#aa2663594794b4419e3b6feb927383a65"/>
+            <topic label="make_comoving_observer" href="observer_8c.html#aef7f2670a1b62621ae417b038672b1e9"/>
             <topic label="make_dynamic_observer" href="observer_8c.html#a048b1b447ae7b3077fd88ac29a0e7e7b"/>
             <topic label="make_gps_observer" href="observer_8c.html#aa2f9fc986f99c1ec7092330dbf233fef"/>
             <topic label="make_gps_site" href="observer_8c.html#ab5fb62a9fb185632175ae622bce28dea"/>
@@ -4380,9 +4385,9 @@
         </topic>
         <topic label="cpp" href="dir_dfdbda394c3f7a3aa55229f33a559c41.html">
           <topic label="Angle.cpp" href="Angle_8cpp.html">
-            <topic label="supernovas::cos" href="namespacesupernovas.html#a07cedefeff1a6694306780356fcbb0f0"/>
-            <topic label="supernovas::sin" href="namespacesupernovas.html#a7498aa57989ded115f6f5b14ec321173"/>
-            <topic label="supernovas::tan" href="namespacesupernovas.html#a4dfe213dd899e8b3e97ced54a2ab92a1"/>
+            <topic label="supernovas::cos" href="group__util.html#ga07cedefeff1a6694306780356fcbb0f0"/>
+            <topic label="supernovas::sin" href="group__util.html#ga7498aa57989ded115f6f5b14ec321173"/>
+            <topic label="supernovas::tan" href="group__util.html#ga4dfe213dd899e8b3e97ced54a2ab92a1"/>
           </topic>
           <topic label="Apparent.cpp" href="Apparent_8cpp.html">
           </topic>

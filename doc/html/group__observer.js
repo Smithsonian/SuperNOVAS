@@ -41,6 +41,8 @@ var group__observer =
       [ "NOVAS_IERS_2003_ELLIPSOID", "group__observer.html#gga5928ca4a09c2883b58e951a4582255b3a5a1b92a226f41c204bcefaf05edd7bd8", null ]
     ] ],
     [ "make_airborne_observer", "group__observer.html#gaa423a88cd3f434642fc89d47390184f4", null ],
+    [ "make_comoving_observer", "group__observer.html#gaef7f2670a1b62621ae417b038672b1e9", null ],
+    [ "make_dynamic_observer", "group__observer.html#gaf4956285681bd88082f4aa1d8fd76f61", null ],
     [ "make_gps_observer", "group__observer.html#gaa2f9fc986f99c1ec7092330dbf233fef", null ],
     [ "make_gps_site", "group__observer.html#gab5fb62a9fb185632175ae622bce28dea", null ],
     [ "make_in_space", "group__observer.html#gac0ca6f330e1795ce811df95986400632", null ],
@@ -54,6 +56,7 @@ var group__observer =
     [ "make_xyz_site", "group__observer.html#ga9e3cbe310a40919ff94d2d530ffa74ee", null ],
     [ "novas_cartesian_to_geodetic", "group__observer.html#ga7479134485c298faa858d73ee0513a11", null ],
     [ "novas_enu_to_itrs", "group__observer.html#ga2bfff0a80ee078a45bc4301cd1ad8299", null ],
+    [ "novas_ephem_state", "group__observer.html#ga14078c87a8cbbb5bc5c8444b40814018", null ],
     [ "novas_equals_near_earth", "group__observer.html#gad7850313f8104494d4bd9b5edf8b32b8", null ],
     [ "novas_equals_observer", "group__observer.html#ga6799b84431fcffb40ebe78c47bf65726", null ],
     [ "novas_equals_on_surface", "group__observer.html#ga1d66a855aafa8e8a837d428c501d1756", null ],

@@ -146,6 +146,7 @@ var group__util =
       [ "NOVAS_DEBUG_ON", "group__util.html#gga9d8d2a1f5c06b488e4c817bc9877e3baadc10e15517b94fdd3d9eba3359909c65", null ],
       [ "NOVAS_DEBUG_EXTRA", "group__util.html#gga9d8d2a1f5c06b488e4c817bc9877e3baaa03b175422e9603e87ab87f93a45c07c", null ]
     ] ],
+    [ "supernovas::cos", "group__util.html#ga07cedefeff1a6694306780356fcbb0f0", null ],
     [ "novas_debug", "group__util.html#ga5f35633b872751df4dacd2fb2cbe4ac3", null ],
     [ "novas_get_debug_mode", "group__util.html#ga29cad12337acfce5f1e370320dcefb79", null ],
     [ "novas_parse_date", "group__util.html#ga4934da85b9722ef43a5b238f3e1971e4", null ],
@@ -156,5 +157,7 @@ var group__util =
     [ "novas_parse_hours", "group__util.html#gaff8c2c3fae3be867d3fc73972a158514", null ],
     [ "novas_parse_iso_date", "group__util.html#gad53b3be5b92ea244cfb0347feb3bec9f", null ],
     [ "novas_parse_timescale", "group__util.html#ga72245b3ea6099c573278f721a4bfd3d9", null ],
-    [ "novas_set_error_handler", "group__util.html#gaf0859cb18e167bf9a3dcae5727c3ec97", null ]
+    [ "novas_set_error_handler", "group__util.html#gaf0859cb18e167bf9a3dcae5727c3ec97", null ],
+    [ "supernovas::sin", "group__util.html#ga7498aa57989ded115f6f5b14ec321173", null ],
+    [ "supernovas::tan", "group__util.html#ga4dfe213dd899e8b3e97ced54a2ab92a1", null ]
 ];

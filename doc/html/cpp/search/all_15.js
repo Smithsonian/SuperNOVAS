@@ -1,7 +1,7 @@
 var searchData=
 [
   ['table_20of_20contents_0',['Table of Contents',['../index.html#autotoc_md2',1,'']]],
-  ['tan_1',['tan',['../classsupernovas_1_1Angle.html#aa2f6c88bb9a49f7494429cf0ef620f9b',1,'supernovas::Angle::tan()'],['../namespacesupernovas.html#a4dfe213dd899e8b3e97ced54a2ab92a1',1,'supernovas::tan()']]],
+  ['tan_1',['tan',['../classsupernovas_1_1Angle.html#aa2f6c88bb9a49f7494429cf0ef620f9b',1,'supernovas::Angle::tan()'],['../group__util.html#ga4dfe213dd899e8b3e97ced54a2ab92a1',1,'supernovas::tan()']]],
   ['target_2ec_2',['target.c',['../target_8c.html',1,'']]],
   ['targets_3',['Cross-compiling for embedded targets',['../index.html#autotoc_md18',1,'']]],
   ['tdb2tt_4',['tdb2tt',['../novas_8h.html#a90d5fae30728b51151c3daf355ca585b',1,'tdb2tt(double jd_tdb, double *restrict jd_tt, double *restrict secdiff):&#160;timescale.c'],['../timescale_8c.html#a90d5fae30728b51151c3daf355ca585b',1,'tdb2tt(double jd_tdb, double *restrict jd_tt, double *restrict secdiff):&#160;timescale.c']]],

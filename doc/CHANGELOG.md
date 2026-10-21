@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [1.8.0-rc3] - 2026-10-20
+## [Unreleased]
 
 Upcoming maintenance release, expected around 1 November 2026.
 
@@ -21,7 +21,7 @@ Upcoming maintenance release, expected around 1 November 2026.
  - #376: Fixed inverted flattening parameters for the IERS 1989 and 2003 reference ellipsoids.
  
  - #380: Fixed missing non-relativistic expression for adding observer motion in `rad_vel2()`, which resulted in 
-   errors at or below the few m/s level typically.
+   errors at or below the m/s level typically.
 
  - #393: Fixed `interpolate()` in the legacy `eph_manager.c` using `remainder()` instead of `fmod()` for the
    normalized Chebyshev time, which evaluated bodies stored with more than one sub-interval per record (e.g. the
@@ -66,7 +66,7 @@ Upcoming maintenance release, expected around 1 November 2026.
  - #382: Added `Velocity::along(Vector&)` / `Velocity::along(Spherical&)` to get the 1D projected scalar velocity of 
    a 3D velocity vector along some direction. 
    
- - #382: Added `Velocity::speed_difference_to(Velocity&)`.
+ - #382: Added `Velocity::speed_relative_to(Velocity&)`.
  
  - #387: Added `novas_state_provider` function type, and corresponding `state_call` and `call_arg` fields to `object` 
    (a.k.a. `novas_object`) data structure.
@@ -86,6 +86,10 @@ Upcoming maintenance release, expected around 1 November 2026.
  - #387: Added `Observer::className()` and `Source::className()` methods, which returns the name of the concrete 
    subclass used.
    
+ - #296: Added `make_comoving_observer()` to simplify the creation of observers whose momentary location is defined
+   by a Solar-system body or place, such as virtual observers planet centers, travelling on a spacescraft with
+   ephemeris data, or defined by Keplerian orbital parameters around a major Solar-system body or barycenter position.
+   
  - Added `USER_SOLSYS` / `USER_READEPH` GNU make configuration options (see `config.mk`) for legacy builds when
    the `solarsystem()` / `solarsystem_hp()` and / or the `readeph()` functions are provided as external modules
    defined only when your application is linked.
@@ -103,7 +107,7 @@ Upcoming maintenance release, expected around 1 November 2026.
    that normal leap list files will ever benefit from the change. (by csp256)
 
  - #371: `novas_jd_to_date()` now checks that input JD date can be represented in a calendar format with an `int`-type 
-   year components in any calendar, and returns -1 with errno set to `ERANGE` when it cannot. The change prevents 
+   year components in any calendar, and returns -1 with `errno` set to `ERANGE` when it cannot. The change prevents 
    silent garbage output for ridiculous JD input values (such as more than 2 billion years from present day).
    (by csp256 and attipaci)
    
@@ -142,16 +146,14 @@ Upcoming maintenance release, expected around 1 November 2026.
    
  - #382: `Vector(double, double, double)` promoted to public.
  
- - #387: `ephemeris()` now will now return -1 with errno set to EINVAL if either input time component is NaN.
+ - #387: `ephemeris()` now will now return -1 with `errno` set to `EINVAL` if either input time component is NaN.
  
  - #387: Modified `geo_posvel()` to handle new dynamic observer locations.
  
  - #389: Improved error propagation on interpolated EOP estimate when EOP is obtained from IERS or some other source.
    
  - Streamlined `novas_make_planet_orbit()` slightly by avoiding duplicate trigonometric calls.
-   
- - Streamlined `novas_make_planet_orbit()` slightly by avoiding duplicate trigonometric calls.
-   
+
  - Changed portable mutex feature test order to reserve use of the C11 mutexes for cases where neither POSIX nor
    MSC mutexes can be used.
    

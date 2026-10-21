@@ -61,6 +61,7 @@ var group__time =
     [ "novas_get_split_time", "group__time.html#ga32d8336084b65fac14d092ab6198c27d", null ],
     [ "novas_get_time", "group__time.html#gae30e3dd8e30bdcf4e8486cfce696fb98", null ],
     [ "novas_get_unix_time", "group__time.html#gafa1a1d804ca70050418429f971c2045a", null ],
+    [ "novas_is_leap_year", "group__time.html#ga801ddc21095ec9e3376fc4c15c83d755", null ],
     [ "novas_iso_timestamp", "group__time.html#ga4d6da26d0a7d7d904f25d2be00030b25", null ],
     [ "novas_jd_from_date", "group__time.html#ga54eee84c46900c80ca9966857c217cc8", null ],
     [ "novas_jd_to_date", "group__time.html#ga8ed2fb55bcf86d9f1f434a2f832356a2", null ],

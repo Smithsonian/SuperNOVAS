@@ -6,6 +6,7 @@ var observer_8c =
     [ "light_time", "observer_8c.html#afb2cc37c7bdcd34c5c167afe092aed68", null ],
     [ "light_time2", "observer_8c.html#a5c940b62732d74e6c6b1c844931aaa76", null ],
     [ "make_airborne_observer", "observer_8c.html#aa2663594794b4419e3b6feb927383a65", null ],
+    [ "make_comoving_observer", "observer_8c.html#aef7f2670a1b62621ae417b038672b1e9", null ],
     [ "make_dynamic_observer", "observer_8c.html#a048b1b447ae7b3077fd88ac29a0e7e7b", null ],
     [ "make_gps_observer", "observer_8c.html#aa2f9fc986f99c1ec7092330dbf233fef", null ],
     [ "make_gps_site", "observer_8c.html#ab5fb62a9fb185632175ae622bce28dea", null ],

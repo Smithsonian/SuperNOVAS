@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['tan_0',['tan',['../classsupernovas_1_1Angle.html#aa2f6c88bb9a49f7494429cf0ef620f9b',1,'supernovas::Angle::tan()'],['../namespacesupernovas.html#a4dfe213dd899e8b3e97ced54a2ab92a1',1,'supernovas::tan()']]],
+  ['tan_0',['tan',['../classsupernovas_1_1Angle.html#aa2f6c88bb9a49f7494429cf0ef620f9b',1,'supernovas::Angle::tan()'],['../group__util.html#ga4dfe213dd899e8b3e97ced54a2ab92a1',1,'supernovas::tan()']]],
   ['tdb2tt_1',['tdb2tt',['../novas_8h.html#a90d5fae30728b51151c3daf355ca585b',1,'tdb2tt(double jd_tdb, double *restrict jd_tt, double *restrict secdiff):&#160;timescale.c'],['../timescale_8c.html#a90d5fae30728b51151c3daf355ca585b',1,'tdb2tt(double jd_tdb, double *restrict jd_tt, double *restrict secdiff):&#160;timescale.c']]],
   ['temperature_2',['temperature',['../classsupernovas_1_1Weather.html#a3d84bdc61aa8a1fb7c958a90df6a911c',1,'supernovas::Weather']]],
   ['ter2cel_3',['ter2cel',['../transform_8c.html#ac8c5ff3cc13126aba2ec5a6cbe187a31',1,'transform.c']]],

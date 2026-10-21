@@ -371,6 +371,7 @@ var novas_8h =
     [ "make_cat_entry", "novas_8h.html#abc164144085313b27faa96c838a9d30c", null ],
     [ "make_cat_object", "novas_8h.html#ab9b7a622486f2904615ceed1ba94cd8f", null ],
     [ "make_cat_object_sys", "novas_8h.html#a5104d7db66ce2d8c61c7ad21599fb45e", null ],
+    [ "make_comoving_observer", "novas_8h.html#aef7f2670a1b62621ae417b038672b1e9", null ],
     [ "make_dynamic_observer", "novas_8h.html#af4956285681bd88082f4aa1d8fd76f61", null ],
     [ "make_ephem_object", "novas_8h.html#aa22303f98df2d63edf6d8452ff3a43b2", null ],
     [ "make_gps_observer", "novas_8h.html#aa2f9fc986f99c1ec7092330dbf233fef", null ],

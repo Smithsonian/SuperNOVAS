@@ -1,14 +1,5 @@
 var NAVTREEINDEX3 =
 {
-"classsupernovas_1_1Temperature.html#ae26a9c37b273842ca4abd37e260f0286":[6,14,6,7],
-"classsupernovas_1_1Temperature.html#afd9ee626bdaf7bd691a538ae5f89d528":[6,14,6,4],
-"classsupernovas_1_1Time.html":[6,2,2],
-"classsupernovas_1_1Time.html#a03cb4f1df78716f6780e90c02bcd2600":[6,2,2,16],
-"classsupernovas_1_1Time.html#a054113da9fec91585ed4f6cf687a36f1":[6,2,2,1],
-"classsupernovas_1_1Time.html#a11606080db2bf5b89367efe9a79c73f5":[6,2,2,13],
-"classsupernovas_1_1Time.html#a139f2d786c770b81dbc3d231b60c0823":[6,2,2,3],
-"classsupernovas_1_1Time.html#a1705c26da3530ffcd6d42a8f7caa4652":[6,2,2,32],
-"classsupernovas_1_1Time.html#a17d1989661278f8fea2072b3219d4583":[6,2,2,31],
 "classsupernovas_1_1Time.html#a1af1c4eb0cc73283892750b9a1af5b64":[6,2,2,18],
 "classsupernovas_1_1Time.html#a1c8dda1456d15646d0f7da9ac39ed000":[6,2,2,22],
 "classsupernovas_1_1Time.html#a25ee57102bb2255985eb077e1a1f051b":[6,2,2,39],
@@ -152,7 +143,7 @@ var NAVTREEINDEX3 =
 "classsupernovas_1_1Velocity.html#a45a6d8f9d412efcd6e9cb034802cba9a":[6,5,3,4],
 "classsupernovas_1_1Velocity.html#a5bb1ea41d36509cddef281e0a6d16376":[6,5,3,1],
 "classsupernovas_1_1Velocity.html#a6c2174cd805b548a519664879cbb0486":[6,5,3,6],
-"classsupernovas_1_1Velocity.html#a73986e4a3fe977fd14760a0b97a3e00d":[6,5,3,12],
+"classsupernovas_1_1Velocity.html#a9d59fa3d20696fc07458b3dc16bed6e8":[6,5,3,12],
 "classsupernovas_1_1Velocity.html#aa1eed97f4c7f762d450ad80130454a6b":[6,5,3,9],
 "classsupernovas_1_1Velocity.html#ab51ed547b89f094b0bbff492eaa05a3a":[6,5,3,10],
 "classsupernovas_1_1Velocity.html#abe62c156f9ab61154ec48b894be1cc05":[6,5,3,14],
@@ -249,5 +240,14 @@ var NAVTREEINDEX3 =
 "functions_func.html":[8,3,1],
 "functions_func.html":[8,3,1,0],
 "functions_func_a.html":[8,3,1,1],
-"functions_func_b.html":[8,3,1,2]
+"functions_func_b.html":[8,3,1,2],
+"functions_func_c.html":[8,3,1,3],
+"functions_func_d.html":[8,3,1,4],
+"functions_func_e.html":[8,3,1,5],
+"functions_func_f.html":[8,3,1,6],
+"functions_func_g.html":[8,3,1,7],
+"functions_func_h.html":[8,3,1,8],
+"functions_func_i.html":[8,3,1,9],
+"functions_func_j.html":[8,3,1,10],
+"functions_func_k.html":[8,3,1,11]
 };

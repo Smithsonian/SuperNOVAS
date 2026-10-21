@@ -403,7 +403,7 @@ Macros</h2></td></tr>
 <tr class="memdesc:aaed93e356acfc0d15d0f64ae0793b4f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">API minor version.  <br /></td></tr>
 <tr class="memitem:a9b926427954233b94ebd6925d86f9f81" id="r_a9b926427954233b94ebd6925d86f9f81"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a9b926427954233b94ebd6925d86f9f81">SUPERNOVAS_PATCHLEVEL</a>&#160;&#160;&#160;0</td></tr>
 <tr class="memdesc:a9b926427954233b94ebd6925d86f9f81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integer sub version of the release.  <br /></td></tr>
-<tr class="memitem:aadef42ba39811e058ee9efe2c6f7d151" id="r_aadef42ba39811e058ee9efe2c6f7d151"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#aadef42ba39811e058ee9efe2c6f7d151">SUPERNOVAS_RELEASE_STRING</a>&#160;&#160;&#160;&quot;-rc3&quot;</td></tr>
+<tr class="memitem:aadef42ba39811e058ee9efe2c6f7d151" id="r_aadef42ba39811e058ee9efe2c6f7d151"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#aadef42ba39811e058ee9efe2c6f7d151">SUPERNOVAS_RELEASE_STRING</a>&#160;&#160;&#160;&quot;-devel&quot;</td></tr>
 <tr class="memdesc:aadef42ba39811e058ee9efe2c6f7d151"><td class="mdescLeft">&#160;</td><td class="mdescRight">Additional release information in version, e.g. "-1", or "-rc1", or empty string "" for releases.  <br /></td></tr>
 <tr class="memitem:a44de9d1672290d153a1dfb0685886208" id="r_a44de9d1672290d153a1dfb0685886208"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a44de9d1672290d153a1dfb0685886208">SUPERNOVAS_VERSION_STRING</a></td></tr>
 <tr class="memdesc:a44de9d1672290d153a1dfb0685886208"><td class="mdescLeft">&#160;</td><td class="mdescRight">The version string for this library.  <br /></td></tr>
@@ -771,6 +771,8 @@ Functions</h2></td></tr>
 <tr class="memdesc:ab9b7a622486f2904615ceed1ba94cd8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Populates and object data structure with the data for a catalog source.  <br /></td></tr>
 <tr class="memitem:a5104d7db66ce2d8c61c7ad21599fb45e" id="r_a5104d7db66ce2d8c61c7ad21599fb45e"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#a5104d7db66ce2d8c61c7ad21599fb45e">make_cat_object_sys</a> (const <a class="el" href="#a8fa0251d2ffa4e750420bdc86a7d73b8">cat_entry</a> *star, const char *restrict system, <a class="el" href="#a8bb95dd453e33d4c9892266c9af5df2a">object</a> *source)</td></tr>
 <tr class="memdesc:a5104d7db66ce2d8c61c7ad21599fb45e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Populates and object data structure with the data for a catalog source for a given system of catalog coordinates.  <br /></td></tr>
+<tr class="memitem:aef7f2670a1b62621ae417b038672b1e9" id="r_aef7f2670a1b62621ae417b038672b1e9"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#aef7f2670a1b62621ae417b038672b1e9">make_comoving_observer</a> (const <a class="el" href="#a8bb95dd453e33d4c9892266c9af5df2a">object</a> *restrict place, <a class="el" href="#ae7963c522d28ce6891b472e079307d03">observer</a> *restrict obs)</td></tr>
+<tr class="memdesc:aef7f2670a1b62621ae417b038672b1e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Populates an 'observer' data structure, for an observer that is comoving with a Solar-system body or place, and whose momentary position is consequently provided by an <span class="tt"><a class="el" href="#a713982e1f2bae0a72b39d03007f00d23" title="Retrieves the position and velocity of a solar system body using the currently configured plugins tha...">ephemeris()</a></span> call for that body or place.  <br /></td></tr>
 <tr class="memitem:af4956285681bd88082f4aa1d8fd76f61" id="r_af4956285681bd88082f4aa1d8fd76f61"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#af4956285681bd88082f4aa1d8fd76f61">make_dynamic_observer</a> (<a class="el" href="#a57854b43a0a88bfaac0fb886d30fecf5">novas_state_provider</a> call, const void *restrict call_arg, <a class="el" href="#ae7963c522d28ce6891b472e079307d03">observer</a> *restrict obs)</td></tr>
 <tr class="memdesc:af4956285681bd88082f4aa1d8fd76f61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Populates an 'observer' data structure, for an observer whose position and velocity state vectors are detwermined dynamically for the time of observation.  <br /></td></tr>
 <tr class="memitem:aa22303f98df2d63edf6d8452ff3a43b2" id="r_aa22303f98df2d63edf6d8452ff3a43b2"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#aa22303f98df2d63edf6d8452ff3a43b2">make_ephem_object</a> (const char *name, long num, <a class="el" href="#a8bb95dd453e33d4c9892266c9af5df2a">object</a> *body)</td></tr>
@@ -2378,7 +2380,7 @@ Variables</h2></td></tr>
 <p>The number of object types distinguished by NOVAS. </p>
 <dl class="section see"><dt>See also</dt><dd>enum <a class="el" href="#a1eecb357eeea0de4759e9c8d55af238f" title="The type of astronomical objects distinguished by the NOVAS library.">novas_object_type</a> </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="target_8c.html#a411f70fb77582d750c5269fcd64b0ce2">make_object()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#aef7f2670a1b62621ae417b038672b1e9">make_comoving_observer()</a>, and <a class="el" href="target_8c.html#a411f70fb77582d750c5269fcd64b0ce2">make_object()</a>.</p>
 
 </div>
 </div>
@@ -3438,7 +3440,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define SUPERNOVAS_RELEASE_STRING&#160;&#160;&#160;&quot;-rc3&quot;</td>
+          <td class="memname">#define SUPERNOVAS_RELEASE_STRING&#160;&#160;&#160;&quot;-devel&quot;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -7807,6 +7809,48 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="aef7f2670a1b62621ae417b038672b1e9" name="aef7f2670a1b62621ae417b038672b1e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef7f2670a1b62621ae417b038672b1e9">&#9670;&#160;</a></span>make_comoving_observer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int make_comoving_observer </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="#a8bb95dd453e33d4c9892266c9af5df2a">object</a> *restrict</td>          <td class="paramname"><span class="paramname"><em>place</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#ae7963c522d28ce6891b472e079307d03">observer</a> *restrict</td>          <td class="paramname"><span class="paramname"><em>obs</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Populates an 'observer' data structure, for an observer that is comoving with a Solar-system body or place, and whose momentary position is consequently provided by an <span class="tt"><a class="el" href="#a713982e1f2bae0a72b39d03007f00d23" title="Retrieves the position and velocity of a solar system body using the currently configured plugins tha...">ephemeris()</a></span> call for that body or place. </p>
+<p>Examples of comoving observers are virtual observers located at the centers of planets, asteroids, or comets, travelling on a spacecraft (which has ephemeris data), or defined by Keplerian orbital parameters around a major Solar-system body or barycenter position.</p>
+<p>NOTES:</p>
+<ol type="1">
+<li>Unlike most SuperNOVAS functions, which typically copy data, this one uses the pointer reference to the observing place directly. Therefore, you must make sure that the <span class="tt"><a class="el" href="#a8bb95dd453e33d4c9892266c9af5df2a" title="Celestial object of interest.">object</a></span> data pointed at remains valid in the scope in which the observer exists or is being used.</li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">place</td><td>the Solar-system body or place to which defines the momentary position of the observer at all times. The call will use the pointer reference directly. Therefore you sohould make sure that the data pointed at exists and remains valid in the scope as the observer that is populated here. </td></tr>
+    <tr><td class="paramname">obs</td><td>Pointer to the data structure to populate </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if either argument is NULL (errno set to EINVAL), or if the place is not in the Solar-system (errno set to ERANGE).</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.8</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a713982e1f2bae0a72b39d03007f00d23" title="Retrieves the position and velocity of a solar system body using the currently configured plugins tha...">ephemeris()</a>, <a class="el" href="observer_8c.html#a9c3f1a1bc3fd9ac6d211806913d2d529" title="Populates an &#39;observer&#39; data structure, for an observer situated on a near-Earth spacecraft,...">make_solar_system_observer()</a>, <a class="el" href="observer_8c.html#aabb3ab0d99aa6e487cdcf6b454949b75" title="Populates an &#39;observer&#39; data structure for a hypothetical observer located at Earth&#39;s geocenter.">make_observer_at_geocenter()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="#aef7f2670a1b62621ae417b038672b1e9">make_comoving_observer()</a>, <a class="el" href="#af4956285681bd88082f4aa1d8fd76f61">make_dynamic_observer()</a>, <a class="el" href="#a1eecb357eeea0de4759e9c8d55af238fa4f9ab9cec85498c41f90c33794d032e5">NOVAS_CATALOG_OBJECT</a>, <a class="el" href="#a14078c87a8cbbb5bc5c8444b40814018">novas_ephem_state()</a>, <a class="el" href="#a60037f5a7c8fe2b7cf8893cf461598d1">NOVAS_OBJECT_TYPES</a>, and <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="#aef7f2670a1b62621ae417b038672b1e9">make_comoving_observer()</a>.</p>
+
+</div>
+</div>
 <a id="af4956285681bd88082f4aa1d8fd76f61" name="af4956285681bd88082f4aa1d8fd76f61"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af4956285681bd88082f4aa1d8fd76f61">&#9670;&#160;</a></span>make_dynamic_observer()</h2>
 
@@ -7832,10 +7876,14 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Populates an 'observer' data structure, for an observer whose position and velocity state vectors are detwermined dynamically for the time of observation. </p>
+<p>NOTES:</p>
+<ol type="1">
+<li>Unlike most SuperNOVAS functions, which typically copy data, this one tracks the pointer reference to the call arguments directly. Therefore, you must make sure that the data pointed at remains valid in the scope in which the observer exists or is being used.</li>
+</ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">call</td><td>the function that provides the observer's Solar System Barycentric position and velocity vectors. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">arg</td><td>(optional) additional parameters to pass to the call, as needed. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">arg</td><td>(optional) additional parameters to pass to the call, as needed, or NULL if the call does not require additional data. When the pointer is not NULL, you should make sure that the data pointed at exists and remains valid in the scope as the observer that is populated here. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">obs</td><td>Pointer to the data structure to populate </td></tr>
   </table>
   </dd>
@@ -7843,11 +7891,12 @@ Variables</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if either argument is NULL.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="observer_8c.html#aa2f9fc986f99c1ec7092330dbf233fef" title="Initializes an observer data structure for a ground-based observer with the specified GPS / WGS84 loc...">make_gps_observer()</a>, <a class="el" href="observer_8c.html#ad8b2d2e6ca9570f09a0ca1f82957ed48" title="Initializes an observer data structure for a ground-based observer with the specified International T...">make_itrf_observer()</a>, <a class="el" href="observer_8c.html#aa82db32ce7b115db4f0a077ca899589b" title="Initializes an observer data structure for a ground-based observer at the specified observing site,...">make_observer_at_site()</a>, <a class="el" href="observer_8c.html#aa2663594794b4419e3b6feb927383a65" title="Populates an &#39;observer&#39; data structure for an observer moving relative to the surface of Earth,...">make_airborne_observer()</a>, <a class="el" href="observer_8c.html#a6c146e4d10152d5e1ffb978f2fc962be" title="Populates an &#39;observer&#39; data structure, for an observer situated on a near-Earth spacecraft,...">make_observer_in_space()</a>, <a class="el" href="observer_8c.html#a9c3f1a1bc3fd9ac6d211806913d2d529" title="Populates an &#39;observer&#39; data structure, for an observer situated on a near-Earth spacecraft,...">make_solar_system_observer()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.8 </dd></dl>
-<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="observer_8c.html#aef7f2670a1b62621ae417b038672b1e9" title="Populates an &#39;observer&#39; data structure, for an observer that is comoving with a Solar-system body or ...">make_comoving_observer()</a>, <a class="el" href="observer_8c.html#a9c3f1a1bc3fd9ac6d211806913d2d529" title="Populates an &#39;observer&#39; data structure, for an observer situated on a near-Earth spacecraft,...">make_solar_system_observer()</a>, <a class="el" href="observer_8c.html#aabb3ab0d99aa6e487cdcf6b454949b75" title="Populates an &#39;observer&#39; data structure for a hypothetical observer located at Earth&#39;s geocenter.">make_observer_at_geocenter()</a>, <a class="el" href="observer_8c.html#a6c146e4d10152d5e1ffb978f2fc962be" title="Populates an &#39;observer&#39; data structure, for an observer situated on a near-Earth spacecraft,...">make_observer_in_space()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="#af4956285681bd88082f4aa1d8fd76f61">make_dynamic_observer()</a>, and <a class="el" href="#a6140c39d1526b137f827e2091ecc36b3a0bad31754d885ebae9f204162954516c">NOVAS_DYNAMIC_OBSERVER</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="#af4956285681bd88082f4aa1d8fd76f61">make_dynamic_observer()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#aef7f2670a1b62621ae417b038672b1e9">make_comoving_observer()</a>, and <a class="el" href="#af4956285681bd88082f4aa1d8fd76f61">make_dynamic_observer()</a>.</p>
 
 </div>
 </div>
@@ -8181,7 +8230,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if the output argument is NULL.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="observer_8c.html#aa2f9fc986f99c1ec7092330dbf233fef" title="Initializes an observer data structure for a ground-based observer with the specified GPS / WGS84 loc...">make_gps_observer()</a>, <a class="el" href="observer_8c.html#ad8b2d2e6ca9570f09a0ca1f82957ed48" title="Initializes an observer data structure for a ground-based observer with the specified International T...">make_itrf_observer()</a>, <a class="el" href="observer_8c.html#aa82db32ce7b115db4f0a077ca899589b" title="Initializes an observer data structure for a ground-based observer at the specified observing site,...">make_observer_at_site()</a>, <a class="el" href="observer_8c.html#aa2663594794b4419e3b6feb927383a65" title="Populates an &#39;observer&#39; data structure for an observer moving relative to the surface of Earth,...">make_airborne_observer()</a>, <a class="el" href="observer_8c.html#a6c146e4d10152d5e1ffb978f2fc962be" title="Populates an &#39;observer&#39; data structure, for an observer situated on a near-Earth spacecraft,...">make_observer_in_space()</a>, <a class="el" href="observer_8c.html#a9c3f1a1bc3fd9ac6d211806913d2d529" title="Populates an &#39;observer&#39; data structure, for an observer situated on a near-Earth spacecraft,...">make_solar_system_observer()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="observer_8c.html#aa2f9fc986f99c1ec7092330dbf233fef" title="Initializes an observer data structure for a ground-based observer with the specified GPS / WGS84 loc...">make_gps_observer()</a>, <a class="el" href="observer_8c.html#ad8b2d2e6ca9570f09a0ca1f82957ed48" title="Initializes an observer data structure for a ground-based observer with the specified International T...">make_itrf_observer()</a>, <a class="el" href="observer_8c.html#aa82db32ce7b115db4f0a077ca899589b" title="Initializes an observer data structure for a ground-based observer at the specified observing site,...">make_observer_at_site()</a>, <a class="el" href="observer_8c.html#aa2663594794b4419e3b6feb927383a65" title="Populates an &#39;observer&#39; data structure for an observer moving relative to the surface of Earth,...">make_airborne_observer()</a>, <a class="el" href="observer_8c.html#a6c146e4d10152d5e1ffb978f2fc962be" title="Populates an &#39;observer&#39; data structure, for an observer situated on a near-Earth spacecraft,...">make_observer_in_space()</a>, <a class="el" href="observer_8c.html#a9c3f1a1bc3fd9ac6d211806913d2d529" title="Populates an &#39;observer&#39; data structure, for an observer situated on a near-Earth spacecraft,...">make_solar_system_observer()</a> <a class="el" href="observer_8c.html#aef7f2670a1b62621ae417b038672b1e9" title="Populates an &#39;observer&#39; data structure, for an observer that is comoving with a Solar-system body or ...">make_comoving_observer()</a>, <a class="el" href="observer_8c.html#a048b1b447ae7b3077fd88ac29a0e7e7b" title="Populates an &#39;observer&#39; data structure, for an observer whose position and velocity state vectors are...">make_dynamic_observer()</a> </dd>
 <dd>
 <a class="el" href="#adc72577f99a7b076b23e0e44ddbca838" title="Sets up a observing frame for a specific observer location, time of observation, and accuracy require...">novas_make_frame()</a> </dd></dl>
 
@@ -8266,7 +8315,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if the output argument is NULL.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="observer_8c.html#aa2f9fc986f99c1ec7092330dbf233fef" title="Initializes an observer data structure for a ground-based observer with the specified GPS / WGS84 loc...">make_gps_observer()</a>, <a class="el" href="observer_8c.html#ad8b2d2e6ca9570f09a0ca1f82957ed48" title="Initializes an observer data structure for a ground-based observer with the specified International T...">make_itrf_observer()</a>, <a class="el" href="observer_8c.html#aa82db32ce7b115db4f0a077ca899589b" title="Initializes an observer data structure for a ground-based observer at the specified observing site,...">make_observer_at_site()</a>, <a class="el" href="observer_8c.html#aa2663594794b4419e3b6feb927383a65" title="Populates an &#39;observer&#39; data structure for an observer moving relative to the surface of Earth,...">make_airborne_observer()</a>, <a class="el" href="observer_8c.html#aabb3ab0d99aa6e487cdcf6b454949b75" title="Populates an &#39;observer&#39; data structure for a hypothetical observer located at Earth&#39;s geocenter.">make_observer_at_geocenter()</a>, <a class="el" href="observer_8c.html#a9c3f1a1bc3fd9ac6d211806913d2d529" title="Populates an &#39;observer&#39; data structure, for an observer situated on a near-Earth spacecraft,...">make_solar_system_observer()</a>, <a class="el" href="observer_8c.html#a048b1b447ae7b3077fd88ac29a0e7e7b" title="Populates an &#39;observer&#39; data structure, for an observer whose position and velocity state vectors are...">make_dynamic_observer()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="observer_8c.html#aa2f9fc986f99c1ec7092330dbf233fef" title="Initializes an observer data structure for a ground-based observer with the specified GPS / WGS84 loc...">make_gps_observer()</a>, <a class="el" href="observer_8c.html#ad8b2d2e6ca9570f09a0ca1f82957ed48" title="Initializes an observer data structure for a ground-based observer with the specified International T...">make_itrf_observer()</a>, <a class="el" href="observer_8c.html#aa82db32ce7b115db4f0a077ca899589b" title="Initializes an observer data structure for a ground-based observer at the specified observing site,...">make_observer_at_site()</a>, <a class="el" href="observer_8c.html#aa2663594794b4419e3b6feb927383a65" title="Populates an &#39;observer&#39; data structure for an observer moving relative to the surface of Earth,...">make_airborne_observer()</a>, <a class="el" href="observer_8c.html#aabb3ab0d99aa6e487cdcf6b454949b75" title="Populates an &#39;observer&#39; data structure for a hypothetical observer located at Earth&#39;s geocenter.">make_observer_at_geocenter()</a>, <a class="el" href="observer_8c.html#a9c3f1a1bc3fd9ac6d211806913d2d529" title="Populates an &#39;observer&#39; data structure, for an observer situated on a near-Earth spacecraft,...">make_solar_system_observer()</a>, <a class="el" href="observer_8c.html#aef7f2670a1b62621ae417b038672b1e9" title="Populates an &#39;observer&#39; data structure, for an observer that is comoving with a Solar-system body or ...">make_comoving_observer()</a>, <a class="el" href="observer_8c.html#a048b1b447ae7b3077fd88ac29a0e7e7b" title="Populates an &#39;observer&#39; data structure, for an observer whose position and velocity state vectors are...">make_dynamic_observer()</a> </dd>
 <dd>
 <a class="el" href="#adc72577f99a7b076b23e0e44ddbca838" title="Sets up a observing frame for a specific observer location, time of observation, and accuracy require...">novas_make_frame()</a> </dd></dl>
 
@@ -8659,7 +8708,7 @@ novas_set_weather(), <a class="el" href="#a7479134485c298faa858d73ee0513a11" tit
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if the output argument is NULL.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="observer_8c.html#aa2f9fc986f99c1ec7092330dbf233fef" title="Initializes an observer data structure for a ground-based observer with the specified GPS / WGS84 loc...">make_gps_observer()</a>, <a class="el" href="observer_8c.html#ad8b2d2e6ca9570f09a0ca1f82957ed48" title="Initializes an observer data structure for a ground-based observer with the specified International T...">make_itrf_observer()</a>, <a class="el" href="observer_8c.html#aa82db32ce7b115db4f0a077ca899589b" title="Initializes an observer data structure for a ground-based observer at the specified observing site,...">make_observer_at_site()</a>, <a class="el" href="observer_8c.html#aa2663594794b4419e3b6feb927383a65" title="Populates an &#39;observer&#39; data structure for an observer moving relative to the surface of Earth,...">make_airborne_observer()</a>, <a class="el" href="observer_8c.html#a6c146e4d10152d5e1ffb978f2fc962be" title="Populates an &#39;observer&#39; data structure, for an observer situated on a near-Earth spacecraft,...">make_observer_in_space()</a>,<a class="el" href="observer_8c.html#a048b1b447ae7b3077fd88ac29a0e7e7b" title="Populates an &#39;observer&#39; data structure, for an observer whose position and velocity state vectors are...">make_dynamic_observer()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="observer_8c.html#aa2f9fc986f99c1ec7092330dbf233fef" title="Initializes an observer data structure for a ground-based observer with the specified GPS / WGS84 loc...">make_gps_observer()</a>, <a class="el" href="observer_8c.html#ad8b2d2e6ca9570f09a0ca1f82957ed48" title="Initializes an observer data structure for a ground-based observer with the specified International T...">make_itrf_observer()</a>, <a class="el" href="observer_8c.html#aa82db32ce7b115db4f0a077ca899589b" title="Initializes an observer data structure for a ground-based observer at the specified observing site,...">make_observer_at_site()</a>, <a class="el" href="observer_8c.html#aa2663594794b4419e3b6feb927383a65" title="Populates an &#39;observer&#39; data structure for an observer moving relative to the surface of Earth,...">make_airborne_observer()</a>, <a class="el" href="observer_8c.html#a6c146e4d10152d5e1ffb978f2fc962be" title="Populates an &#39;observer&#39; data structure, for an observer situated on a near-Earth spacecraft,...">make_observer_in_space()</a>, <a class="el" href="observer_8c.html#aef7f2670a1b62621ae417b038672b1e9" title="Populates an &#39;observer&#39; data structure, for an observer that is comoving with a Solar-system body or ...">make_comoving_observer()</a>, <a class="el" href="observer_8c.html#a048b1b447ae7b3077fd88ac29a0e7e7b" title="Populates an &#39;observer&#39; data structure, for an observer whose position and velocity state vectors are...">make_dynamic_observer()</a> </dd>
 <dd>
 <a class="el" href="#adc72577f99a7b076b23e0e44ddbca838" title="Sets up a observing frame for a specific observer location, time of observation, and accuracy require...">novas_make_frame()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
@@ -10080,7 +10129,7 @@ novas_set_weather(), <a class="el" href="#a7479134485c298faa858d73ee0513a11" tit
 
 <p class="reference">References <a class="el" href="#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a>, <a class="el" href="#a208120c5fa3e12853eb37cb99d3e27beade504a1c5ccf790ce9d8ad52797bb94c">NOVAS_BARYCENTER</a>, and <a class="el" href="#a14078c87a8cbbb5bc5c8444b40814018">novas_ephem_state()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="classsupernovas_1_1EphemerisObserver.html#a4dbb4233b23291ca1bf640ea129f94cd">supernovas::EphemerisObserver::EphemerisObserver()</a>, <a class="el" href="classsupernovas_1_1OrbitalObserver.html#a4246055c74d4b50de95e94f1e20eb779">supernovas::OrbitalObserver::OrbitalObserver()</a>, and <a class="el" href="#a14078c87a8cbbb5bc5c8444b40814018">novas_ephem_state()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classsupernovas_1_1EphemerisObserver.html#a4dbb4233b23291ca1bf640ea129f94cd">supernovas::EphemerisObserver::EphemerisObserver()</a>, <a class="el" href="classsupernovas_1_1OrbitalObserver.html#a4246055c74d4b50de95e94f1e20eb779">supernovas::OrbitalObserver::OrbitalObserver()</a>, <a class="el" href="#aef7f2670a1b62621ae417b038672b1e9">make_comoving_observer()</a>, and <a class="el" href="#a14078c87a8cbbb5bc5c8444b40814018">novas_ephem_state()</a>.</p>
 
 </div>
 </div>
@@ -16549,7 +16598,7 @@ novas_fetch_current_eop(), <a class="el" href="group__earth.html#ga30319d4fc323f
 
 <p class="reference">References <a class="el" href="#a033f1bf4b01e0e21a0e05e13c19c02f6">aberration()</a>, <a class="el" href="#a1d58fd371e7604f75df315365672941e">bary2obs()</a>, <a class="el" href="#ad799864f637c483fb49491bde5a93e25">d_light()</a>, <a class="el" href="#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a>, <a class="el" href="#aef1f8daaad470353648de90576aefc66">era()</a>, <a class="el" href="#a51ea4a016336dd3cf7783061c14d165c">gcrs_to_cirs()</a>, <a class="el" href="group__apparent.html#ga18647d39520d1a15a137661f698cb12a">grav_bodies_full_accuracy</a>, <a class="el" href="group__apparent.html#ga03a4df8961a0cd05f89aca478d2dcd24">grav_bodies_reduced_accuracy</a>, <a class="el" href="#ae36bc31e1dad8a68f94f7a6414f0519f">grav_planets()</a>, <a class="el" href="#a5c940b62732d74e6c6b1c844931aaa76">light_time2()</a>, <a class="el" href="#aabb3ab0d99aa6e487cdcf6b454949b75">make_observer_at_geocenter()</a>, <a class="el" href="#a208120c5fa3e12853eb37cb99d3e27beade504a1c5ccf790ce9d8ad52797bb94c">NOVAS_BARYCENTER</a>, <a class="el" href="#a1eecb357eeea0de4759e9c8d55af238fa4f9ab9cec85498c41f90c33794d032e5">NOVAS_CATALOG_OBJECT</a>, <a class="el" href="#abad802a863342aebe9a40587b4e47bab">NOVAS_EARTH_INIT</a>, <a class="el" href="group__frame.html#gga3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="group__equatorial.html#gga7ba038ea34eb901ccfb8f785708c651ea5bf6e497c776a4a8168b23db062e8a10">NOVAS_ICRS</a>, <a class="el" href="#ae92d75584fbd612dd966d5a0e98eac7a">novas_icrs_to_sys()</a>, <a class="el" href="group__equatorial.html#gga7ba038ea34eb901ccfb8f785708c651ea826bda7744c11bc1560f4db1848a17c6">NOVAS_ITRS</a>, <a class="el" href="group__frame.html#gga3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, <a class="el" href="#a6afeda74c9df859ae6504eebfee01092">NOVAS_SUN_INIT</a>, <a class="el" href="group__equatorial.html#gga7ba038ea34eb901ccfb8f785708c651ea524041fc2059f8432b76fad1b8edb89f">NOVAS_TIRS</a>, <a class="el" href="util_8c.html#a0f41cefb8c872973b07e936b5026d143">novas_vlen()</a>, <a class="el" href="#a07490a134a685fe0842b2b4816559292">obs_planets()</a>, <a class="el" href="#a0e4e5ff7c37e6521ca75ae62aaf4050e">obs_posvel()</a>, <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>, <a class="el" href="#a24b69e1809a33113d4a041dd3e4082ad">proper_motion()</a>, <a class="el" href="#a37f22e463cc06b4e381aa18659e6319d">rad_vel2()</a>, <a class="el" href="#af4090e519d7ce7ab1fcdb24b10126eb4">spin()</a>, <a class="el" href="#a27bae6c9efdab763dba9f1ae36a04669">starvectors()</a>, <a class="el" href="#a129acca41760da486e1179c93cb9e86d">tt2tdb()</a>, and <a class="el" href="#a84f672dc1c37e3af374198f29cbcfba9">vector2radec()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>, <a class="el" href="#a49bd2b398f7eab3e98823cb1a7403ed5">place_cirs()</a>, <a class="el" href="#aea583f6f785fa42f46710288e8a4e083">place_gcrs()</a>, <a class="el" href="#ad465eafe65e3d701fc4bd57efa793a12">place_icrs()</a>, <a class="el" href="#a1ea9b377426b1800535e85fab47bfc1b">place_j2000()</a>, <a class="el" href="#ac53d150d1f6b96c83d1516a66c699e63">place_mod()</a>, <a class="el" href="#a1504058672e6e3cf24ce6b7189ede005">place_star()</a>, <a class="el" href="#ab6908b0eee06b4a44242fba1fd9d506c">place_tod()</a>, and <a class="el" href="#a918c8244e44c69f1589d9f4bf5355d16">radec_planet()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#aef7f2670a1b62621ae417b038672b1e9">make_comoving_observer()</a>, <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>, <a class="el" href="#a49bd2b398f7eab3e98823cb1a7403ed5">place_cirs()</a>, <a class="el" href="#aea583f6f785fa42f46710288e8a4e083">place_gcrs()</a>, <a class="el" href="#ad465eafe65e3d701fc4bd57efa793a12">place_icrs()</a>, <a class="el" href="#a1ea9b377426b1800535e85fab47bfc1b">place_j2000()</a>, <a class="el" href="#ac53d150d1f6b96c83d1516a66c699e63">place_mod()</a>, <a class="el" href="#a1504058672e6e3cf24ce6b7189ede005">place_star()</a>, <a class="el" href="#ab6908b0eee06b4a44242fba1fd9d506c">place_tod()</a>, and <a class="el" href="#a918c8244e44c69f1589d9f4bf5355d16">radec_planet()</a>.</p>
 
 </div>
 </div>

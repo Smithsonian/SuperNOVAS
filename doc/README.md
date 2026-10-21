@@ -1294,6 +1294,12 @@ Below is a non-exhaustive overview new features added by __SuperNOVAS__ on top o
  - Support for nearly full-featured embedded / bare-metal build targets without `libc` support or system clock.
 
 
+<summary>New in v1.8</summary>
+
+ - New observer locations with dynamically calculated positions and velocities, such as observers defined by an 
+   ephemeris location or by Keplerian orbital elements.
+
+
 <a name="api-changes"></a>
 ### Refinements to the NOVAS C API
 

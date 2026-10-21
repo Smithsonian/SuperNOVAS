@@ -167,8 +167,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ab51ed547b89f094b0bbff492eaa05a3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this velocity is the same as another, within 1 mm/s.  <br /></td></tr>
 <tr class="memitem:a3dbaf0927a89219ae14a2a759c103f09" id="r_a3dbaf0927a89219ae14a2a759c103f09"><td class="memItemLeft"><a class="el" href="classsupernovas_1_1ScalarVelocity.html">ScalarVelocity</a>&#160;</td><td class="memItemRight"><a class="el" href="#a3dbaf0927a89219ae14a2a759c103f09">speed</a> () const</td></tr>
 <tr class="memdesc:a3dbaf0927a89219ae14a2a759c103f09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the speed (absolute value) of this velocity vector.  <br /></td></tr>
-<tr class="memitem:a73986e4a3fe977fd14760a0b97a3e00d" id="r_a73986e4a3fe977fd14760a0b97a3e00d"><td class="memItemLeft"><a class="el" href="classsupernovas_1_1ScalarVelocity.html">ScalarVelocity</a>&#160;</td><td class="memItemRight"><a class="el" href="#a73986e4a3fe977fd14760a0b97a3e00d">speed_difference_to</a> (const Velocity &amp;v) const</td></tr>
-<tr class="memdesc:a73986e4a3fe977fd14760a0b97a3e00d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the magnitude of the difference between this velocity vector and a specified other velocity vector as a new scalar velocity instance.  <br /></td></tr>
+<tr class="memitem:a9d59fa3d20696fc07458b3dc16bed6e8" id="r_a9d59fa3d20696fc07458b3dc16bed6e8"><td class="memItemLeft"><a class="el" href="classsupernovas_1_1ScalarVelocity.html">ScalarVelocity</a>&#160;</td><td class="memItemRight"><a class="el" href="#a9d59fa3d20696fc07458b3dc16bed6e8">speed_relative_to</a> (const Velocity &amp;v) const</td></tr>
+<tr class="memdesc:a9d59fa3d20696fc07458b3dc16bed6e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the magnitude of the difference between this velocity vector and a specified other velocity vector as a new scalar velocity instance.  <br /></td></tr>
 <tr class="memitem:a1484083f9c73aec4e40e9fe8f45c056c" id="r_a1484083f9c73aec4e40e9fe8f45c056c"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#a1484083f9c73aec4e40e9fe8f45c056c">to_string</a> (int decimals=3) const override</td></tr>
 <tr class="memdesc:a1484083f9c73aec4e40e9fe8f45c056c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a string representation of this velocity with the requested decimal precision.  <br /></td></tr>
 <tr class="memitem:abe62c156f9ab61154ec48b894be1cc05" id="r_abe62c156f9ab61154ec48b894be1cc05"><td class="memItemLeft"><a class="el" href="classsupernovas_1_1Position.html">Position</a>&#160;</td><td class="memItemRight"><a class="el" href="#abe62c156f9ab61154ec48b894be1cc05">travel</a> (const <a class="el" href="classsupernovas_1_1Interval.html">Interval</a> &amp;t) const</td></tr>
@@ -565,7 +565,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the sum of this velocity and the argument.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.6 </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ae9a7ec857adc8cf0f9108f21f1d57657" title="Returns the sum of this velocity and the specified other velocity.">operator+()</a>, <a class="el" href="#a73986e4a3fe977fd14760a0b97a3e00d" title="Returns the magnitude of the difference between this velocity vector and a specified other velocity v...">speed_difference_to()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ae9a7ec857adc8cf0f9108f21f1d57657" title="Returns the sum of this velocity and the specified other velocity.">operator+()</a>, <a class="el" href="#a9d59fa3d20696fc07458b3dc16bed6e8" title="Returns the magnitude of the difference between this velocity vector and a specified other velocity v...">speed_relative_to()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="classsupernovas_1_1Vector.html#a2faf9b36e0fdc2bc3f09f9e524b65d18">supernovas::Vector::_component</a>, and <a class="el" href="classsupernovas_1_1Validating.html#aa3695f10056563de6ba2f0863cabda53">supernovas::Validating::is_valid()</a>.</p>
 
@@ -619,20 +619,20 @@ Additional Inherited Members</h2></td></tr>
 <p>Returns the speed (absolute value) of this velocity vector. </p>
 <dl class="section return"><dt>Returns</dt><dd>the speed (absolute value) of this velocity.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.6</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a73986e4a3fe977fd14760a0b97a3e00d" title="Returns the magnitude of the difference between this velocity vector and a specified other velocity v...">speed_difference_to()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a9d59fa3d20696fc07458b3dc16bed6e8" title="Returns the magnitude of the difference between this velocity vector and a specified other velocity v...">speed_relative_to()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="classsupernovas_1_1Vector.html#aab5ce2de6a675909f520087958fe3610">supernovas::Vector::abs()</a>, and <a class="el" href="classsupernovas_1_1Validating.html#aa3695f10056563de6ba2f0863cabda53">supernovas::Validating::is_valid()</a>.</p>
 
 </div>
 </div>
-<a id="a73986e4a3fe977fd14760a0b97a3e00d" name="a73986e4a3fe977fd14760a0b97a3e00d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a73986e4a3fe977fd14760a0b97a3e00d">&#9670;&#160;</a></span>speed_difference_to()</h2>
+<a id="a9d59fa3d20696fc07458b3dc16bed6e8" name="a9d59fa3d20696fc07458b3dc16bed6e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d59fa3d20696fc07458b3dc16bed6e8">&#9670;&#160;</a></span>speed_relative_to()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classsupernovas_1_1ScalarVelocity.html">ScalarVelocity</a> supernovas::Velocity::speed_difference_to </td>
+          <td class="memname"><a class="el" href="classsupernovas_1_1ScalarVelocity.html">ScalarVelocity</a> supernovas::Velocity::speed_relative_to </td>
           <td>(</td>
           <td class="paramtype">const Velocity &amp;</td>          <td class="paramname"><span class="paramname"><em>v</em></span></td><td>)</td>
           <td> const</td>

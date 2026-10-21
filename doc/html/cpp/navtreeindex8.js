@@ -1,12 +1,5 @@
 var NAVTREEINDEX8 =
 {
-"structnovas__eop.html#a6a836a00dbc47798b5dbc864b71cc95d":[8,0,3,9],
-"structnovas__eop.html#a9069ae656f02e20d54c4087971088534":[8,0,3,6],
-"structnovas__eop.html#aa7dc31267da0f16593948531081b9c20":[8,0,3,0],
-"structnovas__eop.html#ab16f1e9735ea4825852497ab33b3ebf3":[8,0,3,3],
-"structnovas__eop.html#ac53ddbbe3c91d0403543273a6380a4b6":[8,0,3,4],
-"structnovas__eop.html#ac7b81e3fff4afb5fa90ad52008cbc938":[8,0,3,8],
-"structnovas__eop.html#adad511b5bdef74f8aab97945a432f54a":[8,0,3,7],
 "structnovas__eop.html#af72647faf3ebbfed343c9dfee414ab17":[8,0,3,5],
 "structnovas__eop.html#affd6c6e56f462ca17a1badb73cf3c907":[8,0,3,2],
 "structnovas__frame.html":[8,0,4],
@@ -111,8 +104,8 @@ var NAVTREEINDEX8 =
 "structnovas__transform.html#a854e45563dcf436359f53e6a99b87788":[8,0,17,3],
 "structnovas__transform.html#abce5e2fe6c3ef9f7507d7debe0c44897":[8,0,17,2],
 "supernovas_8h.html":[9,0,0,4],
-"supernovas_8h.html#a844b2b8a0eb6cf2b1b76f505cfc87887":[9,0,0,4,6],
-"supernovas_8h.html#abbbb70f69d5541cbf07464d853b3173a":[9,0,0,4,7],
+"supernovas_8h.html#a844b2b8a0eb6cf2b1b76f505cfc87887":[9,0,0,4,5],
+"supernovas_8h.html#abbbb70f69d5541cbf07464d853b3173a":[9,0,0,4,6],
 "system_8c.html":[9,0,1,0,24],
 "system_8c.html#a035047336b16951b8b850066e74210a9":[9,0,1,0,24,2],
 "system_8c.html#a14deb6fdce80ba213e1f1d5238306e17":[9,0,1,0,24,17],

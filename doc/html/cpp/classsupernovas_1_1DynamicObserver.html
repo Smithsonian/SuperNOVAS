@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('classsupernova
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">supernovas::DynamicObserver Class Reference</div></div>
+  <div class="headertitle"><div class="title">supernovas::DynamicObserver Class Reference<div class="ingroups"><a class="el" href="group__observer.html">Observer location</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -233,6 +233,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>An observer whose momentary position and velocity is defined dynamically through a state provider function. </p>
+<dl class="section since"><dt>Since</dt><dd>1.8</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classsupernovas_1_1EphemerisObserver.html" title="An observer whose position and velocity is defined by ephemeris data, which can be obtained by the cu...">EphemerisObserver</a>, <a class="el" href="classsupernovas_1_1OrbitalObserver.html" title="An observer whose position and velocity is defined by Keplerian orbital parameters around a major Sol...">OrbitalObserver</a> </dd></dl>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a2874b747ab3c80d4b6e104f8d1c450db" name="a2874b747ab3c80d4b6e104f8d1c450db"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2874b747ab3c80d4b6e104f8d1c450db">&#9670;&#160;</a></span>DynamicObserver()</h2>
@@ -262,10 +264,14 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Instantiates a new observer with dynamically determined position / velocity via a designated state provider function. </p>
+<p>NOTES:</p>
+<ol type="1">
+<li>Unlike most SuperNOVAS classes, which typically copy data, this one tracks the pointer reference to the call arguments directly. Therefore, you must make sure that the data pointed at remains valid in the scope in which the observer exists or is being used.</li>
+</ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">call</td><td>the state provider function </td></tr>
-    <tr><td class="paramname">arg</td><td>(optional) pointer argument to pass to the state provider function. It may be NULL if the function does not use externally supplied data. (default: NULL)</td></tr>
+    <tr><td class="paramname">arg</td><td>(optional) pointer argument to pass to the state provider function. It may be NULL if the function does not use externally supplied data (default: NULL). When the pointer is not NULL, you should make sure that the data pointed at exists and remains valid in this observer instance.</td></tr>
   </table>
   </dd>
 </dl>
