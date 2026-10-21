@@ -3091,6 +3091,10 @@ static int test_set_leap_list() {
   if(check("set_leap_list:invalid", -1, novas_set_leap_list("blah"))) n++;
   if(check("set_leap_list:garbage", -1, novas_set_leap_list("Makefile"))) n++;
 
+  rc = get_resource("missing-expiration-bad.list", path, sizeof(path));
+  if(!rc) fprintf(stderr, "WARNING! Missing %s: skip tests requiring it", path);
+  else if(check("set_leap_list:missing-expiration", -1, novas_set_leap_list(rc))) return n++;
+
   rc = get_resource("bad-expiration.list", path, sizeof(path));
   if(!rc) fprintf(stderr, "WARNING! Missing %s: skip tests requiring it", path);
   else if(check("set_leap_list:bad-expiration", -1, novas_set_leap_list(rc))) return n++;

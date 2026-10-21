@@ -5977,7 +5977,7 @@ static int test_lookup_leap() {
   if(!rc) fprintf(stderr, "WARNING! Missing %s: skip tests requiring it", path);
   else if(!is_ok("lookup_leap:set_leap_list:bad-second-expiration", novas_set_leap_list(path))) return ++n;
 
-  rc = get_resource("missing-expiration-OK.list", path, sizeof(path));
+  rc = get_resource("missing-expiration-ok.list", path, sizeof(path));
   if(!rc) fprintf(stderr, "WARNING! Missing %s: skip tests requiring it", path);
   else if(!is_ok("lookup_leap:set_leap_list:missing-expiration-OK", novas_set_leap_list(rc))) return ++n;
 

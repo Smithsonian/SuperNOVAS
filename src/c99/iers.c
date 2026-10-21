@@ -96,6 +96,7 @@
 #  define LEAP_LIST_MAX_LEN           32768
 #  define DEFAULT_LEAP_URL            "https://" IERS_LEAP_SERVER "/iers/bul/bulc/ntp/" LEAP_FILENAME
 #  define NTP_UNIX_EPOCH              2208988800LL      ///< [s] NTP timestamp of UNIX epoch (1970 Jan 1)
+#  define LAST_LEAP_START             1483228800L       ///< [s] 1 Jan 2017
 
 #ifdef _MSC_VER
 #  define strtok_r        strtok_s                      ///< MSC equivalent
@@ -330,12 +331,27 @@ static iers_leap_entry *parse_leaps(char *buf, long long *expiration) {
     else if(line[1] == '@') { // Process expiration timestamp
       // We'll use the last valid expiration timestamp (there should be only one, but...).
       if(sscanf(&line[2], "%lld", expiration) == 1)
-        *expiration -= NTP_UNIX_EPOCH;
+        *expiration -= NTP_UNIX_EPOCH; // Hurray, a valid expiration timestamp...
+      else if(*expiration == LLONG_MAX)
+        *expiration = -1; // No prior valid expiration, only this invalid one (so far)
     }
   } // while loop over lines.
 
-  if(list)
+  if(list) {
+    if(*expiration < 0) {
+      destroy_leap_list(list);
+      novas_set_errno(EBADF, fn, "invalid expiration date");
+      return NULL;
+    }
+
+    if(*expiration == LLONG_MAX && list->unix_start < LAST_LEAP_START) {
+      destroy_leap_list(list);
+      novas_set_errno(ERANGE, fn, "old (incomplete) leap seconds list without expiration date");
+      return NULL;
+    }
+
     list->unix_end = (time_t) *expiration;
+  }
 
   return list;
 }
