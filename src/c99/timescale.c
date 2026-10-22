@@ -563,42 +563,59 @@ static double tt_offset(const novas_timespec *ts, enum novas_timescale timescale
  * @param time        astrometric time specification
  * @param timescale   timescale in which JD has been specified (so far).
  */
-static void novas_time_lookup_dut1(novas_timespec *time, enum novas_timescale timescale) {
-  double dut1 = NAN;
+static void novas_time_fill_ut_parms(novas_timespec *time, enum novas_timescale timescale) {
+  static const char *fn = "novas_time_fill_ut_parms";
 
-  int leap = novas_lookup_leap(novas_get_unix_time(time, NULL));
-  time->ut1_to_tt = leap + DTA;
+  int i, leap;
 
-  if(novas_is_auto_fetch_eop()) {
+  // For UT1 / UTC get initial leap based on UTC (for UT1 we'll refine that later...)
+  if(timescale == NOVAS_UT1 || timescale == NOVAS_UTC) {
+    // Look up for UTC / UT1 timestamp
+    leap = novas_leap_for_jd(time->ijd_tt + time->fjd_tt);
+  }
+  else {
+    // Get leap via TT
+    novas_timespec tt = *time;
+    tt.fjd_tt -= tt_offset(time, timescale) / NOVAS_DAY;
+    leap = novas_time_leap(&tt);
+    if(leap == -1)
+      goto invalid; // @suppress("Goto statement used")
+  }
+
+  // temporary UTC to TT conversion for fetching EOP
+  time->dut1 = 0.0;
+  time->ut1_to_tt = DTA + leap;
+
+  // Refining loop (iterates for UT1 only)
+  for(i = 0; i < novas_inv_max_iter; i++) {
     // Fetch dut1 from IERS...
     novas_eop eop = {};
 
-    if(novas_fetch_eop(novas_get_time(time, NOVAS_UTC), 0.0, &eop) == 0)
-      dut1 = eop.dut1;
-    else
-      novas_trace_invalid("novas_time_lookup_dut1");
-  }
+    if(novas_fetch_eop(novas_get_time(time, NOVAS_UTC), 0.0, &eop) < 0)
+      goto invalid; // @suppress("Goto statement used")
 
-  // For UT1 get the leap again (DUT1 will have been fetched for time +/- 1 s already).
-  if(timescale == NOVAS_UT1)
-    leap = novas_lookup_leap(novas_get_unix_time(time, NULL));
+    time->dut1 = eop.dut1;
+    time->ut1_to_tt = DTA + leap - time->dut1;
 
-  // Iterate if necessary to make sure we are on the correct side of a leap second boundary...
-  else if(timescale != NOVAS_UTC) {
-    int i;
-    for(i = 0; i < novas_inv_max_iter; i++) {
-      int leap2;
-
-      time->ut1_to_tt = leap - time->dut1 + DTA;
-      leap2 = novas_lookup_leap(novas_get_unix_time(time, NULL));
-      if(leap2 == leap) break;
+    // For UT1 get the leap again for the new UT1 - UTC value, and iterate if necessary
+    if(!isnan(time->dut1) && timescale == NOVAS_UT1) {
+      int leap2 = novas_leap_for_jd(time->ijd_tt + time->fjd_tt - time->dut1 / NOVAS_DAY);
+      if(leap2 == leap) return;
 
       leap = leap2;
     }
+    else return; // No need to iterate...
   }
 
-  time->dut1 = dut1;
-  time->ut1_to_tt = leap - dut1 + DTA;
+  novas_set_errno(ECANCELED, fn, "determining leap seconds failed to converge");
+
+  // -------------------------------------------------------------------------
+  invalid:
+
+  time->dut1 = NAN;
+  time->ut1_to_tt = NAN;
+  novas_trace_invalid(fn);
+  return;
 }
 
 
@@ -674,25 +691,20 @@ int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, i
   time->ijd_tt = ijd + ifjd;
   time->fjd_tt = fjd - ifjd;
 
-  if(isnan(dut1)) {
-    // Bootstrap values for determining leap seconds and UT1 - UTC...
-    time->tt2tdb = 0.0;
-    time->dut1 = 0.0;
-    time->ut1_to_tt = DTA;
-
-    // Determine dut1 and ut1_to_tt, if possible
-    novas_time_lookup_dut1(time, timescale);
-  }
-  else {
-    time->dut1 = dut1;
-    time->ut1_to_tt = leap - dut1 + DTA;
-  }
-
   // if timescale is barycentric then calculate TDB - TT before conversion to TT
   if(timescale == NOVAS_TCB || timescale == NOVAS_TDB)
     time->tt2tdb = tt2tdb_hp(ijd + fjd);
   else
     time->tt2tdb = NAN;
+
+  if(isnan(dut1) && novas_is_auto_fetch_eop()) {
+    // Determine dut1 and ut1_to_tt, if possible
+    novas_time_fill_ut_parms(time, timescale);
+  }
+  else {
+    time->dut1 = dut1;
+    time->ut1_to_tt = leap - dut1 + DTA;
+  }
 
   // Convert JD to TT scale
   fjd -= tt_offset(time, timescale) / DAY;
@@ -1502,17 +1514,20 @@ double novas_time_lst(const novas_timespec *restrict time, double lon, enum nova
 int novas_time_leap(const novas_timespec *time) {
   static const char *fn = "novas_time_leap";
 
-  time_t ts;
+  int i, leap = 0;
 
   if(!time)
     return novas_error(-1, EINVAL, fn, "input time specification is NULL");
 
-  errno = 0;
-  ts = novas_get_unix_time(time, NULL);
-  if(ts == -1 && errno)
-    return novas_trace(fn, -1, 0);
+  for(i = 0; i < novas_inv_max_iter; i++) {
+    double jd_utc = time->ijd_tt + time->fjd_tt - (DTA + leap) / NOVAS_DAY;
+    int leap2 = novas_leap_for_jd(jd_utc);
+    if(leap2 == leap) return leap;
 
-  return novas_lookup_leap(ts);
+    leap = leap2;
+  }
+
+  return novas_error(-1, ECANCELED, fn, "failed to converge");
 }
 
 

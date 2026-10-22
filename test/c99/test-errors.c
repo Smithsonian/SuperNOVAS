@@ -2640,8 +2640,11 @@ static int test_print_decimal() {
 }
 
 static int test_time_leap() {
-  if(check("time_leap", -1, (int) novas_time_leap(NULL))) return 1;
-  return 0;
+  int n = 0;
+
+  if(check("time_leap", -1, (int) novas_time_leap(NULL))) n++;
+
+  return n;
 }
 
 static int test_trace_invalid() {
@@ -2955,6 +2958,7 @@ static int test_fetch_eop() {
   char *url;
 #endif
 
+  if(check("fetch_eop:jd:nan", -1, novas_fetch_eop(NAN, 0, NULL))) n++;
   if(check("fetch_eop:eop:null", -1, novas_fetch_eop(NOVAS_JD_J2000, 0, NULL))) n++;
   if(check("fetch_eop:jd:low", -1, novas_fetch_eop(0.0, 0, &eop))) n++;
 
@@ -3098,6 +3102,11 @@ static int test_set_leap_list() {
 
   errno = 0;
   return n;
+}
+
+static int test_leap_for_jd() {
+  if(check("leap_for_jd", -1, novas_leap_for_jd(NAN))) return 1;
+  return 0;
 }
 
 int main(int argc, const char *argv[]) {
@@ -3344,6 +3353,7 @@ int main(int argc, const char *argv[]) {
   if(test_ephem_state()) n++;
   if(test_comoving_observer()) n++;
   if(test_set_leap_list()) n++;
+  if(test_leap_for_jd()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");

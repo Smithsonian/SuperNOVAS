@@ -86,7 +86,8 @@
 
 /// \cond PRIVATE
 #  define NTP_UNIX_EPOCH              2208988800LL      ///< [s] NTP timestamp of UNIX epoch (1970 Jan 1)
-#  define LAST_LEAP_START             1483228800L       ///< [s] 1 Jan 2017
+#  define N_LEAPS                     28                ///< Number of leap seconds introduced between 1970 and 2027
+#  define UNIX_UTC_J2000              (UNIX_SECONDS_0UTC_1JAN2000 + 43200)
 
 #ifdef _MSC_VER
 #  define strtok_r        strtok_s                      ///< MSC equivalent
@@ -94,7 +95,7 @@
 /// \endcond
 
 // Final list of leap seconds NTP timestamps before abolishment on 20 May 2027
-static const long long ntp_leap_starts[28] = { //
+static const long long ntp_leap_starts[N_LEAPS] = { //
         2272060800, 2287785600, 2303683200, 2335219200, 2366755200, 2398291200, 2429913600, 2461449600, //
         2492985600, 2524521600, 2571782400, 2603318400, 2634854400, 2698012800, 2776982400, 2840140800, //
         2871676800, 2918937600, 2950473600, 2982009600, 3029443200, 3076704000, 3124137600, 3345062400, //
@@ -310,6 +311,13 @@ static int novas_fetch_eop_chunk_async(CURL **restrict pCurl, const char *restri
   if(res)
     return novas_error(-1, EAGAIN, fn, "curl error %d for %s: %s", res, url, curl_easy_strerror(res));
 
+  // It's bad news if we get a HTML response (we expect ASCII)
+  if(strstr(data->buf, "<html>")) {
+    // LCOV_EXCL_START
+    return novas_error(-1, EAGAIN, fn, "HTTP request was rejected for %s\n", url);
+    // LCOV_EXCL_STOP
+  }
+
   return 0;
 }
 
@@ -332,7 +340,7 @@ static int eop_parse_line(const iers_data_file *restrict file, int line, char *s
 
   end = from[file->line_len-1];
   if(end != '\n' && end != '\0')
-    return novas_error(-1, EBADMSG, "eop_parse_line", "Corrupted entry or unexpected format");
+    return novas_error(-1, EBADMSG, "eop_parse_line", "Corrupted entry or unexpected format (series %d)");
 
   eop->series = file->series;
   eop->jd = NOVAS_JD_MJD0 + strtod(from + file->ijd, NULL);
@@ -420,16 +428,9 @@ static int novas_fetch_eop_from_file(iers_data_file *restrict file, double jd, n
   if(status < 0) goto cleanup; // @suppress("Goto statement used")
 
   for(i = 0; i < n; i++) {
-    time_t t = (jd - NOVAS_JD_J2000 + i * file->jd_step) * 86400L + UNIX_SECONDS_0UTC_1JAN2000;
-
-    eop[i].leap = novas_lookup_leap(t);
-    if(eop[i].leap == NOVAS_INVALID_LEAP) {
-      unlock_eop();
-      return novas_trace(fn, -1, 0);
-    }
-
     status = eop_parse_line(file, i, lines, &eop[i]);
-    if(status < 0) goto cleanup; // @suppress("Goto statement used")
+    if(status < 0)
+      goto cleanup; // @suppress("Goto statement used")
   }
 
   cleanup:
@@ -447,6 +448,7 @@ static int novas_fetch_eop_array(double jd, long timeout_millis, novas_eop *rest
   long mjd = (long) floor(jd - NOVAS_JD_MJD0);
   long mjd_now;
   int m = n >> 2;
+  int i;
 
   novas_set_current_time(0, 0.0, &ts);
   mjd_now = (long) floor(novas_get_time(&ts, NOVAS_TAI) - NOVAS_JD_MJD0);
@@ -477,6 +479,9 @@ static int novas_fetch_eop_array(double jd, long timeout_millis, novas_eop *rest
     return novas_error(-1, ERANGE, fn, "JD %.3f is outside of IERS EOP data range", jd);
   }
 
+  for(i = 0; i < n; i++)
+    eop[i].leap = novas_leap_for_jd(eop[i].jd);
+
   return 0;
 }
 
@@ -490,10 +495,12 @@ static int novas_eop_spline_interp(double jd, const novas_eop *restrict array, n
 
   int i = 0;
 
-  memset(eop, 0, sizeof(novas_eop));
-
   eop->series = array[1].series;
-  eop->leap = array[1].leap;
+
+  eop->xp = 0.0;
+  eop->yp = 0.0;
+  eop->dut1 = 0.0;
+  eop->lod = 0.0;
 
   for(i = 0; i < 4; i++) {
     const novas_eop *e = &array[i];
@@ -572,25 +579,46 @@ int novas_set_leap_list(const char *filename) {
  * @since 1.7
  * @author Attila Kovacs
  *
- * @sa novas_fetch_eop(), novas_is_auto_fetch_eop()
+ * @sa novas_leap_for_jd(), novas_fetch_eop(), novas_is_auto_fetch_eop()
  */
 int novas_lookup_leap(time_t t) {
-  long long ntpdate;
+  long long ntpdate = t + NTP_UNIX_EPOCH;
   int i;
 
-  if(t >= LAST_LEAP_START)
-    return 37;
+  for(i = N_LEAPS; --i >= 0; )
+    if(ntpdate >= ntp_leap_starts[i]) return 10 + i;
 
-  ntpdate = t + NTP_UNIX_EPOCH;
-  if(ntpdate < ntp_leap_starts[0])
-    return 0;
+  return 0;
+}
 
-  for(i = 0; i < 27; i++)
-    if(ntpdate < ntp_leap_starts[i + 1]) return 10 + i;
+/**
+ * Returns the leap seconds for the given (UTC-based) Julian date. The UTC-based dates matter only
+ * in the immediate vicinity of the leap seconds changes, since leap seconds are introduced on
+ * specific UTC dates. If a minute-level fuzz around the times when leap seconds were introduced
+ * can be tolerated then the choice of timescale is not relevant.
+ *
+ * Leap seconds were first introduced on 1 Jan 1972. Thus for date preceding the introduction,
+ * 0 is returned. The last leap of 27 seconds was introduced on 1 January 2017, and the decision
+ * has been made to not introduce further leap seconds as of 20 May 2027, leaving 37 seconds
+ * for the foreseeable future.
+ *
+ * @param jd_utc    [day] Julian date (preferably UTC-based)
+ * @return          The leap seconds for the given time.
+ *
+ * @since 1.8
+ * @author Attila Kovacs
+ *
+ * @sa novas_lookup_leap()
+ */
+int novas_leap_for_jd(double jd_utc) {
+  time_t ts;
 
-  // LCOV_EXCL_START
-  return -1; // NOT REACHED
-  // LCOV_EXCL_STOP
+  if(isnan(jd_utc))
+    return novas_error(-1, EINVAL, "novas_leap_for_jd", "input Julian date is NAN");
+
+  ts = (time_t) floor((jd_utc - NOVAS_JD_J2000) * NOVAS_DAY) + UNIX_UTC_J2000;
+
+  return novas_lookup_leap(ts);
 }
 
 /**
@@ -864,15 +892,26 @@ void novas_reset_eop() {
 int novas_fetch_eop(double jd, long timeout_millis, novas_eop *eop) {
   static const char *fn = "novas_fetch_eop";
 
-#ifdef WITHOUT_CURL
-  return novas_error(-1, ENOSYS, fn, "SuperNOVAS was built without cURL support (WITHOUT_CURL).");
-#else
+#ifndef WITHOUT_CURL
   static THREAD_LOCAL unsigned long version = -1;
   static THREAD_LOCAL novas_eop array[4];
   static THREAD_LOCAL double jd_from, jd_to = -1.0;
+#endif
+
+  if(isnan(jd))
+    return novas_error(-1, EINVAL, fn, "input jd is NAN");
 
   if(!eop)
     return novas_error(-1, EINVAL, fn, "output eop is NULL");
+
+  memset(eop, 0, sizeof(novas_eop));
+
+  eop->jd = jd;
+  eop->leap = novas_leap_for_jd(jd);
+
+#ifdef WITHOUT_CURL
+  return novas_error(-1, ENOSYS, fn, "SuperNOVAS was built without cURL support (WITHOUT_CURL).");
+#else
 
   if(version != url_version || jd_to < jd_from || jd < jd_from || jd > jd_to) {
     prop_error(fn, novas_fetch_eop_array(jd, timeout_millis, array, 4), 0);
