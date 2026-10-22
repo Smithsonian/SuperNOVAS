@@ -3018,7 +3018,6 @@ static int test_fetch_eop() {
   // Reset EOP URLs to their defaults
   novas_reset_eop();
 
-  novas_set_auto_fetch_eop(0);
 #endif // WITH_CURL
 
   return n;

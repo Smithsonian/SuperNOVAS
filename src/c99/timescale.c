@@ -576,7 +576,7 @@ static void novas_time_lookup_dut1(novas_timespec *time, enum novas_timescale ti
     if(novas_fetch_eop(novas_get_time(time, NOVAS_UTC), 0.0, &eop) == 0)
       dut1 = eop.dut1;
     else
-      novas_trace_invalid("novas_time_lookup_eop");
+      novas_trace_invalid("novas_time_lookup_dut1");
   }
 
   // For UT1 get the leap again (DUT1 will have been fetched for time +/- 1 s already).
@@ -598,7 +598,7 @@ static void novas_time_lookup_dut1(novas_timespec *time, enum novas_timescale ti
   }
 
   time->dut1 = dut1;
-  time->ut1_to_tt = leap - time->dut1 + DTA;
+  time->ut1_to_tt = leap - dut1 + DTA;
 }
 
 
@@ -677,7 +677,7 @@ int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, i
   if(isnan(dut1)) {
     // Bootstrap values for determining leap seconds and UT1 - UTC...
     time->tt2tdb = 0.0;
-    time->dut1 = isnan(dut1) ? 0.0 : dut1;
+    time->dut1 = 0.0;
     time->ut1_to_tt = DTA;
 
     // Determine dut1 and ut1_to_tt, if possible
@@ -685,7 +685,7 @@ int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, i
   }
   else {
     time->dut1 = dut1;
-    time->ut1_to_tt = leap - time->dut1 + DTA;
+    time->ut1_to_tt = leap - dut1 + DTA;
   }
 
   // if timescale is barycentric then calculate TDB - TT before conversion to TT
