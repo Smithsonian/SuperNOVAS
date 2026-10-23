@@ -163,8 +163,8 @@ Upcoming maintenance release, expected around 1 November 2026.
  - #395: `novas_time_leap()` now calls `novas_lookup_leap()` to ensure that the leap seconds are returned correctly
    after their abolishment.
    
- - #395: Defining astrometric time through `novas_set_time()` / `novas_set_split_time()` and related functions now
-   ignores the leap seconds parameter, as leap seconds are determined automatically.
+ - #395: Defining astrometric time through `novas_set_time()` / `novas_set_split_time()`, `Time` constructors and 
+   related functions / method now ignore the leap seconds parameter, as leap seconds are determined automatically.
    
  - #395: `novas_set_time()` / `novas_set_split_time()` have been improved to set leap AND UT1-UTC correctly around 
    the leap second boundaries for all timescales, when `dut1` is NAN.

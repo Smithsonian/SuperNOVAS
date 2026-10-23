@@ -1002,7 +1002,7 @@ int novas_fetch_eop_unix(time_t t, long timeout_millis, novas_eop *eop) {
  * frame instances.
  *
  * If set to TRUE (non-zero) then when an astrometric time is initialized with an undefined EOP,
- * whose dUT1 value is NAN, it will automatically fetch appropriate leap second and dUT1 values
+ * whose dUT1 value is NAN, it will automatically fetch dUT1 values
  * from IERS, if possible. Similarly, if an observing frame is configured with a _x_<sub>p</sub>
  * or _y_<sub>p</sub> values are NAN, the frame will fetch appropriate polar offsets from IERS
  * for the time of observation.

@@ -2643,7 +2643,12 @@ static int test_print_decimal() {
 static int test_time_leap() {
   int n = 0;
 
+  novas_timespec ts = {};
+
   if(check("time_leap", -1, (int) novas_time_leap(NULL))) n++;
+
+  ts.fjd_tt = NAN;
+  if(check("time_leap:fjd:nan", -1, (int) novas_time_leap(&ts))) n++;
 
   return n;
 }
