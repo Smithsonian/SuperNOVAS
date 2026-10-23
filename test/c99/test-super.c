@@ -6071,8 +6071,9 @@ static int test_set_split_time() {
 
   novas_timespec ts = {};
 
-  if(!is_ok("set_split_time:set:ut1:fetch", novas_set_time(NOVAS_UT1, NOVAS_JD_J2000, -1, NAN, &ts))) n++;
-  if(!is_equal("set_split_time:ut1:check:leap", ts.ut1_to_tt, 64.184, 0.5)) n++;
+  if(!is_ok("set_split_time:set:ut1:fetch", novas_set_time(NOVAS_UT1, NOVAS_JD_J2000, 0, NAN, &ts))) n++;
+  if(isnan(ts.dut1)) fprintf(stderr, "WARNING! failed to fetch EOP in set_split_time:set:ut1:fetch");
+  else if(!is_equal("set_split_time:ut1:fetch:check:leap", ts.ut1_to_tt, 64.184, 0.5)) n++;
 
   // Leap on 1 Jan 1999 was around 0.716s.
   if(!is_ok("set_split_time:ut1:fetch:1999", novas_set_split_time(NOVAS_UT1, 2451179, 0.5, 0, NAN, &ts))) n++;

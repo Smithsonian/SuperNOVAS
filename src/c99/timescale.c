@@ -700,20 +700,20 @@ int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, i
   long ifjd;
   double floor_jd;
 
-  (void) leap; // unused
-
   if(!time)
     return novas_error(-1, EINVAL, fn, "NULL output time structure");
 
   if((unsigned) timescale >= NOVAS_TIMESCALES)
     return novas_error(-1, ERANGE, fn, "timescale %d is out of range", (int) timescale);
 
+  if(isnan(fjd))
+    return novas_error(-1, EINVAL, fn, "input fractional JD is NAN");
+
   if(fjd < (double) LONG_MIN || fjd >= (double) LONG_MAX)
     return novas_error(-1, ERANGE, fn, "fractional JD %13g is outside of long integer range", fjd);
 
   // Normalized split, s.t. fjd is fractional day [0:1)
   ifjd = (long) floor(fjd);
-
   time->ijd_tt = ijd + ifjd;
   time->fjd_tt = fjd - ifjd;
 
@@ -733,7 +733,7 @@ int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, i
     // Determine leap automatically
     if(timescale == NOVAS_UTC)
       leap = novas_leap_for_jd(ijd + fjd);
-    else if(timescale == NOVAS_UT1)
+    else if(timescale == NOVAS_UT1 && !isnan(dut1))
       leap = novas_leap_for_jd(ijd + fjd - dut1 / NOVAS_DAY);
     else
       leap = novas_time_leap(time);
@@ -1569,6 +1569,9 @@ int novas_time_leap(const novas_timespec *time) {
 
   if(!time)
     return novas_error(-1, EINVAL, fn, "input time specification is NULL");
+
+  if(isnan(time->fjd_tt))
+    return novas_error(-1, EINVAL, fn, "input time has NAN fjd_tt field");
 
   for(i = 0; i < novas_inv_max_iter; i++) {
     double jd_utc = time->ijd_tt + time->fjd_tt - (DTA + leap) / NOVAS_DAY;

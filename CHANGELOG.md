@@ -169,6 +169,11 @@ Upcoming maintenance release, expected around 1 November 2026.
  - #395: `novas_set_time()` / `novas_set_split_time()` have been improved to set leap AND UT1-UTC correctly around 
    the leap second boundaries for all timescales, when `dut1` is NAN.
    
+ - #395: `novas_set_time()` / `novas_set_split_time()` now check for NAN input JD values and will return an error
+   (`errno` set to `EINVAL`) in case of NAN JD input.
+   
+ - #395: Change default EOP URLs to use `brahe` and Observatory of Paris hosted mirrors.
+   
  - Streamlined `novas_make_planet_orbit()` slightly by avoiding duplicate trigonometric calls.
 
  - Changed portable mutex feature test order to reserve use of the C11 mutexes for cases where neither POSIX nor

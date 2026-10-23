@@ -16,9 +16,7 @@ namespace supernovas {
 void EOP::validate() {
   static const char *fn = "EOP()";
 
-  if(_leap <= NOVAS_INVALID_LEAP)
-    novas_set_errno(EINVAL, fn, "input leap is invalid");
-  else if(!isfinite(_dut1))
+  if(!isfinite(_dut1))
     novas_set_errno(EINVAL, fn, "input dUT1 is NAN or infinite");
   else if(!_xp.is_valid())
     novas_set_errno(EINVAL, fn, "input xp is NAN");

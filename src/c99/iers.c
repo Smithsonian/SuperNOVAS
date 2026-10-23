@@ -57,31 +57,6 @@
 #  define IERS_LEAP_SERVER        "hpiers.obspm.fr"     ///< IERS leap-seconds.list server name
 #endif
 
-/**
- * Alternative URL for the IERS rapid dailyseries Earth Orientation Parameter data series
- * from 1973, and including predictions for up to to a year from the current date.
- *
- * @sa novas_set_eop_url(), EOP_RAPID_IAU2000
- */
-#define NOVAS_EOP_ALT_RAPID_URL   "https://maia.usno.navy.mil/ser7/finals2000A.daily.extended"
-
-/**
- * Alternative URL for the IERS C04 daily series Earth Orientation Parameter data series
- * from 1962 to the current date.
- *
- * @sa novas_set_eop_url(), EOP_C04_IAU2000_0UTC
- */
-#define NOVAS_EOP_ALT_C04_URL     "https://hpiers.obspm.fr/iers/eop/eopc04/eopc04.1962-now"
-
-/**
- * Alternative URL for the IERS C01 series Earth Orientation Parameter data series
- * from 1846 to the current date, at 0.1 year interval to 1899, and 0.05 year interval
- * after.
- *
- * @sa novas_set_eop_url(), EOP_C01_IAU2000
- */
-#define NOVAS_EOP_ALT_C01_URL     "https://hpiers.obspm.fr/iers/eop/eopc01/eopc01.1846-now"
-
 
 
 /// \cond PRIVATE
@@ -106,7 +81,47 @@ static const long long ntp_leap_starts[N_LEAPS] = { //
 #ifndef WITHOUT_CURL
 
 /// \cond PRIVATE
+
+/// The official IERS data service.
 #  define IERS_LATEST_URL_PREFIX      "https://" IERS_DATACENTER "/data/latestVersion/"
+
+/// USNO provides the rapid service data for IERS, which is also published by them directly
+#  define USNO_URL_PREFIX             "https://maia.usno.navy.mil/"
+
+/// The Observatory of Paris maintains a mirror for some of the EOP data
+#  define HPIERS_URL_PREFIX           "https://hpiers.obspm.fr/iers/eop/"
+
+/// The 'brahe' satellite dynamics package also maintains a mirror for some of the EOP data
+#  define BRAHE_MIRROR_URL_PREFIX     "https://www.simplespacedata.org/eop/iers/"
+
+/// The set of EOP URLs for the official data products published by IERS
+#define IERS_URL_SET { \
+        NULL, \
+        IERS_LATEST_URL_PREFIX "finals.all.iau2000.txt", \
+        IERS_LATEST_URL_PREFIX "EOP_20u24_C04_one_file_1962-now.txt", \
+        IERS_LATEST_URL_PREFIX "EOP_C01_IAU2000_1846-now.txt" \
+}
+
+/// Alternative EOP URLs from USNO and Observatory of Paris
+#define ALT_URL_SET { \
+        NULL, \
+        USNO_URL_PREFIX "ser7/finals2000A.daily.extended", \
+        HPIERS_URL_PREFIX "eopc04/eopc04.1962-now", \
+        HPIERS_URL_PREFIX "eopc01/eopc01.1846-now" \
+}
+
+///  Alternative EOP URLs by 'brahe' and from the Observatory of Paris
+#define BRAHE_URL_SET { \
+        NULL, \
+        BRAHE_MIRROR_URL_PREFIX "finals_all/latest/finals.all.iau2000.txt", \
+        BRAHE_MIRROR_URL_PREFIX "c04/latest/EOP_C04_one_file_1962-now.txt", \
+        IERS_LATEST_URL_PREFIX "EOP_C01_IAU2000_1846-now.txt" \
+}
+
+#ifndef DEFAULT_EOP_URL_SET
+#  define DEFAULT_EOP_URL_SET BRAHE_URL_SET ///< Use the 'brahe' mirror and Obseratory of Paris servers for EOP data
+#endif
+
 
 #  define RAPID_JD_START              ( NOVAS_JD_MJD0 + 41684.0 )   ///< [day] Julian date of first entry in rapid service file
 #  define C04_JD_START                ( NOVAS_JD_MJD0 + 37665.0 )   ///< [day] Julian date of first entry in C04 series file
@@ -140,20 +155,16 @@ typedef struct {
 /// The currently configured URLs for each data series
 static const char *urls[NOVAS_NUM_EOP_SERIES];
 
+/// [yr] The default ITRF realization for each of the EOP series
+static int itrf_years[NOVAS_NUM_EOP_SERIES] = { -1, 2020, 2020, 2020 };
+
 /// Serial number for the URL configuration
 static unsigned long url_version;
 
-static int itrf_years[NOVAS_NUM_EOP_SERIES] = { -1, 2020, 2020, 2020 };
-
 /// The default URLs for each data series.
-static const char *default_urls[NOVAS_NUM_EOP_SERIES] = {
-        NULL,
-        IERS_LATEST_URL_PREFIX "finals.all.iau2000.txt",
-        IERS_LATEST_URL_PREFIX "EOP_20u24_C04_one_file_1962-now.txt",
-        IERS_LATEST_URL_PREFIX "EOP_C01_IAU2000_1846-now.txt"
-};
+static const char *default_urls[NOVAS_NUM_EOP_SERIES] = DEFAULT_EOP_URL_SET;
 
-
+/// [yr] The default ITRF realization for each of the EOP series
 static const int default_itrf_years[NOVAS_NUM_EOP_SERIES] = { -1, 2020, 2020, 2020 };
 
 /**
@@ -603,7 +614,8 @@ int novas_lookup_leap(time_t t) {
  * for the foreseeable future.
  *
  * @param jd_utc    [day] Julian date (preferably UTC-based)
- * @return          The leap seconds for the given time.
+ * @return          The leap seconds for the given time, or -1 if the input date is NAN
+ *                  (errno set to EINVAL).
  *
  * @since 1.8
  * @author Attila Kovacs
@@ -665,7 +677,6 @@ int novas_leap_for_jd(double jd_utc) {
  * @author Attila Kovacs
  *
  * @sa novas_get_eop_url(), novas_fetch_eop(), novas_get_eop_itrf_year()
- * @sa NOVAS_EOP_ALT_LEAP_URL, NOVAS_EOP_ALT_RAPID_URL, NOVAS_EOP_ALT_C04_URL, NOVAS_EOP_ALT_C01_URL
  */
 int novas_set_eop_url(enum novas_eop_series series, int itrf_year, const char *url) {
   static const char *fn = "novas_set_eop_url";

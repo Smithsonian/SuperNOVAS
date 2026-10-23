@@ -1275,6 +1275,7 @@ static int test_time() {
   if(check("time:set:time", -1, novas_set_time(NOVAS_TT, NOVAS_JD_J2000, 37, 0.11, NULL))) n++;
   if(check("time:set:scale:-1", -1, novas_set_time((enum novas_timescale) -1, NOVAS_JD_J2000, 37, 0.11, &time))) n++;
   if(check("time:set:scale:hi", -1, novas_set_time(NOVAS_TIMESCALES, NOVAS_JD_J2000, 37, 0.11, &time))) n++;
+  if(check("time:set:fjd:nan", -1, novas_set_time(NOVAS_TT, NAN, 0, 0.0, &time))) return 1;
 
   if(check("time:set:long_min-", -1, novas_set_time(NOVAS_TT, LONG_MIN - 10000.0, 37, 0.11, &time))) n++;
   if(check("time:set:long_max+", -1, novas_set_time(NOVAS_TT, LONG_MAX + 10000.0, 37, 0.11, &time))) n++;
