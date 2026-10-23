@@ -28,9 +28,20 @@ void EOP::validate() {
 
 /**
  * Instantiates new Earth Orientation Parameters (EOP) with the specified mean (interpolated)
- * values.
+ * values. The UT1-UTC time difference is used when instantiating an astrometric Time, whereas
+ * the _x<sub>p</sub>_, and _y<sub>p</sub>_ polar offsets are used for instantiating
+ * GeodeticObserver instances.
  *
- * @param leap_seconds    [s] Leap seconds (TAI - UTC).
+ * NOTES:
+ *
+ *  - As of v1.8, no SuperNOVAS internal application of the EOP requires the leap seconds to be
+ *   set to a meaningful value, so you may leave it undefined (e.g. 0 or -1) if you don't need
+ *   it for other purposes elsewhere.
+ *
+ * @param leap_seconds    [s] Leap seconds (TAI - UTC). The leap seconds defined here are
+ *                        unused when the new EOP is used to initialize astrometric time, since
+ *                        `novas_set_time()` and related functions determine leap seconds for
+ *                        themselves.
  * @param dut1_sec        [s] (optional) UT1 - UTC time difference (default: 0.0)
  * @param xp_rad          [rad] (optional) IERS _x_<sub>p</sub> mean (interpolated) pole offset
  *                        in the ITRS _x_ direction. (default: 0.0)
@@ -46,9 +57,20 @@ EOP::EOP(int leap_seconds, double dut1_sec, double xp_rad, double yp_rad)
 
 /**
  * Instantiates new Earth Orientation Parameters (EOP) with the specified mean (interpolated)
- * values.
+ * values. The UT1-UTC time difference is used when instantiating an astrometric Time, whereas
+ * the _x<sub>p</sub>_, and _y<sub>p</sub>_ polar offsets are used for instantiating
+ * GeodeticObserver instances.
  *
- * @param leap_seconds    [s] Leap seconds (TAI - UTC).
+ * NOTES:
+ *
+ * - As of v1.8, no SuperNOVAS internal application of the EOP requires the leap seconds to be
+ *   set to a meaningful value, so you may leave it undefined (e.g. 0 or -1) if you don't need
+ *   it for other purposes elsewhere.
+ *
+ * @param leap_seconds    [s] Leap seconds (TAI - UTC). The leap seconds defined here are
+ *                        unused when the new EOP is used to initialize astrometric time, since
+ *                        `novas_set_time()` and related functions determine leap seconds for
+ *                        themselves.
  * @param dut1            (optional) UT1 - UTC time difference (default: 0.0)
  * @param xp              (optional) IERS _x_<sub>p</sub> mean (interpolated) pole offset
  *                        in the ITRS _X_ direction (default: 0.0)

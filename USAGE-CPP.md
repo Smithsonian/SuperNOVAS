@@ -16,7 +16,7 @@ The following links provide further useful documentation resources for you:
  - [C++ API documentation](https://sigmyne.github.io/SuperNOVAS/doc/html/cpp/topics.html)
  - [SuperNOVAS pages](https://sigmyne.github.io/SuperNOVAS) on github.io 
  
-This document has been updated for the `v1.7` and later releases.
+This document has been updated for the `v1.8` and later releases.
  
 -----------------------------------------------------------------------------
 
@@ -373,6 +373,9 @@ that that this will add arbitrary latencies and a source of indeterminacy into y
 for the set of functions and methods that can be used for fetching EOP from local or external sources as needed for 
 a time of observation specified later.
 
+Note also, that you can use `novas_lookup_leap()` or `novas_leap_for_jd()` to obtain leap seconds for a given UNIX 
+time or (UTC-based) Julian date, for defining the EOP.
+
 ##### B. other observer locations
 
 Alternatively, you can also specify airborne observers, or observers in Earth orbit, in heliocentric orbit, or a 
@@ -394,7 +397,10 @@ Then we can set the time of observation, for example, using the current UNIX tim
  Time obs_time = Time::now(eop);
 ```
 
-Once again, EOP is needed for the leap seconds and UT1-UTC time difference. 
+Here, EOP is needed for UT1-UTC time difference only, but the polar offsets it also contains may be needed later when 
+the time instance is used for constructing an observing frame. However, as of v1.8, the leap seconds component of the 
+supplied EOP is unused so you may leave it undefined (e.g. 0 or -1), as the time will determine the appropriate leap 
+seconds to use automatially.
 
 Alternatively, you may set the time as a Julian date in the time measure of choice (UTC, UT1, TT, TDB, GPS, TAI, TCG, 
 or TCB):
@@ -420,24 +426,24 @@ Or, you might use string dates, such as an ISO timestamp:
  Time obs_time = Time("2025-01-26T22:05:14.234+0200", eop);
 ```
 
-As of v1.7, you can let __SuperNOVAS__ fetch leap seconds and the UT1 - UTC time difference automatically from IERS,
-provided you are online, and you don't mind the slight delay associated with the HTTP query. Simply omit the optional 
-`eop` parameter, or else pass `EOP::undefined()`, in the time constructor to indicate that the leap seconds and 
-UT1 - UTC time difference should be fetched automatically. However, the EOP lookup may fail, and so you should always 
-check for validity after, e.g.:
+As of v1.7, you can let __SuperNOVAS__ fetch the UT1 - UTC time difference automatically from IERS, provided you are 
+online, and you don't mind the slight delay associated with the HTTP query. Simply omit the optional `eop` parameter, 
+or else pass `EOP::undefined()`, in the time constructor to indicate that the UT1 - UTC time difference should be 
+fetched automatically. However, the EOP lookup may fail, and so you should always check for validity after, e.g.:
 
 ```c
-  // Use NAN for dut1 to fetch leap seconds and the UT1 - UTC difference from IERS
+  // Use NAN for dut1 to fetch the UT1 - UTC difference from IERS
   Time t = Time::now();
   if(!t) {
-    // Oops, failed to get leap seconds and dut1 from IERS...
+    // Oops, failed to get dut1 from IERS...
     return -1;
   }
 ```
 
-You can also disable the automatic fetch and replacement of NAN `dut1` values by calling 
-`novas_set_auto_fetch_eop(0)`. See \ref earth for the set of functions and methods that can be used for fetching 
-appropriate values for leap seconds or the UT1-UTC time difference from local or external sources.
+You can also set alternative URLs, including for local files, to use for the EOP resources. Obtaining EOP from local
+copies of the EOP series will reduce latencies and improves reliability. You may also disable the automatic fetch and 
+replacement of NAN `dut1` values by calling `novas_set_auto_fetch_eop(0)`. See \ref earth for the set of functions and 
+methods that can be used for fetching appropriate values for the UT1-UTC time difference from local or external sources.
 
 
 <a name="observing-frame-cpp"></a>

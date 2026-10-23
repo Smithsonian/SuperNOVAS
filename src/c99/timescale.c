@@ -1557,7 +1557,8 @@ double novas_time_lst(const novas_timespec *restrict time, double lon, enum nova
  *
  * @param time    The astronomical time specification.
  * @return        [s] The leap seconds that was used to initialize the time specification, or -1
- *                if the input pointer is NULL (errno is set to EINVAL).
+ *                if the input pointer is NULL (errno is set to EINVAL), or if the calculation
+ *                failed to converge (errno is set  to ECANCELED).
  *
  * @since 1.6
  * @author Attila Kovacs

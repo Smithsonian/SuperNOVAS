@@ -69,12 +69,12 @@
 #endif
 /// \endcond
 
-// Final list of leap seconds NTP timestamps before abolishment on 20 May 2027
+// Definitive list of leap seconds NTP timestamps before abolishment on 20 May 2027
 static const long long ntp_leap_starts[N_LEAPS] = { //
-        2272060800, 2287785600, 2303683200, 2335219200, 2366755200, 2398291200, 2429913600, 2461449600, //
-        2492985600, 2524521600, 2571782400, 2603318400, 2634854400, 2698012800, 2776982400, 2840140800, //
-        2871676800, 2918937600, 2950473600, 2982009600, 3029443200, 3076704000, 3124137600, 3345062400, //
-        3439756800, 3550089600, 3644697600, 3692217600 };
+        2272060800LL, 2287785600LL, 2303683200LL, 2335219200LL, 2366755200LL, 2398291200LL, 2429913600LL, 2461449600LL, //
+        2492985600LL, 2524521600LL, 2571782400LL, 2603318400LL, 2634854400LL, 2698012800LL, 2776982400LL, 2840140800LL, //
+        2871676800LL, 2918937600LL, 2950473600LL, 2982009600LL, 3029443200LL, 3076704000LL, 3124137600LL, 3345062400LL, //
+        3439756800LL, 3550089600LL, 3644697600LL, 3692217600LL };
 
 
 // ---------------------------------------------------------------------------
@@ -95,7 +95,7 @@ static const long long ntp_leap_starts[N_LEAPS] = { //
 #  define BRAHE_MIRROR_URL_PREFIX     "https://www.simplespacedata.org/eop/iers/"
 
 /// The set of EOP URLs for the official data products published by IERS
-#define IERS_URL_SET { \
+#define EOP_IERS_URL_SET { \
         NULL, \
         IERS_LATEST_URL_PREFIX "finals.all.iau2000.txt", \
         IERS_LATEST_URL_PREFIX "EOP_20u24_C04_one_file_1962-now.txt", \
@@ -103,15 +103,15 @@ static const long long ntp_leap_starts[N_LEAPS] = { //
 }
 
 /// Alternative EOP URLs from USNO and Observatory of Paris
-#define ALT_URL_SET { \
+#define EOP_ALT_URL_SET { \
         NULL, \
         USNO_URL_PREFIX "ser7/finals2000A.daily.extended", \
         HPIERS_URL_PREFIX "eopc04/eopc04.1962-now", \
         HPIERS_URL_PREFIX "eopc01/eopc01.1846-now" \
 }
 
-///  Alternative EOP URLs by 'brahe' and from the Observatory of Paris
-#define BRAHE_URL_SET { \
+///  Alternative EOP URLs by 'brahe' and from IERS (for C01)
+#define EOP_BRAHE_URL_SET { \
         NULL, \
         BRAHE_MIRROR_URL_PREFIX "finals_all/latest/finals.all.iau2000.txt", \
         BRAHE_MIRROR_URL_PREFIX "c04/latest/EOP_C04_one_file_1962-now.txt", \
@@ -119,7 +119,7 @@ static const long long ntp_leap_starts[N_LEAPS] = { //
 }
 
 #ifndef DEFAULT_EOP_URL_SET
-#  define DEFAULT_EOP_URL_SET BRAHE_URL_SET ///< Use the 'brahe' mirror and Obseratory of Paris servers for EOP data
+#  define DEFAULT_EOP_URL_SET EOP_BRAHE_URL_SET ///< Use the 'brahe' mirrors primarily
 #endif
 
 
