@@ -631,11 +631,16 @@ static int test_app_to_hor_compat() {
   observer obs = OBSERVER_INIT;
   novas_frame frame = NOVAS_FRAME_INIT;
   double pos1[3] = {0.0};
+  int leap;
 
   double ra, dec, az, el, az1, za1;
 
+
+  leap = novas_leap_for_jd(tdb);
+
+
   sprintf(label, "app_to_hor_compat:set_time");
-  if(!is_ok(label, novas_set_time(NOVAS_TT, tdb, 37, 0.0, &ts))) return 1;
+  if(!is_ok(label, novas_set_time(NOVAS_TT, tdb, -1, 0.0, &ts))) return 1;
 
   sprintf(label, "app_to_hor_compat:make_observer");
   if(!is_ok(label, make_observer_on_surface(1.0, 2.0, 3.0, 4.0, 1001.0, &obs))) return 1;
@@ -648,7 +653,7 @@ static int test_app_to_hor_compat() {
   if(!is_ok("app_to_hor_comat:app_to_hor:cirs",
           novas_app_to_hor(&frame, NOVAS_CIRS, ra, dec, NULL, &az, &el))) return 1;
   if(!is_ok("app_to_hor_compat:cirs_to_itrs",
-          cirs_to_itrs(tdb, 0.0, 69.184, NOVAS_REDUCED_ACCURACY, 0.200, 0.300, pos0, pos1))) return 1;
+          cirs_to_itrs(tdb, 0.0, leap + 32.184, NOVAS_REDUCED_ACCURACY, 0.200, 0.300, pos0, pos1))) return 1;
   if(!is_ok("app_to_hor_compat:itrs_to_hor:cirs", itrs_to_hor(&obs.on_surf, pos1, &az1, &za1))) return 1;
   if(!is_equal("app_to_hor_compat:check:az", az, az1, 1e-6)) return 1;
   if(!is_equal("app_to_hor_compat:check:el", el, 90.0 - za1, 1e-6)) return 1;
@@ -656,7 +661,7 @@ static int test_app_to_hor_compat() {
   if(!is_ok("app_to_hor_comat:app_to_hor:tod",
           novas_app_to_hor(&frame, NOVAS_TOD, ra, dec, NULL, &az, &el))) return 1;
   if(!is_ok("app_to_hor_compat:tod_to_itrs",
-          tod_to_itrs(tdb, 0.0, 69.184, NOVAS_REDUCED_ACCURACY, 0.200, 0.300, pos0, pos1))) return 1;
+          tod_to_itrs(tdb, 0.0, leap + 32.184, NOVAS_REDUCED_ACCURACY, 0.200, 0.300, pos0, pos1))) return 1;
   if(!is_ok("app_to_hor_compat:itrs_to_hor:tod", itrs_to_hor(&obs.on_surf, pos1, &az1, &za1))) return 1;
   if(!is_equal("app_to_hor_compat:check:az", az, az1, 1e-6)) return 1;
   if(!is_equal("app_to_hor_compat:check:el", el, 90.0 - za1, 1e-6)) return 1;
@@ -6074,7 +6079,7 @@ static int test_set_split_time() {
   if(!is_ok("set_split_time:ut1:fetch:1999-", novas_set_split_time(NOVAS_UT1, 2451179, 0.5 - 0.1 / NOVAS_DAY, 0, NAN, &ts))) n++;
   if(!is_ok("set_split_time:ut1:fetch:1999-", novas_set_split_time(NOVAS_UT1, 2451179, 0.5 + 0.1 / NOVAS_DAY, 0, NAN, &ts))) n++;
 
-  novas_inv_max_iter = 0;
+  novas_set_max_iter(0);
   novas_debug(NOVAS_DEBUG_OFF);
   if(!is_ok("set_split_time:ut1:fetch:1999:converge", novas_set_split_time(NOVAS_UT1, 2451179, 0.5 + 0.5 / NOVAS_DAY, 0, NAN, &ts))) n++;
   if(!is_ok("set_split_time:ut1:fetch:1999:converge:check", !isnan(ts.dut1))) n++;
@@ -6084,7 +6089,7 @@ static int test_set_split_time() {
   if(!is_ok("set_split_time:tt:converge:check", !isnan(ts.dut1))) n++;
 
   novas_debug(NOVAS_DEBUG_ON);
-  novas_inv_max_iter = 100;
+  novas_set_max_iter(NOVAS_DEFAULT_MAX_ITER);
 
   return n;
 }

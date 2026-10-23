@@ -158,10 +158,13 @@ Upcoming maintenance release, expected around 1 November 2026.
    `ENOSYS`). The same goes for `novas_set_eop_url()`, when called with `EOP_LEAP_LIST` as the series.
     
  - #395: `novas_lookup_leap()` no longer needs LIBC support, and will always return a valid leap seconds value, 
-   since no new leap seconds will be introduced in the future.
+   since no new leap seconds will be introduced in the future. The definitive list of leap seconds is now hard-coded.
    
  - #395: `novas_time_leap()` now calls `novas_lookup_leap()` to ensure that the leap seconds are returned correctly
    after their abolishment.
+   
+ - #395: Defining astrometric time through `novas_set_time()` / `novas_set_split_time()` and related functions now
+   ignores the leap seconds parameter, as leap seconds are determined automatically.
    
  - #395: `novas_set_time()` / `novas_set_split_time()` have been improved to set leap AND UT1-UTC correctly around 
    the leap second boundaries for all timescales, when `dut1` is NAN.

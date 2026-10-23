@@ -444,14 +444,22 @@ double get_ut1_to_tt(int leap_seconds, double dut1) {
  *
  * NOTES:
  *
- *  - If __SuperNOVAS__ was built without cURL support (`WITHOUT_CURL` or `WITHOUT_LIBC` build
- *    configuration options), then automatic fetching of the leap seconds and the UT1 - UTC
- *    difference is not possible. You must set `leap` and `dut1` appropriately explicitly.
+ *  1. If __SuperNOVAS__ was built without cURL support (`WITHOUT_CURL` or `WITHOUT_LIBC` build
+ *     configuration options), then automatic fetching of the leap seconds and the UT1 - UTC
+ *     difference is not possible. You must set `leap` and `dut1` appropriately explicitly.
+ *
+ *  2. Leap seconds have been abolished, and no new leap seconds will be added after 20 May 2027,
+ *     leaving the current list of leap seconds at hte final definitive list. Hence SuperNOVAS will
+ *     determine leap seconds automatically, based on the time, starting with v1.8, and the user
+ *     no longer needs to supply this information when defining astrometric times.
  *
  * @param timescale     The astronomical time scale in which the Julian Date is given
  * @param jd            [day] Julian day value in the specified timescale
- * @param leap          [s] Leap seconds, e.g. as published by IERS Bulletin C. (It may be
- *                      unused if `dut1` is NAN -- see below).
+ * @param leap          [s] (_unused_) Leap seconds, e.g. as published by IERS Bulletin C. It is
+ *                      not used as of v1.8. Leap seconds are now obtained automatically from
+ *                      the definitive list of leap seconds in the time period (1970 -- 2027), in
+ *                      which they were changing. A best practice may be to set this parameter
+ *                      to 0 or -1 in your application calls.
  * @param dut1          [s] mean UT1-UTC time difference, e.g. as published in IERS Bulletin A
  *                      (without diurnal corrections for libration and ocean tides). If the time
  *                      offset is defined for a different ITRS realization than what is used for
@@ -485,9 +493,14 @@ int novas_set_time(enum novas_timescale timescale, double jd, int leap, double d
  *
  * NOTES:
  *
- *  - If __SuperNOVAS__ was built without cURL support (`WITHOUT_CURL` or `WITHOUT_LIBC` build
- *    configuration options), then automatic fetching of the leap seconds and the UT1 - UTC
- *    difference is not possible. You must set `leap` and `dut1` appropriately explicitly.
+ *  1. If __SuperNOVAS__ was built without cURL support (`WITHOUT_CURL` or `WITHOUT_LIBC` build
+ *     configuration options), then automatic fetching of the leap seconds and the UT1 - UTC
+ *     difference is not possible. You must set `leap` and `dut1` appropriately explicitly.
+ *
+ *  2. Leap seconds have been abolished, and no new leap seconds will be added after 20 May 2027,
+ *     leaving the current list of leap seconds at hte final definitive list. Hence SuperNOVAS will
+ *     determine leap seconds automatically, based on the time, starting with v1.8, and the user
+ *     no longer needs to supply this information when defining astrometric times.
  *
  * @param timescale     The astronomical time scale in which the Julian Date is given
  * @param str           The astronomical date specification, possibly including time and timezone,
@@ -495,8 +508,11 @@ int novas_set_time(enum novas_timescale timescale, double jd, int leap, double d
  *                      calendar of date, which differs from ISO 8601 timestamps for dates prior
  *                      to the Gregorian calendar reform of 1582 October 15 (otherwise, the two
  *                      are identical). See `novas_parse_date()` for more on acceptable formats.
- * @param leap          [s] Leap seconds, e.g. as published by IERS Bulletin C. (It may be
- *                      unused if `dut1` is NAN -- see below).
+ * @param leap          [s] (_unused_) Leap seconds, e.g. as published by IERS Bulletin C. It is
+ *                      not used as of v1.8. Leap seconds are now obtained automatically from
+ *                      the definitive list of leap seconds in the time period (1970 -- 2027), in
+ *                      which they were changing. A best practice may be to set this parameter
+ *                      to 0 or -1 in your application calls.
  * @param dut1          [s] mean UT1-UTC time difference, e.g. as published in IERS Bulletin A
  *                      (without diurnal corrections for libration and ocean tides). If the time
  *                      offset is defined for a different ITRS realization than what is used for
@@ -630,9 +646,14 @@ static void novas_time_fill_ut_parms(novas_timespec *time, enum novas_timescale 
  *
  * NOTES:
  *
- *  - If __SuperNOVAS__ was built without cURL support (`WITHOUT_CURL` or `WITHOUT_LIBC` build
- *    configuration options), then automatic fetching of the leap seconds and the UT1 - UTC
- *    difference is not possible. You must set `leap` and `dut1` appropriately explicitly.
+ *  1. If __SuperNOVAS__ was built without cURL support (`WITHOUT_CURL` or `WITHOUT_LIBC` build
+ *     configuration options), then automatic fetching of the leap seconds and the UT1 - UTC
+ *     difference is not possible. You must set `leap` and `dut1` appropriately explicitly.
+ *
+ *  2. Leap seconds have been abolished, and no new leap seconds will be added after 20 May 2027,
+ *     leaving the current list of leap seconds at hte final definitive list. Hence SuperNOVAS will
+ *     determine leap seconds automatically, based on the time, starting with v1.8, and the user
+ *     no longer needs to supply this information when defining astrometric times.
  *
  * REFERENCES:
  *
@@ -647,8 +668,11 @@ static void novas_time_fill_ut_parms(novas_timespec *time, enum novas_timescale 
  * @param timescale     The astronomical time scale in which the Julian Date is given
  * @param ijd           [day] integer part of the Julian day in the specified timescale
  * @param fjd           [day] fractional part Julian day value in the specified timescale
- * @param leap          [s] Leap seconds, e.g. as published by IERS Bulletin C. (It may be
- *                      unused if `dut1` is NAN -- see below).
+ * @param leap          [s] (_unused_) Leap seconds, e.g. as published by IERS Bulletin C. It is
+ *                      not used as of v1.8. Leap seconds are now obtained automatically from
+ *                      the definitive list of leap seconds in the time period (1970 -- 2027), in
+ *                      which they were changing. A best practice may be to set this parameter
+ *                      to 0 or -1 in your application calls.
  * @param dut1          [s] mean UT1-UTC time difference, e.g. as published in IERS Bulletin A
  *                      (without diurnal corrections for libration and ocean tides), If the time
  *                      offset is defined for a different ITRS realization than what is used for
@@ -675,6 +699,8 @@ int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, i
 
   long ifjd;
   double floor_jd;
+
+  (void) leap; // unused
 
   if(!time)
     return novas_error(-1, EINVAL, fn, "NULL output time structure");
@@ -703,6 +729,15 @@ int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, i
   }
   else {
     time->dut1 = dut1;
+
+    // Determine leap automatically
+    if(timescale == NOVAS_UTC)
+      leap = novas_leap_for_jd(ijd + fjd);
+    else if(timescale == NOVAS_UT1)
+      leap = novas_leap_for_jd(ijd + fjd - dut1 / NOVAS_DAY);
+    else
+      leap = novas_time_leap(time);
+
     time->ut1_to_tt = leap - dut1 + DTA;
   }
 
@@ -1011,14 +1046,22 @@ double novas_diff_tcg(const novas_timespec *t1, const novas_timespec *t2) {
  *
  * NOTES:
  *
- *  - If __SuperNOVAS__ was built without cURL support (`WITHOUT_CURL` or `WITHOUT_LIBC` build
- *    configuration options), then automatic fetching of the leap seconds and the UT1 - UTC
- *    difference is not possible. You must set `leap` and `dut1` appropriately explicitly.
+ *  1. If __SuperNOVAS__ was built without cURL support (`WITHOUT_CURL` or `WITHOUT_LIBC` build
+ *     configuration options), then automatic fetching of the leap seconds and the UT1 - UTC
+ *     difference is not possible. You must set `leap` and `dut1` appropriately explicitly.
+ *
+ *  2. Leap seconds have been abolished, and no new leap seconds will be added after 20 May 2027,
+ *     leaving the current list of leap seconds at hte final definitive list. Hence SuperNOVAS will
+ *     determine leap seconds automatically, based on the time, starting with v1.8, and the user
+ *     no longer needs to supply this information when defining astrometric times.
  *
  * @param unix_time   [s] UNIX time (UTC) seconds
  * @param nanos       [ns] UTC sub-second component
- * @param leap        [s] Leap seconds, e.g. as published by IERS Bulletin C. (It may be
- *                    unused if `dut1` is NAN -- see below).
+ * @param leap        [s] (_unused_) Leap seconds, e.g. as published by IERS Bulletin C. It is
+ *                    not used as of v1.8. Leap seconds are now obtained automatically from
+ *                    the definitive list of leap seconds in the time period (1970 -- 2027), in
+ *                    which they were changing. A best practice may be to set this parameter
+ *                    to 0 or -1 in your application calls.
  * @param dut1        [s] mean UT1-UTC time difference, e.g. as published in IERS Bulletin A
  *                    (without diurnal corrections for libration and ocean tides), If the time
  *                    offset is defined for a different ITRS realization than what is used for
@@ -1026,7 +1069,7 @@ double novas_diff_tcg(const novas_timespec *t1, const novas_timespec *t2) {
  *                    `novas_itrf_transform_eop()` to make it consistent. If `dut1` is NAN, and
  *                    `novas_is_auto_fetch_eop()` is TRUE then both `leap` and `dut1` will be
  *                    fetched from IERS if possible. Note, that prior to 1956 IERS does not
- *                      provide UT1-UTC difference.
+ *                    provide UT1-UTC difference.
  * @param[out] time   Pointer to the data structure that uniquely defines the astronomical time
  *                    for all applications.
  * @return            0 if successful, or else -1 if there was an error (errno will be set to
@@ -1075,8 +1118,16 @@ int novas_set_unix_time(time_t unix_time, long nanos, int leap, double dut1, nov
  *     configuration options), then automatic fetching of the leap seconds and the UT1 - UTC
  *     difference is not possible. You must set `leap` and `dut1` appropriately explicitly.
  *
- * @param leap        [s] Leap seconds, e.g. as published by IERS Bulletin C. (It may be
- *                    unused if `dut1` is NAN -- see below).
+ *  4. Leap seconds have been abolished, and no new leap seconds will be added after 20 May 2027,
+ *     leaving the current list of leap seconds at hte final definitive list. Hence SuperNOVAS will
+ *     determine leap seconds automatically, based on the time, starting with v1.8, and the user
+ *     no longer needs to supply this information when defining astrometric times.
+ *
+ * @param leap        [s] (_unused_) Leap seconds, e.g. as published by IERS Bulletin C. It is
+ *                    not used as of v1.8. Leap seconds are now obtained automatically from
+ *                    the definitive list of leap seconds in the time period (1970 -- 2027), in
+ *                    which they were changing. A best practice may be to set this parameter
+ *                    to 0 or -1 in your application calls.
  * @param dut1        [s] mean UT1-UTC time difference, e.g. as published in IERS Bulletin A
  *                    (without diurnal corrections for libration and ocean tides), If the time
  *                    offset is defined for a different ITRS realization than what is used for
