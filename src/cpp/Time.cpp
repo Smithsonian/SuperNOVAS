@@ -26,13 +26,11 @@ static double novas_era(long ijd, double fjd) {
 namespace supernovas {
 
 
-static bool is_valid_parms(double dUT1,  enum novas_timescale timescale) {
+static bool is_valid_parms(double dUT1, enum novas_timescale timescale) {
   static const char *fn = "Time()";
 
   if(!isfinite(dUT1))
-    return novas_error(0, EINVAL, fn, "input dUT1 is NAN");
-  if(fabs(dUT1) > 1.0)
-    return novas_error(0, EINVAL, fn, "input dUT1 exceeds +/- 1s limit: %g", dUT1);
+    return novas_error(0, EINVAL, fn, "dUT1 is invalid (NAN)");
   if((unsigned) timescale >= NOVAS_TIMESCALES)
     return novas_error(0, EINVAL, fn, "invalid timescale: %d", timescale);
 

@@ -145,15 +145,9 @@ Upcoming maintenance release, expected around 1 November 2026.
  
  - #387: `ephemeris()` now will now return -1 with `errno` set to `EINVAL` if either input time component is NaN.
  
- - #387: Modified `geo_posvel()` to handle new dynamic observer locations.
- 
  - #389: Improved error propagation on interpolated EOP estimate when EOP is obtained from IERS or some other source.
    
- - #392: Tolerate missing leap seconds expiration timestamp in `leap-seconds.list`. It is not required to be present
-   by the related `tzfile` specification either, and future versions of the file may not contain an expiration after 
-   the abolishment of leaps seconds on 20 May 2027.
-   
- - #392: Given that leap seconds are abolished effective 20 May 2027, the final leap seconds list is now hardcoded,
+ - #395: Given that leap seconds are abolished effective 20 May 2027, the final leap seconds list is now hardcoded,
    making `novas_set_leap_list()` useless. It no longer does anything, except returning 0 (but setting `errno` to
    `ENOSYS`). The same goes for `novas_set_eop_url()`, when called with `EOP_LEAP_LIST` as the series.
     
@@ -167,12 +161,12 @@ Upcoming maintenance release, expected around 1 November 2026.
    related functions / method now ignore the leap seconds parameter, as leap seconds are determined automatically.
    
  - #395: `novas_set_time()` / `novas_set_split_time()` have been improved to set leap AND UT1-UTC correctly around 
-   the leap second boundaries for all timescales, when `dut1` is NAN.
+   the leap second boundaries for all timescales, when `dut1` is NAN. They now also check for NAN input JD values and 
+   will return an error (`errno` set to `EINVAL`) in case of NAN JD input.
    
- - #395: `novas_set_time()` / `novas_set_split_time()` now check for NAN input JD values and will return an error
-   (`errno` set to `EINVAL`) in case of NAN JD input.
+ - #395: `Time` constructor to allow the UT1 - UTC difference to grow beyond +/- 1s.
    
- - #395: Change default EOP URLs to use `brahe` and Observatory of Paris hosted mirrors.
+ - #395: Change default EOP URLs to use `brahe` mirrors for rapid service and C04 series.
    
  - Streamlined `novas_make_planet_orbit()` slightly by avoiding duplicate trigonometric calls.
 

@@ -28,8 +28,6 @@ int main() {
   if(!test.check("invalid fjd = NAN", !Time((long)NOVAS_JD_J2000, NAN, 32, 0.1, NOVAS_UTC).is_valid())) n++;
   if(!test.check("invalid timescale", !Time(NOVAS_JD_J2000, 32, 0.0, (enum novas_timescale) -1).is_valid())) n++;
   if(!test.check("invalid DUT1 = NAN", !Time(NOVAS_JD_J2000, 32, NAN, NOVAS_UTC).is_valid())) n++;
-  if(!test.check("invalid DUT1 < -1.0", !Time(NOVAS_JD_J2000, 32, -1.01, NOVAS_UTC).is_valid())) n++;
-  if(!test.check("invalid DUT1 > 1.0", !Time(NOVAS_JD_J2000, 32, 1.01, NOVAS_UTC).is_valid())) n++;
   if(!test.check("invalid struct timespec  = NULL", !Time((struct timespec *) NULL, eop).is_valid())) n++;
   if(!test.check("invalid novas_timespec  = NULL", !Time((novas_timespec *) NULL).is_valid())) n++;
   if(!test.check("invalid 'blah'", !Time("blah", eop).is_valid())) n++;
