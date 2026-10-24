@@ -27,7 +27,6 @@ from astropy.coordinates import SkyCoord,
 
 
 
-
    
    
 # Define ICRS coordinates
@@ -46,7 +45,7 @@ loc = EarthLocation.from_geodetic(
 
 # Set time of observation
 time = astropy.time.Time(
-  "2025-02-27T19:57:00.728+0200"
+  "2025-02-27T19:57:00.728+0200", 
   scale='tai')
 
 # Observer frame & system
@@ -71,10 +70,9 @@ novas_frame frame;
 sky_pos app;
 
 // IERS Earth Orientation Parameters...
-int leap_seconds = 37;
-double dt1 = 0.06256; // [s]
-double dx = 103.4;    // [mas]
-double dy = 396.2;    // [mas]
+double dut1 = 0.06256; // [s]
+double dx = 103.4;     // [mas]
+double dy = 396.2;     // [mas]
 
 // Define ICRS coordinates
 make_cat_entry("Antares", "HIP", 80763, 
@@ -93,7 +91,7 @@ make_gps_observer(50.7374, 7.0982, 60.0,
 // Set time of observation
 novas_set_str_time(NOVAS_TAI,
   "2025-02-27T19:57:00.728+0200", 
-  leap_seconds, dut1, &time);
+  0, dut1, &time);
 
 // Observer frame
 novas_make_frame(NOVAS_FULL_ACCURACY, 
