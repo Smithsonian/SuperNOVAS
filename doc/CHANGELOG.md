@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
-Upcoming features release, expected around 1 November 2026. The highlights are new observer locations, and changes
+Upcoming feature release, expected around 1 November 2026. The highlights are new observer locations, and changes
 relating to the upcoming abolishment (freeze) of leap seconds on 20 May 2027, as voted by the General Conference on 
 Weights and Measures (CGPM). As a result of the latter, SuperNOVAS now hardcodes the definitive list of historical 
 leap seconds, which no longer need external resources, nor need to be specified explicitly. While the API remains 
