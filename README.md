@@ -53,8 +53,8 @@ This document has been updated for the `v1.8` and later releases.
 
 ### Citation
 
- - __Reference Paper__: Attila Kovács "The SuperNOVAS high-precision C/C++ astrometry library", __Proc. SPIE__, 
-14155, _Software and Cyberinfrastructure for Astronomy IX_, 1415533 (2026); https://doi.org/10.1117/12.3104649<br>
+ - Attila Kovács "The SuperNOVAS high-precision C/C++ astrometry library", __Proc. SPIE__, 14155, 
+_Software and Cyberinfrastructure for Astronomy IX_, 1415533 (2026); https://doi.org/10.1117/12.3104649<br>
 [[BibTex]](resources/citation-14155_1079.bib) [[EndNote]](resources/citation-14155_1079.enw) [[RIS]](resources/citation-14155_1079.ris) 
 
 ## Table of Contents
