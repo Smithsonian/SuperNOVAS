@@ -139,7 +139,7 @@ than that, the release contains a number fixes and improvements also.
  - #377: `Horizontal::to_refracted()` and `.to_unrefracted()` now marked as `const` since these methods do not alter
    the parent instance.
    
- - #377: Streamlined `ee_ct` and nutation series calculations slightly.
+ - #377: Streamlined `ee_ct()` and nutation series calculations slightly.
 
  - #378: Simplified `novas_itrs_to_enu()` / `novas_enu_to_itrf()` to call `novas_xyz_to_los()` / `novas_los_to_xyz()`,
    respectively.
@@ -152,6 +152,11 @@ than that, the release contains a number fixes and improvements also.
  - #387: `ephemeris()` now will now return -1 with `errno` set to `EINVAL` if either input time component is NaN.
  
  - #389: Improved error propagation on interpolated EOP estimate when EOP is obtained from IERS or some other source.
+ 
+ - #390: Removed 1/_f_ factor from the dUT1 transformation in `novas_itrf_transform_eop()`. The original 
+   implementation was based on Eq. 4.14 of the IERS Conventions 2010, Chapter 4. However, the 1/_f_ factor makes no 
+   sense here, as an __R3__ rotation should be direcly equivalent to a rotation of the same amount in the dUT1 
+   direction.
    
  - #395: Given that leap seconds are abolished effective 20 May 2027, the final leap seconds list is now hardcoded,
    making `novas_set_leap_list()` useless. It no longer does anything, except returning 0 (but setting `errno` to
