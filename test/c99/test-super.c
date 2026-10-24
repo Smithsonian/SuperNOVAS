@@ -631,11 +631,16 @@ static int test_app_to_hor_compat() {
   observer obs = OBSERVER_INIT;
   novas_frame frame = NOVAS_FRAME_INIT;
   double pos1[3] = {0.0};
+  int leap;
 
   double ra, dec, az, el, az1, za1;
 
+
+  leap = novas_leap_for_jd(tdb);
+
+
   sprintf(label, "app_to_hor_compat:set_time");
-  if(!is_ok(label, novas_set_time(NOVAS_TT, tdb, 37, 0.0, &ts))) return 1;
+  if(!is_ok(label, novas_set_time(NOVAS_TT, tdb, -1, 0.0, &ts))) return 1;
 
   sprintf(label, "app_to_hor_compat:make_observer");
   if(!is_ok(label, make_observer_on_surface(1.0, 2.0, 3.0, 4.0, 1001.0, &obs))) return 1;
@@ -648,7 +653,7 @@ static int test_app_to_hor_compat() {
   if(!is_ok("app_to_hor_comat:app_to_hor:cirs",
           novas_app_to_hor(&frame, NOVAS_CIRS, ra, dec, NULL, &az, &el))) return 1;
   if(!is_ok("app_to_hor_compat:cirs_to_itrs",
-          cirs_to_itrs(tdb, 0.0, 69.184, NOVAS_REDUCED_ACCURACY, 0.200, 0.300, pos0, pos1))) return 1;
+          cirs_to_itrs(tdb, 0.0, leap + 32.184, NOVAS_REDUCED_ACCURACY, 0.200, 0.300, pos0, pos1))) return 1;
   if(!is_ok("app_to_hor_compat:itrs_to_hor:cirs", itrs_to_hor(&obs.on_surf, pos1, &az1, &za1))) return 1;
   if(!is_equal("app_to_hor_compat:check:az", az, az1, 1e-6)) return 1;
   if(!is_equal("app_to_hor_compat:check:el", el, 90.0 - za1, 1e-6)) return 1;
@@ -656,7 +661,7 @@ static int test_app_to_hor_compat() {
   if(!is_ok("app_to_hor_comat:app_to_hor:tod",
           novas_app_to_hor(&frame, NOVAS_TOD, ra, dec, NULL, &az, &el))) return 1;
   if(!is_ok("app_to_hor_compat:tod_to_itrs",
-          tod_to_itrs(tdb, 0.0, 69.184, NOVAS_REDUCED_ACCURACY, 0.200, 0.300, pos0, pos1))) return 1;
+          tod_to_itrs(tdb, 0.0, leap + 32.184, NOVAS_REDUCED_ACCURACY, 0.200, 0.300, pos0, pos1))) return 1;
   if(!is_ok("app_to_hor_compat:itrs_to_hor:tod", itrs_to_hor(&obs.on_surf, pos1, &az1, &za1))) return 1;
   if(!is_equal("app_to_hor_compat:check:az", az, az1, 1e-6)) return 1;
   if(!is_equal("app_to_hor_compat:check:el", el, 90.0 - za1, 1e-6)) return 1;
@@ -1357,8 +1362,9 @@ static int test_cirs_app_ra() {
 }
 
 static int test_set_time() {
+  int n = 0;
+
   novas_timespec tt, tt1, tai, gps, TDB, tcb, tcg, utc, ut1;
-  int leap = 32;
   double dut1 = 0.1;
   long ijd = (long) tdb;
   double fjd = 0.25;
@@ -1369,59 +1375,60 @@ static int test_set_time() {
   const double TDB0 = 6.55e-5;
   const double LG = 6.969290134e-10;
 
+  int leap = novas_lookup_leap((time_t) ((tdb - J2000) * NOVAS_DAY) + 946728000LL);
+
   tdb2tt(ijd, NULL, &dt);
 
-  if(!is_ok("set_time:set:tt", novas_set_split_time(NOVAS_TT, ijd, fjd, leap, dut1, &tt))) return 1;
-  if(!is_ok("set_time:check:tt:int", tt.ijd_tt != ijd)) return 1;
-  if(!is_ok("set_time:check:tt:frac", fabs(tt.fjd_tt - fjd) > 1e-9)) return 1;
+  if(!is_ok("set_time:set:tt", novas_set_split_time(NOVAS_TT, ijd, fjd, leap, dut1, &tt))) n++;
+  if(!is_ok("set_time:check:tt:int", tt.ijd_tt != ijd)) n++;
+  if(!is_ok("set_time:check:tt:frac", fabs(tt.fjd_tt - fjd) > 1e-9)) n++;
 
-  if(!is_ok("set_time:set:tt1", novas_set_time(NOVAS_TT, ijd + fjd, leap, dut1, &tt1))) return 1;
+  if(!is_ok("set_time:set:tt1", novas_set_time(NOVAS_TT, ijd + fjd, leap, dut1, &tt1))) n++;
   dt = novas_get_time(&tt, NOVAS_TT) - novas_get_time(&tt1, NOVAS_TT);
   if(!is_ok("set_time:check:nosplit", fabs(dt * DAY) > 1e-5)) {
     printf("!!! Delta split: %.9f\n", dt * DAY);
     return 1;
   }
 
-  if(!is_ok("set_time:set:tdb", novas_set_split_time(NOVAS_TDB, ijd, fjd, leap, dut1, &TDB))) return 1;
-  if(!is_ok("set_time:set:tcb", novas_set_split_time(NOVAS_TCB, ijd, fjd, leap, dut1, &tcb))) return 1;
-  if(!is_ok("set_time:set:tcg", novas_set_split_time(NOVAS_TCG, ijd, fjd, leap, dut1, &tcg))) return 1;
-  if(!is_ok("set_time:set:tai", novas_set_split_time(NOVAS_TAI, ijd, fjd, leap, dut1, &tai))) return 1;
-  if(!is_ok("set_time:set:gps", novas_set_split_time(NOVAS_GPS, ijd, fjd, leap, dut1, &gps))) return 1;
-  if(!is_ok("set_time:set:utc", novas_set_split_time(NOVAS_UTC, ijd, fjd, leap, dut1, &utc))) return 1;
-  if(!is_ok("set_time:set:ut1", novas_set_split_time(NOVAS_UT1, ijd, fjd, leap, dut1, &ut1))) return 1;
+  if(!is_ok("set_time:set:tdb", novas_set_split_time(NOVAS_TDB, ijd, fjd, leap, dut1, &TDB))) n++;
+  if(!is_ok("set_time:set:tcb", novas_set_split_time(NOVAS_TCB, ijd, fjd, leap, dut1, &tcb))) n++;
+  if(!is_ok("set_time:set:tcg", novas_set_split_time(NOVAS_TCG, ijd, fjd, leap, dut1, &tcg))) n++;
+  if(!is_ok("set_time:set:tai", novas_set_split_time(NOVAS_TAI, ijd, fjd, leap, dut1, &tai))) n++;
+  if(!is_ok("set_time:set:gps", novas_set_split_time(NOVAS_GPS, ijd, fjd, leap, dut1, &gps))) n++;
+  if(!is_ok("set_time:set:utc", novas_set_split_time(NOVAS_UTC, ijd, fjd, leap, dut1, &utc))) n++;
+  if(!is_ok("set_time:set:ut1", novas_set_split_time(NOVAS_UT1, ijd, fjd, leap, dut1, &ut1))) n++;
 
   dt = remainder(novas_get_split_time(&TDB, NOVAS_TT, NULL) - novas_get_split_time(&tt, NOVAS_TT, NULL), 1.0);
   if(!is_equal("set_time:check:tdb-tt", dt * DAY, -tt2tdb_hp(novas_get_time(&tt, NOVAS_TT)), 1e-9)) {
     printf("!!! TT-TDB: %.9f (expected %.9f)\n", dt * DAY, -tt2tdb_hp(ijd + fjd));
-    return 1;
+    n++;
   }
 
   dt = novas_get_split_time(&tcb, NOVAS_TT, NULL) - novas_get_split_time(&TDB, NOVAS_TT, NULL);
   dt += LB * (novas_get_time(&TDB, NOVAS_TDB) - CT0) - TDB0 / DAY;
-  if(!is_equal("set_time:check:tcb-tdb", dt * DAY, 0.0, 1e-9)) return 1;
+  if(!is_equal("set_time:check:tcb-tdb", dt * DAY, 0.0, 1e-9)) n++;
 
   dt = novas_get_split_time(&tcg, NOVAS_TT, NULL) - novas_get_split_time(&tt, NOVAS_TT, NULL);
   dt += LG * (novas_get_time(&tt, NOVAS_TT) - CT0);
-  if(!is_equal("set_time:check:tcg-tt", dt * DAY, 0.0, 1e-9)) return 1;
+  if(!is_equal("set_time:check:tcg-tt", dt * DAY, 0.0, 1e-9)) n++;
 
   dt = novas_get_split_time(&tt, NOVAS_TT, NULL) - novas_get_split_time(&tai, NOVAS_TT, NULL);
-  if(!is_equal("set_time:check:tt-tai", dt * DAY, -32.184, 1e-9)) return 1;
+  if(!is_equal("set_time:check:tt-tai", dt * DAY, -32.184, 1e-9)) n++;
 
   dt = novas_get_split_time(&tai, NOVAS_TT, NULL) - novas_get_split_time(&gps, NOVAS_TT, NULL);
-  if(!is_equal("set_time:check:gps-tai", dt * DAY, -19.0, 1e-9)) return 1;
+  if(!is_equal("set_time:check:gps-tai", dt * DAY, -19.0, 1e-9)) n++;
 
   dt = novas_get_split_time(&tai, NOVAS_TT, NULL) - novas_get_split_time(&utc, NOVAS_TT, NULL);
-  if(!is_equal("set_time:check:tai-utc", dt * DAY, -leap, 1e-9)) return 1;
+  if(!is_equal("set_time:check:tai-utc", dt * DAY, -leap, 1e-9)) n++;
 
   dt = novas_get_split_time(&ut1, NOVAS_TT, NULL) - novas_get_split_time(&utc, NOVAS_TT, NULL);
-  if(!is_equal("set_time:check:ut1-utc", dt * DAY, -dut1, 1e-9)) return 1;
+  if(!is_equal("set_time:check:ut1-utc", dt * DAY, -dut1, 1e-9)) n++;
 
-  return 0;
+  return n;
 }
 
 static int test_get_time() {
   novas_timespec tt;
-  int leap = 32;
   double dut1 = 0.1;
   double dt;
   long ijd;
@@ -1430,6 +1437,8 @@ static int test_get_time() {
   const double LB = 1.550519768e-8;
   const double TDB0 = 6.55e-5;
   const double LG = 6.969290134e-10;
+
+  int leap = novas_leap_for_jd(tdb);
 
   if(!is_ok("get_time:set:tt", novas_set_time(NOVAS_TT, tdb + 0.25, leap, dut1, &tt))) return 1;
 
@@ -1659,7 +1668,7 @@ static int test_refract_astro() {
 static int test_v2z() {
   int v;
 
-  for(v = 0.0; v < NOVAS_C; v += 10000000) {
+  for(v = 0; v < NOVAS_C; v += 10000000) {
     char label[40];
     double zexp = sqrt((1.0 + v / NOVAS_C) / (1.0 - v / NOVAS_C)) - 1.0;
 
@@ -3864,10 +3873,7 @@ static int test_iso_timestamp() {
     if(!is_ok(label, novas_iso_timestamp(&time, str, sizeof(str)) < 0)) n++;
 
     sprintf(label, "iso_timestamp:check:%d", i);
-    if(!is_equal(label, novas_parse_date(str, NULL), jd, 1e-6)) {
-      printf("### %s\n", str);
-      n++;
-    }
+    if(!is_equal(label, novas_parse_date(str, NULL), jd, 1e-6)) n++;
   }
 
   return n;
@@ -5862,7 +5868,6 @@ static int test_fetch_eop() {
   if(!is_ok("fetch_eop:unix:now", novas_fetch_eop_unix(time(NULL), 0, &eop))) n++;
 #  endif
 
-  if(!is_ok("fetch_eop:set_eop_url:leap", novas_set_eop_url(EOP_LEAP_LIST, 0, get_resource_url("leap-seconds.list")))) n++;
   if(!is_ok("fetch_eop:set_eop_url:rapid", novas_set_eop_url(EOP_RAPID_IAU2000, 2020, get_resource_url("finals.all.iau2000.txt")))) n++;
   if(!is_ok("fetch_eop:set_eop_url:c04", novas_set_eop_url(EOP_C04_IAU2000_0UTC, 2008, get_resource_url("EOP_20u24_C04_one_file_1962-now.txt")))) n++;
   if(!is_ok("fetch_eop:set_eop_url:c01", novas_set_eop_url(EOP_C01_IAU2000, 1900, get_resource_url("EOP_C01_IAU2000_1846-now.txt")))) n++;
@@ -5892,7 +5897,7 @@ static int test_fetch_eop() {
 
   if(!is_ok("fetch_eop:j1961", novas_fetch_eop(NOVAS_JD_MJD0 + 37664, 0, &eop))) n++;
   if(!is_equal("fetch_eop:j1961:leap", eop.leap, 0, 1e-15)) n++;
-  if(!is_ok("fetch_eop:j1964:dut1", isnan(eop.dut1))) n++;
+  if(!is_ok("fetch_eop:j1961:dut1", isnan(eop.dut1))) n++;
   // TODO check jd, dut1, xp, yp.
 
   if(!is_ok("fetch_eop:j1989", novas_fetch_eop(NOVAS_JD_MJD0 + 11366, 0, &eop))) n++;
@@ -5954,30 +5959,19 @@ static int test_auto_fetch_eop() {
 
 static int test_lookup_leap() {
   int n = 0;
-  char path[1024] = {'\0'}, *rc;
 
-#if !defined(WITHOUT_CURL) && !defined(OFFLINE)
-  if(!is_ok("lookup_leap:set_eop_url", novas_set_eop_url(EOP_LEAP_LIST, 1950, NULL))) n++;
-  if(!is_equal("lookup_leap:auto:j2000", novas_lookup_leap(946684800L), 32.0, 1e-15)) n++;
-  if(!is_equal("lookup_leap:auto:1970", novas_lookup_leap(0L), 0.0, 1e-15)) n++;
-#endif
+  if(!is_equal("lookup_leap:1970", novas_lookup_leap(0L), 0.0, 1e-15)) n++;
+  if(!is_equal("lookup_leap:j2000", novas_lookup_leap(946684800L), 32.0, 1e-15)) n++;
+  if(!is_equal("lookup_leap:2030", novas_lookup_leap(1893456000), 37.0, 1e-15)) n++;
 
-  rc = get_resource("leap-seconds.list", path, sizeof(path));
-  if(!rc) fprintf(stderr, "WARNING! Missing %s: skip tests requiring it", path);
-  else {
-    if(!is_ok("lookup_leap:set_leap_list", novas_set_leap_list(path))) return ++n;
-    if(!is_equal("lookup_leap:offline:j2000", novas_lookup_leap(946684800L), 32.0, 1e-15)) n++;
-  }
+  return n;
+}
 
-  rc = get_resource("bad-expiration-ok1.list", path, sizeof(path));
-  if(!rc) fprintf(stderr, "WARNING! Missing %s: skip tests requiring it", path);
-  else if(!is_ok("lookup_leap:set_leap_list:bad-first-expiration", novas_set_leap_list(path))) return ++n;
+static int test_lookup_leap_for_jd() {
+  int n = 0;
 
-  rc = get_resource("bad-expiration-ok2.list", path, sizeof(path));
-  if(!rc) fprintf(stderr, "WARNING! Missing %s: skip tests requiring it", path);
-  else if(!is_ok("lookup_leap:set_leap_list:bad-second-expiration", novas_set_leap_list(path))) return ++n;
-
-  novas_set_leap_list(NULL);
+  if(!is_equal("lookup_leap_for_jd:b1950", novas_leap_for_jd(NOVAS_JD_B1950), 0.0, 1e-15)) n++;
+  if(!is_equal("lookup_leap_for_jd:j2000", novas_leap_for_jd(NOVAS_JD_J2000), 32.0, 1e-15)) n++;
 
   return n;
 }
@@ -6068,6 +6062,35 @@ static int test_comoving_observer() {
   if(!is_ok("comoving_observer:geo_posvel", geo_posvel(JD_J2000, 69.0, NOVAS_REDUCED_ACCURACY, &obs, pos, vel))) n++;
   if(!is_ok("comoving_observer:geo_posvel:pos", check_equal_pos(pos, p0, 1e-12))) n++;
   if(!is_ok("comoving_observer:geo_posvel:vel", check_equal_pos(vel, v0, 1e-12))) n++;
+
+  return n;
+}
+
+static int test_set_split_time() {
+  int n = 0;
+
+  novas_timespec ts = {};
+
+  if(!is_ok("set_split_time:set:ut1:fetch", novas_set_time(NOVAS_UT1, NOVAS_JD_J2000, 0, NAN, &ts))) n++;
+  if(isnan(ts.dut1)) fprintf(stderr, "WARNING! failed to fetch EOP in set_split_time:set:ut1:fetch");
+  else if(!is_equal("set_split_time:ut1:fetch:check:leap", ts.ut1_to_tt, 64.184, 0.5)) n++;
+
+  // Leap on 1 Jan 1999 was around 0.716s.
+  if(!is_ok("set_split_time:ut1:fetch:1999", novas_set_split_time(NOVAS_UT1, 2451179, 0.5, 0, NAN, &ts))) n++;
+  if(!is_ok("set_split_time:ut1:fetch:1999-", novas_set_split_time(NOVAS_UT1, 2451179, 0.5 - 0.1 / NOVAS_DAY, 0, NAN, &ts))) n++;
+  if(!is_ok("set_split_time:ut1:fetch:1999-", novas_set_split_time(NOVAS_UT1, 2451179, 0.5 + 0.1 / NOVAS_DAY, 0, NAN, &ts))) n++;
+
+  novas_set_max_iter(0);
+  novas_debug(NOVAS_DEBUG_OFF);
+  if(!is_ok("set_split_time:ut1:fetch:1999:converge", novas_set_split_time(NOVAS_UT1, 2451179, 0.5 + 0.5 / NOVAS_DAY, 0, NAN, &ts))) n++;
+  if(!is_ok("set_split_time:ut1:fetch:1999:converge:check", !isnan(ts.dut1))) n++;
+
+  ts.dut1 = 0.0;
+  if(!is_ok("set_split_time:tt:converge", novas_set_time(NOVAS_TT, NOVAS_JD_J2000 - 0.5, 0, NAN, &ts))) n++;
+  if(!is_ok("set_split_time:tt:converge:check", !isnan(ts.dut1))) n++;
+
+  novas_debug(NOVAS_DEBUG_ON);
+  novas_set_max_iter(NOVAS_DEFAULT_MAX_ITER);
 
   return n;
 }
@@ -6263,11 +6286,13 @@ int main(int argc, char *argv[]) {
   if(test_fetch_eop()) n++;
   if(test_auto_fetch_eop()) n++;
   if(test_lookup_leap()) n++;
+  if(test_lookup_leap_for_jd()) n++;
 
   if(test_is_leap_year()) n++;
   if(test_dynamic_observer()) n++;
   if(test_ephem_state()) n++;
   if(test_comoving_observer()) n++;
+  if(test_set_split_time()) n++;
 
   n += test_dates();
 

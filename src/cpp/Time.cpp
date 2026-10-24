@@ -26,13 +26,11 @@ static double novas_era(long ijd, double fjd) {
 namespace supernovas {
 
 
-static bool is_valid_parms(double dUT1,  enum novas_timescale timescale) {
+static bool is_valid_parms(double dUT1, enum novas_timescale timescale) {
   static const char *fn = "Time()";
 
   if(!isfinite(dUT1))
-    return novas_error(0, EINVAL, fn, "input dUT1 is NAN");
-  if(fabs(dUT1) > 1.0)
-    return novas_error(0, EINVAL, fn, "input dUT1 exceeds +/- 1s limit: %g", dUT1);
+    return novas_error(0, EINVAL, fn, "dUT1 is invalid (NAN)");
   if((unsigned) timescale >= NOVAS_TIMESCALES)
     return novas_error(0, EINVAL, fn, "invalid timescale: %d", timescale);
 
@@ -42,9 +40,19 @@ static bool is_valid_parms(double dUT1,  enum novas_timescale timescale) {
 /**
  * Instantiates an astrometric time instance with the specified time parameters.
  *
+ * NOTES:
+ *
+ *  - Leap seconds have been abolished, and no new leap seconds will be added after 20 May 2027,
+ *    leaving the current list of leap seconds at hte final definitive list. Hence SuperNOVAS will
+ *    determine leap seconds automatically, based on the time, starting with v1.8, and the user
+ *    no longer needs to supply this information when defining astrometric times.
+ *
  * @param jd            [day] Julian date (in the selected timescale)
- * @param leap_seconds  [s] leap seconds, that is TAI - UTC (default: 0). It may be unused if
- *                      `dUT1` is NAN -- see below.
+ * @param leap_seconds  [s] (_unused_) Leap seconds, e.g. as published by IERS Bulletin C. It is
+ *                      not used as of v1.8. Leap seconds are now obtained automatically from
+ *                      the definitive list of leap seconds in the time period (1970 -- 2027), in
+ *                      which they were changing. A best practice may be to set this parameter
+ *                      to 0 or -1 in your application calls.
  * @param dUT1          [s] UT1 - UTC time difference, e.g. from the IERS Bulletins or service, or
  *                      NAN to fetch leap and dUT1 from IERS for dates after 1 Jan 1956, if
  *                      possible and allowed.
@@ -55,9 +63,8 @@ static bool is_valid_parms(double dUT1,  enum novas_timescale timescale) {
  * @sa novas_set_auto_fetch_eop(), novas_lookup_leap(), novas_fetch_eop()
  */
 Time::Time(double jd, int leap_seconds, double dUT1, enum novas_timescale timescale) {
-  novas_set_time(timescale, jd, leap_seconds, dUT1, &_ts);
-  if(!isfinite(jd))
-    novas_set_errno(EINVAL, "Time()", "input jd is NAN or infinite");
+  if(novas_set_time(timescale, jd, leap_seconds, dUT1, &_ts) != 0)
+    novas_trace_invalid("Time()");
   else
     _valid = is_valid_parms(_ts.dut1, timescale);
 }
@@ -67,9 +74,9 @@ Time::Time(double jd, int leap_seconds, double dUT1, enum novas_timescale timesc
  *
  * NOTES:
  *
- * - If __SuperNOVAS__ was built without cURL support (`WITHOUT_CURL` or `WITHOUT_LIBC` build
- *   configuration options), then automatic fetching of the leap seconds and the UT1 - UTC
- *   differennce is not possible. You must set a valid EOP explicitly.
+ *  - If __SuperNOVAS__ was built without cURL support (`WITHOUT_CURL` or `WITHOUT_LIBC` build
+ *    configuration options), then automatic fetching of the the UT1 - UTC differennce is not
+ *    possible. You must set a valid EOP explicitly.
  *
  * @param jd            [day] Julian date (in the selected timescale)
  * @param eop           (optional) Earth Orientation Parameters (EOP) values, e.g. obtained from
@@ -87,13 +94,23 @@ Time::Time(double jd, const EOP& eop, enum novas_timescale timescale)
 /**
  * Instantiates an astrometric time instance with the specified time parameters.
  *
+ * NOTES:
+ *
+ * - Leap seconds have been abolished, and no new leap seconds will be added after 20 May 2027,
+ *   leaving the current list of leap seconds at hte final definitive list. Hence SuperNOVAS will
+ *   determine leap seconds automatically, based on the time, starting with v1.8, and the user
+ *   no longer needs to supply this information when defining astrometric times.
+ *
  *
  * @param ijd           [day] integer part of Julian date (in the selected timescale)
  * @param fjd           [day] fractional part of Julian date (in the selected timescale)
- * @param leap_seconds  [s] leap seconds, that is TAI - UTC (default: 0). It may be unused if
- *                      `dUT1` is NAN -- see below.
+ * @param leap_seconds  [s] (_unused_) Leap seconds, e.g. as published by IERS Bulletin C. It is
+ *                      not used as of v1.8. Leap seconds are now obtained automatically from
+ *                      the definitive list of leap seconds in the time period (1970 -- 2027), in
+ *                      which they were changing. A best practice may be to set this parameter
+ *                      to 0 or -1 in your application calls.
  * @param dUT1          [s] UT1 - UTC time difference, e.g. from the IERS Bulletins or service, or
- *                      NAN to fetch leap and dUT1 from IERS for dates after 1 Jan 1956, if
+ *                      NAN to fetch dUT1 from IERS for dates after 1 Jan 1956, if
  *                      possible and allowed.
  * @param timescale     (optional) Astronomical timescale (default: TT).
  *
@@ -102,10 +119,8 @@ Time::Time(double jd, const EOP& eop, enum novas_timescale timescale)
  * @sa novas_set_auto_fetch_eop(), novas_lookup_leap(), novas_fetch_eop()
  */
 Time::Time(long ijd, double fjd, int leap_seconds, double dUT1, enum novas_timescale timescale) {
-  novas_set_split_time(timescale, ijd, fjd, leap_seconds, dUT1, &_ts);
-
-  if(!isfinite(fjd))
-    novas_set_errno(EINVAL, "Time()", "input jd is NAN or infinite");
+  if(novas_set_split_time(timescale, ijd, fjd, leap_seconds, dUT1, &_ts) != 0)
+    novas_trace_invalid("Time()");
   else
     _valid = is_valid_parms(_ts.dut1, timescale);
 }
@@ -136,9 +151,19 @@ Time::Time(long ijd, double fjd, const EOP& eop, enum novas_timescale timescale)
 /**
  * Instantiates an astrometric time instance with the specified time parameters.
  *
+ * NOTES:
+ *
+ * - Leap seconds have been abolished, and no new leap seconds will be added after 20 May 2027,
+ *   leaving the current list of leap seconds at hte final definitive list. Hence SuperNOVAS will
+ *   determine leap seconds automatically, based on the time, starting with v1.8, and the user
+ *   no longer needs to supply this information when defining astrometric times.
+ *
  * @param timestamp     A precision timestamp, such as an ISO 8601 timestamp.
- * @param leap_seconds  [s] leap seconds, that is TAI - UTC (default: 0). It may be unused if
- *                      `dUT1` is NAN -- see below.
+ * @param leap_seconds  [s] (_unused_) Leap seconds, e.g. as published by IERS Bulletin C. It is
+ *                      not used as of v1.8. Leap seconds are now obtained automatically from
+ *                      the definitive list of leap seconds in the time period (1970 -- 2027), in
+ *                      which they were changing. A best practice may be to set this parameter
+ *                      to 0 or -1 in your application calls.
  * @param dUT1          [s] UT1 - UTC time difference, e.g. from the IERS Bulletins or service, or
  *                      NAN to fetch leap and dUT1 from IERS for dates after 1 Jan 1956, if
  *                      possible and allowed.
@@ -184,9 +209,19 @@ Time::Time(const std::string& timestamp, const EOP& eop, enum novas_timescale ti
 /**
  * Instantiates an astrometric time instance with the specified time parameters.
  *
+ * NOTES:
+ *
+ * - Leap seconds have been abolished, and no new leap seconds will be added after 20 May 2027,
+ *   leaving the current list of leap seconds at hte final definitive list. Hence SuperNOVAS will
+ *   determine leap seconds automatically, based on the time, starting with v1.8, and the user
+ *   no longer needs to supply this information when defining astrometric times.
+ *
  * @param t             A precision POSIX standard UTC timestamp.
- * @param leap_seconds  [s] leap seconds, that is TAI - UTC (default: 0). It may be unused if
- *                      `dUT1` is NAN -- see below.
+ * @param leap_seconds  [s] (_unused_) Leap seconds, e.g. as published by IERS Bulletin C. It is
+ *                      not used as of v1.8. Leap seconds are now obtained automatically from
+ *                      the definitive list of leap seconds in the time period (1970 -- 2027), in
+ *                      which they were changing. A best practice may be to set this parameter
+ *                      to 0 or -1 in your application calls.
  * @param dUT1          [s] UT1 - UTC time difference, e.g. from the IERS Bulletins or service, or
  *                      NAN to fetch leap and dUT1 from IERS for dates after 1 Jan 1956, if
  *                      possible and allowed.
@@ -846,8 +881,19 @@ std::string Time::to_epoch_string(int decimals) const {
  * Returns a new astrometric time instance for a given Modified Julian Date (MJD), specified in the
  * timescale of choice.
  *
+ * NOTES:
+ *
+ * - Leap seconds have been abolished, and no new leap seconds will be added after 20 May 2027,
+ *   leaving the current list of leap seconds at hte final definitive list. Hence SuperNOVAS will
+ *   determine leap seconds automatically, based on the time, starting with v1.8, and the user
+ *   no longer needs to supply this information when defining astrometric times.
+ *
  * @param mjd           [day] Modified Julian Date, in the timescale of choice
- * @param leap_seconds  [s] leap seconds, that is TAI - UTC (default: 0)
+ * @param leap_seconds  [s] (_unused_) Leap seconds, e.g. as published by IERS Bulletin C. It is
+ *                      not used as of v1.8. Leap seconds are now obtained automatically from
+ *                      the definitive list of leap seconds in the time period (1970 -- 2027), in
+ *                      which they were changing. A best practice may be to set this parameter
+ *                      to 0 or -1 in your application calls.
  * @param dUT1          [s] UT1 - UTC time difference, e.g. from the IERS Bulletins or service (default: 0.0).
  * @param timescale     (optional) timescale in which MJD was specified (default: TT)
  * @return              a new astrometric time instance for the given MJD date.
@@ -889,13 +935,21 @@ Time Time::from_mjd(double mjd, const EOP& eop, enum novas_timescale timescale) 
  *
  * NOTES:
  *
- *  - If __SuperNOVAS__ was built with the `WITHOUT_SYSTEM_CLOCK` preprocessor flag (or with the
- *    `WITHOUT_LIBC` build configuration option), then this function will always return an invalid
- *    / undefined time (`errno` set to `ENOSYS`). You may want to set the time explicitly with one
- *    of the constructors or other static methods instead.
+ * - If __SuperNOVAS__ was built with the `WITHOUT_SYSTEM_CLOCK` preprocessor flag (or with the
+ *   `WITHOUT_LIBC` build configuration option), then this function will always return an invalid
+ *   / undefined time (`errno` set to `ENOSYS`). You may want to set the time explicitly with one
+ *   of the constructors or other static methods instead.
  *
- * @param leap_seconds  [s] leap seconds, that is TAI - UTC (default: 0). It may be unused if
- *                      `dUT1` is NAN -- see below.
+ * - Leap seconds have been abolished, and no new leap seconds will be added after 20 May 2027,
+ *   leaving the current list of leap seconds at hte final definitive list. Hence SuperNOVAS will
+ *   determine leap seconds automatically, based on the time, starting with v1.8, and the user
+ *   no longer needs to supply this information when defining astrometric times.
+ *
+ * @param leap_seconds  [s] (_unused_) Leap seconds, e.g. as published by IERS Bulletin C. It is
+ *                      not used as of v1.8. Leap seconds are now obtained automatically from
+ *                      the definitive list of leap seconds in the time period (1970 -- 2027), in
+ *                      which they were changing. A best practice may be to set this parameter
+ *                      to 0 or -1 in your application calls.
  * @param dUT1          [s] UT1 - UTC time difference, e.g. from the IERS Bulletins or service, or
  *                      NAN to fetch leap and dUT1 from IERS for dates after 1 Jan 1956, if
  *                      possible and allowed.

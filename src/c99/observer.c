@@ -630,7 +630,7 @@ int make_dynamic_observer(novas_state_provider call, const void *restrict arg, o
 
 /**
  * Populates an 'observer' data structure, for an observer that is comoving with a Solar-system body
- * or place, and whose momentary position is consequently provided by an `ephemeris()` call for that
+ * or location, and whose momentary position is consequently provided by an `ephemeris()` call for that
  * body or place.
  *
  * Examples of comoving observers are virtual observers located at the centers of planets, asteroids,
@@ -643,7 +643,7 @@ int make_dynamic_observer(novas_state_provider call, const void *restrict arg, o
  *     reference to the observing place directly. Therefore, you must make sure that the `object` data
  *     pointed at remains valid in the scope in which the observer exists or is being used.
  *
- * @param place   the Solar-system body or place to which defines the momentary position of the
+ * @param loc     the Solar-system body or location to which defines the momentary position of the
  *                observer at all times. The call will use the pointer reference directly. Therefore
  *                you sohould make sure that the data pointed at exists and remains valid in the
  *                scope as the observer that is populated here.
@@ -655,22 +655,22 @@ int make_dynamic_observer(novas_state_provider call, const void *restrict arg, o
  *
  * @sa ephemeris(), make_solar_system_observer(), make_observer_at_geocenter()
  */
-int make_comoving_observer(const object *restrict place, observer *restrict obs) {
-  static const char *fn = "make_object_based_observer";
+int make_comoving_observer(const object *restrict loc, observer *restrict obs) {
+  static const char *fn = "make_comoving_observer";
 
-  if(!place)
+  if(!loc)
     return novas_error(-1, EINVAL, fn, "input place is NULL");
 
   if(!obs)
     return novas_error(-1, EINVAL, fn, "output observer is NULL");
 
-  if((unsigned) place->type >= NOVAS_OBJECT_TYPES)
-    return novas_error(-1, ERANGE, fn, "input place type %d is out of range", (int) place->type);
+  if((unsigned) loc->type >= NOVAS_OBJECT_TYPES)
+    return novas_error(-1, ERANGE, fn, "input place type %d is out of range", (int) loc->type);
 
-  if(place->type == NOVAS_CATALOG_OBJECT)
+  if(loc->type == NOVAS_CATALOG_OBJECT)
     return novas_error(-1, ERANGE, fn, "got catalog source, but need a Solar-system place");
 
-  prop_error(fn, make_dynamic_observer(novas_ephem_state, place, obs), 0);
+  prop_error(fn, make_dynamic_observer(novas_ephem_state, loc, obs), 0);
   return 0;
 }
 

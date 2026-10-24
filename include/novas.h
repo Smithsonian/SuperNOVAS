@@ -1872,7 +1872,6 @@ typedef struct novas_timespec {
   double tt2tdb;      ///< [s] TDB - TT time difference
   double ut1_to_tt;   ///< [s] UT1 - TT time difference
   double dut1;        ///< [s] UT1 - UTC time difference
-  // int leap_seconds;  -- add so we can access it also...  TODO for v2
 } novas_timespec;
 
 /**
@@ -2189,6 +2188,8 @@ enum novas_reference_ellipsoid {
  */
 enum novas_eop_series {
   /// List of leap seconds, since their introduction in 1972 (`leap-seconds.list`).
+  /// @deprecated it is not used any longer as of v1.8. Due to the abolishment of leap seconds
+  /// going forward, the final list of leaps is now hard coded into SuperNOVAS.
   EOP_LEAP_LIST = 0,
 
   /// IERS Rapid Service data for IAU2000, starting in 1973 (`finals.all.iau2000.txt`).
@@ -2233,11 +2234,14 @@ typedef struct {
 } novas_eop;
 
 /**
- * Leap seconds value to indicate invalid data
+ * Leap seconds value to indicate invalid data.
  *
  * @hideinitializer
  * @since 1.7
- * @sa novas_lookup_leap(), novas_fetch_eop()
+ *
+ * @deprecated Due to the abolishment of leap seconds after 20 May 2027, the leap will remain at
+ *  37 seconds for the foreseeable future, and therefore this constant will no longer be used
+ *  or returned by SuperNOVAS as of v1.8.
  */
 #define NOVAS_INVALID_LEAP  (-999)
 
@@ -3622,7 +3626,7 @@ const char *novas_get_eop_url(enum novas_eop_series series);
 /// @ingroup earth
 int novas_get_eop_itrf_year(enum novas_eop_series series);
 
-/// @ingroup earth
+__NOVAS_DEPRECATE__("This function is a dummy relic. Leap seconds are now final and hard coded.")
 int novas_set_leap_list(const char *filename);
 
 /// @ingroup earth
@@ -3635,6 +3639,7 @@ int novas_lookup_leap(time_t t);
 /// @c_time
 int novas_is_leap_year(int year, enum novas_calendar_type calendar);
 
+// in observer.c
 /// @c_observer
 int make_dynamic_observer(novas_state_provider call, const void *restrict call_arg, observer *restrict obs);
 
@@ -3643,6 +3648,10 @@ int make_comoving_observer(const object *restrict place, observer *restrict obs)
 
 /// @c_observer
 int novas_ephem_state(double jd_tdb, enum novas_accuracy accuracy, const void *p_object, double *restrict pos, double *restrict vel);
+
+// in iers.c
+/// @c_time
+int novas_leap_for_jd(double jd_utc);
 
 
 // <================= END of SuperNOVAS API =====================>

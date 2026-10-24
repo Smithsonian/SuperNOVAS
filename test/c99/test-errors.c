@@ -1275,12 +1275,13 @@ static int test_time() {
   if(check("time:set:time", -1, novas_set_time(NOVAS_TT, NOVAS_JD_J2000, 37, 0.11, NULL))) n++;
   if(check("time:set:scale:-1", -1, novas_set_time((enum novas_timescale) -1, NOVAS_JD_J2000, 37, 0.11, &time))) n++;
   if(check("time:set:scale:hi", -1, novas_set_time(NOVAS_TIMESCALES, NOVAS_JD_J2000, 37, 0.11, &time))) n++;
+  if(check("time:set:fjd:nan", -1, novas_set_time(NOVAS_TT, NAN, 0, 0.0, &time))) return 1;
 
   if(check("time:set:long_min-", -1, novas_set_time(NOVAS_TT, LONG_MIN - 10000.0, 37, 0.11, &time))) n++;
   if(check("time:set:long_max+", -1, novas_set_time(NOVAS_TT, LONG_MAX + 10000.0, 37, 0.11, &time))) n++;
 
-  if(check("time:set:long_max:timescale", -1, novas_set_time(NOVAS_UTC, LONG_MAX - 10000, INT_MAX, 0.0, &time))) n++;
-  if(check("time:set:long_min:timescale", -1, novas_set_time(NOVAS_UTC, LONG_MIN, INT_MIN, 0.0, &time))) n++;
+  if(check("time:set:long_max:ut1", -1, novas_set_time(NOVAS_UT1, LONG_MAX - 1, 0, -1e8, &time))) n++;
+  if(check("time:set:long_min:ut1", -1, novas_set_time(NOVAS_UT1, LONG_MIN, 0, 1e8, &time))) n++;
 
   if(check_nan("time:get:time", novas_get_time(NULL, NOVAS_TT))) n++;
   if(check_nan("time:get:scale:-1", novas_get_time(&time, -1))) n++;
@@ -2640,8 +2641,16 @@ static int test_print_decimal() {
 }
 
 static int test_time_leap() {
-  if(check("time_leap", -1, (int) novas_time_leap(NULL))) return 1;
-  return 0;
+  int n = 0;
+
+  novas_timespec ts = {};
+
+  if(check("time_leap", -1, (int) novas_time_leap(NULL))) n++;
+
+  ts.fjd_tt = NAN;
+  if(check("time_leap:fjd:nan", -1, (int) novas_time_leap(&ts))) n++;
+
+  return n;
 }
 
 static int test_trace_invalid() {
@@ -2955,6 +2964,7 @@ static int test_fetch_eop() {
   char *url;
 #endif
 
+  if(check("fetch_eop:jd:nan", -1, novas_fetch_eop(NAN, 0, NULL))) n++;
   if(check("fetch_eop:eop:null", -1, novas_fetch_eop(NOVAS_JD_J2000, 0, NULL))) n++;
   if(check("fetch_eop:jd:low", -1, novas_fetch_eop(0.0, 0, &eop))) n++;
 
@@ -3018,18 +3028,7 @@ static int test_fetch_eop() {
   // Reset EOP URLs to their defaults
   novas_reset_eop();
 
-  novas_set_auto_fetch_eop(0);
 #endif // WITH_CURL
-
-  if(check("fetch_eop:set_eop_url:empty", -1, novas_set_eop_url(EOP_LEAP_LIST, 0, get_resource_url("leap-seconds.empty")))) n++;
-  novas_set_leap_list(NULL);
-  if(check("fetch_eop:lookup_leap:empty_leap", NOVAS_INVALID_LEAP, novas_lookup_leap(UNIX_SECONDS_0UTC_1JAN2000))) n++;
-  if(check("fetch_eop:empty_leap", -1, novas_fetch_eop(NOVAS_JD_J2000, 0, &eop))) n++;
-  novas_set_eop_url(EOP_LEAP_LIST, 0, NULL);
-
-#ifndef WITHOUT_CURL
-  novas_set_auto_fetch_eop(1);
-#endif
 
   return n;
 }
@@ -3042,87 +3041,6 @@ static int test_get_eop_itrf_year() {
 
   return n;
 }
-
-static int test_lookup_leap() {
-  int n = 0;
-  char path[1024] = {'\0'}, *rc;
-
-  novas_set_leap_list(NULL);
-  novas_set_auto_fetch_eop(0);
-  if(check("lookup_leap:j2000:no-leaps", NOVAS_INVALID_LEAP, novas_lookup_leap(946684800L))) n++;
-
-  rc = get_resource("leap-seconds.list", path, sizeof(path));
-  if(!rc) fprintf(stderr, "WARNING! missing resource '%s': skipping tests requiring it.\n", path);
-  else {
-    if(check("lookup_leap:set_leap_list", 0, novas_set_leap_list(rc))) n++;
-    if(check("lookup_leap:far_ahead", NOVAS_INVALID_LEAP, novas_lookup_leap(time(NULL) + 3000L * 86400L))) n++;
-  }
-
-  novas_set_leap_list(NULL);
-
-#if  !defined(WITHOUT_CURL) && !defined(OFFLINE)
-  novas_set_auto_fetch_eop(1);
-
-  rc = get_resource_url("empty-leap.list");
-  if(!rc) fprintf(stderr, "WARNING! missing resource '%s': skipping tests requiring it.\n", path);
-  else {
-    if(check("lookup_leap:set_eop_url:empty_list", -1, novas_set_eop_url(EOP_LEAP_LIST, 0, rc))) n++;
-    if(check("lookup_leap:empty", NOVAS_INVALID_LEAP, novas_lookup_leap(946694800L))) n++;
-  }
-
-  if(check("lookup:set_eop_url:bad", -1, novas_set_eop_url(EOP_LEAP_LIST, 0, "file:///blah.txt"))) n++;
-  novas_set_eop_url(EOP_LEAP_LIST, 0, NULL);
-#endif
-
-  novas_set_leap_list(NULL);
-  novas_set_auto_fetch_eop(0);
-
-  return n;
-}
-
-static int test_set_leap_list() {
-  int n = 0;
-
-  char path[1024] = {'\0'}, *rc;
-
-  novas_set_auto_fetch_eop(0);
-
-  if(check("set_leap_list:empty_string", -1, novas_set_leap_list(""))) n++;
-  if(check("set_leap_list:invalid", -1, novas_set_leap_list("blah"))) n++;
-  if(check("set_leap_list:garbage", -1, novas_set_leap_list("Makefile"))) n++;
-
-  rc = get_resource("bad-expiration.list", path, sizeof(path));
-  if(!rc) fprintf(stderr, "WARNING! Missing %s: skip tests requiring it", path);
-  else if(check("set_leap_list", -1, novas_set_leap_list(rc))) return n++;
-
-  rc = get_resource("bad-expiration-after-entries.list", path, sizeof(path));
-  if(!rc) fprintf(stderr, "WARNING! Missing %s: skip tests requiring it", path);
-  else if(check("set_leap_list", -1, novas_set_leap_list(rc))) return n++;
-
-  rc = get_resource("expiration-after-entries.list", path, sizeof(path));
-  if(!rc) fprintf(stderr, "WARNING! Missing %s: skip tests requiring it", path);
-  else {
-    if(check("set_leap_list:expiration_after_entries", 0, novas_set_leap_list(rc))) return n++;
-    if(check("lookup_leap:expiration_after_entries", 11, novas_lookup_leap(90000000L))) n++;
-  }
-
-  rc = get_resource("bad-entry.list", path, sizeof(path));
-  if(!rc) fprintf(stderr, "WARNING! Missing %s. skip tests requiring it", path);
-  else if(check("set_leap_list", -1, novas_set_leap_list(rc))) return n++;
-
-  rc = get_resource("truncated-leap.list", path, sizeof(path));
-  if(!rc) fprintf(stderr, "WARNING! Missing %s: skip tests requiring it", path);
-  else {
-    if(check("set_leap_list", 0, novas_set_leap_list(rc))) return n++;
-    if(check("lookup_leap:offline:j2000", NOVAS_INVALID_LEAP, novas_lookup_leap(946684800L))) n++;
-  }
-
-  novas_set_leap_list(NULL);
-  novas_set_auto_fetch_eop(1);
-
-  return n;
-}
-
 
 static int test_is_leap_year() {
   int n = 0;
@@ -3175,6 +3093,26 @@ static int test_comoving_observer() {
   if(check("comoving_observer:place:catalog", -1, make_comoving_observer(&place, &obs))) n++;
 
   return n;
+}
+
+static int test_set_leap_list() {
+  int n = 0;
+
+  errno = 0;
+  if(check("set_leap_list", 0, novas_set_leap_list("blah"))) n++;
+  if(check("set_leap_list:errno", ENOSYS, errno)) n++;
+
+  errno = 0;
+  if(check("set_eop_url:leap", 0, novas_set_eop_url(EOP_LEAP_LIST, 0, "file://blah"))) n++;
+  if(check("set_eop_url:leap:errno", ENOSYS, errno)) n++;
+
+  errno = 0;
+  return n;
+}
+
+static int test_leap_for_jd() {
+  if(check("leap_for_jd", -1, novas_leap_for_jd(NAN))) return 1;
+  return 0;
 }
 
 int main(int argc, const char *argv[]) {
@@ -3415,13 +3353,13 @@ int main(int argc, const char *argv[]) {
   if(test_offset_by()) n++;
   if(test_fetch_eop()) n++;
   if(test_get_eop_itrf_year()) n++;
-  if(test_lookup_leap()) n++;
-  if(test_set_leap_list()) n++;
 
   if(test_is_leap_year()) n++;
   if(test_dynamic_observer()) n++;
   if(test_ephem_state()) n++;
   if(test_comoving_observer()) n++;
+  if(test_set_leap_list()) n++;
+  if(test_leap_for_jd()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");

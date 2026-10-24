@@ -57,23 +57,31 @@ int main() {
   if(!test.equals("itrf_transformed().xp()", c.xp().arcsec(), xp, 1e-14)) n++;
   if(!test.equals("itrf_transformed().yp()", c.yp().arcsec(), yp, 1e-14)) n++;
 
+
 #if !defined(WITHOUT_CURL) && !defined(OFFLINE)
+
+  int timeout = 10000; // 10 seconds
+
   if(!test.check("[enable EOP fetch]", novas_set_auto_fetch_eop(1) == 0)) n++;
 
-  if(!test.check("fetch_current()", EOP::fetch_current(Interval(1.0)).is_valid())) n++;
+  if(!test.check("fetch_current()", EOP::fetch_current(Interval(1.0), timeout).is_valid())) n++;
 
-  if(!test.check("fetch_for(pre)", !EOP::fetch_for(Calendar::gregorian().date(0.0)).is_valid())) n++;
-  if(!test.check("fetch_for_mjd(pre)", !EOP::fetch_for_mjd(-10000L).is_valid())) n++;
+  if(!test.check("fetch_for(pre)", !EOP::fetch_for(Calendar::gregorian().date(0.0), timeout).is_valid())) n++;
+  if(!test.check("fetch_for_mjd(pre)", !EOP::fetch_for_mjd(-10000L, timeout).is_valid())) n++;
 
-  EOP d = EOP::fetch_for_mjd(51544.5);
+  EOP d = EOP::fetch_for_mjd(51544.5, timeout);
   if(!test.check("fetch_for_jd(J2000)", d.is_valid())) n++;
   if(!test.equals("fetch_for_jd(J2000)", d.leap_seconds(), 32)) n++;
 
-  d = EOP::fetch_for(Calendar::gregorian().date(NOVAS_JD_J2000));
+  d = EOP::fetch_for(Calendar::gregorian().date(NOVAS_JD_J2000), timeout);
   if(!test.check("fetch_for(J2000)", d.is_valid())) n++;
   if(!test.equals("fetch_for(J2000)", d.leap_seconds(), 32)) n++;
 
-  d = EOP::fetch_for_mjd(0.0);
+  d = EOP::fetch_for_jd(NOVAS_JD_B1950, timeout);
+  if(!test.check("fetch_for_jd(B1950)", !d.is_valid())) n++;
+  if(!test.equals("fetch_for_jd(B1950)", d.leap_seconds(), 0)) n++;
+
+  d = EOP::fetch_for_mjd(0.0, timeout);
   if(!test.check("fetch_for_jd(old)", !d.is_valid())) n++;
   if(!test.equals("fetch_for_jd(old)", d.leap_seconds(), 0)) n++;
 

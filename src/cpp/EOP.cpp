@@ -16,9 +16,7 @@ namespace supernovas {
 void EOP::validate() {
   static const char *fn = "EOP()";
 
-  if(_leap <= NOVAS_INVALID_LEAP)
-    novas_set_errno(EINVAL, fn, "input leap is invalid");
-  else if(!isfinite(_dut1))
+  if(!isfinite(_dut1))
     novas_set_errno(EINVAL, fn, "input dUT1 is NAN or infinite");
   else if(!_xp.is_valid())
     novas_set_errno(EINVAL, fn, "input xp is NAN");
@@ -30,9 +28,20 @@ void EOP::validate() {
 
 /**
  * Instantiates new Earth Orientation Parameters (EOP) with the specified mean (interpolated)
- * values.
+ * values. The UT1-UTC time difference is used when instantiating an astrometric Time, whereas
+ * the _x<sub>p</sub>_, and _y<sub>p</sub>_ polar offsets are used for instantiating
+ * GeodeticObserver instances.
  *
- * @param leap_seconds    [s] Leap seconds (TAI - UTC).
+ * NOTES:
+ *
+ *  - As of v1.8, no SuperNOVAS internal application of the EOP requires the leap seconds to be
+ *   set to a meaningful value, so you may leave it undefined (e.g. 0 or -1) if you don't need
+ *   it for other purposes elsewhere.
+ *
+ * @param leap_seconds    [s] Leap seconds (TAI - UTC). The leap seconds defined here are
+ *                        unused when the new EOP is used to initialize astrometric time, since
+ *                        `novas_set_time()` and related functions determine leap seconds for
+ *                        themselves.
  * @param dut1_sec        [s] (optional) UT1 - UTC time difference (default: 0.0)
  * @param xp_rad          [rad] (optional) IERS _x_<sub>p</sub> mean (interpolated) pole offset
  *                        in the ITRS _x_ direction. (default: 0.0)
@@ -48,9 +57,20 @@ EOP::EOP(int leap_seconds, double dut1_sec, double xp_rad, double yp_rad)
 
 /**
  * Instantiates new Earth Orientation Parameters (EOP) with the specified mean (interpolated)
- * values.
+ * values. The UT1-UTC time difference is used when instantiating an astrometric Time, whereas
+ * the _x<sub>p</sub>_, and _y<sub>p</sub>_ polar offsets are used for instantiating
+ * GeodeticObserver instances.
  *
- * @param leap_seconds    [s] Leap seconds (TAI - UTC).
+ * NOTES:
+ *
+ * - As of v1.8, no SuperNOVAS internal application of the EOP requires the leap seconds to be
+ *   set to a meaningful value, so you may leave it undefined (e.g. 0 or -1) if you don't need
+ *   it for other purposes elsewhere.
+ *
+ * @param leap_seconds    [s] Leap seconds (TAI - UTC). The leap seconds defined here are
+ *                        unused when the new EOP is used to initialize astrometric time, since
+ *                        `novas_set_time()` and related functions determine leap seconds for
+ *                        themselves.
  * @param dut1            (optional) UT1 - UTC time difference (default: 0.0)
  * @param xp              (optional) IERS _x_<sub>p</sub> mean (interpolated) pole offset
  *                        in the ITRS _X_ direction (default: 0.0)
@@ -205,7 +225,7 @@ std::string EOP::to_string() const {
  *   configuration options), then this function will return an invalid / undefined EOP (`errno`
  *   set to `ENOSYS`).
  *
- * @param jd              [day] Julian Date (preferably UTC-based).
+ * @param jd_utc          [day] Julian Date (preferably UTC-based).
  * @param timeout_millis  [ms] (optional) HTTP connection timeout, or &lt;=0 to leave unchanged.
  * @return        EOP obtained from IERS or else an invalid EOP if there was an error (errno will
  *                indicate the type of error).
@@ -215,11 +235,11 @@ std::string EOP::to_string() const {
  * @sa https://www.iers.org/IERS/EN/DataProducts/EarthOrientationData/eop
  * @sa fetch_for_mjd(), fetch_for(), fetch_current(), novas_fetch_eop()
  */
-EOP EOP::fetch_for_jd(double jd, long timeout_millis) {
+EOP EOP::fetch_for_jd(double jd_utc, long timeout_millis) {
   static const char *fn = "EOP::fetch_for_jd()";
 
   novas_eop eop = {};
-  if(novas_fetch_eop(jd, timeout_millis, &eop) != 0) {
+  if(novas_fetch_eop(jd_utc, timeout_millis, &eop) != 0) {
     novas_trace_invalid(fn);
     return EOP::undefined();
   }
@@ -249,7 +269,7 @@ EOP EOP::fetch_for_jd(double jd, long timeout_millis) {
  *   configuration options), then this function will return an invalid / undefined EOP (`errno`
  *   set to `ENOSYS`).
  *
- * @param mjd             [day] Modified Julian Date (preferably UTC-based).
+ * @param mjd_utc         [day] Modified Julian Date (preferably UTC-based).
  * @param timeout_millis  [ms] (optional) HTTP connection timeout, or &lt;=0 to leave unchanged.
  * @return        EOP obtained from IERS or else an invalid EOP if there was an error (errno will
  *                indicate the type of error).
@@ -259,8 +279,8 @@ EOP EOP::fetch_for_jd(double jd, long timeout_millis) {
  * @sa https://www.iers.org/IERS/EN/DataProducts/EarthOrientationData/eop
  * @sa fetch_for_jd(), fetch_for(), fetch_current(), novas_fetch_eop()
  */
-EOP EOP::fetch_for_mjd(double mjd, long timeout_millis) {
-  EOP e = fetch_for_jd(NOVAS_JD_MJD0 + mjd, timeout_millis);
+EOP EOP::fetch_for_mjd(double mjd_utc, long timeout_millis) {
+  EOP e = fetch_for_jd(NOVAS_JD_MJD0 + mjd_utc, timeout_millis);
   if(!e.is_valid())
     novas_trace_invalid("EOP::fetch_for_mjd()");
   return e;

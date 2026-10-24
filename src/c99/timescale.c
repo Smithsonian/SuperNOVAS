@@ -448,16 +448,24 @@ double get_ut1_to_tt(int leap_seconds, double dut1) {
  *    configuration options), then automatic fetching of the leap seconds and the UT1 - UTC
  *    difference is not possible. You must set `leap` and `dut1` appropriately explicitly.
  *
+ *  - Leap seconds have been abolished, and no new leap seconds will be added after 20 May 2027,
+ *    leaving the current list of leap seconds at hte final definitive list. Hence SuperNOVAS will
+ *    determine leap seconds automatically, based on the time, starting with v1.8, and the user
+ *    no longer needs to supply this information when defining astrometric times.
+ *
  * @param timescale     The astronomical time scale in which the Julian Date is given
  * @param jd            [day] Julian day value in the specified timescale
- * @param leap          [s] Leap seconds, e.g. as published by IERS Bulletin C. (It may be
- *                      unused if `dut1` is NAN -- see below).
+ * @param leap          [s] (_unused_) Leap seconds, e.g. as published by IERS Bulletin C. It is
+ *                      not used as of v1.8. Leap seconds are now obtained automatically from
+ *                      the definitive list of leap seconds in the time period (1970 -- 2027), in
+ *                      which they were changing. A best practice may be to set this parameter
+ *                      to 0 or -1 in your application calls.
  * @param dut1          [s] mean UT1-UTC time difference, e.g. as published in IERS Bulletin A
  *                      (without diurnal corrections for libration and ocean tides). If the time
  *                      offset is defined for a different ITRS realization than what is used for
  *                      the coordinates of an Earth-based observer, you can use
  *                      `novas_itrf_transform_eop()` to make it consistent. If `dut1` is NAN, and
- *                      `novas_is_auto_fetch_eop()` is TRUE then both `leap` and `dut1` will be
+ *                      `novas_is_auto_fetch_eop()` is TRUE then `dut1` will be
  *                      fetched from IERS if possible. Note, that prior to 1956 IERS does not
  *                      provide UT1-UTC difference.
  * @param[out] time     Pointer to the data structure that uniquely defines the astronomical time
@@ -489,14 +497,22 @@ int novas_set_time(enum novas_timescale timescale, double jd, int leap, double d
  *    configuration options), then automatic fetching of the leap seconds and the UT1 - UTC
  *    difference is not possible. You must set `leap` and `dut1` appropriately explicitly.
  *
+ *  - Leap seconds have been abolished, and no new leap seconds will be added after 20 May 2027,
+ *    leaving the current list of leap seconds at hte final definitive list. Hence SuperNOVAS will
+ *    determine leap seconds automatically, based on the time, starting with v1.8, and the user
+ *    no longer needs to supply this information when defining astrometric times.
+ *
  * @param timescale     The astronomical time scale in which the Julian Date is given
  * @param str           The astronomical date specification, possibly including time and timezone,
  *                      in a standard format. The date is assumed to be in the astronomical
  *                      calendar of date, which differs from ISO 8601 timestamps for dates prior
  *                      to the Gregorian calendar reform of 1582 October 15 (otherwise, the two
  *                      are identical). See `novas_parse_date()` for more on acceptable formats.
- * @param leap          [s] Leap seconds, e.g. as published by IERS Bulletin C. (It may be
- *                      unused if `dut1` is NAN -- see below).
+ * @param leap          [s] (_unused_) Leap seconds, e.g. as published by IERS Bulletin C. It is
+ *                      not used as of v1.8. Leap seconds are now obtained automatically from
+ *                      the definitive list of leap seconds in the time period (1970 -- 2027), in
+ *                      which they were changing. A best practice may be to set this parameter
+ *                      to 0 or -1 in your application calls.
  * @param dut1          [s] mean UT1-UTC time difference, e.g. as published in IERS Bulletin A
  *                      (without diurnal corrections for libration and ocean tides). If the time
  *                      offset is defined for a different ITRS realization than what is used for
@@ -556,6 +572,70 @@ static double tt_offset(const novas_timespec *ts, enum novas_timescale timescale
 }
 
 /**
+ * Fills the `dut1` and `ut1_to_tt` fields for `time`, by lookup up leap, and attempting to fetch
+ * UT1-UTC from IERS (or some other source). If the UT1-UTC value cannot be obtained, both
+ * fields will be set to NAN.
+ *
+ * @param time        astrometric time specification
+ * @param timescale   timescale in which JD has been specified (so far).
+ */
+static void novas_time_fill_ut_parms(novas_timespec *time, enum novas_timescale timescale) {
+  static const char *fn = "novas_time_fill_ut_parms";
+
+  int i, leap;
+
+  // For UT1 / UTC get initial leap based on UTC (for UT1 we'll refine that later...)
+  if(timescale == NOVAS_UT1 || timescale == NOVAS_UTC) {
+    // Look up for UTC / UT1 timestamp
+    leap = novas_leap_for_jd(time->ijd_tt + time->fjd_tt);
+  }
+  else {
+    // Get leap via TT
+    novas_timespec tt = *time;
+    tt.fjd_tt -= tt_offset(time, timescale) / NOVAS_DAY;
+    leap = novas_time_leap(&tt);
+    if(leap == -1)
+      goto invalid; // @suppress("Goto statement used")
+  }
+
+  // temporary UTC to TT conversion for fetching EOP
+  time->dut1 = 0.0;
+  time->ut1_to_tt = DTA + leap;
+
+  // Refining loop (iterates for UT1 only)
+  for(i = 0; i < novas_inv_max_iter; i++) {
+    // Fetch dut1 from IERS...
+    novas_eop eop = {};
+
+    if(novas_fetch_eop(novas_get_time(time, NOVAS_UTC), 0.0, &eop) < 0)
+      goto invalid; // @suppress("Goto statement used")
+
+    time->dut1 = eop.dut1;
+    time->ut1_to_tt = DTA + leap - time->dut1;
+
+    // For UT1 get the leap again for the new UT1 - UTC value, and iterate if necessary
+    if(!isnan(time->dut1) && timescale == NOVAS_UT1) {
+      int leap2 = novas_leap_for_jd(time->ijd_tt + time->fjd_tt - time->dut1 / NOVAS_DAY);
+      if(leap2 == leap) return;
+
+      leap = leap2;
+    }
+    else return; // No need to iterate...
+  }
+
+  novas_set_errno(ECANCELED, fn, "determining leap seconds failed to converge");
+
+  // -------------------------------------------------------------------------
+  invalid:
+
+  time->dut1 = NAN;
+  time->ut1_to_tt = NAN;
+  novas_trace_invalid(fn);
+  return;
+}
+
+
+/**
  * Sets an astronomical time to the split Julian Date value, defined in the specified timescale.
  * The split into the integer and fractional parts can be done in any convenient way. The highest
  * precision is reached if the fractional part is &le; 1 day. In that case, the time may be
@@ -570,6 +650,11 @@ static double tt_offset(const novas_timespec *ts, enum novas_timescale timescale
  *    configuration options), then automatic fetching of the leap seconds and the UT1 - UTC
  *    difference is not possible. You must set `leap` and `dut1` appropriately explicitly.
  *
+ *  - Leap seconds have been abolished, and no new leap seconds will be added after 20 May 2027,
+ *    leaving the current list of leap seconds at hte final definitive list. Hence SuperNOVAS will
+ *    determine leap seconds automatically, based on the time, starting with v1.8, and the user
+ *    no longer needs to supply this information when defining astrometric times.
+ *
  * REFERENCES:
  *
  *  1. IAU 1991, RECOMMENDATION III. XXIst General Assembly of the
@@ -583,14 +668,17 @@ static double tt_offset(const novas_timespec *ts, enum novas_timescale timescale
  * @param timescale     The astronomical time scale in which the Julian Date is given
  * @param ijd           [day] integer part of the Julian day in the specified timescale
  * @param fjd           [day] fractional part Julian day value in the specified timescale
- * @param leap          [s] Leap seconds, e.g. as published by IERS Bulletin C. (It may be
- *                      unused if `dut1` is NAN -- see below).
+ * @param leap          [s] (_unused_) Leap seconds, e.g. as published by IERS Bulletin C. It is
+ *                      not used as of v1.8. Leap seconds are now obtained automatically from
+ *                      the definitive list of leap seconds in the time period (1970 -- 2027), in
+ *                      which they were changing. A best practice may be to set this parameter
+ *                      to 0 or -1 in your application calls.
  * @param dut1          [s] mean UT1-UTC time difference, e.g. as published in IERS Bulletin A
  *                      (without diurnal corrections for libration and ocean tides), If the time
  *                      offset is defined for a different ITRS realization than what is used for
  *                      the coordinates of an Earth-based observer, you can use
  *                      `novas_itrf_transform_eop()` to make it consistent. If `dut1` is NAN
- *                      and `novas_is_auto_fetch_eop()` is TRUE, then both `leap` and `dut1` will be
+ *                      and `novas_is_auto_fetch_eop()` is TRUE, then `dut1` will be
  *                      fetched from IERS if possible. Note, that prior to 1956 IERS does not
  *                      provide UT1-UTC difference.
  * @param[out] time     Pointer to the data structure that uniquely defines the astronomical time
@@ -610,7 +698,7 @@ int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, i
   static const char *fn = "novas_set_split_time";
 
   long ifjd;
-  double dt = 0.0, floor_jd;
+  double floor_jd;
 
   if(!time)
     return novas_error(-1, EINVAL, fn, "NULL output time structure");
@@ -618,55 +706,65 @@ int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, i
   if((unsigned) timescale >= NOVAS_TIMESCALES)
     return novas_error(-1, ERANGE, fn, "timescale %d is out of range", (int) timescale);
 
-  if(novas_is_auto_fetch_eop() && isnan(dut1)) {
-    // Fetch leap and dut1 from IERS...
-    novas_eop eop = {};
-
-    if(novas_fetch_eop(ijd + fjd, 0.0, &eop) == 0) {
-      leap = eop.leap;
-      dut1 = eop.dut1;
-    }
-    else {
-      novas_trace_invalid(fn);
-    }
-  }
+  if(isnan(fjd))
+    return novas_error(-1, EINVAL, fn, "input fractional JD is NAN");
 
   if(fjd < (double) LONG_MIN || fjd >= (double) LONG_MAX)
     return novas_error(-1, ERANGE, fn, "fractional JD %13g is outside of long integer range", fjd);
 
-  time->tt2tdb = NAN;
-  time->dut1 = dut1;
-  time->ut1_to_tt = leap - dut1 + DTA;
-
   // Normalized split, s.t. fjd is fractional day [0:1)
   ifjd = (long) floor(fjd);
-
   time->ijd_tt = ijd + ifjd;
   time->fjd_tt = fjd - ifjd;
 
+  // if timescale is barycentric then calculate TDB - TT before conversion to TT
   if(timescale == NOVAS_TCB || timescale == NOVAS_TDB)
     time->tt2tdb = tt2tdb_hp(ijd + fjd);
+  else
+    time->tt2tdb = NAN;
 
+  if(isnan(dut1) && novas_is_auto_fetch_eop()) {
+    // Determine dut1 and ut1_to_tt, if possible
+    novas_time_fill_ut_parms(time, timescale);
+  }
+  else {
+    time->dut1 = dut1;
+
+    // Determine leap automatically
+    if(timescale == NOVAS_UTC)
+      leap = novas_leap_for_jd(ijd + fjd);
+    else if(timescale == NOVAS_UT1 && !isnan(dut1))
+      leap = novas_leap_for_jd(ijd + fjd - dut1 / NOVAS_DAY);
+    else
+      leap = novas_time_leap(time);
+
+    time->ut1_to_tt = leap - dut1 + DTA;
+  }
+
+  // Convert JD to TT scale
   fjd -= tt_offset(time, timescale) / DAY;
-  floor_jd = ijd + floor(fjd);
 
+  // Check for out-of-range after conversion to TT
+  floor_jd = ijd + floor(fjd);
   if(floor_jd < (double) LONG_MIN || floor_jd >= (double) LONG_MAX)
     return novas_error(-1, ERANGE, fn, "JD %13g is outside of long integer range", floor_jd);
 
-  // Re-split after fjd adjustment.
+  // Re-split after fjd adjustment
   ifjd = (long) floor(fjd);
-
   time->ijd_tt = ijd + ifjd;
   time->fjd_tt = fjd - ifjd;
 
+  // If we haven't got TDB-TT already, then calculate it now
   if(isnan(time->tt2tdb))
     time->tt2tdb = tt2tdb_hp(time->ijd_tt + time->fjd_tt);
 
   // Diurnal variations in Earth rotation
-  novas_diurnal_eop_at_time(time, NULL, NULL, &dt);
-  time->dut1 += dt;
-  time->ut1_to_tt -= dt;
-
+  if(!isnan(time->dut1)) {
+    double dt = 0.0;
+    novas_diurnal_eop_at_time(time, NULL, NULL, &dt);
+    time->dut1 += dt;
+    time->ut1_to_tt -= dt;
+  }
   return 0;
 }
 
@@ -952,18 +1050,26 @@ double novas_diff_tcg(const novas_timespec *t1, const novas_timespec *t2) {
  *    configuration options), then automatic fetching of the leap seconds and the UT1 - UTC
  *    difference is not possible. You must set `leap` and `dut1` appropriately explicitly.
  *
+ *  - Leap seconds have been abolished, and no new leap seconds will be added after 20 May 2027,
+ *    leaving the current list of leap seconds at hte final definitive list. Hence SuperNOVAS will
+ *    determine leap seconds automatically, based on the time, starting with v1.8, and the user
+ *    no longer needs to supply this information when defining astrometric times.
+ *
  * @param unix_time   [s] UNIX time (UTC) seconds
  * @param nanos       [ns] UTC sub-second component
- * @param leap        [s] Leap seconds, e.g. as published by IERS Bulletin C. (It may be
- *                    unused if `dut1` is NAN -- see below).
+ * @param leap        [s] (_unused_) Leap seconds, e.g. as published by IERS Bulletin C. It is
+ *                    not used as of v1.8. Leap seconds are now obtained automatically from
+ *                    the definitive list of leap seconds in the time period (1970 -- 2027), in
+ *                    which they were changing. A best practice may be to set this parameter
+ *                    to 0 or -1 in your application calls.
  * @param dut1        [s] mean UT1-UTC time difference, e.g. as published in IERS Bulletin A
  *                    (without diurnal corrections for libration and ocean tides), If the time
  *                    offset is defined for a different ITRS realization than what is used for
  *                    the coordinates of an Earth-based observer, you can use
  *                    `novas_itrf_transform_eop()` to make it consistent. If `dut1` is NAN, and
- *                    `novas_is_auto_fetch_eop()` is TRUE then both `leap` and `dut1` will be
+ *                    `novas_is_auto_fetch_eop()` is TRUE then `dut1` will be
  *                    fetched from IERS if possible. Note, that prior to 1956 IERS does not
- *                      provide UT1-UTC difference.
+ *                    provide UT1-UTC difference.
  * @param[out] time   Pointer to the data structure that uniquely defines the astronomical time
  *                    for all applications.
  * @return            0 if successful, or else -1 if there was an error (errno will be set to
@@ -1012,8 +1118,16 @@ int novas_set_unix_time(time_t unix_time, long nanos, int leap, double dut1, nov
  *     configuration options), then automatic fetching of the leap seconds and the UT1 - UTC
  *     difference is not possible. You must set `leap` and `dut1` appropriately explicitly.
  *
- * @param leap        [s] Leap seconds, e.g. as published by IERS Bulletin C. (It may be
- *                    unused if `dut1` is NAN -- see below).
+ *  4. Leap seconds have been abolished, and no new leap seconds will be added after 20 May 2027,
+ *     leaving the current list of leap seconds at hte final definitive list. Hence SuperNOVAS will
+ *     determine leap seconds automatically, based on the time, starting with v1.8, and the user
+ *     no longer needs to supply this information when defining astrometric times.
+ *
+ * @param leap        [s] (_unused_) Leap seconds, e.g. as published by IERS Bulletin C. It is
+ *                    not used as of v1.8. Leap seconds are now obtained automatically from
+ *                    the definitive list of leap seconds in the time period (1970 -- 2027), in
+ *                    which they were changing. A best practice may be to set this parameter
+ *                    to 0 or -1 in your application calls.
  * @param dut1        [s] mean UT1-UTC time difference, e.g. as published in IERS Bulletin A
  *                    (without diurnal corrections for libration and ocean tides), If the time
  *                    offset is defined for a different ITRS realization than what is used for
@@ -1327,11 +1441,11 @@ int novas_timestamp(const novas_timespec *restrict time, enum novas_timescale sc
 
   fjd = novas_get_split_time(time, scale, &ijd);
   if(isnan(fjd))
-      return novas_trace(fn, -1, 0);
+    return novas_trace(fn, -1, 0);
 
   n = timestamp(ijd, fjd, NOVAS_ASTRONOMICAL_CALENDAR, buf);
   if(n < 0)
-      return novas_trace(fn, -1, 0);
+    return novas_trace(fn, -1, 0);
 
   buf[n++] = ' ';
 
@@ -1443,15 +1557,32 @@ double novas_time_lst(const novas_timespec *restrict time, double lon, enum nova
  *
  * @param time    The astronomical time specification.
  * @return        [s] The leap seconds that was used to initialize the time specification, or -1
- *                if the input pointer is NULL (errno is set to EINVAL).
+ *                if the input pointer is NULL (errno is set to EINVAL), or if the calculation
+ *                failed to converge (errno is set  to ECANCELED).
  *
  * @since 1.6
  * @author Attila Kovacs
  */
 int novas_time_leap(const novas_timespec *time) {
+  static const char *fn = "novas_time_leap";
+
+  int i, leap = 0;
+
   if(!time)
-    return novas_error(-1, EINVAL, "novas_time_leap", "input time specification is NULL");
-  return (int) round(time->ut1_to_tt + time->dut1 - DTA);
+    return novas_error(-1, EINVAL, fn, "input time specification is NULL");
+
+  if(isnan(time->fjd_tt))
+    return novas_error(-1, EINVAL, fn, "input time has NAN fjd_tt field");
+
+  for(i = 0; i < novas_inv_max_iter; i++) {
+    double jd_utc = time->ijd_tt + time->fjd_tt - (DTA + leap) / NOVAS_DAY;
+    int leap2 = novas_leap_for_jd(jd_utc);
+    if(leap2 == leap) return leap;
+
+    leap = leap2;
+  }
+
+  return novas_error(-1, ECANCELED, fn, "failed to converge");
 }
 
 
@@ -1774,7 +1905,7 @@ double novas_clock_skew(const novas_frame *frame, enum novas_timescale timescale
 double novas_mean_clock_skew(const novas_frame *frame, enum novas_timescale timescale) {
   double D = novas_clock_skew(frame, timescale);
   if(isnan(D))
-      return novas_trace_nan("novas_mean_clock_skew");
+    return novas_trace_nan("novas_mean_clock_skew");
 
   // (1 + D) * (1 - D') = 1 + D - (1 + D) D'
   return D - (1.0 + D) * tidal_clock_skew(frame);

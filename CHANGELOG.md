@@ -86,6 +86,8 @@ Upcoming maintenance release, expected around 1 November 2026.
  - #387: Added `Observer::className()` and `Source::className()` methods, which returns the name of the concrete 
    subclass used.
    
+ - #395: Added `novas_leap_for_jd()` to make it easier to lookup leap seconds for a (UTC-based) Julian dates. 
+   
  - #296: Added `make_comoving_observer()` to simplify the creation of observers whose momentary location is defined
    by a Solar-system body or place, such as virtual observers planet centers, travelling on a spacescraft with
    ephemeris data, or defined by Keplerian orbital parameters around a major Solar-system body or barycenter position.
@@ -100,11 +102,6 @@ Upcoming maintenance release, expected around 1 November 2026.
  
  - #369: Improved EOP fetching thread safety, with thread-safe one-time mutex initialization, and more synchronized
    code blocks preventing concurrent access of shared EOP resources (by csp256 and attipaci).
-   
- - #372: Improved leap seconds list parsing, by applying leap list expiration as end date for last leap entry, in the 
-   unlikely case that the expiration timestamp appears after the entries in the file. Note, that the timestamp of
-   always appears in the commented header section before the leap entries in the IERS data products, so it is unlikely
-   that normal leap list files will ever benefit from the change. (by csp256)
 
  - #371: `novas_jd_to_date()` now checks that input JD date can be represented in a calendar format with an `int`-type 
    year components in any calendar, and returns -1 with `errno` set to `ERANGE` when it cannot. The change prevents 
@@ -148,15 +145,39 @@ Upcoming maintenance release, expected around 1 November 2026.
  
  - #387: `ephemeris()` now will now return -1 with `errno` set to `EINVAL` if either input time component is NaN.
  
- - #387: Modified `geo_posvel()` to handle new dynamic observer locations.
- 
  - #389: Improved error propagation on interpolated EOP estimate when EOP is obtained from IERS or some other source.
+   
+ - #395: Given that leap seconds are abolished effective 20 May 2027, the final leap seconds list is now hardcoded,
+   making `novas_set_leap_list()` useless. It no longer does anything, except returning 0 (but setting `errno` to
+   `ENOSYS`). The same goes for `novas_set_eop_url()`, when called with `EOP_LEAP_LIST` as the series.
+    
+ - #395: `novas_lookup_leap()` no longer needs LIBC support, and will always return a valid leap seconds value, 
+   since no new leap seconds will be introduced in the future. The definitive list of leap seconds is now hard-coded.
+   
+ - #395: `novas_time_leap()` now calls `novas_lookup_leap()` to ensure that the leap seconds are returned correctly
+   after their abolishment.
+   
+ - #395: Defining astrometric time through `novas_set_time()` / `novas_set_split_time()`, `Time` constructors and 
+   related functions / method now ignore the leap seconds parameter, as leap seconds are determined automatically.
+   
+ - #395: `novas_set_time()` / `novas_set_split_time()` have been improved to set leap AND UT1-UTC correctly around 
+   the leap second boundaries for all timescales, when `dut1` is NAN. They now also check for NAN input JD values and 
+   will return an error (`errno` set to `EINVAL`) in case of NAN JD input.
+   
+ - #395: `Time` constructor to allow the UT1 - UTC difference to grow beyond +/- 1s.
+   
+ - #395: Change default EOP URLs to use `brahe` mirrors for rapid service and C04 series.
    
  - Streamlined `novas_make_planet_orbit()` slightly by avoiding duplicate trigonometric calls.
 
  - Changed portable mutex feature test order to reserve use of the C11 mutexes for cases where neither POSIX nor
    MSC mutexes can be used.
    
+### Deprecated
+
+ - #395: Deprecated `novas_set_leap_list()`. It's pretty useless now that it does pretty much nothing at all, 
+   except setting `errno` to `ENOSYS`.
+
 
 ## [1.7.2] - 2026-08-05
 

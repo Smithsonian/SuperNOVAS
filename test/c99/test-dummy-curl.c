@@ -80,7 +80,6 @@ static int test_curl_init() {
   novas_eop eop = {};
 
   curl = NULL;
-  if(check("curl_init:lookup_leap", NOVAS_INVALID_LEAP, novas_lookup_leap(0L))) n++;
   if(check("curl_init:fetch_eop", -1, novas_fetch_eop(NOVAS_JD_J2000, 0, &eop))) n++;
 
   return n;
