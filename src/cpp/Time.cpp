@@ -47,6 +47,12 @@ static bool is_valid_parms(double dUT1, enum novas_timescale timescale) {
  *    determine leap seconds automatically, based on the time, starting with v1.8, and the user
  *    no longer needs to supply this information when defining astrometric times.
  *
+ * REFERENCES:
+ *
+ *  1. General Conference on Weights and Measures. "Resolution 5: On the adoption of a continuous UTC."
+ *     Document presented at the 28th Meeting of the CGPM, Bureau International des Poids et Mesures (BIPM),
+ *     Versailles, France, October 15, 2026. https://www.bipm.org/en/cgpm-2026/resolution-5.
+ *
  * @param jd            [day] Julian date (in the selected timescale)
  * @param leap_seconds  [s] (_unused_) Leap seconds, e.g. as published by IERS Bulletin C. It is
  *                      not used as of v1.8. Leap seconds are now obtained automatically from
@@ -101,6 +107,11 @@ Time::Time(double jd, const EOP& eop, enum novas_timescale timescale)
  *   determine leap seconds automatically, based on the time, starting with v1.8, and the user
  *   no longer needs to supply this information when defining astrometric times.
  *
+ * REFERENCES:
+ *
+ *  1. General Conference on Weights and Measures. "Resolution 5: On the adoption of a continuous UTC."
+ *     Document presented at the 28th Meeting of the CGPM, Bureau International des Poids et Mesures (BIPM),
+ *     Versailles, France, October 15, 2026. https://www.bipm.org/en/cgpm-2026/resolution-5.
  *
  * @param ijd           [day] integer part of Julian date (in the selected timescale)
  * @param fjd           [day] fractional part of Julian date (in the selected timescale)
@@ -157,6 +168,12 @@ Time::Time(long ijd, double fjd, const EOP& eop, enum novas_timescale timescale)
  *   leaving the current list of leap seconds at hte final definitive list. Hence SuperNOVAS will
  *   determine leap seconds automatically, based on the time, starting with v1.8, and the user
  *   no longer needs to supply this information when defining astrometric times.
+ *
+ * REFERENCES:
+ *
+ *  1. General Conference on Weights and Measures. "Resolution 5: On the adoption of a continuous UTC."
+ *     Document presented at the 28th Meeting of the CGPM, Bureau International des Poids et Mesures (BIPM),
+ *     Versailles, France, October 15, 2026. https://www.bipm.org/en/cgpm-2026/resolution-5.
  *
  * @param timestamp     A precision timestamp, such as an ISO 8601 timestamp.
  * @param leap_seconds  [s] (_unused_) Leap seconds, e.g. as published by IERS Bulletin C. It is
@@ -215,6 +232,12 @@ Time::Time(const std::string& timestamp, const EOP& eop, enum novas_timescale ti
  *   leaving the current list of leap seconds at hte final definitive list. Hence SuperNOVAS will
  *   determine leap seconds automatically, based on the time, starting with v1.8, and the user
  *   no longer needs to supply this information when defining astrometric times.
+ *
+ * REFERENCES:
+ *
+ *  1. General Conference on Weights and Measures. "Resolution 5: On the adoption of a continuous UTC."
+ *     Document presented at the 28th Meeting of the CGPM, Bureau International des Poids et Mesures (BIPM),
+ *     Versailles, France, October 15, 2026. https://www.bipm.org/en/cgpm-2026/resolution-5.
  *
  * @param t             A precision POSIX standard UTC timestamp.
  * @param leap_seconds  [s] (_unused_) Leap seconds, e.g. as published by IERS Bulletin C. It is
@@ -628,6 +651,12 @@ time_t Time::unix_time(long *nanos) const {
 /**
  * Returns the leap seconds for this time instance, as was provided during instantiation.
  *
+ * REFERENCES:
+ *
+ *  1. General Conference on Weights and Measures. "Resolution 5: On the adoption of a continuous UTC."
+ *     Document presented at the 28th Meeting of the CGPM, Bureau International des Poids et Mesures (BIPM),
+ *     Versailles, France, October 15, 2026. https://www.bipm.org/en/cgpm-2026/resolution-5.
+ *
  * @return      [s] the leap seconds (TAI - UTC).
  *
  * @since 1.6
@@ -888,6 +917,12 @@ std::string Time::to_epoch_string(int decimals) const {
  *   determine leap seconds automatically, based on the time, starting with v1.8, and the user
  *   no longer needs to supply this information when defining astrometric times.
  *
+ * REFERENCES:
+ *
+ *  1. General Conference on Weights and Measures. "Resolution 5: On the adoption of a continuous UTC."
+ *     Document presented at the 28th Meeting of the CGPM, Bureau International des Poids et Mesures (BIPM),
+ *     Versailles, France, October 15, 2026. https://www.bipm.org/en/cgpm-2026/resolution-5.
+ *
  * @param mjd           [day] Modified Julian Date, in the timescale of choice
  * @param leap_seconds  [s] (_unused_) Leap seconds, e.g. as published by IERS Bulletin C. It is
  *                      not used as of v1.8. Leap seconds are now obtained automatically from
@@ -944,6 +979,12 @@ Time Time::from_mjd(double mjd, const EOP& eop, enum novas_timescale timescale) 
  *   leaving the current list of leap seconds at hte final definitive list. Hence SuperNOVAS will
  *   determine leap seconds automatically, based on the time, starting with v1.8, and the user
  *   no longer needs to supply this information when defining astrometric times.
+ *
+ * REFERENCES:
+ *
+ *  1. General Conference on Weights and Measures. "Resolution 5: On the adoption of a continuous UTC."
+ *     Document presented at the 28th Meeting of the CGPM, Bureau International des Poids et Mesures (BIPM),
+ *     Versailles, France, October 15, 2026. https://www.bipm.org/en/cgpm-2026/resolution-5.
  *
  * @param leap_seconds  [s] (_unused_) Leap seconds, e.g. as published by IERS Bulletin C. It is
  *                      not used as of v1.8. Leap seconds are now obtained automatically from

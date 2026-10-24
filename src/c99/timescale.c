@@ -1555,6 +1555,12 @@ double novas_time_lst(const novas_timespec *restrict time, double lon, enum nova
 /**
  * Returns the leap seconds component of an astronomical time specification.
  *
+ * REFERENCES:
+ *
+ *  1. General Conference on Weights and Measures. "Resolution 5: On the adoption of a continuous UTC."
+ *     Document presented at the 28th Meeting of the CGPM, Bureau International des Poids et Mesures (BIPM),
+ *     Versailles, France, October 15, 2026. https://www.bipm.org/en/cgpm-2026/resolution-5.
+ *
  * @param time    The astronomical time specification.
  * @return        [s] The leap seconds that was used to initialize the time specification, or -1
  *                if the input pointer is NULL (errno is set to EINVAL), or if the calculation

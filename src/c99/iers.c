@@ -555,6 +555,12 @@ static void cleanup_eop_urls_async() {
  * of v1.8. There will be leap hours instead, perhaps, in the distant future, but not for some millenia.
  * If someone still uses SuperNOVAS then, well, they must make some modifications to handle it then...
  *
+ * REFERENCES:
+ *
+ *  1. General Conference on Weights and Measures. "Resolution 5: On the adoption of a continuous UTC."
+ *     Document presented at the 28th Meeting of the CGPM, Bureau International des Poids et Mesures (BIPM),
+ *     Versailles, France, October 15, 2026. https://www.bipm.org/en/cgpm-2026/resolution-5.
+ *
  * @param filename      _unused_
  * @return              0
  *
@@ -584,6 +590,13 @@ int novas_set_leap_list(const char *filename) {
  * has been made to not introduce further leap seconds as of 20 May 2027, leaving 37 seconds
  * for the foreseeable future.
  *
+ * REFERENCES:
+ *
+ *  1. General Conference on Weights and Measures. "Resolution 5: On the adoption of a continuous UTC."
+ *     Document presented at the 28th Meeting of the CGPM, Bureau International des Poids et Mesures (BIPM),
+ *     Versailles, France, October 15, 2026. https://www.bipm.org/en/cgpm-2026/resolution-5.
+ *
+ *
  * @param t     [s] UNIX time (seconds since 0 UTC, 1 Jan 1970)
  * @return      The leap seconds for the given time.
  *
@@ -612,6 +625,12 @@ int novas_lookup_leap(time_t t) {
  * 0 is returned. The last leap of 27 seconds was introduced on 1 January 2017, and the decision
  * has been made to not introduce further leap seconds as of 20 May 2027, leaving 37 seconds
  * for the foreseeable future.
+ *
+ * REFERENCES:
+ *
+ *  1. General Conference on Weights and Measures. "Resolution 5: On the adoption of a continuous UTC."
+ *     Document presented at the 28th Meeting of the CGPM, Bureau International des Poids et Mesures (BIPM),
+ *     Versailles, France, October 15, 2026. https://www.bipm.org/en/cgpm-2026/resolution-5.
  *
  * @param jd_utc    [day] Julian date (preferably UTC-based)
  * @return          The leap seconds for the given time, or -1 if the input date is NAN
