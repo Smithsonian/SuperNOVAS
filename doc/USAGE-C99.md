@@ -15,7 +15,7 @@ The following links provide further useful documentation resources for you:
  - [C99 API documentation](https://sigmyne.github.io/SuperNOVAS/doc/html/topics.html)
  - [SuperNOVAS pages](https://sigmyne.github.io/SuperNOVAS) on github.io 
  
-This document has been updated for the `v1.7` and later releases.
+This document has been updated for the `v1.8` and later releases.
  
 -----------------------------------------------------------------------------
 
@@ -359,12 +359,10 @@ e.g.:
 #### Specify the time of observation
 
 Next, we set the time of observation. For a ground-based observer, you will need to provide __SuperNOVAS__ with the
-UT1 - UTC time difference (a.k.a. DUT1), and the current leap seconds. You can obtain suitable values for DUT1 from 
-IERS, and for the highest precision, interpolate for the time of observations. For the example, let's assume 37 leap 
-seconds, and DUT1 = 0.042,
+UT1 - UTC time difference (a.k.a. DUT1). You can obtain suitable values for DUT1 from IERS, and for the highest 
+precision, interpolate for the time of observations. For the example, let's assume DUT1 = 0.042,
 
 ```c
-  int leap_seconds = 37;        // [s] UTC - TAI time difference
   double dut1 = 0.042;          // [s] UT1 - UTC time difference
 ```
  
@@ -374,7 +372,7 @@ Then we can set the time of observation, for example, using the current UNIX tim
  novas_timespec obs_time;       // Structure that will define astrometric time
 
  // Set the time of observation to the precise UTC-based UNIX time
- novas_set_current_time(leap_seconds, dut1, &obs_time);
+ novas_set_current_time(0, dut1, &obs_time);
 ```
 
 Alternatively, you may set the time as a Julian date in the time measure of choice (UTC, UT1, TT, TDB, GPS, TAI, TCG, 
@@ -383,7 +381,7 @@ or TCB):
 ```c
  double jd_tai = ...     // TAI-based Julian Date 
 
- novas_set_time(NOVAS_TAI, jd_tai, leap_seconds, dut1, &obs_time);
+ novas_set_time(NOVAS_TAI, jd_tai, 0, dut1, &obs_time);
 ```
 
 or, for the best precision we may do the same with an integer / fractional split:
@@ -392,36 +390,37 @@ or, for the best precision we may do the same with an integer / fractional split
  long ijd_tai = ...     // Integer part of the TAI-based Julian Date
  double fjd_tai = ...   // Fractional part of the TAI-based Julian Date 
   
- novas_set_split_time(NOVAS_TAI, ijd_tai, fjd_tai, leap_seconds, dut1, &obs_time);
+ novas_set_split_time(NOVAS_TAI, ijd_tai, fjd_tai, 0, dut1, &obs_time);
 ```
 
 Or, you might use string dates, such as an ISO timestamp:
 
 ```c
- novas_set_str_time(NOVAS_UTC, "2025-01-26T22:05:14.234+0200", leap_seconds, dut1, &obs_time);
+ novas_set_str_time(NOVAS_UTC, "2025-01-26T22:05:14.234+0200", 0, dut1, &obs_time);
 ```
 
-Note, that the likes of `novas_set_time()` will automatically apply diurnal corrections to the supplied UT1-UTC time 
-difference for libration and ocean tides. Thus, the supplied values should not include these. Rather you should pass
-`dut1` directly (or interpolated) from the IERS Bulletin values for the time of observation.
+Note, that the likes of `novas_set_time()` will automatically determine leap seconds (now an unused parameters as of 
+v1.8, hence set to 0 in the examples above), and apply diurnal corrections to the supplied UT1-UTC time difference for 
+libration and ocean tides. Thus, the supplied values should not include these. Rather you should pass `dut1` directly 
+(or interpolated) from the IERS Bulletin values for the time of observation.
 
-As of v1.7, you can also let __SuperNOVAS__ fetch leap seconds and the UT1 - UTC time difference automatically from 
-IERS, provided you are online and you don't mind the slight delay associated with the HTTP query. Simply pass `NAN` in 
-place of the `dut1` parameter, and the value of `leap_seconds` becomes irrelevant (e.g. you can use 0 or -1, if you 
-will). However, you should be prepared that the lookup may fail, and so you should always check the return status, 
-e.g.:
+As of v1.7, you can also let __SuperNOVAS__ fetch the UT1 - UTC time difference automatically from IERS, provided you 
+are online and you don't mind the slight delay associated with the HTTP query. Simply pass `NAN` in place of the 
+`dut1` parameter, and the value of `leap_seconds` becomes irrelevant (e.g. you can use 0 or -1, if you will). However, 
+you should be prepared that the lookup may fail, and so you should always check the return status, e.g.:
 
 ```c
-  // Use NAN for dut1 to fetch leap seconds and the UT1 - UTC difference from IERS
-  if(novas_set_current_time(-1, NAN, &obs_time) != 0) {
-    // Oops, failed to get leap seconds and dut1 from IERS...
+  // Use NAN for dut1 to fetch the UT1 - UTC difference from IERS
+  if(novas_set_current_time(0, NAN, &obs_time) != 0) {
+    // Oops, failed to get dut1 from IERS...
     return -1;
   }
 ```
 
-You can also disable the automatic fetch and replacement of NAN `dut1` values by calling 
-`novas_set_auto_fetch_eop(0)`. See \ref earth for the set of functions that can be used for fetching appropriate 
-values for the leap seconds and the UT1-UTC time difference from local or external sources.
+You can also set alternative URLs, including for local files, to use for the EOP resources. Obtaining EOP from local
+copies of the EOP series will reduce latencies and improves reliability. You may also disable the automatic fetch and 
+replacement of NAN `dut1` values by calling `novas_set_auto_fetch_eop(0)`. See \ref earth for the set of functions 
+that can be used for fetching appropriate values for the UT1-UTC time difference from local or external sources.
 
 <a name="observing-frame-c99"></a>
 #### Set up the observing frame

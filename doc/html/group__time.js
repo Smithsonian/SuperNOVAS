@@ -65,6 +65,7 @@ var group__time =
     [ "novas_iso_timestamp", "group__time.html#ga4d6da26d0a7d7d904f25d2be00030b25", null ],
     [ "novas_jd_from_date", "group__time.html#ga54eee84c46900c80ca9966857c217cc8", null ],
     [ "novas_jd_to_date", "group__time.html#ga8ed2fb55bcf86d9f1f434a2f832356a2", null ],
+    [ "novas_leap_for_jd", "group__time.html#ga3d487552b2112f93ed7ec9347faf2574", null ],
     [ "novas_mean_clock_skew", "group__time.html#gad2d5ef17b41a30ebca91e4c70e636acf", null ],
     [ "novas_next_moon_phase", "group__time.html#gad0bd6e212af549309b0fcb792ed8cb79", null ],
     [ "novas_offset_time", "group__time.html#ga01f98b2b8033c8dbacaeab37e9198e91", null ],

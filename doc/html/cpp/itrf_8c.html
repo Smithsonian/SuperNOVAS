@@ -470,6 +470,10 @@ Functions</h2></td></tr>
 <ol type="1">
 <li>IERS Conventions, Chapter 4, Eq. 4.14 and Table 4.1. See <a href="https://iers-conventions.obspm.fr/content/chapter4/icc4.pdf">https://iers-conventions.obspm.fr/content/chapter4/icc4.pdf</a></li>
 </ol>
+<p>NOTES:</p>
+<ul>
+<li>Equation 4.14 of the IERS Conventions 2010 has UT' = UT + R3 / f. However the 1/f factor for Earth flattening does not make sense here. And R3 rotation translates to a change of UT1 directly. And for a spherical Earth (f = 0.0), this would result in an infinite UT1 correction. This must be an error in the conventions.</li>
+</ul>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">from_year</td><td>[yr] ITRF realization year of input coordinates / rates. E.g. 1992 for ITRF92. </td></tr>
@@ -490,7 +494,7 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="novas_8h.html#adc72577f99a7b076b23e0e44ddbca838" title="Sets up a observing frame for a specific observer location, time of observation, and accuracy require...">novas_make_frame()</a>, <a class="el" href="structnovas__timespec.html" title="A structure, which defines a precise instant of time that can be expressed in any of the astronomical...">novas_timespec</a>, <a class="el" href="novas_8h.html#aead87744eeb3029ce7d5ffb1801ee652" title="Corrects a vector in the ITRS (rotating Earth-fixed system) for polar motion, and also corrects the l...">wobble()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8h.html#a0b0c2c5ccc61c8740de2e2ac277cd836">NOVAS_DAY</a>, <a class="el" href="novas_8h.html#a1830a25e886366263653167369213d8b">NOVAS_EARTH_FLATTENING</a>, <a class="el" href="novas_8h.html#a3c8c9b8f709d1e5a7aa3a915f8fafcbb">novas_itrf_transform_eop()</a>, and <a class="el" href="novas_8h.html#a4912c64aec0c943b7985db6cb61ff83a">TWOPI</a>.</p>
+<p class="reference">References <a class="el" href="novas_8h.html#a0b0c2c5ccc61c8740de2e2ac277cd836">NOVAS_DAY</a>, <a class="el" href="novas_8h.html#a3c8c9b8f709d1e5a7aa3a915f8fafcbb">novas_itrf_transform_eop()</a>, and <a class="el" href="novas_8h.html#a4912c64aec0c943b7985db6cb61ff83a">TWOPI</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="classsupernovas_1_1EOP.html#a723f90ae1a32ae318dc23c67c9c289e2">supernovas::EOP::itrf_transformed()</a>, and <a class="el" href="novas_8h.html#a3c8c9b8f709d1e5a7aa3a915f8fafcbb">novas_itrf_transform_eop()</a>.</p>
 

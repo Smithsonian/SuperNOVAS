@@ -315,10 +315,18 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Instantiates an astrometric time instance with the specified time parameters. </p>
+<p>NOTES:</p>
+<ul>
+<li>Leap seconds have been abolished, and no new leap seconds will be added after 20 May 2027, leaving the current list of leap seconds at hte final definitive list. Hence SuperNOVAS will determine leap seconds automatically, based on the time, starting with v1.8, and the user no longer needs to supply this information when defining astrometric times.</li>
+</ul>
+<p>REFERENCES:</p>
+<ol type="1">
+<li>General Conference on Weights and Measures. "Resolution 5: On the adoption of a continuous UTC." Document presented at the 28th Meeting of the CGPM, Bureau International des Poids et Mesures (BIPM), Versailles, France, October 15, 2026. <a href="https://www.bipm.org/en/cgpm-2026/resolution-5">https://www.bipm.org/en/cgpm-2026/resolution-5</a>.</li>
+</ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">jd</td><td>[day] Julian date (in the selected timescale) </td></tr>
-    <tr><td class="paramname">leap_seconds</td><td>[s] leap seconds, that is TAI - UTC (default: 0). It may be unused if <span class="tt"><a class="el" href="#acf5b4f03c103c649a2561cb7b6696e14" title="Returns the UT1 - UTC time difference for this time instance, as was provided during instantiation.">dUT1</a></span> is NAN &ndash; see below. </td></tr>
+    <tr><td class="paramname">leap_seconds</td><td>[s] (<em>unused</em>) Leap seconds, e.g. as published by IERS Bulletin C. It is not used as of v1.8. Leap seconds are now obtained automatically from the definitive list of leap seconds in the time period (1970 &ndash; 2027), in which they were changing. A best practice may be to set this parameter to 0 or -1 in your application calls. </td></tr>
     <tr><td class="paramname">dUT1</td><td>[s] UT1 - UTC time difference, e.g. from the IERS Bulletins or service, or NAN to fetch leap and dUT1 from IERS for dates after 1 Jan 1956, if possible and allowed. </td></tr>
     <tr><td class="paramname">timescale</td><td>(optional) Astronomical timescale (default: TT).</td></tr>
   </table>
@@ -327,7 +335,7 @@ Additional Inherited Members</h2></td></tr>
 <dl class="section since"><dt>Since</dt><dd>1.6 </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#ad622c9888273f38a34f8f3dd75ddeaa0" title="Resturns a new astrometric time instance for the current time.">now()</a>, <a class="el" href="#a312b167a2ea16dd21a20e0ebc8e5d80c" title="Returns a new astrometric time instance for a given Modified Julian Date (MJD), specified in the time...">from_mjd()</a>, <a class="el" href="#a2a483b407997ca602f9a79fb134468e9" title="Returns the astrometric time for the J2000 epoch.">j2000()</a>, <a class="el" href="#a88061d30b8941199b51e0d7fc1f5063b" title="Returns the astrometric time for the B1950 epoch.">b1950()</a>, <a class="el" href="#afb95cc52b6bd739843bca41a2b6cc18f" title="Returns the astrometric time for the B1900 epoch.">b1900()</a>, <a class="el" href="#a82ddf5c0b7bc2109f18bb2209f8901f2" title="Returns the astrometric time for the Hipparcos catalog epoch (which is J1991.25).">hip()</a> </dd>
 <dd>
-<a class="el" href="group__earth.html#ga7dafe09841e9a43a7f8c87ce67a8d553" title="Disable or Re-enabled the automatic fetching of Earth Orientation Parameter values from IERS,...">novas_set_auto_fetch_eop()</a>, <a class="el" href="group__earth.html#ga804733f8206441a8c2dd9ecf3a1e9465" title="Returns the leap seconds for the given UNIX timestamp, based either on a locally supplied leap second...">novas_lookup_leap()</a>, <a class="el" href="novas_8h.html#aba2fe38e07b94adaa6e8eb1b0a39a7ea" title="Obtains interpolated Earth Orientation Parameter data from the International Earth Rotation and Refer...">novas_fetch_eop()</a> </dd></dl>
+<a class="el" href="group__earth.html#ga7dafe09841e9a43a7f8c87ce67a8d553" title="Disable or Re-enabled the automatic fetching of Earth Orientation Parameter values from IERS,...">novas_set_auto_fetch_eop()</a>, <a class="el" href="group__earth.html#ga804733f8206441a8c2dd9ecf3a1e9465" title="Returns the leap seconds for the given UNIX timestamp.">novas_lookup_leap()</a>, <a class="el" href="novas_8h.html#aba2fe38e07b94adaa6e8eb1b0a39a7ea" title="Obtains interpolated Earth Orientation Parameter data from the International Earth Rotation and Refer...">novas_fetch_eop()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="classsupernovas_1_1Validating.html#a4aa2e66ea6acca6705d87457a08ac2d6">supernovas::Validating::_valid</a>, <a class="el" href="#acf5b4f03c103c649a2561cb7b6696e14">dUT1()</a>, <a class="el" href="#a1af1c4eb0cc73283892750b9a1af5b64">jd()</a>, <a class="el" href="#af5f3b37c56645a2d06486e054e9dd681">leap_seconds()</a>, and <a class="el" href="novas_8h.html#af4a1a5180905a7d8f76aeafe3f9a8ebb">novas_set_time()</a>.</p>
 
@@ -368,7 +376,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Instantiates an astrometric time instance with the specified time parameters. </p>
 <p>NOTES:</p>
 <ul>
-<li>If <b>SuperNOVAS</b> was built without cURL support (<span class="tt">WITHOUT_CURL</span> or <span class="tt">WITHOUT_LIBC</span> build configuration options), then automatic fetching of the leap seconds and the UT1 - UTC differennce is not possible. You must set a valid <a class="el" href="classsupernovas_1_1EOP.html" title="IERS Earth Orientation Parameters (EOP).">EOP</a> explicitly.</li>
+<li>If <b>SuperNOVAS</b> was built without cURL support (<span class="tt">WITHOUT_CURL</span> or <span class="tt">WITHOUT_LIBC</span> build configuration options), then automatic fetching of the the UT1 - UTC differennce is not possible. You must set a valid <a class="el" href="classsupernovas_1_1EOP.html" title="IERS Earth Orientation Parameters (EOP).">EOP</a> explicitly.</li>
 </ul>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -422,12 +430,20 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Instantiates an astrometric time instance with the specified time parameters. </p>
+<p>NOTES:</p>
+<ul>
+<li>Leap seconds have been abolished, and no new leap seconds will be added after 20 May 2027, leaving the current list of leap seconds at hte final definitive list. Hence SuperNOVAS will determine leap seconds automatically, based on the time, starting with v1.8, and the user no longer needs to supply this information when defining astrometric times.</li>
+</ul>
+<p>REFERENCES:</p>
+<ol type="1">
+<li>General Conference on Weights and Measures. "Resolution 5: On the adoption of a continuous UTC." Document presented at the 28th Meeting of the CGPM, Bureau International des Poids et Mesures (BIPM), Versailles, France, October 15, 2026. <a href="https://www.bipm.org/en/cgpm-2026/resolution-5">https://www.bipm.org/en/cgpm-2026/resolution-5</a>.</li>
+</ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">ijd</td><td>[day] integer part of Julian date (in the selected timescale) </td></tr>
     <tr><td class="paramname">fjd</td><td>[day] fractional part of Julian date (in the selected timescale) </td></tr>
-    <tr><td class="paramname">leap_seconds</td><td>[s] leap seconds, that is TAI - UTC (default: 0). It may be unused if <span class="tt"><a class="el" href="#acf5b4f03c103c649a2561cb7b6696e14" title="Returns the UT1 - UTC time difference for this time instance, as was provided during instantiation.">dUT1</a></span> is NAN &ndash; see below. </td></tr>
-    <tr><td class="paramname">dUT1</td><td>[s] UT1 - UTC time difference, e.g. from the IERS Bulletins or service, or NAN to fetch leap and dUT1 from IERS for dates after 1 Jan 1956, if possible and allowed. </td></tr>
+    <tr><td class="paramname">leap_seconds</td><td>[s] (<em>unused</em>) Leap seconds, e.g. as published by IERS Bulletin C. It is not used as of v1.8. Leap seconds are now obtained automatically from the definitive list of leap seconds in the time period (1970 &ndash; 2027), in which they were changing. A best practice may be to set this parameter to 0 or -1 in your application calls. </td></tr>
+    <tr><td class="paramname">dUT1</td><td>[s] UT1 - UTC time difference, e.g. from the IERS Bulletins or service, or NAN to fetch dUT1 from IERS for dates after 1 Jan 1956, if possible and allowed. </td></tr>
     <tr><td class="paramname">timescale</td><td>(optional) Astronomical timescale (default: TT).</td></tr>
   </table>
   </dd>
@@ -435,7 +451,7 @@ Additional Inherited Members</h2></td></tr>
 <dl class="section since"><dt>Since</dt><dd>1.6 </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#ad622c9888273f38a34f8f3dd75ddeaa0" title="Resturns a new astrometric time instance for the current time.">now()</a>, <a class="el" href="#a312b167a2ea16dd21a20e0ebc8e5d80c" title="Returns a new astrometric time instance for a given Modified Julian Date (MJD), specified in the time...">from_mjd()</a>, <a class="el" href="#a2a483b407997ca602f9a79fb134468e9" title="Returns the astrometric time for the J2000 epoch.">j2000()</a>, <a class="el" href="#a88061d30b8941199b51e0d7fc1f5063b" title="Returns the astrometric time for the B1950 epoch.">b1950()</a>, <a class="el" href="#afb95cc52b6bd739843bca41a2b6cc18f" title="Returns the astrometric time for the B1900 epoch.">b1900()</a>, <a class="el" href="#a82ddf5c0b7bc2109f18bb2209f8901f2" title="Returns the astrometric time for the Hipparcos catalog epoch (which is J1991.25).">hip()</a> </dd>
 <dd>
-<a class="el" href="group__earth.html#ga7dafe09841e9a43a7f8c87ce67a8d553" title="Disable or Re-enabled the automatic fetching of Earth Orientation Parameter values from IERS,...">novas_set_auto_fetch_eop()</a>, <a class="el" href="group__earth.html#ga804733f8206441a8c2dd9ecf3a1e9465" title="Returns the leap seconds for the given UNIX timestamp, based either on a locally supplied leap second...">novas_lookup_leap()</a>, <a class="el" href="novas_8h.html#aba2fe38e07b94adaa6e8eb1b0a39a7ea" title="Obtains interpolated Earth Orientation Parameter data from the International Earth Rotation and Refer...">novas_fetch_eop()</a> </dd></dl>
+<a class="el" href="group__earth.html#ga7dafe09841e9a43a7f8c87ce67a8d553" title="Disable or Re-enabled the automatic fetching of Earth Orientation Parameter values from IERS,...">novas_set_auto_fetch_eop()</a>, <a class="el" href="group__earth.html#ga804733f8206441a8c2dd9ecf3a1e9465" title="Returns the leap seconds for the given UNIX timestamp.">novas_lookup_leap()</a>, <a class="el" href="novas_8h.html#aba2fe38e07b94adaa6e8eb1b0a39a7ea" title="Obtains interpolated Earth Orientation Parameter data from the International Earth Rotation and Refer...">novas_fetch_eop()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="classsupernovas_1_1Validating.html#a4aa2e66ea6acca6705d87457a08ac2d6">supernovas::Validating::_valid</a>, <a class="el" href="#acf5b4f03c103c649a2561cb7b6696e14">dUT1()</a>, <a class="el" href="#af5f3b37c56645a2d06486e054e9dd681">leap_seconds()</a>, and <a class="el" href="novas_8h.html#ad47bcb1e3c5df56a0ffdf1a127e52598">novas_set_split_time()</a>.</p>
 
@@ -523,10 +539,18 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Instantiates an astrometric time instance with the specified time parameters. </p>
+<p>NOTES:</p>
+<ul>
+<li>Leap seconds have been abolished, and no new leap seconds will be added after 20 May 2027, leaving the current list of leap seconds at hte final definitive list. Hence SuperNOVAS will determine leap seconds automatically, based on the time, starting with v1.8, and the user no longer needs to supply this information when defining astrometric times.</li>
+</ul>
+<p>REFERENCES:</p>
+<ol type="1">
+<li>General Conference on Weights and Measures. "Resolution 5: On the adoption of a continuous UTC." Document presented at the 28th Meeting of the CGPM, Bureau International des Poids et Mesures (BIPM), Versailles, France, October 15, 2026. <a href="https://www.bipm.org/en/cgpm-2026/resolution-5">https://www.bipm.org/en/cgpm-2026/resolution-5</a>.</li>
+</ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">timestamp</td><td>A precision timestamp, such as an ISO 8601 timestamp. </td></tr>
-    <tr><td class="paramname">leap_seconds</td><td>[s] leap seconds, that is TAI - UTC (default: 0). It may be unused if <span class="tt"><a class="el" href="#acf5b4f03c103c649a2561cb7b6696e14" title="Returns the UT1 - UTC time difference for this time instance, as was provided during instantiation.">dUT1</a></span> is NAN &ndash; see below. </td></tr>
+    <tr><td class="paramname">leap_seconds</td><td>[s] (<em>unused</em>) Leap seconds, e.g. as published by IERS Bulletin C. It is not used as of v1.8. Leap seconds are now obtained automatically from the definitive list of leap seconds in the time period (1970 &ndash; 2027), in which they were changing. A best practice may be to set this parameter to 0 or -1 in your application calls. </td></tr>
     <tr><td class="paramname">dUT1</td><td>[s] UT1 - UTC time difference, e.g. from the IERS Bulletins or service, or NAN to fetch leap and dUT1 from IERS for dates after 1 Jan 1956, if possible and allowed. </td></tr>
     <tr><td class="paramname">timescale</td><td>(optional) Astronomical timescale (default: TT).</td></tr>
   </table>
@@ -537,7 +561,7 @@ Additional Inherited Members</h2></td></tr>
 <dd>
 <a class="el" href="group__util.html#ga4934da85b9722ef43a5b238f3e1971e4" title="Parses an astronomical date/time string into a Julian date specification.">novas_parse_date()</a>, <a class="el" href="group__util.html#gad53b3be5b92ea244cfb0347feb3bec9f" title="Parses an ISO 8601 timestamp, converting it to a Julian day.">novas_parse_iso_date()</a>, <a class="el" href="group__util.html#ga5ec9d054b7d363b3db1d065507a1ba41" title="Parses a calendar date/time string, expressed in the specified type of calendar, into a Julian day (J...">novas_parse_date_format()</a>, <a class="el" href="group__util.html#ga72245b3ea6099c573278f721a4bfd3d9" title="Parses the timescale from a string containing a standard abbreviation (case insensitive),...">novas_parse_timescale()</a> for more managed parsing from strings. </dd>
 <dd>
-<a class="el" href="group__earth.html#ga7dafe09841e9a43a7f8c87ce67a8d553" title="Disable or Re-enabled the automatic fetching of Earth Orientation Parameter values from IERS,...">novas_set_auto_fetch_eop()</a>, <a class="el" href="group__earth.html#ga804733f8206441a8c2dd9ecf3a1e9465" title="Returns the leap seconds for the given UNIX timestamp, based either on a locally supplied leap second...">novas_lookup_leap()</a>, <a class="el" href="novas_8h.html#aba2fe38e07b94adaa6e8eb1b0a39a7ea" title="Obtains interpolated Earth Orientation Parameter data from the International Earth Rotation and Refer...">novas_fetch_eop()</a> </dd></dl>
+<a class="el" href="group__earth.html#ga7dafe09841e9a43a7f8c87ce67a8d553" title="Disable or Re-enabled the automatic fetching of Earth Orientation Parameter values from IERS,...">novas_set_auto_fetch_eop()</a>, <a class="el" href="group__earth.html#ga804733f8206441a8c2dd9ecf3a1e9465" title="Returns the leap seconds for the given UNIX timestamp.">novas_lookup_leap()</a>, <a class="el" href="novas_8h.html#aba2fe38e07b94adaa6e8eb1b0a39a7ea" title="Obtains interpolated Earth Orientation Parameter data from the International Earth Rotation and Refer...">novas_fetch_eop()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="classsupernovas_1_1Validating.html#a4aa2e66ea6acca6705d87457a08ac2d6">supernovas::Validating::_valid</a>, <a class="el" href="#acf5b4f03c103c649a2561cb7b6696e14">dUT1()</a>, <a class="el" href="#af5f3b37c56645a2d06486e054e9dd681">leap_seconds()</a>, and <a class="el" href="novas_8h.html#a4b5b82161f8eb474aaa650815b7ca66f">novas_set_str_time()</a>.</p>
 
@@ -624,10 +648,18 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Instantiates an astrometric time instance with the specified time parameters. </p>
+<p>NOTES:</p>
+<ul>
+<li>Leap seconds have been abolished, and no new leap seconds will be added after 20 May 2027, leaving the current list of leap seconds at hte final definitive list. Hence SuperNOVAS will determine leap seconds automatically, based on the time, starting with v1.8, and the user no longer needs to supply this information when defining astrometric times.</li>
+</ul>
+<p>REFERENCES:</p>
+<ol type="1">
+<li>General Conference on Weights and Measures. "Resolution 5: On the adoption of a continuous UTC." Document presented at the 28th Meeting of the CGPM, Bureau International des Poids et Mesures (BIPM), Versailles, France, October 15, 2026. <a href="https://www.bipm.org/en/cgpm-2026/resolution-5">https://www.bipm.org/en/cgpm-2026/resolution-5</a>.</li>
+</ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">t</td><td>A precision POSIX standard UTC timestamp. </td></tr>
-    <tr><td class="paramname">leap_seconds</td><td>[s] leap seconds, that is TAI - UTC (default: 0). It may be unused if <span class="tt"><a class="el" href="#acf5b4f03c103c649a2561cb7b6696e14" title="Returns the UT1 - UTC time difference for this time instance, as was provided during instantiation.">dUT1</a></span> is NAN &ndash; see below. </td></tr>
+    <tr><td class="paramname">leap_seconds</td><td>[s] (<em>unused</em>) Leap seconds, e.g. as published by IERS Bulletin C. It is not used as of v1.8. Leap seconds are now obtained automatically from the definitive list of leap seconds in the time period (1970 &ndash; 2027), in which they were changing. A best practice may be to set this parameter to 0 or -1 in your application calls. </td></tr>
     <tr><td class="paramname">dUT1</td><td>[s] UT1 - UTC time difference, e.g. from the IERS Bulletins or service, or NAN to fetch leap and dUT1 from IERS for dates after 1 Jan 1956, if possible and allowed.</td></tr>
   </table>
   </dd>
@@ -635,7 +667,7 @@ Additional Inherited Members</h2></td></tr>
 <dl class="section since"><dt>Since</dt><dd>1.6 </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#ad622c9888273f38a34f8f3dd75ddeaa0" title="Resturns a new astrometric time instance for the current time.">now()</a>, <a class="el" href="#a312b167a2ea16dd21a20e0ebc8e5d80c" title="Returns a new astrometric time instance for a given Modified Julian Date (MJD), specified in the time...">from_mjd()</a>, <a class="el" href="#a2a483b407997ca602f9a79fb134468e9" title="Returns the astrometric time for the J2000 epoch.">j2000()</a>, <a class="el" href="#a88061d30b8941199b51e0d7fc1f5063b" title="Returns the astrometric time for the B1950 epoch.">b1950()</a>, <a class="el" href="#afb95cc52b6bd739843bca41a2b6cc18f" title="Returns the astrometric time for the B1900 epoch.">b1900()</a>, <a class="el" href="#a82ddf5c0b7bc2109f18bb2209f8901f2" title="Returns the astrometric time for the Hipparcos catalog epoch (which is J1991.25).">hip()</a> </dd>
 <dd>
-<a class="el" href="group__earth.html#ga7dafe09841e9a43a7f8c87ce67a8d553" title="Disable or Re-enabled the automatic fetching of Earth Orientation Parameter values from IERS,...">novas_set_auto_fetch_eop()</a>, <a class="el" href="group__earth.html#ga804733f8206441a8c2dd9ecf3a1e9465" title="Returns the leap seconds for the given UNIX timestamp, based either on a locally supplied leap second...">novas_lookup_leap()</a>, <a class="el" href="novas_8h.html#aba2fe38e07b94adaa6e8eb1b0a39a7ea" title="Obtains interpolated Earth Orientation Parameter data from the International Earth Rotation and Refer...">novas_fetch_eop()</a> </dd></dl>
+<a class="el" href="group__earth.html#ga7dafe09841e9a43a7f8c87ce67a8d553" title="Disable or Re-enabled the automatic fetching of Earth Orientation Parameter values from IERS,...">novas_set_auto_fetch_eop()</a>, <a class="el" href="group__earth.html#ga804733f8206441a8c2dd9ecf3a1e9465" title="Returns the leap seconds for the given UNIX timestamp.">novas_lookup_leap()</a>, <a class="el" href="novas_8h.html#aba2fe38e07b94adaa6e8eb1b0a39a7ea" title="Obtains interpolated Earth Orientation Parameter data from the International Earth Rotation and Refer...">novas_fetch_eop()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="classsupernovas_1_1Validating.html#a4aa2e66ea6acca6705d87457a08ac2d6">supernovas::Validating::_valid</a>, <a class="el" href="#acf5b4f03c103c649a2561cb7b6696e14">dUT1()</a>, <a class="el" href="#af5f3b37c56645a2d06486e054e9dd681">leap_seconds()</a>, <a class="el" href="novas_8h.html#a9d54ea7c6cdbc75ee78cf552a7e1858d">novas_set_unix_time()</a>, and <a class="el" href="group__time.html#ggaa642c4ccc7195dc62fd0dc56567ebd0ba01787464888b92c37b8340174c03cc8d">NOVAS_UTC</a>.</p>
 
@@ -1086,10 +1118,18 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Returns a new astrometric time instance for a given Modified Julian Date (MJD), specified in the timescale of choice. </p>
+<p>NOTES:</p>
+<ul>
+<li>Leap seconds have been abolished, and no new leap seconds will be added after 20 May 2027, leaving the current list of leap seconds at hte final definitive list. Hence SuperNOVAS will determine leap seconds automatically, based on the time, starting with v1.8, and the user no longer needs to supply this information when defining astrometric times.</li>
+</ul>
+<p>REFERENCES:</p>
+<ol type="1">
+<li>General Conference on Weights and Measures. "Resolution 5: On the adoption of a continuous UTC." Document presented at the 28th Meeting of the CGPM, Bureau International des Poids et Mesures (BIPM), Versailles, France, October 15, 2026. <a href="https://www.bipm.org/en/cgpm-2026/resolution-5">https://www.bipm.org/en/cgpm-2026/resolution-5</a>.</li>
+</ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">mjd</td><td>[day] Modified Julian Date, in the timescale of choice </td></tr>
-    <tr><td class="paramname">leap_seconds</td><td>[s] leap seconds, that is TAI - UTC (default: 0) </td></tr>
+    <tr><td class="paramname">leap_seconds</td><td>[s] (<em>unused</em>) Leap seconds, e.g. as published by IERS Bulletin C. It is not used as of v1.8. Leap seconds are now obtained automatically from the definitive list of leap seconds in the time period (1970 &ndash; 2027), in which they were changing. A best practice may be to set this parameter to 0 or -1 in your application calls. </td></tr>
     <tr><td class="paramname">dUT1</td><td>[s] UT1 - UTC time difference, e.g. from the IERS Bulletins or service (default: 0.0). </td></tr>
     <tr><td class="paramname">timescale</td><td>(optional) timescale in which MJD was specified (default: TT) </td></tr>
   </table>
@@ -1344,6 +1384,10 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Returns the leap seconds for this time instance, as was provided during instantiation. </p>
+<p>REFERENCES:</p>
+<ol type="1">
+<li>General Conference on Weights and Measures. "Resolution 5: On the adoption of a continuous UTC." Document presented at the 28th Meeting of the CGPM, Bureau International des Poids et Mesures (BIPM), Versailles, France, October 15, 2026. <a href="https://www.bipm.org/en/cgpm-2026/resolution-5">https://www.bipm.org/en/cgpm-2026/resolution-5</a>.</li>
+</ol>
 <dl class="section return"><dt>Returns</dt><dd>[s] the leap seconds (TAI - UTC).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.6 </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#acf5b4f03c103c649a2561cb7b6696e14" title="Returns the UT1 - UTC time difference for this time instance, as was provided during instantiation.">dUT1()</a> </dd></dl>
@@ -1624,10 +1668,15 @@ Additional Inherited Members</h2></td></tr>
 <p>NOTES:</p>
 <ul>
 <li>If <b>SuperNOVAS</b> was built with the <span class="tt">WITHOUT_SYSTEM_CLOCK</span> preprocessor flag (or with the <span class="tt">WITHOUT_LIBC</span> build configuration option), then this function will always return an invalid / undefined time (<span class="tt">errno</span> set to <span class="tt">ENOSYS</span>). You may want to set the time explicitly with one of the constructors or other static methods instead.</li>
+<li>Leap seconds have been abolished, and no new leap seconds will be added after 20 May 2027, leaving the current list of leap seconds at hte final definitive list. Hence SuperNOVAS will determine leap seconds automatically, based on the time, starting with v1.8, and the user no longer needs to supply this information when defining astrometric times.</li>
 </ul>
+<p>REFERENCES:</p>
+<ol type="1">
+<li>General Conference on Weights and Measures. "Resolution 5: On the adoption of a continuous UTC." Document presented at the 28th Meeting of the CGPM, Bureau International des Poids et Mesures (BIPM), Versailles, France, October 15, 2026. <a href="https://www.bipm.org/en/cgpm-2026/resolution-5">https://www.bipm.org/en/cgpm-2026/resolution-5</a>.</li>
+</ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">leap_seconds</td><td>[s] leap seconds, that is TAI - UTC (default: 0). It may be unused if <span class="tt"><a class="el" href="#acf5b4f03c103c649a2561cb7b6696e14" title="Returns the UT1 - UTC time difference for this time instance, as was provided during instantiation.">dUT1</a></span> is NAN &ndash; see below. </td></tr>
+    <tr><td class="paramname">leap_seconds</td><td>[s] (<em>unused</em>) Leap seconds, e.g. as published by IERS Bulletin C. It is not used as of v1.8. Leap seconds are now obtained automatically from the definitive list of leap seconds in the time period (1970 &ndash; 2027), in which they were changing. A best practice may be to set this parameter to 0 or -1 in your application calls. </td></tr>
     <tr><td class="paramname">dUT1</td><td>[s] UT1 - UTC time difference, e.g. from the IERS Bulletins or service, or NAN to fetch leap and dUT1 from IERS for dates after 1 Jan 1956, if possible and allowed. </td></tr>
   </table>
   </dd>
@@ -1636,7 +1685,7 @@ Additional Inherited Members</h2></td></tr>
 <dl class="section since"><dt>Since</dt><dd>1.7 </dd></dl>
 <dl class="section see"><dt>See also</dt><dd>Time(), <a class="el" href="#a312b167a2ea16dd21a20e0ebc8e5d80c" title="Returns a new astrometric time instance for a given Modified Julian Date (MJD), specified in the time...">from_mjd()</a>, <a class="el" href="#a2a483b407997ca602f9a79fb134468e9" title="Returns the astrometric time for the J2000 epoch.">j2000()</a>, <a class="el" href="#a88061d30b8941199b51e0d7fc1f5063b" title="Returns the astrometric time for the B1950 epoch.">b1950()</a>, <a class="el" href="#afb95cc52b6bd739843bca41a2b6cc18f" title="Returns the astrometric time for the B1900 epoch.">b1900()</a>, <a class="el" href="#a82ddf5c0b7bc2109f18bb2209f8901f2" title="Returns the astrometric time for the Hipparcos catalog epoch (which is J1991.25).">hip()</a> </dd>
 <dd>
-<a class="el" href="group__earth.html#ga7dafe09841e9a43a7f8c87ce67a8d553" title="Disable or Re-enabled the automatic fetching of Earth Orientation Parameter values from IERS,...">novas_set_auto_fetch_eop()</a>, <a class="el" href="group__earth.html#ga804733f8206441a8c2dd9ecf3a1e9465" title="Returns the leap seconds for the given UNIX timestamp, based either on a locally supplied leap second...">novas_lookup_leap()</a>, <a class="el" href="novas_8h.html#aba2fe38e07b94adaa6e8eb1b0a39a7ea" title="Obtains interpolated Earth Orientation Parameter data from the International Earth Rotation and Refer...">novas_fetch_eop()</a> </dd></dl>
+<a class="el" href="group__earth.html#ga7dafe09841e9a43a7f8c87ce67a8d553" title="Disable or Re-enabled the automatic fetching of Earth Orientation Parameter values from IERS,...">novas_set_auto_fetch_eop()</a>, <a class="el" href="group__earth.html#ga804733f8206441a8c2dd9ecf3a1e9465" title="Returns the leap seconds for the given UNIX timestamp.">novas_lookup_leap()</a>, <a class="el" href="novas_8h.html#aba2fe38e07b94adaa6e8eb1b0a39a7ea" title="Obtains interpolated Earth Orientation Parameter data from the International Earth Rotation and Refer...">novas_fetch_eop()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="#acf5b4f03c103c649a2561cb7b6696e14">dUT1()</a>, <a class="el" href="classsupernovas_1_1Validating.html#aa3695f10056563de6ba2f0863cabda53">supernovas::Validating::is_valid()</a>, <a class="el" href="#af5f3b37c56645a2d06486e054e9dd681">leap_seconds()</a>, and <a class="el" href="novas_8h.html#a090f608cd5c82622e3534297fc27daa5">novas_set_current_time()</a>.</p>
 

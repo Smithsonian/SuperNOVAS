@@ -20,6 +20,5 @@ var group__earth =
     [ "novas_lookup_leap", "group__earth.html#ga804733f8206441a8c2dd9ecf3a1e9465", null ],
     [ "novas_set_auto_fetch_eop", "group__earth.html#ga7dafe09841e9a43a7f8c87ce67a8d553", null ],
     [ "novas_set_eop_url", "group__earth.html#ga30319d4fc323f4f42d199e454abf0aef", null ],
-    [ "novas_set_leap_list", "group__earth.html#ga3bfd89aa8b76fc752b67f09b182197c7", null ],
     [ "set_nutation_lp_provider", "group__earth.html#ga694288eb631d6a69ecf313b7b5b4a677", null ]
 ];

@@ -36,7 +36,7 @@ loc = EarthLocation.from_geodetic(
 
 # Set time of observation
 time = astropy.time.Time(
-  "2025-02-27T19:57:00.728+0200"
+  "2025-02-27T19:57:00.728+0200",
   scale='tai')
 
 # Observer frame & system
@@ -55,7 +55,7 @@ app = source.transform_to(frame);
 using namespace supernovas;
 
 // IERS Earth Orientation Parameters...
-EOP eop(37, 62.56 * Unit::ms, 
+EOP eop(0, 62.56 * Unit::ms, 
      103.4 * Unit::mas, 396.2 * Unit::mas);
 
 // Define ICRS coordinates

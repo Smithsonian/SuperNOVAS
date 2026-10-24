@@ -131,14 +131,6 @@ Macros</h2></td></tr>
 <tr class="memdesc:ad373a09690936b8af10b0ac6a00aadc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">IERS EOP server name.  <br /></td></tr>
 <tr class="memitem:a20da422c599203a2e493e129c9566ad2" id="r_a20da422c599203a2e493e129c9566ad2"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a20da422c599203a2e493e129c9566ad2">IERS_LEAP_SERVER</a>&#160;&#160;&#160;&quot;hpiers.obspm.fr&quot;</td></tr>
 <tr class="memdesc:a20da422c599203a2e493e129c9566ad2"><td class="mdescLeft">&#160;</td><td class="mdescRight">IERS leap-seconds.list server name.  <br /></td></tr>
-<tr class="memitem:a876e1b577a0901f7d38ad2847c3dae8d" id="r_a876e1b577a0901f7d38ad2847c3dae8d"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a876e1b577a0901f7d38ad2847c3dae8d">NOVAS_EOP_ALT_C01_URL</a>&#160;&#160;&#160;&quot;https://hpiers.obspm.fr/iers/eop/eopc01/eopc01.1846-now&quot;</td></tr>
-<tr class="memdesc:a876e1b577a0901f7d38ad2847c3dae8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alternative URL for the IERS C01 series Earth Orientation Parameter data series from 1846 to the current date, at 0.1 year interval to 1899, and 0.05 year interval after.  <br /></td></tr>
-<tr class="memitem:ad723537ea2f288c9804cce7d2cfa8e3a" id="r_ad723537ea2f288c9804cce7d2cfa8e3a"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ad723537ea2f288c9804cce7d2cfa8e3a">NOVAS_EOP_ALT_C04_URL</a>&#160;&#160;&#160;&quot;https://hpiers.obspm.fr/iers/eop/eopc04/eopc04.1962-now&quot;</td></tr>
-<tr class="memdesc:ad723537ea2f288c9804cce7d2cfa8e3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alternative URL for the IERS C04 daily series Earth Orientation Parameter data series from 1962 to the current date.  <br /></td></tr>
-<tr class="memitem:a130158bad217f582b23a37730263ecef" id="r_a130158bad217f582b23a37730263ecef"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a130158bad217f582b23a37730263ecef">NOVAS_EOP_ALT_LEAP_URL</a>&#160;&#160;&#160;&quot;https://data.iana.org/time-zones/data/leap-seconds.list&quot;</td></tr>
-<tr class="memdesc:a130158bad217f582b23a37730263ecef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alternative URL for <span class="tt">leap-seconds.list</span>.  <br /></td></tr>
-<tr class="memitem:a8ca40f8802acc4750d2e93ccce21de34" id="r_a8ca40f8802acc4750d2e93ccce21de34"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a8ca40f8802acc4750d2e93ccce21de34">NOVAS_EOP_ALT_RAPID_URL</a>&#160;&#160;&#160;&quot;https://maia.usno.navy.mil/ser7/finals2000A.daily.extended&quot;</td></tr>
-<tr class="memdesc:a8ca40f8802acc4750d2e93ccce21de34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alternative URL for the IERS rapid dailyseries Earth Orientation Parameter data series from 1973, and including predictions for up to to a year from the current date.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -152,16 +144,18 @@ Functions</h2></td></tr>
 <tr class="memdesc:gaaacc7748d90e01bb53ace4dc330ffa65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the URL currently configured for a given IERS Earth Orientation Parameter (EOP) series.  <br /></td></tr>
 <tr class="memitem:gad1e07eedd32cbf4f1160624c74a99255" id="r_gad1e07eedd32cbf4f1160624c74a99255"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="group__earth.html#gad1e07eedd32cbf4f1160624c74a99255">novas_is_auto_fetch_eop</a> ()</td></tr>
 <tr class="memdesc:gad1e07eedd32cbf4f1160624c74a99255"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if automatic fetching of Earth Orientation Parameter values from IERS is allowed.  <br /></td></tr>
+<tr class="memitem:ga3d487552b2112f93ed7ec9347faf2574" id="r_ga3d487552b2112f93ed7ec9347faf2574"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="group__time.html#ga3d487552b2112f93ed7ec9347faf2574">novas_leap_for_jd</a> (double jd_utc)</td></tr>
+<tr class="memdesc:ga3d487552b2112f93ed7ec9347faf2574"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the leap seconds for the given (UTC-based) Julian date.  <br /></td></tr>
 <tr class="memitem:ga804733f8206441a8c2dd9ecf3a1e9465" id="r_ga804733f8206441a8c2dd9ecf3a1e9465"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="group__earth.html#ga804733f8206441a8c2dd9ecf3a1e9465">novas_lookup_leap</a> (time_t t)</td></tr>
-<tr class="memdesc:ga804733f8206441a8c2dd9ecf3a1e9465"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the leap seconds for the given UNIX timestamp, based either on a locally supplied leap seconds list (see <span class="tt"><a class="el" href="group__earth.html#ga3bfd89aa8b76fc752b67f09b182197c7" title="Specifies a local file containing the official leap seconds list, i.e.">novas_set_leap_list()</a></span>), or else from data obtained as needed from IERS (provided that fetching it is allowed).  <br /></td></tr>
+<tr class="memdesc:ga804733f8206441a8c2dd9ecf3a1e9465"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the leap seconds for the given UNIX timestamp.  <br /></td></tr>
 <tr class="memitem:gaf3631f03d8be587e08796747dfe2e9ca" id="r_gaf3631f03d8be587e08796747dfe2e9ca"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="group__earth.html#gaf3631f03d8be587e08796747dfe2e9ca">novas_reset_eop</a> ()</td></tr>
 <tr class="memdesc:gaf3631f03d8be587e08796747dfe2e9ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Releases resources used by URL handles used for obtaining Earth Orientation Parameter (EOP) data from the International Earth Rotation and Reference Systems Service (IERS), including the leap seconds list supplied earlier or obtained from IERS.  <br /></td></tr>
 <tr class="memitem:ga7dafe09841e9a43a7f8c87ce67a8d553" id="r_ga7dafe09841e9a43a7f8c87ce67a8d553"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="group__earth.html#ga7dafe09841e9a43a7f8c87ce67a8d553">novas_set_auto_fetch_eop</a> (int enabled)</td></tr>
 <tr class="memdesc:ga7dafe09841e9a43a7f8c87ce67a8d553"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disable or Re-enabled the automatic fetching of Earth Orientation Parameter values from IERS, when these are left undefined (NAN) when initializing astrometric time or observing frame instances.  <br /></td></tr>
 <tr class="memitem:ga30319d4fc323f4f42d199e454abf0aef" id="r_ga30319d4fc323f4f42d199e454abf0aef"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="group__earth.html#ga30319d4fc323f4f42d199e454abf0aef">novas_set_eop_url</a> (enum <a class="el" href="group__earth.html#ga1ded006133b58c40985faff42c35e6ee">novas_eop_series</a> series, int itrf_year, const char *url)</td></tr>
 <tr class="memdesc:ga30319d4fc323f4f42d199e454abf0aef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify a URL to use for a given IERS Earth Orientation Parameter (EOP) series.  <br /></td></tr>
-<tr class="memitem:ga3bfd89aa8b76fc752b67f09b182197c7" id="r_ga3bfd89aa8b76fc752b67f09b182197c7"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="group__earth.html#ga3bfd89aa8b76fc752b67f09b182197c7">novas_set_leap_list</a> (const char *filename)</td></tr>
-<tr class="memdesc:ga3bfd89aa8b76fc752b67f09b182197c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies a local file containing the official leap seconds list, i.e.  <br /></td></tr>
+<tr class="memitem:a3bfd89aa8b76fc752b67f09b182197c7" id="r_a3bfd89aa8b76fc752b67f09b182197c7"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#a3bfd89aa8b76fc752b67f09b182197c7">novas_set_leap_list</a> (const char *filename)</td></tr>
+<tr class="memdesc:a3bfd89aa8b76fc752b67f09b182197c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obsoleted function to specify a file containing the leap seconds list.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section date"><dt>Date</dt><dd>Created on Apr 18, 2026 </dd></dl>
@@ -202,71 +196,44 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a876e1b577a0901f7d38ad2847c3dae8d" name="a876e1b577a0901f7d38ad2847c3dae8d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a876e1b577a0901f7d38ad2847c3dae8d">&#9670;&#160;</a></span>NOVAS_EOP_ALT_C01_URL</h2>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
+<a id="a3bfd89aa8b76fc752b67f09b182197c7" name="a3bfd89aa8b76fc752b67f09b182197c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bfd89aa8b76fc752b67f09b182197c7">&#9670;&#160;</a></span>novas_set_leap_list()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define NOVAS_EOP_ALT_C01_URL&#160;&#160;&#160;&quot;https://hpiers.obspm.fr/iers/eop/eopc01/eopc01.1846-now&quot;</td>
+          <td class="memname">int novas_set_leap_list </td>
+          <td>(</td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>filename</em></span></td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Alternative URL for the IERS C01 series Earth Orientation Parameter data series from 1846 to the current date, at 0.1 year interval to 1899, and 0.05 year interval after. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__earth.html#ga30319d4fc323f4f42d199e454abf0aef" title="Specify a URL to use for a given IERS Earth Orientation Parameter (EOP) series.">novas_set_eop_url()</a>, <a class="el" href="group__earth.html#gga1ded006133b58c40985faff42c35e6eea374f3de972320eddc472ec96da2f6751" title="IERS C01 Long-term data from 1846 to now (EOP_C01_IAU2000_1846-now.txt).">EOP_C01_IAU2000</a> </dd></dl>
+<p>Obsoleted function to specify a file containing the leap seconds list. </p>
+<p>There will be no more leap seconds as of 20 May 2027, so the final list of leap seconds is now hardcoded into SuperNOVAS as of v1.8. There will be leap hours instead, perhaps, in the distant future, but not for some millenia. If someone still uses SuperNOVAS then, well, they must make some modifications to handle it then...</p>
+<p>REFERENCES:</p>
+<ol type="1">
+<li>General Conference on Weights and Measures. "Resolution 5: On the adoption of a continuous UTC." Document presented at the 28th Meeting of the CGPM, Bureau International des Poids et Mesures (BIPM), Versailles, France, October 15, 2026. <a href="https://www.bipm.org/en/cgpm-2026/resolution-5">https://www.bipm.org/en/cgpm-2026/resolution-5</a>.</li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filename</td><td><em>unused</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.7 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a href="https://hpiers.obspm.fr/iers/bul/bulc/ntp/leap-seconds.list">https://hpiers.obspm.fr/iers/bul/bulc/ntp/leap-seconds.list</a> </dd>
+<dd>
+<a class="el" href="group__earth.html#ga30319d4fc323f4f42d199e454abf0aef" title="Specify a URL to use for a given IERS Earth Orientation Parameter (EOP) series.">novas_set_eop_url()</a>, <a class="el" href="group__earth.html#ga804733f8206441a8c2dd9ecf3a1e9465" title="Returns the leap seconds for the given UNIX timestamp.">novas_lookup_leap()</a>, <a class="el" href="group__earth.html#gaba2fe38e07b94adaa6e8eb1b0a39a7ea" title="Obtains interpolated Earth Orientation Parameter data from the International Earth Rotation and Refer...">novas_fetch_eop()</a>, <a class="el" href="group__earth.html#gaf3631f03d8be587e08796747dfe2e9ca" title="Releases resources used by URL handles used for obtaining Earth Orientation Parameter (EOP) data from...">novas_reset_eop()</a></dd></dl>
 
-</div>
-</div>
-<a id="ad723537ea2f288c9804cce7d2cfa8e3a" name="ad723537ea2f288c9804cce7d2cfa8e3a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad723537ea2f288c9804cce7d2cfa8e3a">&#9670;&#160;</a></span>NOVAS_EOP_ALT_C04_URL</h2>
+<p class="reference">References <a class="el" href="#a3bfd89aa8b76fc752b67f09b182197c7">novas_set_leap_list()</a>.</p>
 
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define NOVAS_EOP_ALT_C04_URL&#160;&#160;&#160;&quot;https://hpiers.obspm.fr/iers/eop/eopc04/eopc04.1962-now&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Alternative URL for the IERS C04 daily series Earth Orientation Parameter data series from 1962 to the current date. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__earth.html#ga30319d4fc323f4f42d199e454abf0aef" title="Specify a URL to use for a given IERS Earth Orientation Parameter (EOP) series.">novas_set_eop_url()</a>, <a class="el" href="group__earth.html#gga1ded006133b58c40985faff42c35e6eeade92ae9ee1efe6c34bba0fbb62c3ee12" title="IERS C04 Long-term data (ITRF 2020) from 2 Jan 1962 to now, daily at 0 UTC (EOP_20u24_C04_one_file_19...">EOP_C04_IAU2000_0UTC</a> </dd></dl>
-
-</div>
-</div>
-<a id="a130158bad217f582b23a37730263ecef" name="a130158bad217f582b23a37730263ecef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a130158bad217f582b23a37730263ecef">&#9670;&#160;</a></span>NOVAS_EOP_ALT_LEAP_URL</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define NOVAS_EOP_ALT_LEAP_URL&#160;&#160;&#160;&quot;https://data.iana.org/time-zones/data/leap-seconds.list&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Alternative URL for <span class="tt">leap-seconds.list</span>. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__earth.html#ga30319d4fc323f4f42d199e454abf0aef" title="Specify a URL to use for a given IERS Earth Orientation Parameter (EOP) series.">novas_set_eop_url()</a>, <a class="el" href="group__earth.html#gga1ded006133b58c40985faff42c35e6eeab68a8ce01e1a212e54a7ca7c468d077a" title="List of leap seconds, since their introduction in 1972 (leap-seconds.list).">EOP_LEAP_LIST</a> </dd></dl>
-
-</div>
-</div>
-<a id="a8ca40f8802acc4750d2e93ccce21de34" name="a8ca40f8802acc4750d2e93ccce21de34"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8ca40f8802acc4750d2e93ccce21de34">&#9670;&#160;</a></span>NOVAS_EOP_ALT_RAPID_URL</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define NOVAS_EOP_ALT_RAPID_URL&#160;&#160;&#160;&quot;https://maia.usno.navy.mil/ser7/finals2000A.daily.extended&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Alternative URL for the IERS rapid dailyseries Earth Orientation Parameter data series from 1973, and including predictions for up to to a year from the current date. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__earth.html#ga30319d4fc323f4f42d199e454abf0aef" title="Specify a URL to use for a given IERS Earth Orientation Parameter (EOP) series.">novas_set_eop_url()</a>, <a class="el" href="group__earth.html#gga1ded006133b58c40985faff42c35e6eea9c906aecd204f567713d2416f4da5193" title="IERS Rapid Service data for IAU2000, starting in 1973 (finals.all.iau2000.txt).">EOP_RAPID_IAU2000</a> </dd></dl>
+<p class="reference">Referenced by <a class="el" href="group__earth.html#ga30319d4fc323f4f42d199e454abf0aef">novas_set_eop_url()</a>, and <a class="el" href="#a3bfd89aa8b76fc752b67f09b182197c7">novas_set_leap_list()</a>.</p>
 
 </div>
 </div>

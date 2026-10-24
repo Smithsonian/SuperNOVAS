@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('index.html',''
 <h2 class="doxsection"><a class="anchor" id="autotoc_md1"></a>
 Citation</h2>
 <ul>
-<li><b>Reference Paper</b>: Attila Kovács "The SuperNOVAS high-precision C/C++ astrometry library", <b>Proc. SPIE</b>, 14155, <em>Software and Cyberinfrastructure for Astronomy IX</em>, 1415533 (2026); <a href="https://doi.org/10.1117/12.3104649">https://doi.org/10.1117/12.3104649</a><br  />
+<li>Attila Kovács "The SuperNOVAS high-precision C/C++ astrometry library", <b>Proc. SPIE</b>, 14155, <em>Software and Cyberinfrastructure for Astronomy IX</em>, 1415533 (2026); <a href="https://doi.org/10.1117/12.3104649">https://doi.org/10.1117/12.3104649</a><br  />
  <a href="resources/citation-14155_1079.bib">[BibTex]</a> <a href="resources/citation-14155_1079.enw">[EndNote]</a> <a href="resources/citation-14155_1079.ris">[RIS]</a></li>
 </ul>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md2"></a>
@@ -928,6 +928,7 @@ New in v1.8</summary>
 <p></p>
 <ul>
 <li>New observer locations with dynamically calculated positions and velocities, such as observers defined by an ephemeris location or by Keplerian orbital elements.</li>
+<li>Leap seconds are now hard coded into SuperNOVAS, eliminating the dependence of an external (e.g. online) resource. There will be no more leap seconds introduced after 20 May 2027, leaving the current 37 seconds for many millenia. As a result, SuperNOVAS time functions, which have previously taken a leap seconds input, will now ignore that input parameter, and will use the leap seconds that is appropriate for the time that is defined.</li>
 </ul>
 <p></p>
 </details>

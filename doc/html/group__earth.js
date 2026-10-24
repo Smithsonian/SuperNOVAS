@@ -57,7 +57,6 @@ var group__earth =
     [ "novas_reset_eop", "group__earth.html#gaf3631f03d8be587e08796747dfe2e9ca", null ],
     [ "novas_set_auto_fetch_eop", "group__earth.html#ga7dafe09841e9a43a7f8c87ce67a8d553", null ],
     [ "novas_set_eop_url", "group__earth.html#ga30319d4fc323f4f42d199e454abf0aef", null ],
-    [ "novas_set_leap_list", "group__earth.html#ga3bfd89aa8b76fc752b67f09b182197c7", null ],
     [ "novas_time_gst", "group__earth.html#gaaf53fcad3fade814381cef3d06779a8c", null ],
     [ "nu2000k", "group__earth.html#gabd066c2857d1b1cc06d8bd51b912d841", null ],
     [ "nutation", "group__earth.html#ga69df5671751c09a7575963b94ad1151e", null ],

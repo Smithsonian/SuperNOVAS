@@ -203,15 +203,13 @@ Functions</h2></td></tr>
 <tr class="memitem:ga3c8c9b8f709d1e5a7aa3a915f8fafcbb" id="r_ga3c8c9b8f709d1e5a7aa3a915f8fafcbb"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#ga3c8c9b8f709d1e5a7aa3a915f8fafcbb">novas_itrf_transform_eop</a> (int from_year, double from_xp, double from_yp, double from_dut1, int to_year, double *restrict to_xp, double *restrict to_yp, double *restrict to_dut1)</td></tr>
 <tr class="memdesc:ga3c8c9b8f709d1e5a7aa3a915f8fafcbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms Earth orientation parameters (xp, yp, dUT1) from one ITRF realization to another.  <br /></td></tr>
 <tr class="memitem:ga804733f8206441a8c2dd9ecf3a1e9465" id="r_ga804733f8206441a8c2dd9ecf3a1e9465"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#ga804733f8206441a8c2dd9ecf3a1e9465">novas_lookup_leap</a> (time_t t)</td></tr>
-<tr class="memdesc:ga804733f8206441a8c2dd9ecf3a1e9465"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the leap seconds for the given UNIX timestamp, based either on a locally supplied leap seconds list (see <span class="tt"><a class="el" href="#ga3bfd89aa8b76fc752b67f09b182197c7" title="Specifies a local file containing the official leap seconds list, i.e.">novas_set_leap_list()</a></span>), or else from data obtained as needed from IERS (provided that fetching it is allowed).  <br /></td></tr>
+<tr class="memdesc:ga804733f8206441a8c2dd9ecf3a1e9465"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the leap seconds for the given UNIX timestamp.  <br /></td></tr>
 <tr class="memitem:gaf3631f03d8be587e08796747dfe2e9ca" id="r_gaf3631f03d8be587e08796747dfe2e9ca"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#gaf3631f03d8be587e08796747dfe2e9ca">novas_reset_eop</a> ()</td></tr>
 <tr class="memdesc:gaf3631f03d8be587e08796747dfe2e9ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Releases resources used by URL handles used for obtaining Earth Orientation Parameter (EOP) data from the International Earth Rotation and Reference Systems Service (IERS), including the leap seconds list supplied earlier or obtained from IERS.  <br /></td></tr>
 <tr class="memitem:ga7dafe09841e9a43a7f8c87ce67a8d553" id="r_ga7dafe09841e9a43a7f8c87ce67a8d553"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#ga7dafe09841e9a43a7f8c87ce67a8d553">novas_set_auto_fetch_eop</a> (int enabled)</td></tr>
 <tr class="memdesc:ga7dafe09841e9a43a7f8c87ce67a8d553"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disable or Re-enabled the automatic fetching of Earth Orientation Parameter values from IERS, when these are left undefined (NAN) when initializing astrometric time or observing frame instances.  <br /></td></tr>
 <tr class="memitem:ga30319d4fc323f4f42d199e454abf0aef" id="r_ga30319d4fc323f4f42d199e454abf0aef"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#ga30319d4fc323f4f42d199e454abf0aef">novas_set_eop_url</a> (enum <a class="el" href="#ga1ded006133b58c40985faff42c35e6ee">novas_eop_series</a> series, int itrf_year, const char *url)</td></tr>
 <tr class="memdesc:ga30319d4fc323f4f42d199e454abf0aef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify a URL to use for a given IERS Earth Orientation Parameter (EOP) series.  <br /></td></tr>
-<tr class="memitem:ga3bfd89aa8b76fc752b67f09b182197c7" id="r_ga3bfd89aa8b76fc752b67f09b182197c7"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#ga3bfd89aa8b76fc752b67f09b182197c7">novas_set_leap_list</a> (const char *filename)</td></tr>
-<tr class="memdesc:ga3bfd89aa8b76fc752b67f09b182197c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies a local file containing the official leap seconds list, i.e.  <br /></td></tr>
 <tr class="memitem:gaaf53fcad3fade814381cef3d06779a8c" id="r_gaaf53fcad3fade814381cef3d06779a8c"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#gaaf53fcad3fade814381cef3d06779a8c">novas_time_gst</a> (const <a class="el" href="structnovas__timespec.html">novas_timespec</a> *restrict time, enum <a class="el" href="group__frame.html#ga3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy)</td></tr>
 <tr class="memdesc:gaaf53fcad3fade814381cef3d06779a8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the Greenwich (apparent) Sidereal Time (GST/GaST) for a given astronomical time specification.  <br /></td></tr>
 <tr class="memitem:gabd066c2857d1b1cc06d8bd51b912d841" id="r_gabd066c2857d1b1cc06d8bd51b912d841"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#gabd066c2857d1b1cc06d8bd51b912d841">nu2000k</a> (double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps)</td></tr>
@@ -1036,9 +1034,9 @@ novas_fetch_current_eop(), <a class="el" href="#ga30319d4fc323f4f42d199e454abf0a
 <dd>
 <a class="el" href="group__frame.html#gadc72577f99a7b076b23e0e44ddbca838" title="Sets up a observing frame for a specific observer location, time of observation, and accuracy require...">novas_make_frame()</a>, <a class="el" href="group__time.html#gaf4a1a5180905a7d8f76aeafe3f9a8ebb" title="Sets an astronomical time to the fractional Julian Date value, defined in the specified timescale.">novas_set_time()</a>, <a class="el" href="#ga7dafe09841e9a43a7f8c87ce67a8d553" title="Disable or Re-enabled the automatic fetching of Earth Orientation Parameter values from IERS,...">novas_set_auto_fetch_eop()</a>, <a class="el" href="group__earth.html" title="Earth orientation">Earth orientation</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="#gaba2fe38e07b94adaa6e8eb1b0a39a7ea">novas_fetch_eop()</a>.</p>
+<p class="reference">References <a class="el" href="structnovas__eop.html#affd6c6e56f462ca17a1badb73cf3c907">novas_eop::jd</a>, <a class="el" href="structnovas__eop.html#ab16f1e9735ea4825852497ab33b3ebf3">novas_eop::leap</a>, <a class="el" href="#gaba2fe38e07b94adaa6e8eb1b0a39a7ea">novas_fetch_eop()</a>, and <a class="el" href="group__time.html#ga3d487552b2112f93ed7ec9347faf2574">novas_leap_for_jd()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="#gaba2fe38e07b94adaa6e8eb1b0a39a7ea">novas_fetch_eop()</a>, <a class="el" href="#ga4fe4a31a0284f79b6099bdc9a32f6206">novas_fetch_eop_unix()</a>, <a class="el" href="group__frame.html#gadc72577f99a7b076b23e0e44ddbca838">novas_make_frame()</a>, and <a class="el" href="group__time.html#gad47bcb1e3c5df56a0ffdf1a127e52598">novas_set_split_time()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#gaba2fe38e07b94adaa6e8eb1b0a39a7ea">novas_fetch_eop()</a>, <a class="el" href="#ga4fe4a31a0284f79b6099bdc9a32f6206">novas_fetch_eop_unix()</a>, and <a class="el" href="group__frame.html#gadc72577f99a7b076b23e0e44ddbca838">novas_make_frame()</a>.</p>
 
 </div>
 </div>
@@ -1301,7 +1299,7 @@ novas_fetch_current_eop(), <a class="el" href="#ga30319d4fc323f4f42d199e454abf0a
 
 <p class="reference">References <a class="el" href="#gad1e07eedd32cbf4f1160624c74a99255">novas_is_auto_fetch_eop()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="#gad1e07eedd32cbf4f1160624c74a99255">novas_is_auto_fetch_eop()</a>, <a class="el" href="#ga804733f8206441a8c2dd9ecf3a1e9465">novas_lookup_leap()</a>, <a class="el" href="group__frame.html#gadc72577f99a7b076b23e0e44ddbca838">novas_make_frame()</a>, and <a class="el" href="group__time.html#gad47bcb1e3c5df56a0ffdf1a127e52598">novas_set_split_time()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#gad1e07eedd32cbf4f1160624c74a99255">novas_is_auto_fetch_eop()</a>, <a class="el" href="group__frame.html#gadc72577f99a7b076b23e0e44ddbca838">novas_make_frame()</a>, and <a class="el" href="group__time.html#gad47bcb1e3c5df56a0ffdf1a127e52598">novas_set_split_time()</a>.</p>
 
 </div>
 </div>
@@ -1360,6 +1358,10 @@ novas_fetch_current_eop(), <a class="el" href="#ga30319d4fc323f4f42d199e454abf0a
 <ol type="1">
 <li>IERS Conventions, Chapter 4, Eq. 4.14 and Table 4.1. See <a href="https://iers-conventions.obspm.fr/content/chapter4/icc4.pdf">https://iers-conventions.obspm.fr/content/chapter4/icc4.pdf</a></li>
 </ol>
+<p>NOTES:</p>
+<ul>
+<li>Equation 4.14 of the IERS Conventions 2010 has UT' = UT + R3 / f. However the 1/f factor for Earth flattening does not make sense here. And R3 rotation translates to a change of UT1 directly. And for a spherical Earth (f = 0.0), this would result in an infinite UT1 correction. This must be an error in the conventions.</li>
+</ul>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">from_year</td><td>[yr] ITRF realization year of input coordinates / rates. E.g. 1992 for ITRF92. </td></tr>
@@ -1380,7 +1382,7 @@ novas_fetch_current_eop(), <a class="el" href="#ga30319d4fc323f4f42d199e454abf0a
 <dd>
 <a class="el" href="group__frame.html#gadc72577f99a7b076b23e0e44ddbca838" title="Sets up a observing frame for a specific observer location, time of observation, and accuracy require...">novas_make_frame()</a>, <a class="el" href="structnovas__timespec.html" title="A structure, which defines a precise instant of time that can be expressed in any of the astronomical...">novas_timespec</a>, <a class="el" href="group__nonequatorial.html#gaead87744eeb3029ce7d5ffb1801ee652" title="Corrects a vector in the ITRS (rotating Earth-fixed system) for polar motion, and also corrects the l...">wobble()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="group__time.html#ga0b0c2c5ccc61c8740de2e2ac277cd836">NOVAS_DAY</a>, <a class="el" href="group__observer.html#ga1830a25e886366263653167369213d8b">NOVAS_EARTH_FLATTENING</a>, <a class="el" href="#ga3c8c9b8f709d1e5a7aa3a915f8fafcbb">novas_itrf_transform_eop()</a>, and <a class="el" href="novas_8h.html#a4912c64aec0c943b7985db6cb61ff83a">TWOPI</a>.</p>
+<p class="reference">References <a class="el" href="group__time.html#ga0b0c2c5ccc61c8740de2e2ac277cd836">NOVAS_DAY</a>, <a class="el" href="#ga3c8c9b8f709d1e5a7aa3a915f8fafcbb">novas_itrf_transform_eop()</a>, and <a class="el" href="novas_8h.html#a4912c64aec0c943b7985db6cb61ff83a">TWOPI</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="#ga3c8c9b8f709d1e5a7aa3a915f8fafcbb">novas_itrf_transform_eop()</a>.</p>
 
@@ -1401,27 +1403,26 @@ novas_fetch_current_eop(), <a class="el" href="#ga30319d4fc323f4f42d199e454abf0a
       </table>
 </div><div class="memdoc">
 
-<p>Returns the leap seconds for the given UNIX timestamp, based either on a locally supplied leap seconds list (see <span class="tt"><a class="el" href="#ga3bfd89aa8b76fc752b67f09b182197c7" title="Specifies a local file containing the official leap seconds list, i.e.">novas_set_leap_list()</a></span>), or else from data obtained as needed from IERS (provided that fetching it is allowed). </p>
-<p>In case of errors -1 is returned, with errno set as appropriate.</p>
-<p>Leap seconds were first introduced on 1 Jan 1972. Thus for date preceding the introduction, 0 is returned. Leap seconds prognosis into the future is available only up to the expiration date of the <span class="tt">leap-seconds.list</span> file (as supplied or updated from IERS).</p>
-<p>NOTES:</p>
-<ul>
-<li>If <b>SuperNOVAS</b> was built without <span class="tt">libc</span> support (<span class="tt">WITHOUT_LIBC</span> build configuration option), then this function will always return an error (<span class="tt">errno</span> set to <span class="tt">ENOSYS</span>).</li>
-</ul>
+<p>Returns the leap seconds for the given UNIX timestamp. </p>
+<p>Leap seconds were first introduced on 1 Jan 1972. Thus for date preceding the introduction, 0 is returned. The last leap of 27 seconds was introduced on 1 January 2017, and the decision has been made to not introduce further leap seconds as of 20 May 2027, leaving 37 seconds for the foreseeable future.</p>
+<p>REFERENCES:</p>
+<ol type="1">
+<li>General Conference on Weights and Measures. "Resolution 5: On the adoption of a continuous UTC." Document presented at the 28th Meeting of the CGPM, Bureau International des Poids et Mesures (BIPM), Versailles, France, October 15, 2026. <a href="https://www.bipm.org/en/cgpm-2026/resolution-5">https://www.bipm.org/en/cgpm-2026/resolution-5</a>.</li>
+</ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">t</td><td>[s] UNIX time (seconds since 0 UTC, 1 Jan 1970) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The leap seconds for the given time, or NOVAS_INVALID_LEAP (-999) if there was an error (errno will indicate the type of error).</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The leap seconds for the given time.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.7 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ga3bfd89aa8b76fc752b67f09b182197c7" title="Specifies a local file containing the official leap seconds list, i.e.">novas_set_leap_list()</a>, <a class="el" href="#ga30319d4fc323f4f42d199e454abf0aef" title="Specify a URL to use for a given IERS Earth Orientation Parameter (EOP) series.">novas_set_eop_url()</a>, <a class="el" href="#gaba2fe38e07b94adaa6e8eb1b0a39a7ea" title="Obtains interpolated Earth Orientation Parameter data from the International Earth Rotation and Refer...">novas_fetch_eop()</a>, <a class="el" href="#gad1e07eedd32cbf4f1160624c74a99255" title="Checks if automatic fetching of Earth Orientation Parameter values from IERS is allowed.">novas_is_auto_fetch_eop()</a>, <a class="el" href="novas_8h.html#ab74630b694f2fee24d8fc1dedad7eef9" title="Leap seconds value to indicate invalid data.">NOVAS_INVALID_LEAP</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__time.html#ga3d487552b2112f93ed7ec9347faf2574" title="Returns the leap seconds for the given (UTC-based) Julian date.">novas_leap_for_jd()</a>, <a class="el" href="#gaba2fe38e07b94adaa6e8eb1b0a39a7ea" title="Obtains interpolated Earth Orientation Parameter data from the International Earth Rotation and Refer...">novas_fetch_eop()</a>, <a class="el" href="#gad1e07eedd32cbf4f1160624c74a99255" title="Checks if automatic fetching of Earth Orientation Parameter values from IERS is allowed.">novas_is_auto_fetch_eop()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8h.html#ab74630b694f2fee24d8fc1dedad7eef9">NOVAS_INVALID_LEAP</a>, <a class="el" href="#gad1e07eedd32cbf4f1160624c74a99255">novas_is_auto_fetch_eop()</a>, and <a class="el" href="#ga804733f8206441a8c2dd9ecf3a1e9465">novas_lookup_leap()</a>.</p>
+<p class="reference">References <a class="el" href="#ga804733f8206441a8c2dd9ecf3a1e9465">novas_lookup_leap()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="#ga804733f8206441a8c2dd9ecf3a1e9465">novas_lookup_leap()</a>, and <a class="el" href="#ga30319d4fc323f4f42d199e454abf0aef">novas_set_eop_url()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="group__time.html#ga3d487552b2112f93ed7ec9347faf2574">novas_leap_for_jd()</a>, and <a class="el" href="#ga804733f8206441a8c2dd9ecf3a1e9465">novas_lookup_leap()</a>.</p>
 
 </div>
 </div>
@@ -1449,7 +1450,7 @@ novas_fetch_current_eop(), <a class="el" href="#ga30319d4fc323f4f42d199e454abf0a
 </ul>
 <dl class="section since"><dt>Since</dt><dd>1.7 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ga3bfd89aa8b76fc752b67f09b182197c7" title="Specifies a local file containing the official leap seconds list, i.e.">novas_set_leap_list()</a>, <a class="el" href="#gaba2fe38e07b94adaa6e8eb1b0a39a7ea" title="Obtains interpolated Earth Orientation Parameter data from the International Earth Rotation and Refer...">novas_fetch_eop()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#gaba2fe38e07b94adaa6e8eb1b0a39a7ea" title="Obtains interpolated Earth Orientation Parameter data from the International Earth Rotation and Refer...">novas_fetch_eop()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="#gaf3631f03d8be587e08796747dfe2e9ca">novas_reset_eop()</a>.</p>
 
@@ -1473,7 +1474,7 @@ novas_fetch_current_eop(), <a class="el" href="#ga30319d4fc323f4f42d199e454abf0a
 </div><div class="memdoc">
 
 <p>Disable or Re-enabled the automatic fetching of Earth Orientation Parameter values from IERS, when these are left undefined (NAN) when initializing astrometric time or observing frame instances. </p>
-<p>If set to TRUE (non-zero) then when an astrometric time is initialized with an undefined EOP, whose dUT1 value is NAN, it will automatically fetch appropriate leap second and dUT1 values from IERS, if possible. Similarly, if an observing frame is configured with a <em>x</em><sub>p</sub> or <em>y</em><sub>p</sub> values are NAN, the frame will fetch appropriate polar offsets from IERS for the time of observation.</p>
+<p>If set to TRUE (non-zero) then when an astrometric time is initialized with an undefined EOP, whose dUT1 value is NAN, it will automatically fetch dUT1 values from IERS, if possible. Similarly, if an observing frame is configured with a <em>x</em><sub>p</sub> or <em>y</em><sub>p</sub> values are NAN, the frame will fetch appropriate polar offsets from IERS for the time of observation.</p>
 <p>The default value of this global setting is TRUE (1), hence the automatic fetching of EOP values from IERS is enabled by default, and will override NAN EOP values with the fetched interpolated data, whenever possible.</p>
 <p>If you do not want this behavior, e.g. because of the associated arbitrary latencies involved with getting data from IERS, or because you are using <b>SuperNOVAS</b> offline, then simply call this function with FALSE (0) to disable the automatic fetching of EOP values.</p>
 <p>NOTES:</p>
@@ -1489,7 +1490,7 @@ novas_fetch_current_eop(), <a class="el" href="#ga30319d4fc323f4f42d199e454abf0a
 </dl>
 <dl class="section since"><dt>Since</dt><dd>1.7 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#gad1e07eedd32cbf4f1160624c74a99255" title="Checks if automatic fetching of Earth Orientation Parameter values from IERS is allowed.">novas_is_auto_fetch_eop()</a>, <a class="el" href="#gaba2fe38e07b94adaa6e8eb1b0a39a7ea" title="Obtains interpolated Earth Orientation Parameter data from the International Earth Rotation and Refer...">novas_fetch_eop()</a>, <a class="el" href="#ga804733f8206441a8c2dd9ecf3a1e9465" title="Returns the leap seconds for the given UNIX timestamp, based either on a locally supplied leap second...">novas_lookup_leap()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#gad1e07eedd32cbf4f1160624c74a99255" title="Checks if automatic fetching of Earth Orientation Parameter values from IERS is allowed.">novas_is_auto_fetch_eop()</a>, <a class="el" href="#gaba2fe38e07b94adaa6e8eb1b0a39a7ea" title="Obtains interpolated Earth Orientation Parameter data from the International Earth Rotation and Refer...">novas_fetch_eop()</a>, <a class="el" href="#ga804733f8206441a8c2dd9ecf3a1e9465" title="Returns the leap seconds for the given UNIX timestamp.">novas_lookup_leap()</a> </dd>
 <dd>
 <a class="el" href="group__time.html#gaf4a1a5180905a7d8f76aeafe3f9a8ebb" title="Sets an astronomical time to the fractional Julian Date value, defined in the specified timescale.">novas_set_time()</a>, <a class="el" href="group__frame.html#gadc72577f99a7b076b23e0e44ddbca838" title="Sets up a observing frame for a specific observer location, time of observation, and accuracy require...">novas_make_frame()</a> </dd>
 <dd>
@@ -1551,55 +1552,11 @@ Time, Frame, GeodeticObserver, CalendarDate::to_time() </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if there was an error (<span class="tt">errno</span> will be set to <span class="tt">ERANGE</span> if the series is invalid, <span class="tt">EINVAL</span> if the URL is an empty string, or <span class="tt">ENOSYS</span> if <b>SuperNOVAS</b> was built without cURL support).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.7 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#gaaacc7748d90e01bb53ace4dc330ffa65" title="Returns the URL currently configured for a given IERS Earth Orientation Parameter (EOP) series.">novas_get_eop_url()</a>, <a class="el" href="#gaba2fe38e07b94adaa6e8eb1b0a39a7ea" title="Obtains interpolated Earth Orientation Parameter data from the International Earth Rotation and Refer...">novas_fetch_eop()</a>, <a class="el" href="#ga3bfd89aa8b76fc752b67f09b182197c7" title="Specifies a local file containing the official leap seconds list, i.e.">novas_set_leap_list()</a>, <a class="el" href="#gaa3b5a785b2a478011aacd114a96d25e8" title="Returns the ITRF realization year for a given IERS Earth Orientation Parameter (EOP) series.">novas_get_eop_itrf_year()</a> </dd>
-<dd>
-<a class="el" href="iers_8c.html#a130158bad217f582b23a37730263ecef" title="Alternative URL for leap-seconds.list.">NOVAS_EOP_ALT_LEAP_URL</a>, <a class="el" href="iers_8c.html#a8ca40f8802acc4750d2e93ccce21de34" title="Alternative URL for the IERS rapid dailyseries Earth Orientation Parameter data series from 1973,...">NOVAS_EOP_ALT_RAPID_URL</a>, <a class="el" href="iers_8c.html#ad723537ea2f288c9804cce7d2cfa8e3a" title="Alternative URL for the IERS C04 daily series Earth Orientation Parameter data series from 1962 to th...">NOVAS_EOP_ALT_C04_URL</a>, <a class="el" href="iers_8c.html#a876e1b577a0901f7d38ad2847c3dae8d" title="Alternative URL for the IERS C01 series Earth Orientation Parameter data series from 1846 to the curr...">NOVAS_EOP_ALT_C01_URL</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#gaaacc7748d90e01bb53ace4dc330ffa65" title="Returns the URL currently configured for a given IERS Earth Orientation Parameter (EOP) series.">novas_get_eop_url()</a>, <a class="el" href="#gaba2fe38e07b94adaa6e8eb1b0a39a7ea" title="Obtains interpolated Earth Orientation Parameter data from the International Earth Rotation and Refer...">novas_fetch_eop()</a>, <a class="el" href="#gaa3b5a785b2a478011aacd114a96d25e8" title="Returns the ITRF realization year for a given IERS Earth Orientation Parameter (EOP) series.">novas_get_eop_itrf_year()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="#gga1ded006133b58c40985faff42c35e6eea374f3de972320eddc472ec96da2f6751">EOP_C01_IAU2000</a>, <a class="el" href="#gga1ded006133b58c40985faff42c35e6eeade92ae9ee1efe6c34bba0fbb62c3ee12">EOP_C04_IAU2000_0UTC</a>, <a class="el" href="#gga1ded006133b58c40985faff42c35e6eeab68a8ce01e1a212e54a7ca7c468d077a">EOP_LEAP_LIST</a>, <a class="el" href="#gga1ded006133b58c40985faff42c35e6eea9c906aecd204f567713d2416f4da5193">EOP_RAPID_IAU2000</a>, <a class="el" href="#ga804733f8206441a8c2dd9ecf3a1e9465">novas_lookup_leap()</a>, <a class="el" href="#ga30319d4fc323f4f42d199e454abf0aef">novas_set_eop_url()</a>, and <a class="el" href="#ga3bfd89aa8b76fc752b67f09b182197c7">novas_set_leap_list()</a>.</p>
+<p class="reference">References <a class="el" href="#gga1ded006133b58c40985faff42c35e6eea374f3de972320eddc472ec96da2f6751">EOP_C01_IAU2000</a>, <a class="el" href="#gga1ded006133b58c40985faff42c35e6eeade92ae9ee1efe6c34bba0fbb62c3ee12">EOP_C04_IAU2000_0UTC</a>, <a class="el" href="#gga1ded006133b58c40985faff42c35e6eeab68a8ce01e1a212e54a7ca7c468d077a">EOP_LEAP_LIST</a>, <a class="el" href="#gga1ded006133b58c40985faff42c35e6eea9c906aecd204f567713d2416f4da5193">EOP_RAPID_IAU2000</a>, <a class="el" href="#ga30319d4fc323f4f42d199e454abf0aef">novas_set_eop_url()</a>, and <a class="el" href="iers_8c.html#a3bfd89aa8b76fc752b67f09b182197c7">novas_set_leap_list()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="#ga30319d4fc323f4f42d199e454abf0aef">novas_set_eop_url()</a>.</p>
-
-</div>
-</div>
-<a id="ga3bfd89aa8b76fc752b67f09b182197c7" name="ga3bfd89aa8b76fc752b67f09b182197c7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga3bfd89aa8b76fc752b67f09b182197c7">&#9670;&#160;</a></span>novas_set_leap_list()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int novas_set_leap_list </td>
-          <td>(</td>
-          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>filename</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Specifies a local file containing the official leap seconds list, i.e. </p>
-<p><span class="tt">leap-seconds.list</span>, to use, at least until its expiry. (If the local leap file expires, a new one will be fetched from IERS as needed).</p>
-<p>It is similar to <span class="tt"><a class="el" href="#ga30319d4fc323f4f42d199e454abf0aef" title="Specify a URL to use for a given IERS Earth Orientation Parameter (EOP) series.">novas_set_eop_url()</a></span> for the <span class="tt"><a class="el" href="#gga1ded006133b58c40985faff42c35e6eeab68a8ce01e1a212e54a7ca7c468d077a" title="List of leap seconds, since their introduction in 1972 (leap-seconds.list).">EOP_LEAP_LIST</a></span> series, with a <span class="tt"><a href="file://">file://</a></span> type URL, except that this one does not need cURL support, and can work with relative paths also.</p>
-<p>NOTES:</p>
-<ul>
-<li>If <b>SuperNOVAS</b> was built without <span class="tt">libc</span> support (<span class="tt">WITHOUT_LIBC</span> build configuration option), then this function will always return an error (<span class="tt">errno</span> set to <span class="tt">ENOSYS</span>).</li>
-<li>This call is not thread-safe. You should avoid calling it from concurrent threads if you want it to have predictable behavior.</li>
-</ul>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">filename</td><td>Path to a local <span class="tt">leap-seconds.list</span> file (as obtained from IERS or a mirror). It is typically included in the <span class="tt">tzdata</span> package on Linux, where it may be found as <span class="tt">/usr/share/zoneinfo/leap-seconds.list</span> typically. Or, NULL to clean up any prior leap seconds resources. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if there was an error (errno will indicate the type of error).</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>1.7 </dd></dl>
-<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a href="https://hpiers.obspm.fr/iers/bul/bulc/ntp/leap-seconds.list">https://hpiers.obspm.fr/iers/bul/bulc/ntp/leap-seconds.list</a> </dd>
-<dd>
-<a class="el" href="#ga30319d4fc323f4f42d199e454abf0aef" title="Specify a URL to use for a given IERS Earth Orientation Parameter (EOP) series.">novas_set_eop_url()</a>, <a class="el" href="#ga804733f8206441a8c2dd9ecf3a1e9465" title="Returns the leap seconds for the given UNIX timestamp, based either on a locally supplied leap second...">novas_lookup_leap()</a>, <a class="el" href="#gaba2fe38e07b94adaa6e8eb1b0a39a7ea" title="Obtains interpolated Earth Orientation Parameter data from the International Earth Rotation and Refer...">novas_fetch_eop()</a>, <a class="el" href="#gaf3631f03d8be587e08796747dfe2e9ca" title="Releases resources used by URL handles used for obtaining Earth Orientation Parameter (EOP) data from...">novas_reset_eop()</a> </dd></dl>
-
-<p class="reference">References <a class="el" href="#ga3bfd89aa8b76fc752b67f09b182197c7">novas_set_leap_list()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="#ga30319d4fc323f4f42d199e454abf0aef">novas_set_eop_url()</a>, and <a class="el" href="#ga3bfd89aa8b76fc752b67f09b182197c7">novas_set_leap_list()</a>.</p>
 
 </div>
 </div>

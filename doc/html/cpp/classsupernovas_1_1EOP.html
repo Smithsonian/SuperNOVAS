@@ -245,9 +245,14 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Instantiates new Earth Orientation Parameters (<a class="el" href="classsupernovas_1_1EOP.html" title="IERS Earth Orientation Parameters (EOP).">EOP</a>) with the specified mean (interpolated) values. </p>
+<p>The UT1-UTC time difference is used when instantiating an astrometric <a class="el" href="classsupernovas_1_1Time.html" title="Precise astronomical time specification, supporting all relevant astronomical timescales (UT1,...">Time</a>, whereas the _x<sub>p</sub>_, and _y<sub>p</sub>_ polar offsets are used for instantiating <a class="el" href="classsupernovas_1_1GeodeticObserver.html" title="An observer location at a geodetic (longitude, latitude, altitude) location at the surface or above i...">GeodeticObserver</a> instances.</p>
+<p>NOTES:</p>
+<ul>
+<li>As of v1.8, no SuperNOVAS internal application of the <a class="el" href="classsupernovas_1_1EOP.html" title="IERS Earth Orientation Parameters (EOP).">EOP</a> requires the leap seconds to be set to a meaningful value, so you may leave it undefined (e.g. 0 or -1) if you don't need it for other purposes elsewhere.</li>
+</ul>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">leap_seconds</td><td>[s] Leap seconds (TAI - UTC). </td></tr>
+    <tr><td class="paramname">leap_seconds</td><td>[s] Leap seconds (TAI - UTC). The leap seconds defined here are unused when the new <a class="el" href="classsupernovas_1_1EOP.html" title="IERS Earth Orientation Parameters (EOP).">EOP</a> is used to initialize astrometric time, since <span class="tt"><a class="el" href="novas_8h.html#af4a1a5180905a7d8f76aeafe3f9a8ebb" title="Sets an astronomical time to the fractional Julian Date value, defined in the specified timescale.">novas_set_time()</a></span> and related functions determine leap seconds for themselves. </td></tr>
     <tr><td class="paramname">dut1_sec</td><td>[s] (optional) UT1 - UTC time difference (default: 0.0) </td></tr>
     <tr><td class="paramname">xp_rad</td><td>[rad] (optional) IERS <em>x</em><sub>p</sub> mean (interpolated) pole offset in the ITRS <em>x</em> direction. (default: 0.0) </td></tr>
     <tr><td class="paramname">yp_rad</td><td>[rad] (optional) IERS <em>y</em><sub>p</sub> mean (interpolated) pole offset in the ITRS <em>y</em> direction. (default: 0.0)</td></tr>
@@ -290,9 +295,14 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Instantiates new Earth Orientation Parameters (<a class="el" href="classsupernovas_1_1EOP.html" title="IERS Earth Orientation Parameters (EOP).">EOP</a>) with the specified mean (interpolated) values. </p>
+<p>The UT1-UTC time difference is used when instantiating an astrometric <a class="el" href="classsupernovas_1_1Time.html" title="Precise astronomical time specification, supporting all relevant astronomical timescales (UT1,...">Time</a>, whereas the _x<sub>p</sub>_, and _y<sub>p</sub>_ polar offsets are used for instantiating <a class="el" href="classsupernovas_1_1GeodeticObserver.html" title="An observer location at a geodetic (longitude, latitude, altitude) location at the surface or above i...">GeodeticObserver</a> instances.</p>
+<p>NOTES:</p>
+<ul>
+<li>As of v1.8, no SuperNOVAS internal application of the <a class="el" href="classsupernovas_1_1EOP.html" title="IERS Earth Orientation Parameters (EOP).">EOP</a> requires the leap seconds to be set to a meaningful value, so you may leave it undefined (e.g. 0 or -1) if you don't need it for other purposes elsewhere.</li>
+</ul>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">leap_seconds</td><td>[s] Leap seconds (TAI - UTC). </td></tr>
+    <tr><td class="paramname">leap_seconds</td><td>[s] Leap seconds (TAI - UTC). The leap seconds defined here are unused when the new <a class="el" href="classsupernovas_1_1EOP.html" title="IERS Earth Orientation Parameters (EOP).">EOP</a> is used to initialize astrometric time, since <span class="tt"><a class="el" href="novas_8h.html#af4a1a5180905a7d8f76aeafe3f9a8ebb" title="Sets an astronomical time to the fractional Julian Date value, defined in the specified timescale.">novas_set_time()</a></span> and related functions determine leap seconds for themselves. </td></tr>
     <tr><td class="paramname">dut1</td><td>(optional) UT1 - UTC time difference (default: 0.0) </td></tr>
     <tr><td class="paramname">xp</td><td>(optional) IERS <em>x</em><sub>p</sub> mean (interpolated) pole offset in the ITRS <em>X</em> direction (default: 0.0) </td></tr>
     <tr><td class="paramname">yp</td><td>(optional) IERS <em>y</em><sub>p</sub> mean (interpolated) pole offset in the ITRS <em>y</em> direction (default: 0.0)</td></tr>
@@ -554,7 +564,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname">EOP supernovas::EOP::fetch_for_jd </td>
           <td>(</td>
-          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>jd</em></span>, </td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>jd_utc</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -578,7 +588,7 @@ Additional Inherited Members</h2></td></tr>
 </ul>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">jd</td><td>[day] Julian Date (preferably UTC-based). </td></tr>
+    <tr><td class="paramname">jd_utc</td><td>[day] Julian Date (preferably UTC-based). </td></tr>
     <tr><td class="paramname">timeout_millis</td><td>[ms] (optional) HTTP connection timeout, or &lt;=0 to leave unchanged. </td></tr>
   </table>
   </dd>
@@ -607,7 +617,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname">EOP supernovas::EOP::fetch_for_mjd </td>
           <td>(</td>
-          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>mjd</em></span>, </td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>mjd_utc</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -631,7 +641,7 @@ Additional Inherited Members</h2></td></tr>
 </ul>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mjd</td><td>[day] Modified Julian Date (preferably UTC-based). </td></tr>
+    <tr><td class="paramname">mjd_utc</td><td>[day] Modified Julian Date (preferably UTC-based). </td></tr>
     <tr><td class="paramname">timeout_millis</td><td>[ms] (optional) HTTP connection timeout, or &lt;=0 to leave unchanged. </td></tr>
   </table>
   </dd>

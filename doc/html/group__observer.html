@@ -186,8 +186,8 @@ Enumerations</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:gaa423a88cd3f434642fc89d47390184f4" id="r_gaa423a88cd3f434642fc89d47390184f4"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#gaa423a88cd3f434642fc89d47390184f4">make_airborne_observer</a> (const <a class="el" href="#gab95cfa1e3e1558f7f99b74df9cd3514a">on_surface</a> *location, const double *vel, <a class="el" href="#gae7963c522d28ce6891b472e079307d03">observer</a> *obs)</td></tr>
 <tr class="memdesc:gaa423a88cd3f434642fc89d47390184f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Populates an 'observer' data structure for an observer moving relative to the surface of Earth, such as an airborne observer.  <br /></td></tr>
-<tr class="memitem:gaef7f2670a1b62621ae417b038672b1e9" id="r_gaef7f2670a1b62621ae417b038672b1e9"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#gaef7f2670a1b62621ae417b038672b1e9">make_comoving_observer</a> (const <a class="el" href="group__source.html#ga8bb95dd453e33d4c9892266c9af5df2a">object</a> *restrict place, <a class="el" href="#gae7963c522d28ce6891b472e079307d03">observer</a> *restrict obs)</td></tr>
-<tr class="memdesc:gaef7f2670a1b62621ae417b038672b1e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Populates an 'observer' data structure, for an observer that is comoving with a Solar-system body or place, and whose momentary position is consequently provided by an <span class="tt"><a class="el" href="group__geometric.html#ga713982e1f2bae0a72b39d03007f00d23" title="Retrieves the position and velocity of a solar system body using the currently configured plugins tha...">ephemeris()</a></span> call for that body or place.  <br /></td></tr>
+<tr class="memitem:gaef7f2670a1b62621ae417b038672b1e9" id="r_gaef7f2670a1b62621ae417b038672b1e9"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#gaef7f2670a1b62621ae417b038672b1e9">make_comoving_observer</a> (const <a class="el" href="group__source.html#ga8bb95dd453e33d4c9892266c9af5df2a">object</a> *restrict <a class="el" href="novas_8h.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place</a>, <a class="el" href="#gae7963c522d28ce6891b472e079307d03">observer</a> *restrict obs)</td></tr>
+<tr class="memdesc:gaef7f2670a1b62621ae417b038672b1e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Populates an 'observer' data structure, for an observer that is comoving with a Solar-system body or location, and whose momentary position is consequently provided by an <span class="tt"><a class="el" href="group__geometric.html#ga713982e1f2bae0a72b39d03007f00d23" title="Retrieves the position and velocity of a solar system body using the currently configured plugins tha...">ephemeris()</a></span> call for that body or place.  <br /></td></tr>
 <tr class="memitem:gaf4956285681bd88082f4aa1d8fd76f61" id="r_gaf4956285681bd88082f4aa1d8fd76f61"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#gaf4956285681bd88082f4aa1d8fd76f61">make_dynamic_observer</a> (<a class="el" href="novas_8h.html#a57854b43a0a88bfaac0fb886d30fecf5">novas_state_provider</a> call, const void *restrict call_arg, <a class="el" href="#gae7963c522d28ce6891b472e079307d03">observer</a> *restrict obs)</td></tr>
 <tr class="memdesc:gaf4956285681bd88082f4aa1d8fd76f61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Populates an 'observer' data structure, for an observer whose position and velocity state vectors are determined dynamically for the time of observation.  <br /></td></tr>
 <tr class="memitem:gaa2f9fc986f99c1ec7092330dbf233fef" id="r_gaa2f9fc986f99c1ec7092330dbf233fef"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#gaa2f9fc986f99c1ec7092330dbf233fef">make_gps_observer</a> (double latitude, double longitude, double height, <a class="el" href="#gae7963c522d28ce6891b472e079307d03">observer</a> *obs)</td></tr>
@@ -279,8 +279,6 @@ Functions</h2></td></tr>
 
 <p>[m] Earth ellipsoid flattening (ITRF / GRS80_MODEL) </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#gab07d86d425d68a62e94e965dd36b7a32" title="Converts geodetic site coordinates to geocentric Cartesian coordinates, using the specified reference...">novas_geodetic_to_cartesian()</a>, <a class="el" href="#ga7479134485c298faa858d73ee0513a11" title="Converts geocentric Cartesian site coordinates to geodetic coordinates on the given reference ellipso...">novas_cartesian_to_geodetic()</a> </dd></dl>
-
-<p class="reference">Referenced by <a class="el" href="group__earth.html#ga3c8c9b8f709d1e5a7aa3a915f8fafcbb">novas_itrf_transform_eop()</a>.</p>
 
 </div>
 </div>
@@ -636,7 +634,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">int make_comoving_observer </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="group__source.html#ga8bb95dd453e33d4c9892266c9af5df2a">object</a> *restrict</td>          <td class="paramname"><span class="paramname"><em>place</em></span>, </td>
+          <td class="paramtype">const <a class="el" href="group__source.html#ga8bb95dd453e33d4c9892266c9af5df2a">object</a> *restrict</td>          <td class="paramname"><span class="paramname"><em>loc</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -646,7 +644,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Populates an 'observer' data structure, for an observer that is comoving with a Solar-system body or place, and whose momentary position is consequently provided by an <span class="tt"><a class="el" href="group__geometric.html#ga713982e1f2bae0a72b39d03007f00d23" title="Retrieves the position and velocity of a solar system body using the currently configured plugins tha...">ephemeris()</a></span> call for that body or place. </p>
+<p>Populates an 'observer' data structure, for an observer that is comoving with a Solar-system body or location, and whose momentary position is consequently provided by an <span class="tt"><a class="el" href="group__geometric.html#ga713982e1f2bae0a72b39d03007f00d23" title="Retrieves the position and velocity of a solar system body using the currently configured plugins tha...">ephemeris()</a></span> call for that body or place. </p>
 <p>Examples of comoving observers are virtual observers located at the centers of planets, asteroids, or comets, travelling on a spacecraft (which has ephemeris data), or defined by Keplerian orbital parameters around a major Solar-system body or barycenter position.</p>
 <p>NOTES:</p>
 <ol type="1">
@@ -654,7 +652,7 @@ Functions</h2></td></tr>
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">place</td><td>the Solar-system body or place to which defines the momentary position of the observer at all times. The call will use the pointer reference directly. Therefore you sohould make sure that the data pointed at exists and remains valid in the scope as the observer that is populated here. </td></tr>
+    <tr><td class="paramname">loc</td><td>the Solar-system body or location to which defines the momentary position of the observer at all times. The call will use the pointer reference directly. Therefore you sohould make sure that the data pointed at exists and remains valid in the scope as the observer that is populated here. </td></tr>
     <tr><td class="paramname">obs</td><td>Pointer to the data structure to populate </td></tr>
   </table>
   </dd>
@@ -663,7 +661,7 @@ Functions</h2></td></tr>
 <dl class="section since"><dt>Since</dt><dd>1.8</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__geometric.html#ga713982e1f2bae0a72b39d03007f00d23" title="Retrieves the position and velocity of a solar system body using the currently configured plugins tha...">ephemeris()</a>, <a class="el" href="#ga9c3f1a1bc3fd9ac6d211806913d2d529" title="Populates an &#39;observer&#39; data structure, for an observer situated on a near-Earth spacecraft,...">make_solar_system_observer()</a>, <a class="el" href="#gaabb3ab0d99aa6e487cdcf6b454949b75" title="Populates an &#39;observer&#39; data structure for a hypothetical observer located at Earth&#39;s geocenter.">make_observer_at_geocenter()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="#gaef7f2670a1b62621ae417b038672b1e9">make_comoving_observer()</a>, <a class="el" href="#gaf4956285681bd88082f4aa1d8fd76f61">make_dynamic_observer()</a>, <a class="el" href="group__source.html#gga1eecb357eeea0de4759e9c8d55af238fa4f9ab9cec85498c41f90c33794d032e5">NOVAS_CATALOG_OBJECT</a>, <a class="el" href="#ga14078c87a8cbbb5bc5c8444b40814018">novas_ephem_state()</a>, <a class="el" href="novas_8h.html#a60037f5a7c8fe2b7cf8893cf461598d1">NOVAS_OBJECT_TYPES</a>, and <a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>.</p>
+<p class="reference">References <a class="el" href="#gaef7f2670a1b62621ae417b038672b1e9">make_comoving_observer()</a>, <a class="el" href="#gaf4956285681bd88082f4aa1d8fd76f61">make_dynamic_observer()</a>, <a class="el" href="group__source.html#gga1eecb357eeea0de4759e9c8d55af238fa4f9ab9cec85498c41f90c33794d032e5">NOVAS_CATALOG_OBJECT</a>, <a class="el" href="#ga14078c87a8cbbb5bc5c8444b40814018">novas_ephem_state()</a>, and <a class="el" href="novas_8h.html#a60037f5a7c8fe2b7cf8893cf461598d1">NOVAS_OBJECT_TYPES</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="#gaef7f2670a1b62621ae417b038672b1e9">make_comoving_observer()</a>.</p>
 
