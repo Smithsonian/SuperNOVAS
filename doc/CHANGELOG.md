@@ -166,7 +166,7 @@ than that, the release contains a number fixes and improvements also.
  - #395: Defining astrometric time through `novas_set_time()` / `novas_set_split_time()`, `Time` constructors and 
    related functions / method now ignore the leap seconds parameter, as leap seconds are determined automatically.
    
- - #395: `novas_set_time()` / `novas_set_split_time()` have been improved to set leap AND UT1-UTC correctly around 
+ - #395: `novas_set_time()` / `novas_set_split_time()` have been improved to set leap and UT1-UTC correctly around 
    the leap second boundaries for all timescales, when `dut1` is NAN. They now also check for NAN input JD values and 
    will return an error (`errno` set to `EINVAL`) in case of NAN JD input.
    
