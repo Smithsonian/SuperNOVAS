@@ -9,7 +9,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
-Upcoming maintenance release, expected around 1 November 2026.
+Upcoming feature release, expected around 1 November 2026. The highlights are new observer locations, and changes
+relating to the upcoming abolishment (freeze) of leap seconds on 20 May 2027, as voted by the General Conference on 
+Weights and Measures (CGPM). As a result of the latter, SuperNOVAS now hardcodes the definitive list of historical 
+leap seconds, which no longer need external resources, nor need to be specified explicitly. While the API remains 
+unchanged, the astrometric time will now determine the leap seconds to use automatically, ignoring any user supplied 
+values (which means users can now simply pass 0 or -1 in place of leap second parameters) when specifying time. Other 
+than that, the release contains a number fixes and improvements also.
 
 ### Fixed
 
@@ -160,13 +166,13 @@ Upcoming maintenance release, expected around 1 November 2026.
  - #395: Defining astrometric time through `novas_set_time()` / `novas_set_split_time()`, `Time` constructors and 
    related functions / method now ignore the leap seconds parameter, as leap seconds are determined automatically.
    
- - #395: `novas_set_time()` / `novas_set_split_time()` have been improved to set leap AND UT1-UTC correctly around 
+ - #395: `novas_set_time()` / `novas_set_split_time()` have been improved to set leap and UT1-UTC correctly around 
    the leap second boundaries for all timescales, when `dut1` is NAN. They now also check for NAN input JD values and 
    will return an error (`errno` set to `EINVAL`) in case of NAN JD input.
    
  - #395: `Time` constructor to allow the UT1 - UTC difference to grow beyond +/- 1s.
    
- - #395: Change default EOP URLs to use `brahe` mirrors for rapid service and C04 series.
+ - #395: Changed default EOP URLs to use `brahe` mirrors for rapid service and C04 series.
    
  - Streamlined `novas_make_planet_orbit()` slightly by avoiding duplicate trigonometric calls.
 
