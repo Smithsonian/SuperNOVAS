@@ -360,7 +360,7 @@ e.g.:
 
 Next, we set the time of observation. For a ground-based observer, you will need to provide __SuperNOVAS__ with the
 UT1 - UTC time difference (a.k.a. DUT1). You can obtain suitable values for DUT1 from IERS, and for the highest 
-precision, interpolate for the time of observations. For the example, let's assume 37 leap seconds, and DUT1 = 0.042,
+precision, interpolate for the time of observations. For the example, let's assume DUT1 = 0.042,
 
 ```c
   double dut1 = 0.042;          // [s] UT1 - UTC time difference
